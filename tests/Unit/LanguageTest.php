@@ -13,7 +13,7 @@ class LanguageTest extends TestCase
     /** @test */
     public function it_has_a_url_property()
     {
-        $language = factory(Language::class)->create();
-        $this->assertEquals('/languages/1', $language->url);
+        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $this->assertEquals('/languages/pa', $language->url);
     }
 }

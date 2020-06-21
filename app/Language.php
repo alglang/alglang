@@ -2,10 +2,14 @@
 
 namespace App;
 
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 
 class Language extends Model
 {
+    use HasSlug;
+
     public function getUrlAttribute()
     {
         return route('languages.show', ['language' => $this], false);
@@ -14,5 +18,12 @@ class Language extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('algo_code')
+            ->saveSlugsTo('slug');
     }
 }

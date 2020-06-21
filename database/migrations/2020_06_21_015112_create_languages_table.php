@@ -17,6 +17,7 @@ class CreateLanguagesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('algo_code');
+            $table->string('slug');
             $table->unsignedInteger('group_id');
             $table->timestamps();
         });

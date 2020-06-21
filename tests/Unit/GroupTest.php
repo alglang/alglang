@@ -13,7 +13,7 @@ class GroupTest extends TestCase
     /** @test */
     public function it_has_a_url_property()
     {
-        $group = factory(Group::class)->create();
-        $this->assertEquals('/groups/1', $group->url);
+        $group = factory(Group::class)->create(['name' => 'Test Group']);
+        $this->assertEquals('/groups/test-group', $group->url);
     }
 }
