@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/groups/{group}', 'GroupController@show')->name('groups.show');
+Route::get('/languages/{language}', 'LanguageController@show')->name('languages.show');
