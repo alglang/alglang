@@ -1,2 +1,5 @@
-<h1>{{ $group->name }}</h1>
-<p>{{ $group->description }}</h1>
+@extends('layouts.app')
+
+@section('content')
+    <alglang-group :group="{{ $group->toJson() }}"></alglang-group>
+@endsection

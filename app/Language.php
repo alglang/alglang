@@ -10,6 +10,8 @@ class Language extends Model
 {
     use HasSlug;
 
+    protected $guarded = [];
+
     public function getUrlAttribute()
     {
         return route('languages.show', ['language' => $this], false);

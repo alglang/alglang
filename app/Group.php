@@ -10,6 +10,8 @@ class Group extends Model
 {
     use HasSlug;
 
+    protected $guarded = [];
+
     public function getUrlAttribute()
     {
         return route('groups.show', ['group' => $this], false);
