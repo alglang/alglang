@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/groups/{group:slug}', 'GroupController@show')->name('groups.show');
 Route::get('/languages/{language:slug}', 'LanguageController@show')->name('languages.show');
+Route::get('/languages/{language:slug}/morphemes/{morpheme:slug}', 'MorphemeController@show')->name('morphemes.show');

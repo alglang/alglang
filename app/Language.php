@@ -20,6 +20,11 @@ class Language extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function morphemes()
+    {
+        return $this->hasMany(Morpheme::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
