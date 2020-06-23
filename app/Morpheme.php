@@ -10,6 +10,8 @@ class Morpheme extends Model
 {
     use HasSlug;
 
+    protected $with = ['language'];
+
     public function getUrlAttribute()
     {
         return route(

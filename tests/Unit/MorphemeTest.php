@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use \DB;
 use App\Gloss;
 use App\Language;
 use App\Morpheme;
@@ -21,6 +22,15 @@ class MorphemeTest extends TestCase
             'shape' => '-ak'
         ]);
         $this->assertEquals('/languages/pa/morphemes/ak', $morpheme->url);
+    }
+
+    /** @test */
+    public function language_is_always_eager_loaded()
+    {
+        factory(Morpheme::class)->create();
+        $morpheme = Morpheme::first();
+
+        $this->assertTrue($morpheme->relationLoaded('language'));
     }
 
     /** @test */

@@ -12,6 +12,8 @@ class VerbForm extends Model
 
     protected $guarded = [];
 
+    protected $with = ['language'];
+
     public function getUrlAttribute()
     {
         return route(

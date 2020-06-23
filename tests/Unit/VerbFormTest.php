@@ -21,4 +21,13 @@ class TestVerbForm extends TestCase
         ]);
         $this->assertEquals('/languages/pa/verb-forms/v-test', $verbForm->url);
     }
+
+    /** @test */
+    public function language_is_always_eager_loaded()
+    {
+        factory(VerbForm::class)->create();
+        $verbForm = VerbForm::first();
+
+        $this->assertTrue($verbForm->relationLoaded('language'));
+    }
 }
