@@ -27,6 +27,11 @@ class Language extends Model
         return $this->hasMany(Morpheme::class);
     }
 
+    public function verbForms()
+    {
+        return $this->hasMany(VerbForm::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
