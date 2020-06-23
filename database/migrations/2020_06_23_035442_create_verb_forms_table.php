@@ -16,12 +16,19 @@ class CreateVerbFormsTable extends Migration
         Schema::create('verb_forms', function (Blueprint $table) {
             $table->id();
             $table->string('shape');
-            $table->string('slug');
+
             $table->unsignedInteger('language_id');
+            $table->unsignedInteger('class_id');
+            $table->unsignedInteger('order_id');
+            $table->unsignedInteger('mode_id');
+            $table->unsignedInteger('subject_id');
+
             $table->text('historical_notes')->nullable();
             $table->text('allomorphy_notes')->nullable();
             $table->text('usage_notes')->nullable();
             $table->text('private_notes')->nullable();
+
+            $table->string('slug');
             $table->timestamps();
         });
     }

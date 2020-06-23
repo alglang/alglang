@@ -29,6 +29,26 @@ class VerbForm extends Model
         return $this->belongsTo(Language::class);
     }
 
+    public function subject()
+    {
+        return $this->belongsTo(VerbFeature::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(VerbClass::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(VerbOrder::class);
+    }
+
+    public function mode()
+    {
+        return $this->belongsTo(VerbMode::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
