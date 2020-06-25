@@ -23,8 +23,10 @@
             </li>
         </ul>
 
-        <p class="mb-2">
+        <p class="mb-8">
             To start using the database, click on any of the links above, or try doing a <a href="#">verb paradigm search</a>, or click a language on the map below.</p>
         </p>
+
+        <alglang-map api-key="{{ config('services.gmaps.key') }}" style="height: 30rem;" />
     </section>
 @endsection
