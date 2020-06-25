@@ -1,27 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex items-center">
-        <div class="md:w-1/2 md:mx-auto">
+    <section class="bg-white p-6">
+        <h1 class="text-2xl mb-6">Database of Algonquian Language Structures</h1>
 
-            @if (session('status'))
-                <div class="text-sm border border-t-8 rounded text-green-700 border-green-600 bg-green-100 px-3 py-4 mb-4" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
+        <p class="mb-4">
+            This database provides information about the sounds and grammar of the <a href="#">Algonquian languages</a>, focusing on the following areas:
+        </p>
 
-            <div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">
+        <ul class="border-l-4 leading-relaxed pl-1 ml-2 mb-4 border-red-600">
+            <li>
+                <a href="#" class="uppercase">Structural survey</a>: maps showing the patterning of various features across the Algonquian family
+            </li>
+            <li>
+                <a href="#" class="uppercase">Verb forms</a> and <a href="#" class="uppercase">nominal forms</a> annotated with glosses, allomorphy, examples, cognates, and historical derivation
+            </li>
+            <li>
+                <a href="#" class="uppercase">Phonology</a>: phoneme inventories, clusters, synchronic and diachronic rules, and sound changes
+            </li>
+            <li>
+                <a href="#" class="uppercase">Bibliography</a>: a filterable bibliography of Algonquian linguistics
+            </li>
+        </ul>
 
-                <div class="font-semibold bg-gray-200 text-gray-700 py-3 px-6 mb-0">
-                    Dashboard
-                </div>
-
-                <div class="w-full p-6">
-                    <p class="text-gray-700">
-                        You are logged in!
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+        <p class="mb-2">
+            To start using the database, click on any of the links above, or try doing a <a href="#">verb paradigm search</a>, or click a language on the map below.</p>
+        </p>
+    </section>
 @endsection

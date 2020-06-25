@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/groups/{group:slug}', 'GroupController@show')->name('groups.show');
 Route::post('/groups', 'GroupController@create');
 Route::get('/languages/{language:slug}', 'LanguageController@show')->name('languages.show');

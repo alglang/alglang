@@ -4,6 +4,10 @@ module.exports = {
     './resources/css/**/*.css',
   ],
   theme: {
+    fontFamily: {
+      body: ['Lato', 'sans-serif'],
+      display: ['Lato', 'sans-serif']
+    },
     extend: {}
   },
   variants: {},
