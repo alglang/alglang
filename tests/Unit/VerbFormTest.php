@@ -7,7 +7,7 @@ use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TestVerbForm extends TestCase
+class VerbFormTest extends TestCase
 {
     use RefreshDatabase;
 
