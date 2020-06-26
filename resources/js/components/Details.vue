@@ -1,0 +1,64 @@
+<template>
+    <section class="bg-white p-6">
+        <header class="flex justify-between mb-2">
+            <div class="leading-normal">
+                <h2 for="details-title" class="block text-lg uppercase text-gray-600">
+                    {{ title }}
+                </h2>
+                <h1 class="text-3xl font-light">
+                    <slot name="name"></slot>
+                </h1>
+            </div>
+        </header>
+
+        <div class="flex">
+            <nav class="flex flex-col uppercase bg-gray-200 font-semibold mr-4" style="height: fit-content;">
+                <a
+                    v-for="{ name }, i in pages"
+                    :key="name"
+                    class="p-2 whitespace-no-wrap"
+                    :class="{
+                        'text-gray-700': name !== activePage,
+                        'hover:bg-gray-300': name !== activePage,
+                        'hover:text-gray-700': name !== activePage,
+                        'text-gray-200': name === activePage,
+                        'bg-red-700': name === activePage,
+                        'hover:text-gray-200': name === activePage
+                    }"
+                    @click="activePage = name"
+                >
+                    {{ name.replace('-', ' ') }}
+                </a>
+            </nav>
+
+            <article class="overflow-hidden w-full relative">
+                <slot></slot>
+            </article>
+        </div>
+    </section>
+</template>
+
+<script>
+export default {
+    props: {
+        title: {
+            required: true
+        },
+
+        pages: {
+            required: true,
+            type: Array
+        }
+    },
+
+    data() {
+        return {
+            activePage: null
+        };
+    },
+
+    created() {
+        this.activePage = this.pages.length > 0 && this.pages[0].name;
+    }
+};
+</script>

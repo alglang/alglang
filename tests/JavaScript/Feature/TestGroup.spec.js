@@ -8,7 +8,9 @@ describe('Group.vue', () => {
       group: {
         name: 'Test Group',
         description: 'Lorem ipsum dolor sit amet'
-      }
+      },
+      pages: [],
+      gmapsApiKey: ''
     };
 
     const { getByText } = render(Group, { props });

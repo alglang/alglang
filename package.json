@@ -15,6 +15,7 @@
         "@testing-library/vue": "^5.0.4",
         "axios": "^0.19",
         "chai": "^4.2.0",
+        "chai-dom": "^1.8.2",
         "cross-env": "^7.0",
         "jsdom": "^16.2.2",
         "jsdom-global": "^3.0.2",
