@@ -29,4 +29,18 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('PA');
         $response->assertSee('Test Group');
     }
+
+    /** @test */
+    public function a_map_is_displayed_of_the_language()
+    {
+        $language = factory(Language::class)->create([
+            'name' => 'Test Language',
+            'position' => '{"lat":57.5,"lng":74.3}'
+        ]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertSee('{"lat":57.5,"lng":74.3}');
+    }
 }
