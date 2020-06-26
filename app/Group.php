@@ -23,4 +23,9 @@ class Group extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public function languages()
+    {
+        return $this->hasMany(Language::class);
+    }
 }

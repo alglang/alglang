@@ -8,7 +8,7 @@
     <alglang-map
         style="height: 30rem;"
         api-key="{{ config('services.gmaps.key') }}"
-        :locations="[{{ json_encode($language->map_data) }}]"
+        :locations="[{{ $language }}]"
     />
     @endif
 @endsection

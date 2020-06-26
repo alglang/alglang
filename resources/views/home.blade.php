@@ -30,7 +30,7 @@
         <alglang-map
             style="height: 30rem;"
             api-key="{{ config('services.gmaps.key') }}"
-            :locations="{{ $languages->pluck('map_data') }}"
+            :locations="{{ $languages }}"
         />
     </section>
 @endsection

@@ -14,7 +14,8 @@ export default {
         locations: {
             default: () => [
                 {
-                    content: '<a href="/">Hello</a>',
+                    url: '/',
+                    name: 'Hello',
                     position: { lat: 46.0, lng: -87 }
                 }
             ]
@@ -32,11 +33,11 @@ export default {
 
         const infoWindow = new google.maps.InfoWindow();
 
-        this.locations.forEach(({ content, position }) => {
+        this.locations.forEach(({ name, position, url }) => {
             const marker = new google.maps.Marker({ map, position });
             marker.addListener('click', () => {
                 infoWindow.setPosition(position);
-                infoWindow.setContent(content);
+                infoWindow.setContent(`<a href="${url}">${name}</a>`);
                 infoWindow.open(map, marker);
             })
         });

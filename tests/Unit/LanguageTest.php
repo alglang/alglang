@@ -16,22 +16,4 @@ class LanguageTest extends TestCase
         $language = factory(Language::class)->create(['algo_code' => 'PA']);
         $this->assertEquals('/languages/pa', $language->url);
     }
-
-    /** @test */
-    public function it_converts_to_map_data()
-    {
-        $language = factory(Language::class)->create([
-            'name' => 'Test Language',
-            'slug' => 'tl',
-            'position' => '{"lat":5.2,"lng":6.1}'
-        ]);
-
-        $this->assertEquals([
-            'content' => '<a href="/languages/tl">Test Language</a>',
-            'position' => (object) [
-                'lat' => 5.2,
-                'lng' => 6.1
-            ]
-        ], $language->map_data);
-    }
 }

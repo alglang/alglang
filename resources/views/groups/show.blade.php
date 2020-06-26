@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <alglang-group :group="{{ $group->toJson() }}"></alglang-group>
+    <alglang-group api-key="{{ config('services.gmaps.key') }}" :group="{{ $group->toJson() }}"></alglang-group>
 @endsection
