@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use App\Language;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -14,6 +15,7 @@ class HomeTest extends TestCase
     /** @test */
     public function a_guest_sees_login_and_register_links()
     {
+        $this->withoutExceptionHandling();
         $this->assertGuest();
 
         $response = $this->get('/');
@@ -49,5 +51,30 @@ class HomeTest extends TestCase
 
         $response->assertSee('Database of Algonquian Language Structures');
         $response->assertSeeText('This database provides information about the sounds and grammar of the Algonquian languages');
+    }
+
+    /** @test */
+    public function all_languages_with_positions_appear_on_the_home_page()
+    {
+        factory(Language::class)->create([
+            'name' => 'Test Language 1',
+            'position' => '{"lat":46.1,"lng":-87.1}'
+        ]);
+        factory(Language::class)->create([
+            'name' => 'Test Language 2',
+            'position' => '{"lat":47.1,"lng":-86.1}'
+        ]);
+        factory(Language::class)->create([
+            'name' => 'Test Language 3',
+        ]);
+
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('Test Language 1');
+        $response->assertSee('{"lat":46.1,"lng":-87.1}');
+        $response->assertSee('Test Language 2');
+        $response->assertSee('{"lat":47.1,"lng":-86.1}');
+        $response->assertDontSee('Test Language 3');
     }
 }
