@@ -34,7 +34,7 @@
 
             <div class="flex items-center self-stretch">
                 <input type="text" class="bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700" placeholder="Smart search..." />
-                <a href="/groups/algonquian" class="flex items-center px-3 h-full uppercase text-gray-100 hover:bg-red-700 hover:text-gray-900">
+                <a href="{{ route('groups.show', ['group' => 'algonquian']) }}" class="flex items-center px-3 h-full uppercase text-gray-100 hover:bg-red-700 hover:text-gray-900">
                     <span>Languages</span>
                 </a>
 
@@ -66,17 +66,17 @@
 
                 <ul class="flex-text-gray-100">
                     <li>
-                        <a href="#" class="mr-3 text-gray-100 hover:text-gray-300">
+                        <a href="{{ route('home') }}" class="mr-3 text-gray-100 hover:text-gray-300">
                             Home
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="mr-3 text-gray-100 hover:text-gray-300">
+                        <a href="{{ route('about') }}" class="mr-3 text-gray-100 hover:text-gray-300">
                             About
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="mr-3 text-gray-100 hover:text-gray-300">
+                        <a href="{{ route('resources') }}" class="mr-3 text-gray-100 hover:text-gray-300">
                             Resources
                         </a>
                     </li>
