@@ -8,7 +8,11 @@ module.exports = {
       body: ['Lato', 'sans-serif'],
       display: ['Lato', 'sans-serif']
     },
-    extend: {}
+    extend: {
+      listStyleType: {
+        square: 'square'
+      }
+    }
   },
   variants: {},
   plugins: [

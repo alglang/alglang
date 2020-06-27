@@ -20,9 +20,7 @@ Route::get('/languages/{language:slug}', 'LanguageController@show')->name('langu
 Route::get('/languages/{language:slug}/morphemes/{morpheme:slug}', 'MorphemeController@show')->name('morphemes.show');
 Route::get('/languages/{language:slug}/verb-forms/{verbForm:slug}', 'VerbFormController@show')->name('verb-forms.show');
 
-Route::get('/about', function () {
-    return '';
-})->name('about');
+Route::view('/about', 'about')->name('about');
 
 Route::get('/resources', function () {
     return '';
