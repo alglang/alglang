@@ -32,7 +32,7 @@
             </nav>
 
             <article class="overflow-hidden w-full relative">
-                <slot></slot>
+                <component :is="activePage" v-model="value" />
             </article>
         </div>
     </section>
@@ -48,6 +48,10 @@ export default {
         pages: {
             required: true,
             type: Array
+        },
+
+        value: {
+            required: true
         }
     },
 
@@ -59,6 +63,10 @@ export default {
 
     created() {
         this.activePage = this.pages.length > 0 && this.pages[0].name;
+
+        this.pages.forEach(({ name, component }) => {
+            this.$options.components[name] = component;
+        });
     }
 };
 </script>

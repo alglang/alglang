@@ -29,5 +29,8 @@
         "sass-loader": "^8.0.0",
         "tailwindcss": "^1.4",
         "vue-template-compiler": "^2.6.11"
+    },
+    "dependencies": {
+        "vuex": "^3.4.0"
     }
 }

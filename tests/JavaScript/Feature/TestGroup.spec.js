@@ -16,7 +16,7 @@ describe('Group.vue', () => {
     const { getByText } = render(Group, { props });
 
     expect(getByText('Group details'));
-    expect(getByText('Test Group'));
+    expect(getByText('Test Group languages'));
     expect(getByText('Lorem ipsum dolor sit amet'));
   });
 });

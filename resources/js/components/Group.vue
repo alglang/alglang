@@ -1,18 +1,15 @@
 <template>
-    <alglang-details title="Group details" :pages="pages">
+    <alglang-details title="Group details" :pages="pages" v-model="group">
         <template v-slot:name>
             {{ group.name }} languages
         </template>
-
-        <p>{{ group.description }}</p>
-
-        <alglang-map :style="{ height: '30rem' }" :api-key="gmapsApiKey" :locations="group.languages" />
     </alglang-details>
 </template>
 
 <script>
 import Details from './Details';
 import Map from './Map';
+import BasicDetails from './Group/BasicDetails.vue';
 
 export default {
     components: {
@@ -32,9 +29,19 @@ export default {
     data() {
         return {
             pages: [
-                { name: 'basic-details' }
+                {
+                    name: 'basic-details',
+                    component: BasicDetails
+                }
             ]
         };
+    },
+
+    created() {
+        this.$store.commit({
+            type: 'setGmapsApiKey',
+            key: this.gmapsApiKey
+        });
     }
 };
 </script>

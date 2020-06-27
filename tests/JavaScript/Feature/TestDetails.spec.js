@@ -1,6 +1,7 @@
 import '../setup';
 import { render, fireEvent } from '@testing-library/vue';
 import Details from '../../../resources/js/components/Details.vue';
+import Vue from 'vue';
 import { expect } from 'chai';
 
 describe('Details.vue', () => {
@@ -50,15 +51,32 @@ describe('Details.vue', () => {
   });
 
   it('activates a page when clicked', async () => {
+    const fooBarComponent = Vue.component('foo-bar', {
+      template: '<div>Foo Bar</div>'
+    });
+
+    const bazComponent = Vue.component('baz', {
+      template: '<div>Baz</div>'
+    });
+
     const props = {
       title: '',
       pages: [
-        { name: 'foo-bar' },
-        { name: 'baz' }
+        {
+          name: 'foo-bar',
+          component: fooBarComponent
+        },
+        {
+          name: 'baz',
+          component: bazComponent
+        }
       ]
     };
 
-    const { getByText } = render(Details, { props });
+    const { queryByText, getByText } = render(Details, { props });
+    expect(queryByText('Foo Bar')).to.be.ok;
+    expect(queryByText('Baz')).to.be.null;
+
     const firstLink = getByText('foo bar');
     const secondLink = getByText('baz');
     await fireEvent.click(secondLink);
@@ -69,5 +87,7 @@ describe('Details.vue', () => {
     expect(secondLink).to.have.class('text-gray-200');
     expect(secondLink).to.have.class('bg-red-700');
     expect(secondLink).to.have.class('hover:text-gray-200');
+    expect(queryByText('Foo Bar')).to.be.null;
+    expect(queryByText('Baz')).to.be.ok;
   });
 });
