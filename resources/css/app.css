@@ -10,6 +10,10 @@ a:hover {
     @apply text-red-600;
 }
 
+[v-cloak] {
+    @apply hidden;
+}
+
 @tailwind components;
 
 @tailwind utilities;
