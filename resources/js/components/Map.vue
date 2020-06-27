@@ -41,6 +41,12 @@ export default {
                 infoWindow.open(map, marker);
             })
         });
+
+        document.addEventListener('turbolinks:before-cache', () => {
+            if (this.$el.firstChild) {
+                this.$el.removeChild(this.$el.firstChild);
+            }
+        });
     }
 };
 </script>
