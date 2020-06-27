@@ -2,6 +2,14 @@
 
 @tailwind base;
 
+a {
+    @apply text-blue-600;
+}
+
+a:hover {
+    @apply text-red-600;
+}
+
 @tailwind components;
 
 @tailwind utilities;
