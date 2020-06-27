@@ -12,6 +12,8 @@ class Group extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['url'];
+
     public function getUrlAttribute()
     {
         return route('groups.show', ['group' => $this], false);

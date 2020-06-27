@@ -5,7 +5,7 @@
         <h1 class="text-2xl mb-6">Database of Algonquian Language Structures</h1>
 
         <p class="mb-4">
-            This database provides information about the sounds and grammar of the <a href="#">Algonquian languages</a>, focusing on the following areas:
+            This database provides information about the sounds and grammar of the <a href="/groups/algonquian">Algonquian languages</a>, focusing on the following areas:
         </p>
 
         <ul class="border-l-4 leading-relaxed pl-1 ml-2 mb-4 border-red-600">

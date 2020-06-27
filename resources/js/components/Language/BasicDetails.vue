@@ -14,7 +14,9 @@
                 Group
             </label>
             <div>
-                {{ value.group.name }}
+                <a :href="value.group.url">
+                    {{ value.group.name }}
+                </a>
             </div>
         </div>
 
