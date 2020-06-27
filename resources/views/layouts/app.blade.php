@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Database of Algonquian Language Structures</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
