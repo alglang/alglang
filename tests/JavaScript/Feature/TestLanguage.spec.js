@@ -37,6 +37,42 @@ describe('Language.vue', () => {
 });
 
 describe('Language/BasicDetails.vue', () => {
+  describe('when it has a position', () => {
+    it('it shows a map', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          group: {},
+          position: {
+            lat: 90,
+            lng: 45
+          }
+        }
+      };
+
+      const { getByLabelText } = render(Language, { props });
+
+      expect(getByLabelText('Location'));
+    });
+  });
+
+  describe('it has no position', () => {
+    it('it dow not show a map', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          group: {}
+        }
+      };
+
+      const { queryByLabelText } = render(Language, { props });
+
+      expect(queryByLabelText('Location')).to.be.null;
+    });
+  });
+
   describe('when it has children', () => {
     it('shows its children', () => {
       const props = {

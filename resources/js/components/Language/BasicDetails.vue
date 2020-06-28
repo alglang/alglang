@@ -35,7 +35,12 @@
             </div>
         </div>
 
-        <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
+        <div v-if="value.position" aria-labelledby="language-location-label"> 
+            <span id="language-location-label">
+                Location
+            </span>
+            <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
+        </div>
     </div>
 </template>
 
