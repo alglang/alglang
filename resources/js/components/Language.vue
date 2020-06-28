@@ -2,6 +2,9 @@
     <alglang-details title="Language details" :pages="pages" v-model="language">
         <template v-slot:name>
             {{ language.name }}
+            <p v-if="language.reconstructed">
+                Reconstructed
+            </p>
         </template>
 
 

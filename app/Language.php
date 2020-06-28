@@ -14,6 +14,10 @@ class Language extends Model
 
     protected $appends = ['url'];
 
+    protected $casts = [
+        'reconstructed' => 'bool'
+    ];
+
     public function getPositionAttribute($value)
     {
         return json_decode($value);

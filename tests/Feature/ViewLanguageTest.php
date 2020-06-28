@@ -43,4 +43,15 @@ class ViewLanguageTest extends TestCase
         $response->assertOk();
         $response->assertSee('{"lat":57.5,"lng":74.3}');
     }
+
+    /** @test */
+    public function reconstructed_languages_are_indicated()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertSee('"reconstructed":true');
+    }
 }
