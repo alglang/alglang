@@ -2,15 +2,15 @@ import { render } from '@testing-library/vue';
 import Language from '../../../resources/js/components/Language.vue';
 import { expect } from 'chai';
 
+import { groupFactory, languageFactory } from '../factory';
+
 describe('Language.vue', () => {
   it('displays its detail page on initial render', () => {
     const props = {
-      language: {
+      language: languageFactory({
         name: 'Test Language',
-        algo_code: 'TL',
-        group: {}
-      },
-      gmapsApiKey: ''
+        algo_code: 'TL'
+      })
     };
 
     const { getByText } = render(Language, { props });
@@ -22,12 +22,7 @@ describe('Language.vue', () => {
 
   it('indicates that the language is reconstructed', () => {
     const props = {
-      language: {
-        name: 'Test Language',
-        algo_code: 'TL',
-        reconstructed: true,
-        group: {}
-      }
+      language: languageFactory({ reconstructed: true })
     };
 
     const { getByText } = render(Language, { props });
@@ -39,11 +34,7 @@ describe('Language.vue', () => {
 describe('Language/BasicDetails.vue', () => {
   it('shows its algonquianist code', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          group: {}
-        }
+        language: languageFactory({ algo_code: 'TL' })
       };
 
       const { getByLabelText, getByText } = render(Language, { props });
@@ -54,13 +45,9 @@ describe('Language/BasicDetails.vue', () => {
 
   it('shows its group', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          group: {
-            name: 'Test Group'
-          }
-        }
+        language: languageFactory({
+          group: groupFactory({ name: 'Test Group' })
+        })
       };
 
       const { getByLabelText, getByText } = render(Language, { props });
@@ -72,15 +59,9 @@ describe('Language/BasicDetails.vue', () => {
   describe('when it has a position', () => {
     it('it shows a map', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          group: {},
-          position: {
-            lat: 90,
-            lng: 45
-          }
-        }
+        language: languageFactory({
+          position: { lat: 90, lng: 45 }
+        })
       };
 
       const { getByLabelText } = render(Language, { props });
@@ -92,11 +73,7 @@ describe('Language/BasicDetails.vue', () => {
   describe('it has no position', () => {
     it('it dow not show a map', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          group: {}
-        }
+        language: languageFactory({ position: null })
       };
 
       const { queryByLabelText } = render(Language, { props });
@@ -108,20 +85,12 @@ describe('Language/BasicDetails.vue', () => {
   describe('when it has children', () => {
     it('shows its children', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          reconstructed: true,
-          group: {},
+        language: languageFactory({
           children: [
-            {
-              name: 'Child Language 1'
-            },
-            {
-              name: 'Child Language 2'
-            }
+            languageFactory({ name: 'Child Language 1' }),
+            languageFactory({ name: 'Child Language 2' })
           ]
-        }
+        })
       };
 
       const { getByLabelText, getByText } = render(Language, { props });
@@ -135,13 +104,7 @@ describe('Language/BasicDetails.vue', () => {
   describe('when it has no children', () => {
     it('does not show the children section', () => {
       const props = {
-        language: {
-          name: 'Test Language',
-          algo_code: 'TL',
-          reconstructed: true,
-          group: {},
-          children: []
-        }
+        language: languageFactory({ children: [] })
       };
 
       const { queryByLabelText } = render(Language, { props });

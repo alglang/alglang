@@ -2,15 +2,16 @@ import { render } from '@testing-library/vue';
 import Group from '../../../resources/js/components/Group.vue';
 import { expect } from 'chai';
 
+import { groupFactory } from '../factory';
+
 describe('Group.vue', () => {
   it('displays its detail page on initial render', () => {
     const props = {
-      group: {
+      group: groupFactory({
         name: 'Test Group',
         description: 'Lorem ipsum dolor sit amet'
-      },
-      pages: [],
-      gmapsApiKey: ''
+      }),
+      pages: []
     };
 
     const { getByText } = render(Group, { props });
