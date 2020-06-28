@@ -1,7 +1,9 @@
 <template>
     <alglang-details title="Group details" :pages="pages" v-model="group">
-        <template v-slot:name>
-            {{ group.name }} languages
+        <template v-slot:header>
+            <h1 class="text-3xl font-light">
+                {{ group.name }} languages
+            </h1>
         </template>
     </alglang-details>
 </template>

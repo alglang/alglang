@@ -5,9 +5,9 @@
                 <h2 for="details-title" class="block text-lg uppercase text-gray-600">
                     {{ title }}
                 </h2>
-                <h1 class="text-3xl font-light">
-                    <slot name="name"></slot>
-                </h1>
+                <div>
+                    <slot name="header"></slot>
+                </div>
             </div>
         </header>
 

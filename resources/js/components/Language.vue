@@ -1,7 +1,9 @@
 <template>
     <alglang-details title="Language details" :pages="pages" v-model="language">
-        <template v-slot:name>
-            {{ language.name }}
+        <template v-slot:header>
+            <h1 class="text-3xl font-light">
+                {{ language.name }}
+            </h1>
             <p v-if="language.reconstructed">
                 Reconstructed
             </p>
