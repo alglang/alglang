@@ -38,84 +38,90 @@ describe('Language.vue', () => {
 });
 
 describe('Language/BasicDetails.vue', () => {
-  it('shows its algonquianist code', () => {
-      const props = {
-        language: languageFactory({ algo_code: 'TL' })
-      };
+  describe('displaying universally required data', () => {
+    it('shows its algonquianist code', () => {
+        const props = {
+          language: languageFactory({ algo_code: 'TL' })
+        };
 
-      const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(Language, { props });
 
-      expect(getByLabelText('Algonquianist code'));
-      expect(getByText('TL'));
-  });
+        expect(getByLabelText('Algonquianist code'));
+        expect(getByText('TL'));
+    });
 
-  it('shows its group', () => {
-      const props = {
-        language: languageFactory({
-          group: groupFactory({ name: 'Test Group' })
-        })
-      };
+    it('shows its group', () => {
+        const props = {
+          language: languageFactory({
+            group: groupFactory({ name: 'Test Group' })
+          })
+        };
 
-      const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(Language, { props });
 
-      expect(getByLabelText('Group'));
-      expect(getByText('Test Group'));
-  });
-
-  describe('when it has a position', () => {
-    it('it shows a map', () => {
-      const props = {
-        language: languageFactory({
-          position: { lat: 90, lng: 45 }
-        })
-      };
-
-      const { getByLabelText } = render(Language, { props });
-
-      expect(getByLabelText('Location'));
+        expect(getByLabelText('Group'));
+        expect(getByText('Test Group'));
     });
   });
 
-  describe('it has no position', () => {
-    it('it dow not show a map', () => {
-      const props = {
-        language: languageFactory({ position: null })
-      };
+  describe('displaying location', () => {
+    describe('when it has a position', () => {
+      it('shows a map', () => {
+        const props = {
+          language: languageFactory({
+            position: { lat: 90, lng: 45 }
+          })
+        };
 
-      const { queryByLabelText } = render(Language, { props });
+        const { getByLabelText } = render(Language, { props });
 
-      expect(queryByLabelText('Location')).to.be.null;
+        expect(getByLabelText('Location'));
+      });
+    });
+
+    describe('has no position', () => {
+      it('does not show a map', () => {
+        const props = {
+          language: languageFactory({ position: null })
+        };
+
+        const { queryByLabelText } = render(Language, { props });
+
+        expect(queryByLabelText('Location')).to.be.null;
+      });
     });
   });
 
-  describe('when it has children', () => {
-    it('shows its children', () => {
-      const props = {
-        language: languageFactory({
-          children: [
-            languageFactory({ name: 'Child Language 1' }),
-            languageFactory({ name: 'Child Language 2' })
-          ]
-        })
-      };
+  describe('displaying children', () => {
+    describe('when it has children', () => {
+      it('shows its children', () => {
+        const props = {
+          language: languageFactory({
+            children: [
+              languageFactory({ name: 'Child Language 1' }),
+              languageFactory({ name: 'Child Language 2' })
+            ]
+          })
+        };
 
-      const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(Language, { props });
 
-      expect(getByLabelText('Direct children'));
-      expect(getByText('Child Language 1'));
-      expect(getByText('Child Language 2'));
+        expect(getByLabelText('Direct children'));
+        expect(getByText('Child Language 1'));
+        expect(getByText('Child Language 2'));
+      });
     });
-  });
 
-  describe('when it has no children', () => {
-    it('does not show the children section', () => {
-      const props = {
-        language: languageFactory({ children: [] })
-      };
+    describe('when it has no children', () => {
+      it('does not show the children section', () => {
+        const props = {
+          language: languageFactory({ children: [] })
+        };
 
-      const { queryByLabelText } = render(Language, { props });
+        const { queryByLabelText } = render(Language, { props });
 
-      expect(queryByLabelText('Direct children')).to.be.null;
+        expect(queryByLabelText('Direct children')).to.be.null;
+      });
     });
   });
 });
