@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <div>
+        <div v-if="value.children && value.children.length">
             <label>
                 Direct children
             </label>

@@ -34,28 +34,51 @@ describe('Language.vue', () => {
 
     expect(getByText('Reconstructed'));
   });
+});
 
-  it('shows its children', () => {
-    const props = {
-      language: {
-        name: 'Test Language',
-        algo_code: 'TL',
-        reconstructed: true,
-        group: {},
-        children: [
-          {
-            name: 'Child Language 1'
-          },
-          {
-            name: 'Child Language 2'
-          }
-        ]
-      }
-    };
+describe('Language/BasicDetails.vue', () => {
+  describe('when it has children', () => {
+    it('shows its children', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          reconstructed: true,
+          group: {},
+          children: [
+            {
+              name: 'Child Language 1'
+            },
+            {
+              name: 'Child Language 2'
+            }
+          ]
+        }
+      };
 
-    const { getByText } = render(Language, { props });
+      const { getByText } = render(Language, { props });
 
-    expect(getByText('Child Language 1'));
-    expect(getByText('Child Language 2'));
+      expect(getByText('Direct children'));
+      expect(getByText('Child Language 1'));
+      expect(getByText('Child Language 2'));
+    });
+  });
+
+  describe('when it has no children', () => {
+    it('does not show the children section', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          reconstructed: true,
+          group: {},
+          children: []
+        }
+      };
+
+      const { queryByText } = render(Language, { props });
+
+      expect(queryByText('Direct children')).to.be.null;
+    });
   });
 });
