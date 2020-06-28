@@ -6,8 +6,12 @@
 </template>
 
 <script>
+import Map from '../Map';
+
 export default {
-    name: 'basic-details',
+    components: {
+        'alglang-map': Map
+    },
 
     props: ['value'],
 

@@ -4,9 +4,14 @@ import Details from '../../../resources/js/components/Details.vue';
 import Vue from 'vue';
 import { expect } from 'chai';
 
+const pageFactory = (name, template) => {
+  const component = Vue.component(name, { template: template || '<div />' });
+  return { name, component };
+};
+
 describe('Details.vue', () => {
   it('shows its title', () => {
-    const props = { title: 'Test title', pages: [] };
+    const props = { value: {}, title: 'Test title', pages: [] };
 
     const { queryByText } = render(Details, { props });
 
@@ -15,10 +20,11 @@ describe('Details.vue', () => {
 
   it('shows its page names', () => {
     const props = {
+      value: {},
       title: '',
       pages: [
-        { name: 'foo-bar' },
-        { name: 'baz' }
+        pageFactory('foo-bar'),
+        pageFactory('baz')
       ]
     };
 
@@ -30,10 +36,11 @@ describe('Details.vue', () => {
 
   it('marks the first page as active by default', () => {
     const props = {
+      value: {},
       title: '',
       pages: [
-        { name: 'foo-bar' },
-        { name: 'baz' }
+        pageFactory('foo-bar'),
+        pageFactory('baz')
       ]
     };
 
@@ -51,25 +58,12 @@ describe('Details.vue', () => {
   });
 
   it('activates a page when clicked', async () => {
-    const fooBarComponent = Vue.component('foo-bar', {
-      template: '<div>Foo Bar</div>'
-    });
-
-    const bazComponent = Vue.component('baz', {
-      template: '<div>Baz</div>'
-    });
-
     const props = {
+      value: {},
       title: '',
       pages: [
-        {
-          name: 'foo-bar',
-          component: fooBarComponent
-        },
-        {
-          name: 'baz',
-          component: bazComponent
-        }
+        pageFactory('foo-bar', '<div>Foo Bar</div>'),
+        pageFactory('baz', '<div>Baz</div>')
       ]
     };
 
