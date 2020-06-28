@@ -10,13 +10,7 @@ const apiKey = process.env.MIX_GMAPS_API_KEY || '';
 export default {
     props: {
         locations: {
-            default: () => [
-                {
-                    url: '/',
-                    name: 'Hello',
-                    position: { lat: 46.0, lng: -87 }
-                }
-            ]
+            default: () => []
         }
     },
 
