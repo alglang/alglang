@@ -7,7 +7,6 @@
 
         <alglang-map
             style="height: 30rem;"
-            :api-key="gmapsApiKey"
             :locations="[ language ]"
         />
     </alglang-details>
@@ -25,9 +24,6 @@ export default {
     props: {
         language: {
             required: true
-        },
-        gmapsApiKey: {
-            required: true
         }
     },
 
@@ -40,13 +36,6 @@ export default {
                 }
             ]
         };
-    },
-
-    created() {
-        this.$store.commit({
-            type: 'setGmapsApiKey',
-            key: this.gmapsApiKey
-        });
     }
 };
 </script>

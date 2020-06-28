@@ -5,12 +5,10 @@
 <script>
 import gmapsInit from '../utils/gmaps';
 
+const apiKey = process.env.MIX_GMAPS_API_KEY || '';
+
 export default {
     props: {
-        apiKey: {
-            required: true
-        },
-
         locations: {
             default: () => [
                 {
@@ -23,7 +21,7 @@ export default {
     },
 
     async mounted() {
-        const google = await gmapsInit(this.apiKey);
+        const google = await gmapsInit(apiKey);
 
         const map = new google.maps.Map(this.$el, {
             center: { lat: 46.0, lng: -87.659916 },

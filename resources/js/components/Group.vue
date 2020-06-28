@@ -8,20 +8,15 @@
 
 <script>
 import Details from './Details';
-import Map from './Map';
 import BasicDetails from './Group/BasicDetails.vue';
 
 export default {
     components: {
-        'alglang-details': Details,
-        'alglang-map': Map
+        'alglang-details': Details
     },
 
     props: {
         group: {
-            required: true
-        },
-        gmapsApiKey: {
             required: true
         }
     },
@@ -35,13 +30,6 @@ export default {
                 }
             ]
         };
-    },
-
-    created() {
-        this.$store.commit({
-            type: 'setGmapsApiKey',
-            key: this.gmapsApiKey
-        });
     }
 };
 </script>

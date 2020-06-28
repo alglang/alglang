@@ -1,6 +1,6 @@
 <template>
     <div>
-        <alglang-map :style="{ height: '30rem' }" :api-key="gmapsApiKey" :locations="value.languages" />
+        <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
     </div>
 </template>
 
@@ -14,10 +14,6 @@ export default {
         return {
             gmapsApiKey: null
         }
-    },
-
-    created() {
-        this.gmapsApiKey = this.$store.state.gmapsApiKey;
     }
 };
 </script>

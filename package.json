@@ -32,7 +32,6 @@
     },
     "dependencies": {
         "turbolinks": "^5.2.0",
-        "vue-turbolinks": "^2.1.0",
-        "vuex": "^3.4.0"
+        "vue-turbolinks": "^2.1.0"
     }
 }

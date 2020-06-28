@@ -29,7 +29,6 @@
 
         <alglang-map
             style="height: 30rem;"
-            api-key="{{ config('services.gmaps.key') }}"
             :locations="{{ $languages }}"
         />
     </section>
