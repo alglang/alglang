@@ -15,7 +15,8 @@ class HomeTest extends TestCase
     /** @test */
     public function a_guest_sees_login_and_register_links()
     {
-        $this->withoutExceptionHandling();
+        $this->withoutMix();
+
         $this->assertGuest();
 
         $response = $this->get('/');
@@ -36,6 +37,8 @@ class HomeTest extends TestCase
     /** @test */
     public function a_logged_in_user_sees_the_add_menu_and_a_logout_link()
     {
+        $this->withoutMix();
+
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)->get('/');
@@ -56,6 +59,8 @@ class HomeTest extends TestCase
     /** @test */
     public function all_languages_with_positions_appear_on_the_home_page()
     {
+        $this->withoutMix();
+
         factory(Language::class)->create([
             'name' => 'Test Language 1',
             'position' => '{"lat":46.1,"lng":-87.1}'

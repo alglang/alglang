@@ -11,6 +11,8 @@ class ViewAboutTest extends TestCase
     /** @test */
     public function it_loads()
     {
+        $this->withoutMix();
+
         $response = $this->get('/about');
 
         $response->assertOk();
