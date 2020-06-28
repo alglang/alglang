@@ -4,7 +4,7 @@
             <h1 class="text-3xl font-light">
                 {{ language.name }}
             </h1>
-            <p v-if="language.reconstructed">
+            <p v-if="language.reconstructed" class="mb-2 p-1 inline text-sm leading-none bg-gray-300 rounded">
                 Reconstructed
             </p>
         </template>

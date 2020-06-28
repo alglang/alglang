@@ -1,6 +1,6 @@
 <template>
     <section class="bg-white p-6">
-        <header class="flex justify-between mb-2">
+        <header class="flex justify-between mb-4">
             <div class="leading-normal">
                 <h2 for="details-title" class="block text-lg uppercase text-gray-600">
                     {{ title }}
