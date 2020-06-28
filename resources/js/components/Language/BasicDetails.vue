@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div>
-            <label>
+        <div aria-labelledby="language-algo-code-label">
+            <span id="language-algo-code-label">
                 Algonquianist code
-            </label>
+            </span>
             <div>
                 {{ value.algo_code }}
             </div>
         </div>
 
-        <div>
-            <label>
+        <div aria-labelledby="language-group-label">
+            <span id="language-group-label">
                 Group
-            </label>
+            </span>
             <div>
                 <a :href="value.group.url">
                     {{ value.group.name }}
@@ -20,10 +20,10 @@
             </div>
         </div>
 
-        <div v-if="value.children && value.children.length">
-            <label>
+        <div v-if="value.children && value.children.length" aria-labelledby="language-direct-children-label">
+            <span id="language-direct-children-label">
                 Direct children
-            </label>
+            </span>
             <div>
                 <ul>
                     <li v-for="child of value.children" :key="child.name">

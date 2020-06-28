@@ -37,6 +37,38 @@ describe('Language.vue', () => {
 });
 
 describe('Language/BasicDetails.vue', () => {
+  it('shows its algonquianist code', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          group: {}
+        }
+      };
+
+      const { getByLabelText, getByText } = render(Language, { props });
+
+      expect(getByLabelText('Algonquianist code'));
+      expect(getByText('TL'));
+  });
+
+  it('shows its group', () => {
+      const props = {
+        language: {
+          name: 'Test Language',
+          algo_code: 'TL',
+          group: {
+            name: 'Test Group'
+          }
+        }
+      };
+
+      const { getByLabelText, getByText } = render(Language, { props });
+
+      expect(getByLabelText('Group'));
+      expect(getByText('Test Group'));
+  });
+
   describe('when it has a position', () => {
     it('it shows a map', () => {
       const props = {
@@ -92,9 +124,9 @@ describe('Language/BasicDetails.vue', () => {
         }
       };
 
-      const { getByText } = render(Language, { props });
+      const { getByLabelText, getByText } = render(Language, { props });
 
-      expect(getByText('Direct children'));
+      expect(getByLabelText('Direct children'));
       expect(getByText('Child Language 1'));
       expect(getByText('Child Language 2'));
     });
@@ -112,9 +144,9 @@ describe('Language/BasicDetails.vue', () => {
         }
       };
 
-      const { queryByText } = render(Language, { props });
+      const { queryByLabelText } = render(Language, { props });
 
-      expect(queryByText('Direct children')).to.be.null;
+      expect(queryByLabelText('Direct children')).to.be.null;
     });
   });
 });
