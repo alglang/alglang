@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>{{ value.description }}</p>
         <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
     </div>
 </template>
