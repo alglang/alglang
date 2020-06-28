@@ -5,19 +5,25 @@ import { expect } from 'chai';
 import { groupFactory, languageFactory } from '../factory';
 
 describe('Language.vue', () => {
-  it('displays its detail page on initial render', () => {
+  it('displays its name in the header', () => {
     const props = {
-      language: languageFactory({
-        name: 'Test Language',
-        algo_code: 'TL'
-      })
+      language: languageFactory({ name: 'Test Language' })
     };
 
     const { getByText } = render(Language, { props });
 
     expect(getByText('Language details'));
     expect(getByText('Test Language'));
-    expect(getByText('TL'));
+  });
+
+  it('displays its detail page on initial render', () => {
+    const props = {
+      language: languageFactory({ algo_code: 'TL' })
+    };
+
+    const { getByText } = render(Language, { props });
+
+    expect(getByText('TL'));  // The algonquianist code should only appear on the detail page
   });
 
   it('indicates that the language is reconstructed', () => {
