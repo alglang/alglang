@@ -20,6 +20,21 @@
             </div>
         </div>
 
+        <div>
+            <label>
+                Direct children
+            </label>
+            <div>
+                <ul>
+                    <li v-for="child of value.children" :key="child.name">
+                        <a :href="child.url">
+                            {{ child.name }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
     </div>
 </template>

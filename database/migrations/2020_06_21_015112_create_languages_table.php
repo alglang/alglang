@@ -21,6 +21,7 @@ class CreateLanguagesTable extends Migration
             $table->boolean('reconstructed')->default(false);
             $table->json('position')->nullable();
             $table->unsignedInteger('group_id');
+            $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }

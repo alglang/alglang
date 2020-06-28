@@ -38,6 +38,11 @@ class Language extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
     public function morphemes()
     {
         return $this->hasMany(Morpheme::class);

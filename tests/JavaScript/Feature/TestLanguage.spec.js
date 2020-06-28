@@ -34,4 +34,28 @@ describe('Language.vue', () => {
 
     expect(getByText('Reconstructed'));
   });
+
+  it('shows its children', () => {
+    const props = {
+      language: {
+        name: 'Test Language',
+        algo_code: 'TL',
+        reconstructed: true,
+        group: {},
+        children: [
+          {
+            name: 'Child Language 1'
+          },
+          {
+            name: 'Child Language 2'
+          }
+        ]
+      }
+    };
+
+    const { getByText } = render(Language, { props });
+
+    expect(getByText('Child Language 1'));
+    expect(getByText('Child Language 2'));
+  });
 });
