@@ -1,7 +1,8 @@
 import { render } from '@testing-library/vue';
-import Group from '../../../resources/js/components/Group.vue';
 import { expect } from 'chai';
 
+import Group from '../../../resources/js/components/Group.vue';
+import BasicDetails from '../../../resources/js/components/Group/BasicDetails';
 import { groupFactory, languageFactory } from '../factory';
 
 describe('Group.vue', () => {
@@ -27,10 +28,10 @@ describe('Group/BasicDetails.vue', () => {
     describe('when it has a description', () => {
       it('shows its description', () => {
         const props = {
-          group: groupFactory({ description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' })
+          value: groupFactory({ description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' })
         };
 
-        const { getByLabelText, getByText } = render(Group, { props });
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Description'));
         expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
@@ -40,10 +41,10 @@ describe('Group/BasicDetails.vue', () => {
     describe('when it has no description', () => {
       it('does not show a description', () => {
         const props = {
-          group: groupFactory({ description: null })
+          value: groupFactory({ description: null })
         };
 
-        const { queryByText } = render(Group, { props });
+        const { queryByText } = render(BasicDetails, { props });
 
         expect(queryByText('Description')).to.be.null;
       });
@@ -54,7 +55,7 @@ describe('Group/BasicDetails.vue', () => {
     describe('when it has at least one language with a position', () => {
       it('shows a map', () => {
         const props = {
-          group: groupFactory({
+          value: groupFactory({
             languages: [
               languageFactory({
                 position: { lat: 90, lng: 45 }
@@ -63,7 +64,7 @@ describe('Group/BasicDetails.vue', () => {
           })
         };
 
-        const { getByLabelText } = render(Group, { props });
+        const { getByLabelText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Location'));
       });
@@ -72,12 +73,12 @@ describe('Group/BasicDetails.vue', () => {
     describe('when it has no languages', () => {
       it('does not show a map', () => {
         const props = {
-          group: groupFactory({
+          value: groupFactory({
             languages: []
           })
         };
 
-        const { queryByLabelText } = render(Group, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Location')).to.be.null;
       });
@@ -86,11 +87,11 @@ describe('Group/BasicDetails.vue', () => {
     describe('when it has languages but none have a position', () => {
       it('does not show a map', () => {
         const props = {
-          group: groupFactory({
+          value: groupFactory({
             languages: [ languageFactory({ position: null }) ]
           })
         };
-        const { queryByLabelText } = render(Group, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Location')).to.be.null;
       });

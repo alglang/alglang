@@ -1,7 +1,8 @@
 import { render } from '@testing-library/vue';
-import Language from '../../../resources/js/components/Language.vue';
 import { expect } from 'chai';
 
+import Language from '../../../resources/js/components/Language.vue';
+import BasicDetails from '../../../resources/js/components/Language/BasicDetails';
 import { groupFactory, languageFactory } from '../factory';
 
 describe('Language.vue', () => {
@@ -41,10 +42,10 @@ describe('Language/BasicDetails.vue', () => {
   describe('displaying universally required data', () => {
     it('shows its algonquianist code', () => {
         const props = {
-          language: languageFactory({ algo_code: 'TL' })
+          value: languageFactory({ algo_code: 'TL' })
         };
 
-        const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Algonquianist code'));
         expect(getByText('TL'));
@@ -52,12 +53,12 @@ describe('Language/BasicDetails.vue', () => {
 
     it('shows its group', () => {
         const props = {
-          language: languageFactory({
+          value: languageFactory({
             group: groupFactory({ name: 'Test Group' })
           })
         };
 
-        const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Group'));
         expect(getByText('Test Group'));
@@ -68,12 +69,12 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has a position', () => {
       it('shows a map', () => {
         const props = {
-          language: languageFactory({
+          value: languageFactory({
             position: { lat: 90, lng: 45 }
           })
         };
 
-        const { getByLabelText } = render(Language, { props });
+        const { getByLabelText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Location'));
       });
@@ -82,10 +83,10 @@ describe('Language/BasicDetails.vue', () => {
     describe('has no position', () => {
       it('does not show a map', () => {
         const props = {
-          language: languageFactory({ position: null })
+          value: languageFactory({ position: null })
         };
 
-        const { queryByLabelText } = render(Language, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Location')).to.be.null;
       });
@@ -96,7 +97,7 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has children', () => {
       it('shows its children', () => {
         const props = {
-          language: languageFactory({
+          value: languageFactory({
             children: [
               languageFactory({ name: 'Child Language 1' }),
               languageFactory({ name: 'Child Language 2' })
@@ -104,7 +105,7 @@ describe('Language/BasicDetails.vue', () => {
           })
         };
 
-        const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Direct children'));
         expect(getByText('Child Language 1'));
@@ -115,10 +116,10 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has no children', () => {
       it('does not show the children section', () => {
         const props = {
-          language: languageFactory({ children: [] })
+          value: languageFactory({ children: [] })
         };
 
-        const { queryByLabelText } = render(Language, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Direct children')).to.be.null;
       });
@@ -129,10 +130,10 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has notes', () => {
       it('shows its notes', () => {
         const props = {
-          language: languageFactory({ notes: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' })
+          value: languageFactory({ notes: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' })
         };
 
-        const { getByLabelText, getByText } = render(Language, { props });
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
 
         expect(getByLabelText('Notes'));
         expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
@@ -142,10 +143,10 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has no notes', () => {
       it('does not show its notes', () => {
         const props = {
-          language: languageFactory({ notes: null })
+          value: languageFactory({ notes: null })
         }
 
-        const { queryByLabelText } = render(Language, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Notes')).to.be.null;
       })
@@ -154,10 +155,10 @@ describe('Language/BasicDetails.vue', () => {
     describe('when it has empty notes', () => {
       it('does not show its notes', () => {
         const props = {
-          language: languageFactory({ notes: '' })
+          value: languageFactory({ notes: '' })
         }
 
-        const { queryByLabelText } = render(Language, { props });
+        const { queryByLabelText } = render(BasicDetails, { props });
 
         expect(queryByLabelText('Notes')).to.be.null;
       })
