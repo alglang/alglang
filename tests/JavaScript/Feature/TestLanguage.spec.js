@@ -124,4 +124,43 @@ describe('Language/BasicDetails.vue', () => {
       });
     });
   });
+
+  describe('displaying notes', () => {
+    describe('when it has notes', () => {
+      it('shows its notes', () => {
+        const props = {
+          language: languageFactory({ notes: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' })
+        };
+
+        const { getByLabelText, getByText } = render(Language, { props });
+
+        expect(getByLabelText('Notes'));
+        expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
+      });
+    });
+
+    describe('when it has no notes', () => {
+      it('does not show its notes', () => {
+        const props = {
+          language: languageFactory({ notes: null })
+        }
+
+        const { queryByLabelText } = render(Language, { props });
+
+        expect(queryByLabelText('Notes')).to.be.null;
+      })
+    });
+
+    describe('when it has empty notes', () => {
+      it('does not show its notes', () => {
+        const props = {
+          language: languageFactory({ notes: '' })
+        }
+
+        const { queryByLabelText } = render(Language, { props });
+
+        expect(queryByLabelText('Notes')).to.be.null;
+      })
+    });
+  })
 });

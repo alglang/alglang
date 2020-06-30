@@ -1,55 +1,47 @@
 <template>
     <div>
-        <div aria-labelledby="language-algo-code-label">
-            <span id="language-algo-code-label">
-                Algonquianist code
-            </span>
-            <div>
+        <alglang-detail-row label="Algonquianist code">
+            <p>
                 {{ value.algo_code }}
-            </div>
-        </div>
+            </p>
+        </alglang-detail-row>
 
-        <div aria-labelledby="language-group-label">
-            <span id="language-group-label">
-                Group
-            </span>
-            <div>
-                <a :href="value.group.url">
-                    {{ value.group.name }}
-                </a>
-            </div>
-        </div>
+        <alglang-detail-row label="Group">
+            <a :href="value.group.url">
+                {{ value.group.name }}
+            </a>
+        </alglang-detail-row>
 
-        <div v-if="value.children && value.children.length" aria-labelledby="language-direct-children-label">
-            <span id="language-direct-children-label">
-                Direct children
-            </span>
-            <div>
-                <ul>
-                    <li v-for="child of value.children" :key="child.name">
-                        <a :href="child.url">
-                            {{ child.name }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <alglang-detail-row v-if="value.children && value.children.length" label="Direct children">
+            <ul>
+                <li v-for="child of value.children" :key="child.name">
+                    <a :href="child.url">
+                        {{ child.name }}
+                    </a>
+                </li>
+            </ul>
+        </alglang-detail-row>
 
-        <div v-if="value.position" aria-labelledby="language-location-label"> 
-            <span id="language-location-label">
-                Location
-            </span>
-            <alglang-map :style="{ height: '30rem' }" :locations="value.languages" />
-        </div>
+        <alglang-detail-row v-if="value.notes" label="Notes">
+            <p>
+                {{ value.notes }}
+            </p>
+        </alglang-detail-row>
+
+        <alglang-detail-row v-if="value.position" label="Location">
+            <alglang-map :style="{ height: '30rem' }" :locations="[value]" />
+        </alglang-detail-row>
     </div>
 </template>
 
 <script>
 import Map from '../Map';
+import DetailRow from '../DetailRow';
 
 export default {
     components: {
-        'alglang-map': Map
+        'alglang-map': Map,
+        'alglang-detail-row': DetailRow
     },
 
     props: ['value']
