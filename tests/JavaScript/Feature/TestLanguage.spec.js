@@ -1,8 +1,10 @@
-import { render } from '@testing-library/vue';
+import { render, waitForElementToBeRemoved } from '@testing-library/vue';
 import { expect } from 'chai';
+import moxios from 'moxios';
 
 import Language from '../../../resources/js/components/Language.vue';
 import BasicDetails from '../../../resources/js/components/Language/BasicDetails';
+import Morphemes from '../../../resources/js/components/Language/Morphemes';
 import { groupFactory, languageFactory } from '../factory';
 
 describe('Language.vue', () => {
@@ -164,4 +166,49 @@ describe('Language/BasicDetails.vue', () => {
       })
     });
   })
+});
+
+describe('Language/Morphemes.vue', () => {
+  beforeEach(() => moxios.install());
+
+  afterEach(() => moxios.uninstall());
+
+  it('displays loading text when it is first mounted', () => {
+    const props = {
+      value: languageFactory({ url: '/languages/tl' })
+    };
+
+    const { getByText } = render(Morphemes, { props });
+
+    expect(getByText('Loading...'));
+  });
+
+  it('loads morphemes', async () => {
+    const props = {
+      value: languageFactory({ url: '/languages/tl' })
+    };
+
+    const { getByText } = render(Morphemes, { props });
+
+    moxios.stubRequest('/languages/tl/morphemes', {
+      status: 200,
+      response: {
+        data: [
+          { stem: 'aa-' }
+        ]
+      }
+    })
+
+    await waitForElementToBeRemoved(getByText('Loading...'));
+
+    expect(getByText('aa-'));
+  });
+
+  it('only loads the first 10 morphemes', async () => {
+    const props = {
+      value: languageFactory({ url: '/languages/tl' })
+    };
+
+    const { getByText } = render(Morphemes, { props });
+  });
 });

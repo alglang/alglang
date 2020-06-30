@@ -20,10 +20,12 @@
 <script>
 import Details from './Details.vue';
 import BasicDetails from './Language/BasicDetails.vue';
+import Morphemes from './Language/Morphemes';
 
 export default {
     components: {
-        'alglang-details': Details
+        'alglang-details': Details,
+        'alglang-morphemes': Morphemes
     },
 
     props: {
@@ -38,6 +40,10 @@ export default {
                 {
                     name: 'basic-details',
                     component: BasicDetails
+                },
+                {
+                    name: 'morphemes',
+                    component: Morphemes
                 }
             ]
         };
