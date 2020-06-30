@@ -20,6 +20,7 @@ class CreateLanguagesTable extends Migration
             $table->string('slug');
             $table->boolean('reconstructed')->default(false);
             $table->json('position')->nullable();
+            $table->text('notes')->nullable();
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('parent_id')->nullable();
             $table->timestamps();

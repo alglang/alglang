@@ -15,14 +15,14 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $this->withoutMix();
 
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
             'algo_code' => 'PA',
-            'group_id' => $group->id
+            'group_id' => $group->id,
+            'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
         $response = $this->get($language->url);
@@ -31,12 +31,14 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('Test Language');
         $response->assertSee('PA');
         $response->assertSee('Test Group');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
     }
 
     /** @test */
     public function a_language_shows_its_children()
     {
-        $this->withoutExceptionHandling();
+        $this->withoutMix();
+
         $language = factory(Language::class)->create();
         $child1 = factory(Language::class)->create([
             'name' => 'Test Child 1',
