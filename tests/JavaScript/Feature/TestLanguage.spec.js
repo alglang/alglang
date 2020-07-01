@@ -194,7 +194,7 @@ describe('Language/Morphemes.vue', () => {
       status: 200,
       response: {
         data: [
-          { stem: 'aa-' }
+          { shape: 'aa-' }
         ]
       }
     })

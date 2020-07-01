@@ -2,9 +2,9 @@
     <div>
         <p v-if="loading">Loading...</p>
         <ul v-else>
-            <li v-for="morpheme of morphemes" :key="morpheme.stem">
+            <li v-for="morpheme of morphemes" :key="morpheme.shape">
                 <a :href="morpheme.url">
-                    {{ morpheme.stem }}
+                    {{ morpheme.shape }}
                 </a>
             </li>
         </ul>
@@ -29,7 +29,7 @@ export default {
     },
 
     async created() {
-        const response = await axios.get(`/languages/tl/morphemes`);
+        const response = await axios.get(`${this.value.url}/morphemes`);
         const json = response.data;
         this.morphemes = json.data;
         this.loading = false;
