@@ -32,7 +32,10 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "leaflet": "^1.6.0",
+        "leaflet-defaulticon-compatibility": "^0.1.1",
         "turbolinks": "^5.2.0",
-        "vue-turbolinks": "^2.1.0"
+        "vue-turbolinks": "^2.1.0",
+        "vue2-leaflet": "^2.5.2"
     }
 }

@@ -1,9 +1,22 @@
 <template>
-    <div />
+    <l-map :zoom="zoom" :center="center">
+        <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <l-marker v-for="(location, i) of locations" :key="i" :lat-lng="location.position">
+            <l-popup>
+                <a :href="location.url">
+                    {{ location.name }}
+                </a>
+            </l-popup>
+        </l-marker>
+    </l-map>
 </template>
 
 <script>
-import gmapsInit from '../utils/gmaps';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+
+import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
+import 'leaflet-defaulticon-compatibility';
 
 const apiKey = process.env.MIX_GMAPS_API_KEY || '';
 
@@ -14,25 +27,18 @@ export default {
         }
     },
 
-    async mounted() {
-        const google = await gmapsInit(apiKey);
+    components: {
+        LMap,
+        LTileLayer,
+        LMarker,
+        LPopup
+    },
 
-        const map = new google.maps.Map(this.$el, {
-            center: { lat: 46.0, lng: -87.659916 },
+    data() {
+        return {
             zoom: 4,
-            disableDefaultUI: true
-        });
-
-        const infoWindow = new google.maps.InfoWindow();
-
-        this.locations.forEach(({ name, position, url }) => {
-            const marker = new google.maps.Marker({ map, position });
-            marker.addListener('click', () => {
-                infoWindow.setPosition(position);
-                infoWindow.setContent(`<a href="${url}">${name}</a>`);
-                infoWindow.open(map, marker);
-            })
-        });
+            center: [46.0, -87.659916]
+        };
     }
 };
 </script>
