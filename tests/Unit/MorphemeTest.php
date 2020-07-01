@@ -45,13 +45,41 @@ class MorphemeTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_gloss_string()
+    public function it_fetches_gloss_models_based_on_its_gloss()
     {
-        $morpheme = factory(Morpheme::class)->create();
         $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
         $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
-        $morpheme->glosses()->attach([$gloss1->id, $gloss2->id]);
+        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
 
-        $this->assertEquals('AN.PL', $morpheme->gloss);
+        $this->assertEquals(collect(['AN', 'PL']), $morpheme->glosses->pluck('abv'));
+        $this->assertTrue($morpheme->glosses[0]->exists);
+        $this->assertTrue($morpheme->glosses[1]->exists);
+    }
+
+    /** @test */
+    public function it_handles_glosses_that_dont_exist()
+    {
+        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
+
+        $this->assertEquals(collect(['AN', 'PL']), $morpheme->glosses->pluck('abv'));
+        $this->assertFalse($morpheme->glosses[0]->exists);
+    }
+
+    /** @test */
+    public function it_caches_the_glosses_attribute()
+    {
+        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
+        $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
+        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
+
+        DB::connection()->enableQueryLog();
+
+        $morpheme->glosses;
+        $this->assertCount(1, DB::getQueryLog());  // First call should run a query
+
+        $morpheme->glosses;
+        $this->assertCount(1, DB::getQueryLog());  // Glosses should be cached; no further queries
+
+        DB::connection()->disableQueryLog();
     }
 }

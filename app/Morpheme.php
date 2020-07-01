@@ -15,6 +15,8 @@ class Morpheme extends Model
 
     protected $appends = ['url'];
 
+    protected $glosses_;
+
     public function getUrlAttribute()
     {
         return route(
@@ -27,11 +29,6 @@ class Morpheme extends Model
         );
     }
 
-    public function getGlossAttribute()
-    {
-        return $this->glosses->pluck('abv')->join('.');
-    }
-
     public function language()
     {
         return $this->belongsTo(Language::class);
@@ -42,9 +39,20 @@ class Morpheme extends Model
         return $this->belongsTo(Slot::class);
     }
 
-    public function glosses()
+    public function getGlossesAttribute()
     {
-        return $this->belongsToMany(Gloss::class);
+        if (!isset($this->glosses_)) {
+            $abvs = explode('.', $this->gloss);
+            $glossesFromDatabase = Gloss::findOrNew($abvs);
+            $glosses = array_map(function ($abv) use ($glossesFromDatabase) {
+                $gloss = $glossesFromDatabase->firstWhere('abv', $abv);
+                return $gloss ?? new Gloss(['abv' => $abv]);
+            }, $abvs);
+
+            $this->glosses_ = collect($glosses);
+        }
+
+        return $this->glosses_;
     }
 
     public function getSlugOptions(): SlugOptions

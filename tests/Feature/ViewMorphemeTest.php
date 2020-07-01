@@ -28,10 +28,9 @@ class ViewMorphemeTest extends TestCase
             'slot_id' => $slot->id,
             'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
-            'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
+            'private_notes' => 'Abcdefghijklmnopqrstuvwxyz',
+            'gloss' => 'AN.PL'
         ]);
-
-        $morpheme->glosses()->attach([$gloss1->id, $gloss2->id]);
 
         $response = $this->get($morpheme->url);
 

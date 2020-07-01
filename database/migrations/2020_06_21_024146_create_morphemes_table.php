@@ -17,6 +17,7 @@ class CreateMorphemesTable extends Migration
             $table->id();
             $table->string('shape');
             $table->string('slug');
+            $table->string('gloss')->nullable();
             $table->unsignedInteger('language_id');
             $table->unsignedInteger('slot_id');
             $table->text('historical_notes')->nullable();

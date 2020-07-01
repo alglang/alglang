@@ -14,7 +14,6 @@ class CreateGlossesTable extends Migration
     public function up()
     {
         Schema::create('glosses', function (Blueprint $table) {
-            $table->id();
             $table->string('abv');
             $table->timestamps();
         });
