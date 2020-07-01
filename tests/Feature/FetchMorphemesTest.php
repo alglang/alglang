@@ -28,7 +28,7 @@ class FetchMorphemesTest extends TestCase
             'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
         ]);
 
-        $response = $this->get('/languages/foo/morphemes');
+        $response = $this->get("$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJson([
@@ -52,7 +52,7 @@ class FetchMorphemesTest extends TestCase
         $language = factory(Language::class)->create(['slug' => 'foo']);
         factory(Morpheme::class, 15)->create(['language_id' => $language->id]);
 
-        $response = $this->get('/languages/foo/morphemes');
+        $response = $this->get("$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJsonCount(10, 'data');
@@ -60,5 +60,28 @@ class FetchMorphemesTest extends TestCase
         $nextResponse = $this->get($response->decodeResponseJson()['next_page_url']);
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(5, 'data');
+    }
+
+    /** @test */
+    public function it_only_retrieves_morphemes_from_the_specified_language()
+    {
+        $language1 = factory(Language::class)->create(['slug' => 'foo']);
+        $language2 = factory(Language::class)->create();
+
+        $morpheme1 = factory(Morpheme::class)->create([
+            'shape' => '-ak',
+            'language_id' => $language1->id
+        ]);
+        factory(Morpheme::class, 5)->create(['language_id' => $language2->id]);
+
+        $response = $this->get("$language1->url/morphemes");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJson([
+            'data' => [
+                ['shape' => '-ak']
+            ]
+        ]);
     }
 }
