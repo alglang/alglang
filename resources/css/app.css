@@ -14,6 +14,22 @@ a:hover {
     @apply hidden;
 }
 
+.active-nav {
+    @apply cursor-default text-gray-200 bg-red-700;
+}
+
+.active-nav:hover {
+    @apply text-gray-200;
+}
+
+.inactive-nav {
+    @apply cursor-pointer text-gray-700;
+}
+
+.inactive-nav:hover {
+    @hover bg-gray-300 text-gray-700;
+}
+
 @tailwind components;
 
 @tailwind utilities;

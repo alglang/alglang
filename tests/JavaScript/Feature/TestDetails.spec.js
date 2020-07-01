@@ -66,12 +66,8 @@ describe('Details.vue', () => {
     const firstLink = getByText('foo bar');
     const secondLink = getByText('baz');
 
-    expect(firstLink).to.have.class('text-gray-200');
-    expect(firstLink).to.have.class('bg-red-700');
-    expect(firstLink).to.have.class('hover:text-gray-200');
-    expect(secondLink).to.not.have.class('text-gray-200');
-    expect(secondLink).to.not.have.class('bg-red-700');
-    expect(secondLink).to.not.have.class('hover:text-gray-200');
+    expect(firstLink).to.have.class('active-nav');
+    expect(secondLink).to.have.class('inactive-nav');
   });
 
   it('visits the page marked by the location hash', () => {
@@ -111,12 +107,8 @@ describe('Details.vue', () => {
     await fireEvent.click(secondLink);
 
     expect(window.location.hash).to.equal('#baz');
-    expect(firstLink).to.not.have.class('text-gray-200');
-    expect(firstLink).to.not.have.class('bg-red-700');
-    expect(firstLink).to.not.have.class('hover:text-gray-200');
-    expect(secondLink).to.have.class('text-gray-200');
-    expect(secondLink).to.have.class('bg-red-700');
-    expect(secondLink).to.have.class('hover:text-gray-200');
+    expect(firstLink).to.have.class('inactive-nav');
+    expect(secondLink).to.have.class('active-nav');
     expect(queryByText('Foo Bar')).to.be.null;
     expect(queryByText('Baz')).to.be.ok;
   });

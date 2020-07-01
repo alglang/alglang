@@ -17,14 +17,7 @@
                     v-for="{ name }, i in pages"
                     :key="name"
                     class="p-2 whitespace-no-wrap"
-                    :class="{
-                        'text-gray-700': name !== activePage,
-                        'hover:bg-gray-300': name !== activePage,
-                        'hover:text-gray-700': name !== activePage,
-                        'text-gray-200': name === activePage,
-                        'bg-red-700': name === activePage,
-                        'hover:text-gray-200': name === activePage
-                    }"
+                    :class="{ 'active-nav': name === activePage, 'inactive-nav': name !== activePage }"
                     @click="handleClick(name)"
                 >
                     {{ name.replace('-', ' ') }}
