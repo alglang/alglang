@@ -25,7 +25,7 @@
                         'bg-red-700': name === activePage,
                         'hover:text-gray-200': name === activePage
                     }"
-                    @click="activePage = name"
+                    @click="handleClick(name)"
                 >
                     {{ name.replace('-', ' ') }}
                 </a>
@@ -62,11 +62,19 @@ export default {
     },
 
     created() {
-        this.activePage = this.pages.length > 0 && this.pages[0].name;
+        const key = window.location.hash ? window.location.hash.substring(1) : this.pages[0].name;
+        this.activePage = key;
 
         this.pages.forEach(({ name, component }) => {
             this.$options.components[name] = component;
         });
+    },
+
+    methods: {
+        handleClick(clickedPage) {
+            this.activePage = clickedPage;
+            window.location.hash = `#${clickedPage}`;
+        }
     }
 };
 </script>

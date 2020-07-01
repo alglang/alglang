@@ -4,14 +4,31 @@ import Details from '../../../resources/js/components/Details.vue';
 import Vue from 'vue';
 import { expect } from 'chai';
 
+const realLocation = window.location;
+
+const visitUri = uri => {
+  delete window.location;
+  window.location = new URL(`http://localhost${uri}`);
+};
+
 const pageFactory = (name, template) => {
   const component = Vue.component(name, { template: template || '<div />' });
   return { name, component };
 };
 
 describe('Details.vue', () => {
+  afterEach(() => {
+    delete window.location;
+    window.location = realLocation;
+    window.location.hash = '';
+  });
+
   it('shows its title', () => {
-    const props = { value: {}, title: 'Test title', pages: [] };
+    const props = {
+      value: {},
+      title: 'Test title',
+      pages: [ pageFactory('foo') ]
+    };
 
     const { queryByText } = render(Details, { props });
 
@@ -57,6 +74,24 @@ describe('Details.vue', () => {
     expect(secondLink).to.not.have.class('hover:text-gray-200');
   });
 
+  it('visits the page marked by the location hash', () => {
+    visitUri('/foo#baz');
+
+    const props = {
+      value: {},
+      title: '',
+      pages: [
+        pageFactory('foo-bar', '<p>Foo bar</p>'),
+        pageFactory('baz', '<p>Baz</p>')
+      ]
+    };
+
+    const { getByText, queryByText } = render(Details, { props });
+
+    expect(getByText('Baz'));
+    expect(queryByText('Foo bar')).to.be.null;
+  });
+
   it('activates a page when clicked', async () => {
     const props = {
       value: {},
@@ -75,6 +110,7 @@ describe('Details.vue', () => {
     const secondLink = getByText('baz');
     await fireEvent.click(secondLink);
 
+    expect(window.location.hash).to.equal('#baz');
     expect(firstLink).to.not.have.class('text-gray-200');
     expect(firstLink).to.not.have.class('bg-red-700');
     expect(firstLink).to.not.have.class('hover:text-gray-200');
