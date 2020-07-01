@@ -6,6 +6,9 @@
                 <a :href="morpheme.url">
                     {{ morpheme.shape }}
                 </a>
+                <span>
+                    (<a>{{ morpheme.slot.abv }}</a>)
+                </span>
             </li>
         </ul>
     </div>

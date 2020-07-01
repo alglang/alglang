@@ -194,7 +194,12 @@ describe('Language/Morphemes.vue', () => {
       status: 200,
       response: {
         data: [
-          { shape: 'aa-' }
+          {
+            shape: 'aa-',
+            slot: {
+              abv: 'foo'
+            }
+          }
         ]
       }
     })
@@ -202,6 +207,7 @@ describe('Language/Morphemes.vue', () => {
     await waitForElementToBeRemoved(getByText('Loading...'));
 
     expect(getByText('aa-'));
+    expect(getByText('foo'));
   });
 
   it('only loads the first 10 morphemes', async () => {
