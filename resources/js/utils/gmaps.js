@@ -1,6 +1,6 @@
 const CALLBACK_NAME = 'gmapsCallback';
 
-let initialized = !!window.google;
+let initialized = !!window.google || !!document.getElementById('gmaps-script');
 let resolveInitPromise;
 let rejectInitPromise;
 
@@ -18,6 +18,7 @@ const init = apiKey => {
   window[CALLBACK_NAME] = () => resolveInitPromise(window.google);
 
   const script = document.createElement('script');
+  script.id = 'gmaps-script';
   script.async = true;
   script.defer = true;
   script.src = `https://maps.google.com/maps/api/js?key=${apiKey}&callback=${CALLBACK_NAME}`;
