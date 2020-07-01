@@ -45,4 +45,20 @@ class FetchMorphemesTest extends TestCase
             ]
         ]);
     }
+
+    /** @test */
+    public function it_fetches_morphemes_10_at_a_time()
+    {
+        $language = factory(Language::class)->create(['slug' => 'foo']);
+        factory(Morpheme::class, 15)->create(['language_id' => $language->id]);
+
+        $response = $this->get('/languages/foo/morphemes');
+
+        $response->assertOk();
+        $response->assertJsonCount(10, 'data');
+
+        $nextResponse = $this->get($response->decodeResponseJson()['next_page_url']);
+        $nextResponse->assertOk();
+        $nextResponse->assertJsonCount(5, 'data');
+    }
 }

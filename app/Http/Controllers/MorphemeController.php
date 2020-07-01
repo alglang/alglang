@@ -10,7 +10,7 @@ class MorphemeController extends Controller
 {
     public function index(Language $language)
     {
-        return response()->json(['data' => Morpheme::all()]);
+        return Morpheme::paginate(10);
     }
 
     public function show(Language $language, Morpheme $morpheme)
