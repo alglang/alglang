@@ -15,6 +15,8 @@ class MorphemeController extends Controller
 
     public function show(Language $language, Morpheme $morpheme)
     {
+        $morpheme->load('slot');
+        $morpheme->append('glosses');
         return view('morphemes.show', ['morpheme' => $morpheme]);
     }
 }

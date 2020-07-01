@@ -19,7 +19,7 @@ class ViewMorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $slot = factory(Slot::class)->create(['abv' => 'PER']);
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
+        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN', 'name' => 'Gloss name']);
         $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
 
         $morpheme = factory(Morpheme::class)->create([
@@ -38,6 +38,7 @@ class ViewMorphemeTest extends TestCase
         $response->assertSee('-ak');
         $response->assertSee('Test Language');
         $response->assertSee('PER');
+        $response->assertSee('Gloss name');
         $response->assertSee('AN.PL');
         $response->assertSee('The quick brown fox jumps over the lazy brown dog');
         $response->assertSee('Lorem ipsum dolor sit amet');
