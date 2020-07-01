@@ -5,6 +5,7 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Morpheme extends Model
 {
@@ -56,5 +57,18 @@ class Morpheme extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('shape')
             ->saveSlugsTo('slug');
+    }
+
+    protected function generateNonUniqueSlug(): string
+    {
+        $slugField = $this->slugOptions->slugField;
+
+        if ($this->hasCustomSlugBeenUsed() && ! empty($this->$slugField)) {
+            return $this->$slugField;
+        }
+
+        $sourceString = mb_ereg_replace('·', '0', $this->getSlugSourceString());
+
+        return Str::slug($sourceString, $this->slugOptions->slugSeparator, $this->slugOptions->slugLanguage);
     }
 }

@@ -25,6 +25,17 @@ class MorphemeTest extends TestCase
     }
 
     /** @test */
+    public function shapes_with_length_symbols_are_handled_in_slugs()
+    {
+        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $morpheme = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'shape' => '-a·'
+        ]);
+        $this->assertEquals('/languages/pa/morphemes/a0', $morpheme->url);
+    }
+
+    /** @test */
     public function language_is_always_eager_loaded()
     {
         factory(Morpheme::class)->create();
