@@ -12,6 +12,13 @@ class Morpheme extends Model
 
     protected $with = ['language'];
 
+    protected $casts = [
+        'language_id' => 'int',
+        'slot_id' => 'int'
+    ];
+
+    protected $appends = ['url'];
+
     public function getUrlAttribute()
     {
         return route(
