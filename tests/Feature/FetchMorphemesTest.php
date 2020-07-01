@@ -16,8 +16,8 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_retrieves_morphemes_from_the_database()
     {
-        $slot = factory(Slot::class)->create();
         $language = factory(Language::class)->create(['slug' => 'foo']);
+        $slot = factory(Slot::class)->create(['abv' => 'bar']);
 
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => $language->id,
@@ -36,8 +36,10 @@ class FetchMorphemesTest extends TestCase
                 [
                     'shape' => '-ak',
                     'url' => $morpheme->url,
-                    'slot_id' => $slot->id,
-                    'language_id' => $language->id,
+                    'slot' => [
+                        'id' => $slot->id,
+                        'abv' => 'bar'
+                    ],
                     'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
                     'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
                     'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
