@@ -36,15 +36,12 @@ class MorphemeSeeder extends Seeder
 
         DB::table('slots')->insert([
             [
-                'id' => 1,
                 'abv' => 'STM'
             ],
             [
-                'id' => 2,
                 'abv' => 'CCEN'
             ],
             [
-                'id' => 3,
                 'abv' => 'PER'
             ]
         ]);
@@ -55,7 +52,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'V-',
                 'slug' => 'V',
                 'language_id' => 1,
-                'slot_id' => 1,
+                'slot_abv' => 'STM',
                 'gloss' => 'V'
             ],
             [
@@ -63,7 +60,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-a·n',
                 'slug' => 'a0',
                 'language_id' => 1,
-                'slot_id' => 2,
+                'slot_abv' => 'CCEN',
                 'gloss' => '1s'
             ],
             [
@@ -71,7 +68,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-ari',
                 'slug' => 'ari',
                 'language_id' => 1,
-                'slot_id' => 3,
+                'slot_abv' => 'PER',
                 'gloss' => 'AN.OBV.SG'
             ],
             [
@@ -79,7 +76,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'wa·pam-',
                 'slug' => 'wa0pam',
                 'language_id' => 1,
-                'slot_id' => 1,
+                'slot_abv' => 'STM',
                 'gloss' => 'see'
             ]
         ]);

@@ -11,6 +11,6 @@ $factory->define(Morpheme::class, function (Faker $faker) {
     return [
         'shape' => '-ak',
         'language_id' => factory(Language::class),
-        'slot_id' => factory(Slot::class)
+        'slot_abv' => factory(Slot::class)
     ];
 });

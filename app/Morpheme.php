@@ -36,7 +36,7 @@ class Morpheme extends Model
 
     public function slot()
     {
-        return $this->belongsTo(Slot::class);
+        return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
 
     public function getGlossesAttribute()

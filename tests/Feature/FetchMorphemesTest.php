@@ -22,7 +22,7 @@ class FetchMorphemesTest extends TestCase
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => $language->id,
             'shape' => '-ak',
-            'slot_id' => $slot->id,
+            'slot_abv' => $slot->abv,
             'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
             'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
@@ -37,7 +37,6 @@ class FetchMorphemesTest extends TestCase
                     'shape' => '-ak',
                     'url' => $morpheme->url,
                     'slot' => [
-                        'id' => $slot->id,
                         'abv' => 'bar'
                     ],
                     'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
