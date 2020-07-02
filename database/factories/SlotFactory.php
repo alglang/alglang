@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Slot::class, function (Faker $faker) {
     return [
-        'abv' => 'PER'
+        'abv' => 'TS',
+        'name' => 'theme sign'
     ];
 });

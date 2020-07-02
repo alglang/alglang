@@ -21,6 +21,7 @@ Route::get('/languages/{language:slug}/morphemes', 'MorphemeController@index');
 Route::get('/languages/{language:slug}/morphemes/{morpheme:slug}', 'MorphemeController@show')->name('morphemes.show');
 Route::get('/languages/{language:slug}/verb-forms/{verbForm:slug}', 'VerbFormController@show')->name('verb-forms.show');
 Route::get('/glosses/{gloss}', 'GlossController@show')->name('glosses.show');
+Route::get('/slots/{slot:abv}', 'SlotController@show');
 
 Route::view('/about', 'about')->name('about');
 
