@@ -1,9 +1,10 @@
 import { render } from '@testing-library/vue';
-import DetailRow from '../../../resources/js/components/DetailRow';
 import { expect } from 'chai';
 
-describe('DetailRow.vue', () => {
-  it('labels itself based on its label prop', () => {
+import DetailRow from '../../../resources/js/components/DetailRow';
+
+describe('DetailRow.vue', function () {
+  it('labels itself based on its label prop', function () {
     const props = { label: 'Foo bar' };
 
     const { getByLabelText } = render(DetailRow, { props });
@@ -11,7 +12,7 @@ describe('DetailRow.vue', () => {
     expect(getByLabelText('Foo bar'));
   });
 
-  it('renders its slot data', () => {
+  it('renders its slot data', function () {
     const props = { label: 'Foo' };
     const scopedSlots = { default: '<p>Bar</p>' };
 

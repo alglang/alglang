@@ -1,8 +1,9 @@
 import '../setup';
 import { render, fireEvent } from '@testing-library/vue';
-import Details from '../../../resources/js/components/Details.vue';
 import Vue from 'vue';
 import { expect } from 'chai';
+
+import Details from '../../../resources/js/components/Details';
 
 const realLocation = window.location;
 
@@ -16,18 +17,18 @@ const pageFactory = (name, template) => {
   return { name, component };
 };
 
-describe('Details.vue', () => {
-  afterEach(() => {
+describe('Details.vue', function () {
+  afterEach(function () {
     delete window.location;
     window.location = realLocation;
     window.location.hash = '';
   });
 
-  it('shows its title', () => {
+  it('shows its title', function () {
     const props = {
       value: {},
       title: 'Test title',
-      pages: [ pageFactory('foo') ]
+      pages: [pageFactory('foo')]
     };
 
     const { queryByText } = render(Details, { props });
@@ -35,7 +36,7 @@ describe('Details.vue', () => {
     expect(queryByText('Test title')).to.be.ok;
   });
 
-  it('shows its page names', () => {
+  it('shows its page names', function () {
     const props = {
       value: {},
       title: '',
@@ -51,7 +52,7 @@ describe('Details.vue', () => {
     expect(queryByText('baz')).to.be.ok;
   });
 
-  it('marks the first page as active by default', () => {
+  it('marks the first page as active by default', function () {
     const props = {
       value: {},
       title: '',
@@ -62,7 +63,7 @@ describe('Details.vue', () => {
     };
 
     const { getByText } = render(Details, { props });
-    
+
     const firstLink = getByText('foo bar');
     const secondLink = getByText('baz');
 
@@ -70,7 +71,7 @@ describe('Details.vue', () => {
     expect(secondLink).to.have.class('inactive-nav');
   });
 
-  it('visits the page marked by the location hash', () => {
+  it('visits the page marked by the location hash', function () {
     visitUri('/foo#baz');
 
     const props = {
@@ -88,7 +89,7 @@ describe('Details.vue', () => {
     expect(queryByText('Foo bar')).to.be.null;
   });
 
-  it('activates a page when clicked', async () => {
+  it('activates a page when clicked', async function () {
     const props = {
       value: {},
       title: '',

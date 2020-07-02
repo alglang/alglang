@@ -1,9 +1,11 @@
 require('./bootstrap');
 const Turbolinks = require('turbolinks');
 const TurbolinksAdapter = require('vue-turbolinks');
+const Vue = require('vue');
+
 Turbolinks.start();
 
-window.Vue = require('vue');
+window.Vue = Vue;
 
 Vue.use(TurbolinksAdapter);
 
@@ -13,7 +15,7 @@ Vue.component('alglang-morpheme', require('./components/Morpheme.vue').default);
 Vue.component('alglang-map', require('./components/Map.vue').default);
 
 document.addEventListener('turbolinks:load', () => {
-  new Vue({
+  new Vue({ // eslint-disable-line no-new
     el: '#app'
   });
 });

@@ -8,20 +8,24 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "test": "mochapack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/JavaScript/setup.js tests/JavaScript/\\*\\*/\\*.spec.js"
+        "test": "mochapack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/JavaScript/setup.js tests/JavaScript/\\*\\*/\\*.spec.js",
+        "lint": "eslint resources/js tests/JavaScript"
     },
     "devDependencies": {
         "@tailwindcss/custom-forms": "^0.2",
         "@testing-library/vue": "^5.0.4",
-        "axios": "^0.19",
         "chai": "^4.2.0",
         "chai-dom": "^1.8.2",
         "cross-env": "^7.0",
+        "eslint": "^7.3.1",
+        "eslint-config-airbnb-base": "^14.2.0",
+        "eslint-plugin-chai-friendly": "^0.6.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-vue": "^6.2.2",
         "jsdom": "^16.2.2",
         "jsdom-global": "^3.0.2",
         "laravel-mix": "^5.0.1",
         "laravel-mix-tailwind": "^0.1.0",
-        "lodash": "^4.17.13",
         "mocha": "^8.0.1",
         "mochapack": "^2.0.0",
         "moxios": "^0.4.0",
@@ -32,9 +36,13 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "axios": "^0.19",
+        "eslint-plugin-mocha": "^7.0.1",
         "leaflet": "^1.6.0",
         "leaflet-defaulticon-compatibility": "^0.1.1",
+        "lodash": "^4.17.13",
         "turbolinks": "^5.2.0",
+        "vue": "^2.6.11",
         "vue-turbolinks": "^2.1.0",
         "vue2-leaflet": "^2.5.2"
     }
