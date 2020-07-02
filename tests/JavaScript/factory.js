@@ -13,3 +13,25 @@ export const groupFactory = props => {
     ...props
   };
 };
+
+export const morphemeFactory = props => {
+  return {
+    slot: slotFactory(),
+    glosses: [glossFactory()],
+    ...props
+  };
+};
+
+export const slotFactory = props => {
+  return {
+    abv: 'SLOT',
+    ...props
+  }
+};
+
+export const glossFactory = props => {
+  return {
+    abv: 'GLOSS',
+    ...props
+  }
+};

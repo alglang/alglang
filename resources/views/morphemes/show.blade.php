@@ -1,4 +1,5 @@
-<h1>{{ $morpheme->shape }}</h1>
-<h2>{{ $morpheme->language->name }}</h2>
+@extends('layouts.app')
 
-{{ $morpheme->toJson() }}
+@section('content')
+    <alglang-morpheme :morpheme="{{ $morpheme }}" />
+@endsection
