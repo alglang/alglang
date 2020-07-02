@@ -36,13 +36,16 @@ class MorphemeSeeder extends Seeder
 
         DB::table('slots')->insert([
             [
-                'abv' => 'STM'
+                'abv' => 'STM',
+                'name' => 'stem'
             ],
             [
-                'abv' => 'CCEN'
+                'abv' => 'CCEN',
+                'name' => 'conjunct central suffix'
             ],
             [
-                'abv' => 'PER'
+                'abv' => 'PER',
+                'name' => 'peripheral suffix'
             ]
         ]);
 
