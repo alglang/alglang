@@ -38,8 +38,10 @@ class ViewMorphemeTest extends TestCase
         $response->assertSee('-ak');
         $response->assertSee('Test Language');
         $response->assertSee('PER');
+        $response->assertSee("\"url\":\"\\/slots\\/PER\"");
         $response->assertSee('Gloss name');
         $response->assertSee('AN.PL');
+        $response->assertSee("\"url\":\"\\/glosses\\/AN\"");
         $response->assertSee('The quick brown fox jumps over the lazy brown dog');
         $response->assertSee('Lorem ipsum dolor sit amet');
         $response->assertSee('Abcdefghijklmnopqrstuvwxyz');

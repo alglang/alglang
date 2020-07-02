@@ -3,9 +3,12 @@
         <alglang-detail-row label="Gloss">
             <ul class="inline">
                 <li v-for="gloss of value.glosses" :key="gloss.abv" class="inline-block">
-                    <a class="inline-block">
+                    <a v-if="gloss.url" class="inline-block" :href="gloss.url">
                         {{ gloss.abv }}
                     </a>
+                    <span v-else class="inline-block">
+                        {{ gloss.abv }}
+                    </span>
                 </li>
             </ul>
 
@@ -15,9 +18,9 @@
         </alglang-detail-row>
 
         <alglang-detail-row label="Slot">
-            <p>
+            <a :href="value.slot.url">
                 {{ value.slot.abv }}
-            </p>
+            </a>
         </alglang-detail-row>
 
         <alglang-detail-row v-if="value.description" label="Description">

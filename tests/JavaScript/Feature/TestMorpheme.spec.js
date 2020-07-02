@@ -1,9 +1,11 @@
+require('../setup');
+
 import { render } from '@testing-library/vue';
 import { expect } from 'chai';
 
 import Morpheme from '../../../resources/js/components/Morpheme';
 import BasicDetails from '../../../resources/js/components/Morpheme/BasicDetails';
-import { glossFactory, morphemeFactory, languageFactory } from '../factory';
+import { glossFactory, slotFactory, morphemeFactory, languageFactory } from '../factory';
 
 describe('Morpheme.vue', () => {
   it('displays its shape and language in the header', () => {
@@ -74,6 +76,58 @@ describe('Morpheme/BasicDetails.vue', () => {
       expect(getByLabelText('Gloss'));
       expect(getByText('FTV'));
       expect(queryByText('()')).to.be.null;
+    });
+
+    it('hyperlinks its slot', () => {
+      const props = {
+        value: morphemeFactory({
+          slot: slotFactory({
+            abv: 'SLOT',
+            url: '/slots/SLOT'
+          })
+        })
+      };
+
+      const { getByText } = render(BasicDetails, { props });
+
+      expect(getByText('SLOT')).to.have.tagName('a');
+      expect(getByText('SLOT')).to.have.attribute('href', '/slots/SLOT');
+    });
+
+    it('hyperlinks glosses with a url', () => {
+      const props = {
+        value: morphemeFactory({
+          glosses: [
+            glossFactory({
+              abv: 'FTV',
+              url: '/glosses/FTV'
+            })
+          ]
+        })
+      };
+
+      const { getByText } = render(BasicDetails, { props });
+
+      expect(getByText('FTV')).to.have.tagName('a');
+      expect(getByText('FTV')).to.have.attribute('href', '/glosses/FTV');
+    });
+
+    it('does not hyperlink glosses without a url', () => {
+      const props = {
+        value: morphemeFactory({
+          glosses: [
+            glossFactory({
+              abv: 'FTV',
+              url: null
+            })
+          ]
+        })
+      };
+
+      const { getByText } = render(BasicDetails, { props });
+
+      expect(getByText('FTV')).to.have.tagName('span');
+      expect(getByText('FTV')).to.not.have.attribute('href');
     });
   });
 

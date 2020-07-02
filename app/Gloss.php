@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Gloss extends Model
 {
     protected $guarded = [];
+
     protected $primaryKey = 'abv';
     protected $keyType = 'str';
     public $incrementing = false;
+
+    protected $appends = ['url'];
 
     public function getUrlAttribute()
     {
