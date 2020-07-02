@@ -6,9 +6,21 @@
         <a :href="morpheme.url">
           {{ morpheme.shape }}
         </a>
+
         <span>
-          (<a>{{ morpheme.slot.abv }}</a>)
+          (<a :href="morpheme.slot.url">{{ morpheme.slot.abv }}</a>)
         </span>
+
+        <ul>
+          <li v-for="gloss in morpheme.glosses" :key="gloss.abv">
+            <a v-if="gloss.url" :href="gloss.url">
+              {{ gloss.abv }}
+            </a>
+            <span v-else>
+              {{ gloss.abv }}
+            </span>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>
