@@ -17,6 +17,8 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function a_morpheme_can_be_viewed()
     {
+        $this->withoutExceptionHandling();
+
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $slot = factory(Slot::class)->create(['abv' => 'PER']);
         $gloss1 = factory(Gloss::class)->create(['abv' => 'AN', 'name' => 'Gloss name']);
