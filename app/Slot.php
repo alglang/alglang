@@ -14,6 +14,6 @@ class Slot extends Model
 
     public function getUrlAttribute()
     {
-        return "/slots/$this->abv";
+        return route('slots.show', $this, false);
     }
 }
