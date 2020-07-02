@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a456be58ada2b6565fb24842d890e513",
+    "content-hash": "d0d98ee3c378df2224650e2854d78180",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2062,16 +2062,16 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "2.4.2",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "707265d4a29523a387e280e77f85071f04892540"
+                "reference": "7b5192fb808b6ae87ac5b009b69f7ea0b9b7c4ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/707265d4a29523a387e280e77f85071f04892540",
-                "reference": "707265d4a29523a387e280e77f85071f04892540",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/7b5192fb808b6ae87ac5b009b69f7ea0b9b7c4ff",
+                "reference": "7b5192fb808b6ae87ac5b009b69f7ea0b9b7c4ff",
                 "shasum": ""
             },
             "require": {
@@ -2080,7 +2080,8 @@
                 "php": "^7.4"
             },
             "require-dev": {
-                "orchestra/testbench": "^5.0"
+                "orchestra/testbench": "^5.0",
+                "spatie/laravel-translatable": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -2112,7 +2113,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-04-20T19:10:09+00:00"
+            "time": "2020-06-15T13:22:23+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
