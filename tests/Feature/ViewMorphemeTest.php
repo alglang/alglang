@@ -47,5 +47,6 @@ class ViewMorphemeTest extends TestCase
         $response->assertSee('The quick brown fox jumps over the lazy brown dog');
         $response->assertSee('Lorem ipsum dolor sit amet');
         $response->assertSee('Abcdefghijklmnopqrstuvwxyz');
+        $response->assertSee("\"disambiguator\":0");
     }
 }

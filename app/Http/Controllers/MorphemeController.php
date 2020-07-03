@@ -13,7 +13,7 @@ class MorphemeController extends Controller
         $morphemes = $language->morphemes()->with('slot')->paginate(10);
 
         $morphemes->each(function ($morpheme) {
-            $morpheme->append('glosses');
+            $morpheme->append('glosses', 'disambiguator');
         });
 
         return $morphemes;
@@ -22,7 +22,7 @@ class MorphemeController extends Controller
     public function show(Language $language, Morpheme $morpheme)
     {
         $morpheme->load('slot');
-        $morpheme->append('glosses');
+        $morpheme->append('glosses', 'disambiguator');
         return view('morphemes.show', ['morpheme' => $morpheme]);
     }
 }

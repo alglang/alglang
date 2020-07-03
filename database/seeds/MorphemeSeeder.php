@@ -53,7 +53,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'V-',
-                'slug' => 'V',
+                'slug' => 'V-1',
                 'language_id' => 1,
                 'slot_abv' => 'STM',
                 'gloss' => 'V'
@@ -61,7 +61,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 2,
                 'shape' => '-a·n',
-                'slug' => 'a0',
+                'slug' => 'a0-1',
                 'language_id' => 1,
                 'slot_abv' => 'CCEN',
                 'gloss' => '1s'
@@ -69,7 +69,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => '-ari',
-                'slug' => 'ari',
+                'slug' => 'ari-1',
                 'language_id' => 1,
                 'slot_abv' => 'PER',
                 'gloss' => 'AN.OBV.SG'
@@ -77,7 +77,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 4,
                 'shape' => 'wa·pam-',
-                'slug' => 'wa0pam',
+                'slug' => 'wa0pam-1',
                 'language_id' => 1,
                 'slot_abv' => 'STM',
                 'gloss' => 'see'

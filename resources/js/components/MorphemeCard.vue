@@ -9,7 +9,8 @@
     </span>
 
     <p class="text-xl py-2 text-gray-900 hover:text-gray-900">
-      {{ morpheme.shape }}
+      <span>{{ morpheme.shape }}</span><!--
+   --><span class="text-xs align-super">{{ morpheme.disambiguator + 1 }}</span>
     </p>
 
     <alglang-gloss-field
@@ -34,3 +35,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.align-super {
+  vertical-align: super;
+}
+</style>

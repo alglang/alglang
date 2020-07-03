@@ -87,6 +87,24 @@ class FetchMorphemesTest extends TestCase
     }
 
     /** @test */
+    public function it_include_morpheme_disambiguators()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+
+        $response = $this->get("$language->url/morphemes");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                [
+                    'disambiguator' => $morpheme->disambiguator
+                ]
+            ]
+        ]);
+    }
+
+    /** @test */
     public function it_fetches_morphemes_10_at_a_time()
     {
         $language = factory(Language::class)->create(['slug' => 'foo']);

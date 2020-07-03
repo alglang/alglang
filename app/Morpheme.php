@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Adoxography\Disambiguatable\Disambiguatable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 
 class Morpheme extends Model
 {
+    use Disambiguatable;
     use HasSlug;
 
     protected $with = ['language'];
@@ -16,6 +18,43 @@ class Morpheme extends Model
     protected $appends = ['url'];
 
     protected $glosses_;
+
+    protected $alwaysDisambiguate = true;
+    protected $disambiguatableFields = ['language_id', 'shape'];
+
+    protected static function booted()
+    {
+        static::saved(function (Model $model) {
+            $model->updateSlugBasedOnDisambiguator();
+        });
+
+        static::deleted(function (Model $model) {
+            $model->_disambiguatableDuplicates()
+                  ->each(function (Morpheme $morpheme) {
+                      $morpheme->updateSlugBasedOnDisambiguator();
+                  });
+        });
+    }
+
+    protected function updateSlugBasedOnDisambiguator()
+    {
+        $pieces = explode('-', $this->slug);
+        $changed = false;
+        $disambiguator = $this->disambiguator + 1;
+
+        if (count($pieces) <= 1 || !is_numeric($pieces[count($pieces) - 1])) {
+            $pieces[] = $disambiguator;
+            $changed = true;
+        } elseif ((int)$pieces[count($pieces) - 1] !== $disambiguator) {
+            $pieces[count($pieces) - 1] = $disambiguator;
+            $changed = true;
+        }
+
+        if ($changed) {
+            $this->slug = implode('-', $pieces);
+            $this->save();
+        }
+    }
 
     public function getUrlAttribute()
     {

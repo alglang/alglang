@@ -21,7 +21,28 @@ class MorphemeTest extends TestCase
             'language_id' => $language->id,
             'shape' => '-ak'
         ]);
-        $this->assertEquals('/languages/pa/morphemes/ak', $morpheme->url);
+        $this->assertEquals('/languages/pa/morphemes/ak-1', $morpheme->url);
+    }
+
+    /** @test */
+    public function it_updates_its_url_when_its_disambiguator_changes()
+    {
+        
+        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $morpheme1 = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'shape' => '-ak'
+        ]);
+        $morpheme2 = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'shape' => '-ak'
+        ]);
+
+        $this->assertEquals('/languages/pa/morphemes/ak-2', $morpheme2->url);
+
+        $morpheme1->delete();
+
+        $this->assertEquals('/languages/pa/morphemes/ak-1', $morpheme2->fresh()->url);
     }
 
     /** @test */
@@ -32,7 +53,7 @@ class MorphemeTest extends TestCase
             'language_id' => $language->id,
             'shape' => '-a·'
         ]);
-        $this->assertEquals('/languages/pa/morphemes/a0', $morpheme->url);
+        $this->assertEquals('/languages/pa/morphemes/a0-1', $morpheme->url);
     }
 
     /** @test */
@@ -81,5 +102,34 @@ class MorphemeTest extends TestCase
         $this->assertCount(1, DB::getQueryLog());  // Glosses should be cached; no further queries
 
         DB::connection()->disableQueryLog();
+    }
+
+    /** @test */
+    public function it_has_a_unique_disambiguator()
+    {
+        $language1 = factory(Language::class)->create();
+        $language2 = factory(Language::class)->create();
+
+        $morpheme1 = factory(Morpheme::class)->create([
+            'language_id' => $language1->id,
+            'shape' => '-ak'
+        ]);
+        $morpheme2 = factory(Morpheme::class)->create([
+            'language_id' => $language1->id,
+            'shape' => '-ak'
+        ]);
+        $morpheme3 = factory(Morpheme::class)->create([
+            'language_id' => $language1->id,
+            'shape' => 'foo-'
+        ]);
+        $morpheme4 = factory(Morpheme::class)->create([
+            'language_id' => $language2->id,
+            'shape' => '-ak'
+        ]);
+
+        $this->assertSame(0, $morpheme1->fresh()->disambiguator);  // First morpheme in database
+        $this->assertSame(1, $morpheme2->fresh()->disambiguator);  // Duplicate of previous morpheme
+        $this->assertSame(0, $morpheme3->fresh()->disambiguator);  // Different shape - no duplicate
+        $this->assertSame(0, $morpheme4->fresh()->disambiguator);  // Different language - no duplicate
     }
 }
