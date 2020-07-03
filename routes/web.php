@@ -26,27 +26,27 @@ Route::get('/slots/{slot}', 'SlotController@show')->name('slots.show');
 Route::view('/about', 'about')->name('about');
 
 Route::get('/resources', function () {
-    return '';
+    abort(404);
 })->name('resources');
 
 Route::get('/structural-survey', function () {
-    return '';
+    abort(404);
 })->name('structural-survey');
 
 Route::get('/verbs', function () {
-    return '';
+    abort(404);
 })->name('verbs');
 
 Route::get('/nominals', function () {
-    return '';
+    abort(404);
 })->name('nominals');
 
 Route::get('/bibliography', function () {
-    return '';
+    abort(404);
 })->name('bibliography');
 
 Route::get('/search/verbs/paradigm', function () {
-    return '';
+    abort(404);
 })->name('search.verbs.paradigm');
 
 Auth::routes();
