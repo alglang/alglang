@@ -1,16 +1,7 @@
 <template>
   <div>
     <alglang-detail-row label="Gloss">
-      <ul class="inline">
-        <li v-for="gloss of value.glosses" :key="gloss.abv" class="inline-block">
-          <a v-if="gloss.url" class="inline-block" :href="gloss.url">
-            {{ gloss.abv }}
-          </a>
-          <span v-else class="inline-block">
-            {{ gloss.abv }}
-          </span>
-        </li>
-      </ul>
+      <alglang-gloss-field v-model="value.glosses" />
 
       <p v-if="glossText" class="inline ml-2">
         ({{ glossText }})
@@ -33,6 +24,7 @@
 
 <script>
 import DetailRow from '../DetailRow';
+import GlossField from '../GlossField';
 
 export default {
   props: {
@@ -42,7 +34,8 @@ export default {
   },
 
   components: {
-    'alglang-detail-row': DetailRow
+    'alglang-detail-row': DetailRow,
+    'alglang-gloss-field': GlossField
   },
 
   computed: {
@@ -52,10 +45,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-li:not(:last-child):after {
-    display: inline-block;
-    content: '.'
-}
-</style>

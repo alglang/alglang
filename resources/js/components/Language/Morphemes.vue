@@ -3,24 +3,7 @@
     <p v-if="loading">Loading...</p>
     <ul v-else>
       <li v-for="morpheme of morphemes" :key="morpheme.shape">
-        <a :href="morpheme.url">
-          {{ morpheme.shape }}
-        </a>
-
-        <span>
-          (<a :href="morpheme.slot.url">{{ morpheme.slot.abv }}</a>)
-        </span>
-
-        <ul>
-          <li v-for="gloss in morpheme.glosses" :key="gloss.abv">
-            <a v-if="gloss.url" :href="gloss.url">
-              {{ gloss.abv }}
-            </a>
-            <span v-else>
-              {{ gloss.abv }}
-            </span>
-          </li>
-        </ul>
+        <alglang-morpheme-card :morpheme="morpheme" />
       </li>
     </ul>
   </div>
@@ -28,12 +11,17 @@
 
 <script>
 import axios from 'axios';
+import MorphemeCard from '../MorphemeCard';
 
 export default {
   props: {
     value: {
       required: true
     }
+  },
+
+  components: {
+    'alglang-morpheme-card': MorphemeCard
   },
 
   data() {
