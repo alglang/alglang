@@ -53,22 +53,31 @@ export default {
 
   data() {
     return {
-      activePage: null
+      hash: ''
     };
   },
 
-  created() {
-    const key = window.location.hash ? window.location.hash.substring(1) : this.pages[0].name;
-    this.activePage = key;
+  computed: {
+    activePage() {
+      return this.hash || this.pages[0].name;
+    }
+  },
 
+  created() {
+    this.hash = window.location.hash.substring(1);
     this.pages.forEach(({ name, component }) => {
       this.$options.components[name] = component;
     });
   },
 
+  mounted() {
+    window.addEventListener('hashchange', () => {
+      this.hash = window.location.hash.substring(1);
+    });
+  },
+
   methods: {
     handleClick(clickedPage) {
-      this.activePage = clickedPage;
       window.location.hash = `#${clickedPage}`;
     }
   }

@@ -89,6 +89,33 @@ describe('Details.vue', function () {
     expect(queryByText('Foo bar')).to.be.null;
   });
 
+  it('responds to the url hash changing', async function () {
+    const props = {
+      value: {},
+      title: '',
+      pages: [
+        pageFactory('foo-bar', '<p>Page 1</p>'),
+        pageFactory('baz', '<p>Page 2</p>')
+      ]
+    };
+
+    const { getByText, queryByText } = render(Details, { props });
+
+    await fireEvent.click(getByText('baz'));
+    await fireEvent(window, new HashChangeEvent('hashchange')); // testing-library suppresses this event
+
+    expect(window.location.hash).to.equal('#baz');
+    expect(getByText('Page 2'));
+    expect(queryByText('Page 1')).to.be.null;
+
+    window.location.hash = '';
+    await fireEvent(window, new HashChangeEvent('hashchange')); // testing-library suppresses this event
+
+    expect(window.location.hash).to.equal('');
+    expect(getByText('Page 1'));
+    expect(queryByText('Page 2')).to.be.null;
+  });
+
   it('activates a page when clicked', async function () {
     const props = {
       value: {},
@@ -106,6 +133,7 @@ describe('Details.vue', function () {
     const firstLink = getByText('foo bar');
     const secondLink = getByText('baz');
     await fireEvent.click(secondLink);
+    await fireEvent(window, new HashChangeEvent('hashchange')); // testing-library suppresses this event
 
     expect(window.location.hash).to.equal('#baz');
     expect(firstLink).to.have.class('inactive-nav');
