@@ -17,6 +17,8 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_retrieves_morphemes_from_the_database()
     {
+        $this->withoutExceptionHandling();
+
         $language = factory(Language::class)->create(['slug' => 'foo']);
         $slot = factory(Slot::class)->create(['abv' => 'bar']);
 
@@ -115,7 +117,7 @@ class FetchMorphemesTest extends TestCase
         $response->assertOk();
         $response->assertJsonCount(10, 'data');
 
-        $nextResponse = $this->get($response->decodeResponseJson()['next_page_url']);
+        $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(5, 'data');
     }
