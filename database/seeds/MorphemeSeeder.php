@@ -56,15 +56,21 @@ class MorphemeSeeder extends Seeder
                 'slug' => 'V-1',
                 'language_id' => 1,
                 'slot_abv' => 'STM',
-                'gloss' => 'V'
+                'gloss' => 'V',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => '<p>This is a test note.</p>'
             ],
             [
                 'id' => 2,
                 'shape' => '-a·n',
-                'slug' => 'a0-1',
+                'slug' => 'a0n-1',
                 'language_id' => 1,
                 'slot_abv' => 'CCEN',
-                'gloss' => '1s'
+                'gloss' => '1s',
+                'allomorphy_notes' => '<p>Becomes -ya:n after a vowel.</p>',
+                'historical_notes' => null,
+                'private_notes' => null
             ],
             [
                 'id' => 3,
@@ -72,7 +78,10 @@ class MorphemeSeeder extends Seeder
                 'slug' => 'ari-1',
                 'language_id' => 1,
                 'slot_abv' => 'PER',
-                'gloss' => 'AN.OBV.SG'
+                'gloss' => 'AN.OBV.SG',
+                'allomorphy_notes' => null,
+                'historical_notes' => '<p>This is a test historical note.</p>',
+                'private_notes' => null
             ],
             [
                 'id' => 4,
@@ -80,7 +89,10 @@ class MorphemeSeeder extends Seeder
                 'slug' => 'wa0pam-1',
                 'language_id' => 1,
                 'slot_abv' => 'STM',
-                'gloss' => 'see'
+                'gloss' => 'see',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
             ]
         ]);
     }

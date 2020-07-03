@@ -37,16 +37,16 @@ class ViewMorphemeTest extends TestCase
         $response = $this->get($morpheme->url);
 
         $response->assertOk();
-        $response->assertSee('-ak');
-        $response->assertSee('Test Language');
-        $response->assertSee('PER');
-        $response->assertSee("\"url\":\"\\/slots\\/PER\"");
-        $response->assertSee('Gloss name');
-        $response->assertSee('AN.PL');
-        $response->assertSee("\"url\":\"\\/glosses\\/AN\"");
-        $response->assertSee('The quick brown fox jumps over the lazy brown dog');
-        $response->assertSee('Lorem ipsum dolor sit amet');
-        $response->assertSee('Abcdefghijklmnopqrstuvwxyz');
-        $response->assertSee("\"disambiguator\":0");
+        $response->assertSee('-ak');                          // Shape
+        $response->assertSee("\"disambiguator\":0");          // Disambiguator
+        $response->assertSee('Test Language');                // Language name
+        $response->assertSee('PER');                          // Slot abv
+        $response->assertSee("\"url\":\"\\/slots\\/PER\"");   // Slot url
+        $response->assertSee('AN.PL');                        // Gloss abbreviations
+        $response->assertSee('Gloss name');                   // Gloss name
+        $response->assertSee("\"url\":\"\\/glosses\\/AN\"");  // Gloss urls
+        $response->assertSee('The quick brown fox jumps over the lazy brown dog');  // Historical notes
+        $response->assertSee('Lorem ipsum dolor sit amet');  // Allomorphy notes
+        $response->assertSee('Abcdefghijklmnopqrstuvwxyz');  // Private notes
     }
 }

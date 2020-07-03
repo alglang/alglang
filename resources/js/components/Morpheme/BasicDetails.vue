@@ -14,10 +14,16 @@
       </a>
     </alglang-detail-row>
 
-    <alglang-detail-row v-if="value.description" label="Description">
-      <p>
-        {{ value.description }}
-      </p>
+    <alglang-detail-row v-if="value.allomorphy_notes" label="Allomorphy">
+      <div v-html="value.allomorphy_notes" />
+    </alglang-detail-row>
+
+    <alglang-detail-row v-if="value.historical_notes" label="Historical notes">
+      <div v-html="value.historical_notes" />
+    </alglang-detail-row>
+
+    <alglang-detail-row v-if="value.private_notes" label="Private notes">
+      <div v-html="value.private_notes" />
     </alglang-detail-row>
   </div>
 </template>

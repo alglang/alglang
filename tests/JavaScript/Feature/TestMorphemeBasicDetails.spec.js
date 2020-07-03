@@ -1,3 +1,4 @@
+import '../setup';
 import { render } from '@testing-library/vue';
 import { expect } from 'chai';
 
@@ -112,31 +113,89 @@ describe('Morpheme/BasicDetails.vue', function () {
     });
   });
 
-  describe('displaying description', function () {
-    describe('when it has a description', function () {
-      it('displays its description', function () {
+  describe('displaying allomorphy notes', function () {
+    describe('when it has allomorphy notes', function () {
+      it('displays its allomorphy notes', function () {
         const props = {
           value: morphemeFactory({
-            description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+            allomorphy_notes: '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
           })
         };
 
         const { getByLabelText, getByText } = render(BasicDetails, { props });
 
-        expect(getByLabelText('Description'));
+        expect(getByLabelText('Allomorphy'));
         expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
       });
     });
 
-    describe('when it has no description', function () {
-      it('does not display its description', function () {
+    describe('when it has no allomorphy notes', function () {
+      it('does not display its allomorphy notes', function () {
         const props = {
-          value: morphemeFactory({ description: null })
+          value: morphemeFactory({ allomorphy_notes: null })
         };
 
         const { queryByLabelText } = render(BasicDetails, { props });
 
-        expect(queryByLabelText('Description')).to.be.null;
+        expect(queryByLabelText('Allomorphy')).to.be.null;
+      });
+    });
+  });
+
+  describe('displaying historical notes', function () {
+    describe('when it has historical notes', function () {
+      it('displays its historical notes', function () {
+        const props = {
+          value: morphemeFactory({
+            historical_notes: '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+          })
+        };
+
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
+
+        expect(getByLabelText('Historical notes'));
+        expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
+      });
+    });
+
+    describe('when it has no historical notes', function () {
+      it('does not display its historical notes', function () {
+        const props = {
+          value: morphemeFactory({ historical_notes: null })
+        };
+
+        const { queryByLabelText } = render(BasicDetails, { props });
+
+        expect(queryByLabelText('Historical notes')).to.be.null;
+      });
+    });
+  });
+
+  describe('displaying private notes', function () {
+    describe('when it has private notes', function () {
+      it('displays its private notes', function () {
+        const props = {
+          value: morphemeFactory({
+            private_notes: '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+          })
+        };
+
+        const { getByLabelText, getByText } = render(BasicDetails, { props });
+
+        expect(getByLabelText('Private notes'));
+        expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
+      });
+    });
+
+    describe('when it has no private notes', function () {
+      it('does not display its private notes', function () {
+        const props = {
+          value: morphemeFactory({ private_notes: null })
+        };
+
+        const { queryByLabelText } = render(BasicDetails, { props });
+
+        expect(queryByLabelText('Private notes')).to.be.null;
       });
     });
   });
