@@ -10,7 +10,13 @@ class MorphemeController extends Controller
 {
     public function index(Language $language)
     {
-        return $language->morphemes()->with('slot')->paginate(10);
+        $morphemes = $language->morphemes()->with('slot')->paginate(10);
+
+        $morphemes->each(function ($morpheme) {
+            $morpheme->append('glosses');
+        });
+
+        return $morphemes;
     }
 
     public function show(Language $language, Morpheme $morpheme)

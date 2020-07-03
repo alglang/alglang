@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Gloss;
 use App\Language;
 use App\Morpheme;
 use App\Slot;
@@ -22,6 +23,7 @@ class FetchMorphemesTest extends TestCase
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => $language->id,
             'shape' => '-ak',
+            'gloss' => 'G1',
             'slot_abv' => $slot->abv,
             'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
@@ -36,12 +38,49 @@ class FetchMorphemesTest extends TestCase
                 [
                     'shape' => '-ak',
                     'url' => $morpheme->url,
+                    'gloss' => 'G1',
                     'slot' => [
                         'abv' => 'bar'
                     ],
                     'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
                     'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
                     'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
+                ]
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_includes_morpheme_glosses()
+    {
+        $gloss = factory(Gloss::class)->create([
+            'abv' => 'G1',
+            'name' => 'gloss 1'
+        ]);
+        $language = factory(Language::class)->create(['slug' => 'foo']);
+
+        $morpheme = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'gloss' => 'G1.G2',
+        ]);
+
+        $response = $this->get("$language->url/morphemes");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                [
+                    'gloss' => 'G1.G2',
+                    'glosses' => [
+                        [
+                            'abv' => 'G1',
+                            'name' => 'gloss 1',
+                            'url' => $gloss->url
+                        ],
+                        [
+                            'abv' => 'G2'
+                        ]
+                    ]
                 ]
             ]
         ]);
