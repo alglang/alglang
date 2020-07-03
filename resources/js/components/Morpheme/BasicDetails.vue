@@ -9,7 +9,7 @@
     </alglang-detail-row>
 
     <alglang-detail-row label="Slot">
-      <a :href="value.slot.url">
+      <a :href="value.slot.url" :style="{ color: value.slot.colour }">
         {{ value.slot.abv }}
       </a>
     </alglang-detail-row>

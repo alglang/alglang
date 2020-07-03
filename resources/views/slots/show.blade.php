@@ -1,3 +1,5 @@
-<p style="color: {{ $slot->colour }};">{{ $slot->abv }}</p>
-<p>{{ $slot->name }}</p>
-<p>{{ $slot->description }}</p>
+@extends('layouts.app')
+
+@section('content')
+    <alglang-slot :morph-slot="{{ $slot }}" />
+@endsection

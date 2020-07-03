@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import moxios from 'moxios';
 
 import Morphemes from '../../../resources/js/components/Language/Morphemes';
-import { glossFactory, languageFactory, slotFactory } from '../factory';
+import { morphemeFactory, languageFactory } from '../factory';
 
 describe('Language/Morphemes.vue', function () {
   beforeEach(function () { moxios.install(); });
@@ -32,22 +32,8 @@ describe('Language/Morphemes.vue', function () {
       status: 200,
       response: {
         data: [
-          {
-            shape: 'aa-',
-            slot: slotFactory({
-              abv: 'SLT',
-              url: '/slots/SLT'
-            }),
-            glosses: [
-              glossFactory({
-                abv: 'G1',
-                url: '/glosses/G1'
-              }),
-              glossFactory({
-                abv: 'G2'
-              })
-            ]
-          }
+          morphemeFactory({ shape: 'aa-' }),
+          morphemeFactory({ shape: 'ab-' })
         ]
       }
     });
@@ -55,13 +41,6 @@ describe('Language/Morphemes.vue', function () {
     await waitForElementToBeRemoved(getByText('Loading...'));
 
     expect(getByText('aa-'));
-
-    expect(getByText('SLT')).to.have.tagName('a');
-    expect(getByText('SLT')).to.have.attribute('href', '/slots/SLT');
-
-    expect(getByText('G1')).to.have.tagName('a');
-    expect(getByText('G1')).to.have.attribute('href', '/glosses/G1');
-
-    expect(getByText('G2')).to.have.tagName('span');
+    expect(getByText('ab-'));
   });
 });

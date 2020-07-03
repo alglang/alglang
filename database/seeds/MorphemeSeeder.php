@@ -31,21 +31,37 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => 'SG',
                 'name' => 'singular'
+            ],
+            [
+                'abv' => 'pret',
+                'name' => 'preterit'
             ]
         ]);
 
         DB::table('slots')->insert([
             [
                 'abv' => 'STM',
-                'name' => 'stem'
+                'name' => 'stem',
+                'colour' => '#000000',
+                'description' => null
             ],
             [
                 'abv' => 'CCEN',
-                'name' => 'conjunct central suffix'
+                'name' => 'conjunct central suffix',
+                'colour' => '#0000ff',
+                'description' => null
             ],
             [
                 'abv' => 'PER',
-                'name' => 'peripheral suffix'
+                'name' => 'peripheral suffix',
+                'colour' => '#ff00ff',
+                'description' => null
+            ],
+            [
+                'abv' => 'MOD',
+                'name' => 'mode sign',
+                'colour' => null,
+                'description' => '<p>Currently being used for independent mode signs (which appear adjacent to the central suffix) and conjunct mode signs (which appear word-finally), as well as the medial -w element in the interrogative order.</p>'
             ]
         ]);
 
@@ -91,6 +107,17 @@ class MorphemeSeeder extends Seeder
                 'slot_abv' => 'STM',
                 'gloss' => 'see',
                 'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 5,
+                'shape' => '-(e)pan',
+                'slug' => '(e)pan-1',
+                'language_id' => 1,
+                'slot_abv' => 'MOD',
+                'gloss' => 'PRET',
+                'allomorphy_notes' => '<p>Word-finally -(e)pa (Goddard 2007:249). Also, although Goddard represents it as *-(e)pan, he states (p. 250) that "*-pa(n-) did not originally take connective *e (Pentland 1979:381; Proulx 1990:106; Costa 2003:355-360)".</p>',
                 'historical_notes' => null,
                 'private_notes' => null
             ]

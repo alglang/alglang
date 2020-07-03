@@ -76,6 +76,21 @@ describe('Morpheme/BasicDetails.vue', function () {
       expect(getByText('SLOT')).to.have.attribute('href', '/slots/SLOT');
     });
 
+    it('colours its slot', function () {
+      const props = {
+        value: morphemeFactory({
+          slot: slotFactory({
+            abv: 'SLOT',
+            colour: '#ff0000'
+          })
+        })
+      };
+
+      const { getByText } = render(BasicDetails, { props });
+
+      expect(getByText('SLOT')).to.have.attribute('style', 'color: rgb(255, 0, 0);');
+    });
+
     it('hyperlinks glosses with a url', function () {
       const props = {
         value: morphemeFactory({

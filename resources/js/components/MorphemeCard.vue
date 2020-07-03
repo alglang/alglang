@@ -5,7 +5,9 @@
     style="width: fit-content; min-width: 12rem;"
   >
     <span class="text-xs font-semibold">
-      <a :href="morpheme.slot.url">{{ morpheme.slot.abv }}</a>
+      <a :href="morpheme.slot.url" :style="{ color: morpheme.slot.colour }">
+        {{ morpheme.slot.abv }}
+      </a>
     </span>
 
     <p class="text-xl py-2 text-gray-900 hover:text-gray-900">
