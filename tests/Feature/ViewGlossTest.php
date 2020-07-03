@@ -14,7 +14,7 @@ class ViewGlossTest extends TestCase
     /** @test */
     public function glosses_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
+        $this->withoutMix();
 
         $gloss = factory(Gloss::class)->create([
             'abv' => 'FOO',

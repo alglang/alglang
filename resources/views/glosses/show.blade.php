@@ -1,3 +1,5 @@
-<p>{{ $gloss->abv }}</p>
-<p>{{ $gloss->name }}</p>
-<p>{{ $gloss->description }}</p>
+@extends('layouts.app')
+
+@section('content')
+    <alglang-gloss :gloss="{{ $gloss }}" />
+@endsection
