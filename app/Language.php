@@ -18,6 +18,13 @@ class Language extends Model
         'reconstructed' => 'bool'
     ];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getPositionAttribute($value)
     {
         return json_decode($value);
@@ -28,10 +35,24 @@ class Language extends Model
         return route('languages.show', ['language' => $this], false);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Query scopes
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public static function scopePositioned($query)
     {
         return $query->whereNotNull('position');
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function group()
     {
@@ -52,6 +73,13 @@ class Language extends Model
     {
         return $this->hasMany(VerbForm::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HasSlug config
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getSlugOptions(): SlugOptions
     {

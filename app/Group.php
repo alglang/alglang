@@ -14,20 +14,41 @@ class Group extends Model
 
     protected $appends = ['url'];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getUrlAttribute()
     {
         return route('groups.show', ['group' => $this], false);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function languages()
+    {
+        return $this->hasMany(Language::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HasSlug config
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
-    }
-
-    public function languages()
-    {
-        return $this->hasMany(Language::class);
     }
 }

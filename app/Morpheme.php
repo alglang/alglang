@@ -38,23 +38,26 @@ class Morpheme extends Model
 
     protected function updateSlugBasedOnDisambiguator()
     {
-        $pieces = explode('-', $this->slug);
-        $changed = false;
+        $pieces = collect(explode('-', $this->slug));
         $disambiguator = $this->disambiguator + 1;
 
-        if (count($pieces) <= 1 || !is_numeric($pieces[count($pieces) - 1])) {
-            $pieces[] = $disambiguator;
-            $changed = true;
-        } elseif ((int)$pieces[count($pieces) - 1] !== $disambiguator) {
-            $pieces[count($pieces) - 1] = $disambiguator;
-            $changed = true;
-        }
+        if ($pieces->last() !== strval($disambiguator)) {
+            if (is_numeric($pieces->last())) {
+                $pieces->pop();
+            }
 
-        if ($changed) {
-            $this->slug = implode('-', $pieces);
+            $pieces->push($disambiguator);
+            $this->slug = $pieces->join('-');
             $this->save();
         }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getUrlAttribute()
     {
@@ -68,6 +71,29 @@ class Morpheme extends Model
         );
     }
 
+    public function getGlossesAttribute()
+    {
+        if (isset($this->glosses_)) {
+            return $this->glosses_;
+        }
+
+        $abvs = collect(explode('.', $this->gloss));
+        $existing = Gloss::find($abvs);
+
+        $this->glosses_ = $abvs->map(function ($abv) use ($existing) {
+            return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
+        });
+
+        return $this->glosses_;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function language()
     {
         return $this->belongsTo(Language::class);
@@ -78,21 +104,12 @@ class Morpheme extends Model
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
 
-    public function getGlossesAttribute()
-    {
-        if (!isset($this->glosses_)) {
-            $abvs = explode('.', $this->gloss);
-            $glossesFromDatabase = Gloss::findOrNew($abvs);
-            $glosses = array_map(function ($abv) use ($glossesFromDatabase) {
-                $gloss = $glossesFromDatabase->firstWhere('abv', $abv);
-                return $gloss ?? new Gloss(['abv' => $abv]);
-            }, $abvs);
-
-            $this->glosses_ = collect($glosses);
-        }
-
-        return $this->glosses_;
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | HasSlug config
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getSlugOptions(): SlugOptions
     {
