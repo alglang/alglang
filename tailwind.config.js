@@ -1,7 +1,8 @@
 module.exports = {
   purge: [
     './resources/views/**/*.blade.php',
-    './resources/css/**/*.css',
+    './resources/js/components/**/*.vue',
+    './resources/css/**/*.css'
   ],
   theme: {
     fontFamily: {
@@ -18,4 +19,4 @@ module.exports = {
   plugins: [
     require('@tailwindcss/custom-forms')
   ]
-}
+};
