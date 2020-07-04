@@ -1,4 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* global Mix */
 const mix = require('laravel-mix');
+const autoprefixer = require('autoprefixer');
+const tailwindcss = require('tailwindcss');
 
 require('laravel-mix-merge-manifest');
 
@@ -17,13 +21,12 @@ if (process.env.NODE_ENV === 'testing') {
   Mix.manifest.name = 'mix-manifest.testing.json';
 }
 
-mix.js('resources/js/app.js', 'public/js')
-   .postCss('resources/css/app.css', 'public/css', [
-     require('autoprefixer')(),
-     require('tailwindcss')()
-   ]);
+mix.js('resources/js/app.js', 'public/js');
+mix.postCss('resources/css/app.css', 'public/css', [
+  autoprefixer(),
+  tailwindcss()
+]);
 
 if (mix.inProduction()) {
-  mix
-   .version();
+  mix.version();
 }
