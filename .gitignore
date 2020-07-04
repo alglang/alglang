@@ -11,6 +11,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .nyc_output
+/coverage
 
 /public/js
 /public/css

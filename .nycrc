@@ -13,6 +13,7 @@
     "check-coverage": true,
     "reporter": [
         "text",
-        "text-summary"
+        "text-summary",
+        "cobertura"
     ]
 }
