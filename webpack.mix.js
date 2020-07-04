@@ -19,6 +19,7 @@ require('laravel-mix-merge-manifest');
 
 if (process.env.NODE_ENV === 'testing') {
   Mix.manifest.name = 'mix-manifest.testing.json';
+  mix.sourceMaps();
 }
 
 mix.js('resources/js/app.js', 'public/js');

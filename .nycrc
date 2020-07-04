@@ -1,0 +1,18 @@
+{
+    "include": [
+        "resources/js/**/*.js",
+        "resources/js/**/*.vue"
+    ],
+    "extension": [
+        ".js",
+        ".vue"
+    ],
+    "exclude": [
+        "**/*.spec.js"
+    ],
+    "check-coverage": true,
+    "reporter": [
+        "text",
+        "text-summary"
+    ]
+}
