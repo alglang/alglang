@@ -127,16 +127,13 @@
 
             <div>
                 @guest
-                <a href="{{ route('login') }}" class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600">
-                    Log in
-                </a>
-                <a href="{{ route('register') }}" class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600">
-                    Register
+                <a href="{{ route('auth.github') }}" class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600">
+                    Github
                 </a>
                 @else
                 <a
                     href="{{ route('logout') }}"
-                    class="block uppercase hover:text-yellow-800"
+                    class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600"
                     onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                 >
                     Log out

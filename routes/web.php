@@ -53,4 +53,7 @@ Route::get('/search/verbs/paradigm', function () {
     abort(404);
 })->name('search.verbs.paradigm');
 
-Auth::routes();
+Route::get('/login', 'Auth\LoginController@login')->name('login');
+Route::get('/auth/github', 'Auth\LoginController@redirectToProvider')->name('auth.github');
+Route::get('/auth/github/callback', 'Auth\LoginController@handleProviderCallback')->name('auth.github.callback');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');

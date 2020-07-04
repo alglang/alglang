@@ -13,7 +13,7 @@ class HomeTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_guest_sees_login_and_register_links()
+    public function a_guest_sees_login_links()
     {
         $this->withoutMix();
         $this->withoutExceptionHandling();
@@ -23,8 +23,7 @@ class HomeTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk();
-        $response->assertSee('Log in');
-        $response->assertSee('Register');
+        $response->assertSee('Github');
 
         $response->assertSee('alglang.net');
         $response->assertSee('Smart search...');
