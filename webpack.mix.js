@@ -1,6 +1,5 @@
 const mix = require('laravel-mix');
 
-require('laravel-mix-tailwind');
 require('laravel-mix-merge-manifest');
 
 /*
@@ -19,13 +18,10 @@ if (process.env.NODE_ENV === 'testing') {
 }
 
 mix.js('resources/js/app.js', 'public/js')
-   .postCss('resources/css/app.css', 'public/css')
-   .tailwind('./tailwind.config.js')
-   .options({
-     postCss: [
-      require('autoprefixer')
-     ]
-   });
+   .postCss('resources/css/app.css', 'public/css', [
+     require('autoprefixer')(),
+     require('tailwindcss')()
+   ]);
 
 if (mix.inProduction()) {
   mix
