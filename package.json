@@ -15,7 +15,7 @@
         "test": "cross-env NODE_ENV=testing nyc yarn mocha",
         "lint": "eslint --ext .js,.vue resources/js tests/JavaScript",
         "serve": "php artisan serve",
-        "start": "concurrently --kill-others \"yarn serve --quiet\" \"yarn development-quiet --watch\" \"yarn mocha-watch\""
+        "start": "concurrently --kill-others \"yarn serve --quiet >/dev/null 2>&1\" \"yarn development-quiet --watch >/dev/null 2>&1\" \"yarn mocha-watch\""
     },
     "devDependencies": {
         "@tailwindcss/custom-forms": "^0.2",
