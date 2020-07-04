@@ -13,10 +13,10 @@
                 <a href="{{ route('structural-survey') }}" class="uppercase">Structural survey</a>: maps showing the patterning of various features across the Algonquian family
             </li>
             <li>
-                <a href="{{ route('verbs') }}" class="uppercase">Verb forms</a> and <a href="#" class="uppercase">nominal forms</a> annotated with glosses, allomorphy, examples, cognates, and historical derivation
+                <a href="{{ route('verbs') }}" class="uppercase">Verb forms</a> and <a href="{{ route('nominals') }}" class="uppercase">nominal forms</a> annotated with glosses, allomorphy, examples, cognates, and historical derivation
             </li>
             <li>
-                <a href="{{ route('nominals') }}" class="uppercase">Phonology</a>: phoneme inventories, clusters, synchronic and diachronic rules, and sound changes
+                <a href="{{ route('phonology') }}" class="uppercase">Phonology</a>: phoneme inventories, clusters, synchronic and diachronic rules, and sound changes
             </li>
             <li>
                 <a href="{{ route('bibliography') }}" class="uppercase">Bibliography</a>: a filterable bibliography of Algonquian linguistics

@@ -14,8 +14,6 @@ class ViewSlotTest extends TestCase
     /** @test */
     public function slots_can_be_viewed()
     {
-        $this->withoutMix();
-
         $slot = factory(Slot::class)->create([
             'abv' => 'SLOT',
             'name' => 'the slot',

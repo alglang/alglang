@@ -15,8 +15,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $this->withoutMix();
-
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
@@ -37,8 +35,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_shows_its_children()
     {
-        $this->withoutMix();
-
         $language = factory(Language::class)->create();
         $child1 = factory(Language::class)->create([
             'name' => 'Test Child 1',
@@ -59,8 +55,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_map_is_displayed_of_the_language()
     {
-        $this->withoutMix();
-
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
             'position' => '{"lat":57.5,"lng":74.3}'
@@ -75,8 +69,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function reconstructed_languages_are_indicated()
     {
-        $this->withoutMix();
-
         $language = factory(Language::class)->create(['reconstructed' => true]);
 
         $response = $this->get($language->url);

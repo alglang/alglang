@@ -16,6 +16,7 @@ class HomeTest extends TestCase
     public function a_guest_sees_login_and_register_links()
     {
         $this->withoutMix();
+        $this->withoutExceptionHandling();
 
         $this->assertGuest();
 
@@ -69,9 +70,6 @@ class HomeTest extends TestCase
             'name' => 'Test Language 2',
             'position' => '{"lat":47.1,"lng":-86.1}'
         ]);
-        factory(Language::class)->create([
-            'name' => 'Test Language 3',
-        ]);
 
         $response = $this->get('/');
 
@@ -80,6 +78,5 @@ class HomeTest extends TestCase
         $response->assertSee('{"lat":46.1,"lng":-87.1}');
         $response->assertSee('Test Language 2');
         $response->assertSee('{"lat":47.1,"lng":-86.1}');
-        $response->assertDontSee('Test Language 3');
     }
 }

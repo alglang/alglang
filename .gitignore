@@ -10,8 +10,10 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+.nyc_output
+/coverage
 
 /public/js
 /public/css
-/public/mix-manifest.json
+/public/mix-manifest*.json
 /public/images/vendor

@@ -19,7 +19,6 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $class = factory(VerbClass::class)->create(['abv' => 'TA']);
         $order = factory(VerbOrder::class)->create(['name' => 'Conjunct']);
