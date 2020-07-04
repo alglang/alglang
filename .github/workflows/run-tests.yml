@@ -25,7 +25,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
-          coverage: none
+          coverage: xdebug
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
