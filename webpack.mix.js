@@ -20,7 +20,12 @@ if (process.env.NODE_ENV === 'testing') {
 
 mix.js('resources/js/app.js', 'public/js')
    .postCss('resources/css/app.css', 'public/css')
-   .tailwind('./tailwind.config.js');
+   .tailwind('./tailwind.config.js')
+   .options({
+     postCss: [
+      require('autoprefixer')
+     ]
+   });
 
 if (mix.inProduction()) {
   mix
