@@ -9,7 +9,7 @@
         "prod": "yarn production",
         "build": "yarn production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "test": "mochapack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/JavaScript/setup.js tests/JavaScript/\\*\\*/\\*.spec.js",
+        "test": "cross-env NODE_ENV=testing mochapack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/JavaScript/setup.js tests/JavaScript/\\*\\*/\\*.spec.js",
         "lint": "eslint --ext .js,.vue resources/js tests/JavaScript"
     },
     "devDependencies": {
@@ -26,6 +26,7 @@
         "jsdom": "^16.2.2",
         "jsdom-global": "^3.0.2",
         "laravel-mix": "^5.0.1",
+        "laravel-mix-merge-manifest": "^0.1.2",
         "laravel-mix-tailwind": "^0.1.0",
         "mocha": "^8.0.1",
         "mochapack": "^2.0.0",

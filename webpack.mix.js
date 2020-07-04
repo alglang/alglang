@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 
 require('laravel-mix-tailwind');
+require('laravel-mix-merge-manifest');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,6 +13,10 @@ require('laravel-mix-tailwind');
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+if (process.env.NODE_ENV === 'testing') {
+  Mix.manifest.name = 'mix-manifest.testing.json';
+}
 
 mix.js('resources/js/app.js', 'public/js')
    .postCss('resources/css/app.css', 'public/css')
