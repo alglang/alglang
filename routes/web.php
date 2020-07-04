@@ -41,6 +41,10 @@ Route::get('/nominals', function () {
     abort(404);
 })->name('nominals');
 
+Route::get('/phonology', function () {
+    abort(404);
+})->name('phonology');
+
 Route::get('/bibliography', function () {
     abort(404);
 })->name('bibliography');

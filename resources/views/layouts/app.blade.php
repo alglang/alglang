@@ -18,36 +18,78 @@
 <body class="min-h-screen bg-gray-300 text-gray-900 antialiased font-body leading-none">
     <div id="app" class="flex flex-col min-h-screen">
         <nav class="flex items-center justify-between flex-wrap bg-gray-900 px-6">
-            <a href="{{ route('home') }}" class="flex items-center flex-shrink-0 p-3 bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
-                <h1 class="font-light text-2xl tracking-tight">
-                    alglang.net
-                </h1>
-                <div class="block">
-                    <button class="flex items-center px-3">
-                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <title>Menu</title>
-                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-                        </svg>
-                    </button>
-                </div>
-            </a>
+            <div class="relative group">
+                <a href="{{ route('home') }}" class="flex items-center flex-shrink-0 p-3 bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
+                    <h1 class="font-light text-2xl tracking-tight">
+                        alglang.net
+                    </h1>
+                    <div class="block">
+                        <button class="flex items-center px-3">
+                            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <title>Menu</title>
+                                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </a>
+
+                <ul class="absolute py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                    <li>
+                        <a href="{{ route('structural-survey') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                            Structural survey
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('verbs') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                            Verb forms
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('nominals') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                            Nominal forms
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('phonology') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                            Phonology
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('bibliography') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                            Bibliography
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
             <div class="flex items-center self-stretch">
                 <input type="text" class="bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700" placeholder="Smart search..." />
-                <a href="{{ route('groups.show', ['group' => 'algonquian']) }}" class="flex items-center px-3 h-full uppercase text-gray-100 hover:bg-red-700 hover:text-gray-900">
-                    <span>Languages</span>
-                </a>
+                <div class="relative group h-full">
+                    <a href="{{ route('groups.show', ['group' => 'algonquian']) }}" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">
+                        <span>Languages</span>
+                    </a>
+                    
+                    <ul class="absolute py-1 border-1 border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                        @foreach($languages as $language)
+                        <li>
+                            <a href="{{ $language->url }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                                {{ $language->name }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
 
-                <a href="#" class="flex items-center px-3 h-full uppercase text-gray-100 hover:bg-red-700 hover:text-gray-900">
+                <a href="#" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">
                     <span>Search</span>
                 </a>
 
                 @guest
-                <a href="{{ route('login') }}" class="flex items-center px-3 h-full uppercase bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
+                <a href="{{ route('login') }}" class="flex items-center px-3 h-full uppercase tracking-wide bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
                     <span>Log in</span>
                 </a>
                 @else
-                <a href="#" class="flex items-center bg-yellow-400 text-gray-900 uppercase px-3 h-full uppercase bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
+                <a href="#" class="flex items-center bg-yellow-400 text-gray-900 uppercase tracking-wide px-3 h-full uppercase bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
                     <span>Add</span>
                 </a>
                 @endguest

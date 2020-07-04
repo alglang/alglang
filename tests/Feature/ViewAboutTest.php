@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class ViewAboutTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function it_loads()
     {

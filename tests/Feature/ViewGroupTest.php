@@ -47,10 +47,6 @@ class ViewGroupTest extends TestCase
             'position' => '{"lat":47.1,"lng":-86.1}',
             'group_id' => $group->id
         ]);
-        factory(Language::class)->create([
-            'name' => 'Test Language 3',
-            'group_id' => $group->id
-        ]);
 
         $response = $this->get($group->url);
 
@@ -59,6 +55,5 @@ class ViewGroupTest extends TestCase
         $response->assertSee('{"lat":46.1,"lng":-87.1}');
         $response->assertSee('Test Language 2');
         $response->assertSee('{"lat":47.1,"lng":-86.1}');
-        $response->assertDontSee('Test Language 3');
     }
 }
