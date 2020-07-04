@@ -13,8 +13,6 @@ class ViewErrorsTest extends TestCase
     /** @test */
     public function error_404_contains_a_contact_email()
     {
-        $this->withoutMix();
-
         $response = $this->get('/fhjklasdhfjkasldf');  // Non-existent route
         $response->assertStatus(404);
 

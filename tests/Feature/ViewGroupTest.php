@@ -15,8 +15,6 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function a_group_can_be_viewed()
     {
-        $this->withoutMix();
-
         $this->withoutExceptionHandling();
         $group = factory(Group::class)->create([
             'name' => 'Test Group',
@@ -33,8 +31,6 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
-        $this->withoutMix();
-
         $group = factory(Group::class)->create();
 
         factory(Language::class)->create([
