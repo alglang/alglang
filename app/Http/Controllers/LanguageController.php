@@ -9,8 +9,13 @@ class LanguageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
-        $this->middleware('permission:create languages')->except('show');
+        $this->middleware('auth')->except('show', 'index');
+        $this->middleware('permission:create languages')->except('show', 'index');
+    }
+
+    public function index()
+    {
+        return ['data' => Language::all()];
     }
 
     /**
@@ -26,6 +31,11 @@ class LanguageController extends Controller
     }
 
     public function create()
+    {
+        return view('languages.create');
+    }
+
+    public function store()
     {
         $languageData = request()->validate([
             'name' => 'required|string|unique:App\Language',
