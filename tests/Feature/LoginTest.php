@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
@@ -31,6 +32,15 @@ class LoginTest extends TestCase
     }
 
     /** @test */
+    public function the_login_page_has_social_links()
+    {
+        $response = $this->get('/login');
+
+        $response->assertOk();
+        $response->assertSee('Sign in with Github');
+    }
+
+    /** @test */
     public function a_user_can_log_in_via_github()
     {
         $githubUser = (object)[
@@ -44,8 +54,20 @@ class LoginTest extends TestCase
 
         $response = $this->get('/auth/github/callback');
 
-        $response->assertRedirect();
-        $response->assertLocation('/');
+        $response->assertRedirect('/');
         $this->assertAuthenticated();
+    }
+
+    /** @test */
+    public function a_user_can_log_out()
+    {
+        $user = factory(User::class)->create();
+        auth()->login($user, true);
+        $this->assertAuthenticated();
+
+        $response = $this->post('/logout');
+
+        $response->assertRedirect('/');
+        $this->assertGuest();
     }
 }
