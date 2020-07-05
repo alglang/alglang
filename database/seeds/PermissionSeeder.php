@@ -17,8 +17,10 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         Permission::create(['name' => 'create groups']);
+        Permission::create(['name' => 'create languages']);
 
         Role::create(['name' => 'contributor'])
-            ->givePermissionTo('create groups');
+            ->givePermissionTo('create groups')
+            ->givePermissionTo('create languages');
     }
 }

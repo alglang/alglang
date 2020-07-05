@@ -8,8 +8,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Language::class, function (Faker $faker) {
     return [
-        'name' => 'Test Language',
-        'algo_code' => 'PA',
+        'name' => 'Factory Created Language',
+        'algo_code' => 'FCL',
         'group_id' => factory(Group::class)
     ];
 });

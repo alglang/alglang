@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('show');
+        $this->middleware('permission:create languages')->except('show');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -17,5 +23,21 @@ class LanguageController extends Controller
     {
         $language->load('group', 'children');
         return view('languages.show', ['language' => $language]);
+    }
+
+    public function create()
+    {
+        $languageData = request()->validate([
+            'name' => 'required|string|unique:App\Language',
+            'algo_code' => 'required|string|max:5',
+            'group_id' => 'required|exists:App\Group,id',
+            'parent_id' => 'required|exists:App\Language,id',
+            'reconstructed' => 'boolean',
+            'position' => 'json',
+            'notes' => 'string'
+        ]);
+
+        $language = Language::create($languageData);
+        return redirect($language->url);
     }
 }

@@ -37,6 +37,8 @@ class FetchMorphemesTest extends TestCase
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'shape' => '-ak',
                     'url' => $morpheme->url,
@@ -71,6 +73,8 @@ class FetchMorphemesTest extends TestCase
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'gloss' => 'G1.G2',
                     'glosses' => [
@@ -99,6 +103,8 @@ class FetchMorphemesTest extends TestCase
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'disambiguator' => $morpheme->disambiguator
                 ]
@@ -119,7 +125,7 @@ class FetchMorphemesTest extends TestCase
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
-        $nextResponse->assertJsonCount(5, 'data');
+        $nextResponse->assertJsonCount(7, 'data');  // +2 for the placeholders
     }
 
     /** @test */
@@ -137,9 +143,11 @@ class FetchMorphemesTest extends TestCase
         $response = $this->get("$language1->url/morphemes");
 
         $response->assertOk();
-        $response->assertJsonCount(1, 'data');
+        $response->assertJsonCount(3, 'data');  // +2 for the placeholders
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 ['shape' => '-ak']
             ]
         ]);

@@ -18,6 +18,23 @@ class Language extends Model
         'reconstructed' => 'bool'
     ];
 
+    public static function booted()
+    {
+        static::created(function (Language $language) {
+            $language->morphemes()->create([
+                'shape' => 'V-',
+                'slot_abv' => 'STM',
+                'gloss' => 'V'
+            ]);
+
+            $language->morphemes()->create([
+                'shape' => 'N-',
+                'slot_abv' => 'STM',
+                'gloss' => 'N'
+            ]);
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors

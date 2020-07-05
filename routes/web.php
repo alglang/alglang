@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/groups/{group:slug}', 'GroupController@show')->name('groups.show');
 Route::post('/groups', 'GroupController@create');
 Route::get('/languages/{language:slug}', 'LanguageController@show')->name('languages.show');
+Route::post('/languages', 'LanguageController@create');
 Route::get('/languages/{language:slug}/morphemes', 'MorphemeController@index');
 Route::get('/languages/{language:slug}/morphemes/{morpheme:slug}', 'MorphemeController@show')->name('morphemes.show');
 Route::get('/languages/{language:slug}/verb-forms/{verbForm:slug}', 'VerbFormController@show')->name('verb-forms.show');

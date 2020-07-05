@@ -6,7 +6,6 @@ use App\Group;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Spatie\Permission\PermissionRegistrar;
 use Tests\TestCase;
 
 class CreateGroupTest extends TestCase
@@ -17,21 +16,20 @@ class CreateGroupTest extends TestCase
     {
         parent::setUp();
 
-        $this->seed('PermissionSeeder');
-        $this->app->make(PermissionRegistrar::class)->registerPermissions();
+        $this->withPermissions();
+
+        $this->contributor = factory(User::class)->create();
+        $this->contributor->assignRole('contributor');
     }
 
     /** @test */
     public function a_group_can_be_created_by_a_contributor()
     {
-        $user = factory(User::class)->create();
-        $user->assignRole('contributor');
-
-        $response = $this->actingAs($user)
-            ->postJson('/groups', [
-                'name' => 'Test Group',
-                'description' => 'Lorem ipsum dolor sit amet'
-            ]);
+        $response = $this->actingAs($this->contributor)
+                         ->postJson('/groups', [
+                             'name' => 'Test Group',
+                             'description' => 'Lorem ipsum dolor sit amet'
+                         ]);
 
         $group = Group::first();
 
@@ -43,11 +41,12 @@ class CreateGroupTest extends TestCase
     /** @test */
     public function a_group_cannot_be_created_by_an_unauthenticated_user()
     {
+        $this->assertGuest();
+
         $response = $this->postJson('/groups', [
             'name' => 'Test Group',
             'description' => 'Lorem ipsum dolor sit amet'
         ]);
-        $this->assertGuest();
 
         $response->assertUnauthorized();
     }
@@ -69,9 +68,7 @@ class CreateGroupTest extends TestCase
     /** @test */
     public function a_group_must_have_a_name()
     {
-        $user = factory(User::class)->create();
-        $user->assignRole('contributor');
-        $response = $this->actingAs($user)->postJson('/groups', []);
+        $response = $this->actingAs($this->contributor)->postJson('/groups', []);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('name');

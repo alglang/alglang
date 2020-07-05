@@ -13,6 +13,8 @@ class Morpheme extends Model
     use Disambiguatable;
     use HasSlug;
 
+    protected $guarded = [];
+
     protected $with = ['language'];
 
     protected $appends = ['url'];
