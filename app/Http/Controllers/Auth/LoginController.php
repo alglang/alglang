@@ -40,17 +40,23 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function redirectToProvider()
-    {
-        return Socialite::driver('github')->redirect();
-    }
-
-    public function handleProviderCallback()
+    public function redirectToProvider($provider)
     {
         try {
-            $user = Socialite::driver('github')->user();
+            return Socialite::driver($provider)->redirect();
+        } catch (\InvalidArgumentException $e) {
+            return abort(404);
+        }
+    }
+
+    public function handleProviderCallback($provider)
+    {
+        try {
+            $user = Socialite::driver($provider)->user();
+        } catch (\InvalidArgumentException $e) {
+            return abort(404);
         } catch (\Exception $e) {
-            return redirect()->route('auth.github');
+            return redirect()->route('auth', ['provider' => $provider]);
         }
 
         $authUser = $this->findOrCreateUser($user);

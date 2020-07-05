@@ -15,6 +15,22 @@ class LoginTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function navigating_to_an_unknown_provider_throws_a_404()
+    {
+        $response = $this->get('/auth/foo');
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
+    public function navigating_to_an_unknown_provider_callback_throws_a_404()
+    {
+        $response = $this->get('/auth/foo/callback');
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
     public function a_user_can_log_in_via_github()
     {
         $githubUser = (object)[
