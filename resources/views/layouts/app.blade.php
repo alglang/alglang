@@ -127,8 +127,8 @@
 
             <div>
                 @guest
-                <a href="{{ route('auth', ['provider' => 'github']) }}" class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600">
-                    Github
+                <a href="{{ route('login') }}" class="block uppercase mb-2 text-yellow-400 hover:text-yellow-600">
+                    Log in
                 </a>
                 @else
                 <a
