@@ -9,8 +9,13 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
-        $this->middleware('permission:create groups')->except('show');
+        $this->middleware('auth')->except('show', 'index');
+        $this->middleware('permission:create groups')->except('show', 'index');
+    }
+
+    public function index()
+    {
+        return ['data' => Group::all()];
     }
 
     /**

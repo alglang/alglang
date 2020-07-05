@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/groups', [GroupController::class, 'index']);
 Route::get('/groups/{group:slug}', [GroupController::class, 'show'])->name('groups.show');
 Route::post('/groups', [GroupController::class, 'create']);
 
