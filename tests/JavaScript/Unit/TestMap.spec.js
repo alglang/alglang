@@ -38,4 +38,41 @@ describe('Map.vue', function () {
     const markers = container.getElementsByClassName('leaflet-marker-icon');
     expect(markers).to.have.lengthOf(2);
   });
+
+  describe('when it has a value', function () {
+    describe('when the value has a position', function () {
+      it('renders the value', async function () {
+        const props = {
+          value: {
+            position: {
+              lat: 45,
+              lng: 34
+            }
+          }
+        };
+
+        const { container } = render(Map, { props });
+
+        await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.not.be.null);
+
+        const markers = container.getElementsByClassName('leaflet-marker-icon');
+        expect(markers).to.have.lengthOf(1);
+      });
+    });
+
+    describe('when the value has no position', function () {
+      it('does not render the value', async function () {
+        const props = {
+          value: { position: null }
+        };
+
+        const { container } = render(Map, { props });
+
+        await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.not.be.null);
+
+        const markers = container.getElementsByClassName('leaflet-marker-icon');
+        expect(markers).to.have.lengthOf(0);
+      });
+    });
+  });
 });

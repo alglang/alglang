@@ -1,6 +1,8 @@
 <template>
   <l-map :zoom="zoom" :center="center">
     <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <l-marker v-if="value && value.position" :lat-lng="value.position" />
+
       <l-marker v-for="(location, i) of locations" :key="i" :lat-lng="location.position">
         <l-popup>
           <a :href="location.url">
@@ -25,6 +27,7 @@ import 'leaflet-defaulticon-compatibility'; // eslint-disable-line import/no-unr
 
 export default {
   props: {
+    value: null,
     locations: {
       default: () => []
     }
