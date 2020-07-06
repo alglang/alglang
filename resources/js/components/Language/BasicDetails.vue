@@ -60,7 +60,12 @@
     </alglang-detail-row>
 
     <alglang-detail-row v-if="mode === 'edit' || value.position" label="Location">
-      <alglang-map v-if="mode === 'edit'" :style="{ height: '30rem' }" :value="value" @input="$emit('input', $event)" />
+      <alglang-map
+        v-if="mode === 'edit'"
+        :style="{ height: '30rem' }"
+        :value="value"
+        @input="$emit('input', $event)"
+      />
       <alglang-map v-else :style="{ height: '30rem' }" />
     </alglang-detail-row>
   </div>
