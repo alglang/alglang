@@ -46,6 +46,14 @@ describe('Language.vue', function () {
     afterEach(function () { moxios.uninstall(); });
 
     it('displays an input for its name', function () {
+      const props = { mode: 'edit' };
+
+      const { getByLabelText } = render(Language, { props });
+
+      expect(getByLabelText('Name')).to.have.tagName('input');
+    });
+
+    it('binds the name input to its name', function () {
       const props = {
         mode: 'edit',
         language: { name: 'Test Language' }
@@ -57,6 +65,14 @@ describe('Language.vue', function () {
     });
 
     it('displays a checkbox for its reconstructed value', function () {
+      const props = { mode: 'edit' };
+
+      const { getByLabelText } = render(Language, { props });
+
+      expect(getByLabelText('Reconstructed')).to.have.tagName('input');
+    });
+
+    it('binds the reconstructed checkbox to its reconstructed value', function () {
       const props = {
         mode: 'edit',
         language: { reconstructed: true }
@@ -64,7 +80,6 @@ describe('Language.vue', function () {
 
       const { getByLabelText } = render(Language, { props });
 
-      expect(getByLabelText('Reconstructed')).to.have.tagName('input');
       expect(getByLabelText('Reconstructed').checked).to.be.true;
     });
   });
