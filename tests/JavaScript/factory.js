@@ -22,6 +22,7 @@ export const groupFactory = props => ({
 
 export const morphemeFactory = props => ({
   slot: slotFactory(),
-  glosses: [glossFactory()],
+  gloss: 'TGL',
+  glosses: [glossFactory({ abv: 'TGL' })],
   ...props
 });

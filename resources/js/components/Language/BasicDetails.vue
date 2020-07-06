@@ -20,7 +20,12 @@
           v-model="value.group_id"
           class="px-3 py-2 border border-gray-200 shadow-inner"
         >
-          <option v-for="group in resources.groups" :key="group.id" :value="group.id" class="py-2">
+          <option
+            v-for="group in resources.groups"
+            :key="group.id"
+            :value="group.id"
+            class="py-2"
+          >
             {{ group.name }}
           </option>
         </select>
@@ -38,7 +43,10 @@
       :disabled="mode === 'edit'"
     >
       <ul>
-        <li v-for="child of value.children" :key="child.name">
+        <li
+          v-for="child of value.children"
+          :key="child.name"
+        >
           <a :href="child.url">
             {{ child.name }}
           </a>
@@ -46,27 +54,36 @@
       </ul>
     </alglang-detail-row>
 
-    <alglang-detail-row v-if="mode === 'edit' || value.notes" label="Notes">
+    <alglang-detail-row
+      v-if="mode === 'edit' || value.notes"
+      label="Notes"
+    >
       <div class="flex items-center">
         <textarea
           v-if="mode === 'edit'"
           v-model="value.notes"
           class="px-3 w-full h-32 border border-gray-200 shadow-inner"
-        ></textarea>
+        />
         <p v-else>
           {{ value.notes }}
         </p>
       </div>
     </alglang-detail-row>
 
-    <alglang-detail-row v-if="mode === 'edit' || value.position" label="Location">
+    <alglang-detail-row
+      v-if="mode === 'edit' || value.position"
+      label="Location"
+    >
       <alglang-map
         v-if="mode === 'edit'"
         :style="{ height: '30rem' }"
         :value="value"
         @input="$emit('input', $event)"
       />
-      <alglang-map v-else :style="{ height: '30rem' }" />
+      <alglang-map
+        v-else
+        :style="{ height: '30rem' }"
+      />
     </alglang-detail-row>
   </div>
 </template>
@@ -83,14 +100,17 @@ export default {
 
   props: {
     value: {
+      type: Object,
       required: true
     },
 
     mode: {
+      type: String,
       default: 'view'
     },
 
     resources: {
+      type: Object,
       default: () => ({ groups: [] })
     }
   }

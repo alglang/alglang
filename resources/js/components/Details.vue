@@ -2,11 +2,14 @@
   <section class="bg-white p-6">
     <header class="flex justify-between mb-4">
       <div class="leading-normal">
-        <h2 for="details-title" class="block text-lg uppercase text-gray-600">
+        <h2
+          for="details-title"
+          class="block text-lg uppercase text-gray-600"
+        >
           {{ title }}
         </h2>
         <div>
-          <slot name="header"></slot>
+          <slot name="header" />
         </div>
       </div>
 
@@ -50,23 +53,27 @@ import axios from 'axios';
 export default {
   props: {
     title: {
+      type: String,
       required: true
     },
 
     pages: {
-      required: true,
-      type: Array
+      type: Array,
+      required: true
     },
 
     value: {
+      type: Object,
       required: true
     },
 
     mode: {
+      type: String,
       default: 'view'
     },
 
     resources: {
+      type: Array,
       default: () => []
     }
   },

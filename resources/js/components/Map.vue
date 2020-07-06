@@ -1,15 +1,26 @@
 <template>
-  <l-map :zoom="zoom" :center="center" @click.right="handleRightClick">
+  <l-map
+    :zoom="zoom"
+    :center="center"
+    @click.right="handleRightClick"
+  >
     <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <l-marker v-if="value && value.position" :lat-lng="value.position" />
+    <l-marker
+      v-if="value && value.position"
+      :lat-lng="value.position"
+    />
 
-      <l-marker v-for="(location, i) of locations" :key="i" :lat-lng="location.position">
-        <l-popup>
-          <a :href="location.url">
-            {{ location.name }}
-          </a>
-        </l-popup>
-      </l-marker>
+    <l-marker
+      v-for="(location, i) of locations"
+      :key="i"
+      :lat-lng="location.position"
+    >
+      <l-popup>
+        <a :href="location.url">
+          {{ location.name }}
+        </a>
+      </l-popup>
+    </l-marker>
   </l-map>
 </template>
 
@@ -26,18 +37,23 @@ import {
 import 'leaflet-defaulticon-compatibility'; // eslint-disable-line import/no-unresolved
 
 export default {
-  props: {
-    value: null,
-    locations: {
-      default: () => []
-    }
-  },
-
   components: {
     LMap,
     LTileLayer,
     LMarker,
     LPopup
+  },
+
+  props: {
+    value: {
+      type: Object,
+      default: () => ({})
+    },
+
+    locations: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data() {

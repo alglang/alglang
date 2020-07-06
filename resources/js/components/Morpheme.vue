@@ -1,5 +1,9 @@
 <template>
-  <alglang-details title="Morpheme details" :pages="pages" v-model="morpheme">
+  <alglang-details
+    v-model="morpheme"
+    :pages="pages"
+    title="Morpheme details"
+  >
     <template v-slot:header>
       <h1 class="text-3xl font-light">
         <span>{{ morpheme.shape }}</span><!--
@@ -17,14 +21,15 @@ import Details from './Details';
 import BasicDetails from './Morpheme/BasicDetails';
 
 export default {
-  props: {
-    morpheme: {
-      required: true
-    }
-  },
-
   components: {
     'alglang-details': Details
+  },
+
+  props: {
+    morpheme: {
+      type: Object,
+      required: true
+    }
   },
 
   data() {

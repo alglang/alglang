@@ -1,5 +1,9 @@
 <template>
-  <alglang-details v-model="gloss" :pages="pages" title="Gloss details">
+  <alglang-details
+    v-model="gloss"
+    :pages="pages"
+    title="Gloss details"
+  >
     <template v-slot:header>
       <h1 class="text-3xl font-light">
         {{ gloss.abv }}
@@ -13,14 +17,15 @@ import Details from './Details';
 import BasicDetails from './Gloss/BasicDetails';
 
 export default {
-  props: {
-    gloss: {
-      required: true
-    }
-  },
-
   components: {
     'alglang-details': Details
+  },
+
+  props: {
+    gloss: {
+      type: Object,
+      required: true
+    }
   },
 
   data() {

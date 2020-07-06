@@ -1,5 +1,9 @@
 <template>
-  <alglang-details title="Group details" :pages="pages" v-model="group">
+  <alglang-details
+    v-model="group"
+    :pages="pages"
+    title="Group details"
+  >
     <template v-slot:header>
       <h1 class="text-3xl font-light">
         {{ group.name }} languages
@@ -19,6 +23,7 @@ export default {
 
   props: {
     group: {
+      type: Object,
       required: true
     }
   },

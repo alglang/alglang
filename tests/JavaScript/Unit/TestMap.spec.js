@@ -95,13 +95,6 @@ describe('Map.vue', function () {
         components: {
           'alglang-map': Map
         },
-        template: `
-<div>
-  <p data-testid="lat">{{ value.position.lat }}</p>
-  <p data-testid="lng">{{ value.position.lng }}</p>
-  <p data-testid="foo">{{ value.foo }}</p>
-  <alglang-map data-testid="map" v-model="value" />
-</div>`,
         data() {
           return {
             value: {
@@ -112,7 +105,14 @@ describe('Map.vue', function () {
               }
             }
           };
-        }
+        },
+        template: `
+<div>
+  <p data-testid="lat">{{ value.position.lat }}</p>
+  <p data-testid="lng">{{ value.position.lng }}</p>
+  <p data-testid="foo">{{ value.foo }}</p>
+  <alglang-map data-testid="map" v-model="value" />
+</div>`
       });
 
       const { container, getByTestId } = render(component);

@@ -1,7 +1,14 @@
 <template>
-  <alglang-details v-model="morphSlot" :pages="pages" title="Slot details">
+  <alglang-details
+    v-model="morphSlot"
+    :pages="pages"
+    title="Slot details"
+  >
     <template v-slot:header>
-      <h1 class="text-3xl font-light" :style="{ color: morphSlot.colour }">
+      <h1
+        class="text-3xl font-light"
+        :style="{ color: morphSlot.colour }"
+      >
         {{ morphSlot.abv }}
       </h1>
     </template>
@@ -13,14 +20,15 @@ import Details from './Details';
 import BasicDetails from './Slot/BasicDetails';
 
 export default {
-  props: {
-    morphSlot: {
-      required: true
-    }
-  },
-
   components: {
     'alglang-details': Details
+  },
+
+  props: {
+    morphSlot: {
+      type: Object,
+      required: true
+    }
   },
 
   data() {

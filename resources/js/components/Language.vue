@@ -1,8 +1,8 @@
 <template>
   <alglang-details
+    v-model="languageData"
     title="Language details"
     :pages="pages"
-    v-model="languageData"
     :resources="resources"
     :mode="mode"
   >
@@ -10,20 +10,30 @@
       <div class="flex align-items h-12">
         <input
           v-if="mode === 'edit'"
+          v-model="language.name"
           class="px-2 py-1 text-xl border border-gray-200 shadow-inner"
           placeholder="Name"
           aria-label="Name"
-          v-model="language.name"
         />
-        <h1 v-else class="text-3xl font-light">
+        <h1
+          v-else
+          class="text-3xl font-light"
+        >
           {{ language.name }}
         </h1>
       </div>
 
       <div>
-        <label v-if="mode === 'edit'" class="mb-2 p-1 text-sm leading-none">
+        <label
+          v-if="mode === 'edit'"
+          class="mb-2 p-1 text-sm leading-none"
+        >
           Reconstructed
-          <input type="checkbox" v-model="language.reconstructed" class="ml-2" />
+          <input
+            v-model="language.reconstructed"
+            type="checkbox"
+            class="ml-2"
+          />
         </label>
         <p
           v-else-if="language.reconstructed"
@@ -48,10 +58,12 @@ export default {
 
   props: {
     mode: {
+      type: String,
       default: 'view'
     },
 
     language: {
+      type: Object,
       default: () => ({})
     }
   },

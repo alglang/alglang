@@ -6,7 +6,10 @@
       </p>
     </alglang-detail-row>
 
-    <alglang-detail-row v-if="value.description" label="Description">
+    <alglang-detail-row
+      v-if="value.description"
+      label="Description"
+    >
       <div v-html="value.description" />
     </alglang-detail-row>
   </div>
@@ -16,14 +19,15 @@
 import DetailRow from '../DetailRow';
 
 export default {
-  props: {
-    value: {
-      required: true
-    }
-  },
-
   components: {
     'alglang-detail-row': DetailRow
+  },
+
+  props: {
+    value: {
+      type: Object,
+      required: true
+    }
   }
 };
 </script>

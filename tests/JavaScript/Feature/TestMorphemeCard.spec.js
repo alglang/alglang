@@ -29,13 +29,13 @@ describe('MorphemeCard.vue', function () {
 
   it('displays a morpheme slot', function () {
     const props = {
-      morpheme: {
+      morpheme: morphemeFactory({
         slot: slotFactory({
           abv: 'SLT',
           url: '/slots/SLT',
           colour: '#ff0000'
         })
-      }
+      })
     };
 
     const { getByText } = render(MorphemeCard, { props });

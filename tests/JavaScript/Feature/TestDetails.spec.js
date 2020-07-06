@@ -17,8 +17,13 @@ const pageFactory = (name, template) => {
   const component = Vue.component(
     name,
     {
-      template: template || '<div />',
-      props: ['resources']
+      props: {
+        resources: {
+          type: Object,
+          default: () => ({})
+        }
+      },
+      template: template || '<div />'
     }
   );
   return { name, component };
