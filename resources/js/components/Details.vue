@@ -32,7 +32,13 @@
       </nav>
 
       <article class="overflow-hidden w-full relative">
-        <component :is="activePage" :value="value" @input="$emit('input', $event)" :mode="mode" :resources="repositories" />
+        <component
+          :is="activePage"
+          :value="value"
+          :mode="mode"
+          :resources="repositories"
+          @input="$emit('input', $event)"
+        />
       </article>
     </div>
   </section>
@@ -79,14 +85,6 @@ export default {
     }
   },
 
-  watch: {
-    mode() {
-      if (this.mode === 'edit') {
-        this.loadResources();
-      }
-    }
-  },
-
   created() {
     this.hash = window.location.hash.substring(1);
     this.pages.forEach(({ name, component }) => {
@@ -118,10 +116,6 @@ export default {
     },
 
     async loadResource({ key, url }) {
-      if (this.repositories[key]) {
-        return;
-      }
-
       const response = await axios.get(url);
       this.$set(this.repositories, key, response.data.data);
     }
