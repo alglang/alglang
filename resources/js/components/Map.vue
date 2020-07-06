@@ -1,5 +1,5 @@
 <template>
-  <l-map :zoom="zoom" :center="center">
+  <l-map :zoom="zoom" :center="center" @click.right="handleRightClick">
     <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <l-marker v-if="value && value.position" :lat-lng="value.position" />
 
@@ -45,6 +45,15 @@ export default {
       zoom: 4,
       center: [46.0, -87.659916]
     };
+  },
+
+  methods: {
+    handleRightClick(e) {
+      this.$emit('input', {
+        ...this.value,
+        position: e.latlng
+      });
+    }
   }
 };
 </script>

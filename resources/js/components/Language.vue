@@ -2,7 +2,7 @@
   <alglang-details
     title="Language details"
     :pages="pages"
-    v-model="language"
+    v-model="languageData"
     :resources="resources"
     :mode="mode"
   >
@@ -33,11 +33,6 @@
         </p>
       </div>
     </template>
-
-    <alglang-map
-      style="height: 30rem;"
-      :locations="[ language ]"
-    />
   </alglang-details>
 </template>
 
@@ -63,6 +58,8 @@ export default {
 
   data() {
     return {
+      languageData: {},
+
       pages: [
         {
           name: 'basic-details',
@@ -81,6 +78,10 @@ export default {
         }
       ]
     };
+  },
+
+  created() {
+    this.languageData = JSON.parse(JSON.stringify(this.language));
   }
 };
 </script>

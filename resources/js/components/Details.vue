@@ -32,7 +32,7 @@
       </nav>
 
       <article class="overflow-hidden w-full relative">
-        <component :is="activePage" v-model="value" :mode="mode" :resources="repositories" />
+        <component :is="activePage" :value="value" @input="$emit('input', $event)" :mode="mode" :resources="repositories" />
       </article>
     </div>
   </section>
