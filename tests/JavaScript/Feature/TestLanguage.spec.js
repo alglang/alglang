@@ -1,38 +1,71 @@
+import '../setup';
 import { render } from '@testing-library/vue';
 import { expect } from 'chai';
+import moxios from 'moxios';
 
 import Language from '../../../resources/js/components/Language';
 import { languageFactory } from '../factory';
 
 describe('Language.vue', function () {
-  it('displays its name in the header', function () {
-    const props = {
-      language: languageFactory({ name: 'Test Language' })
-    };
+  describe('viewing', function () {
+    it('displays its name in the header', function () {
+      const props = {
+        language: languageFactory({ name: 'Test Language' })
+      };
 
-    const { getByText } = render(Language, { props });
+      const { getByText } = render(Language, { props });
 
-    expect(getByText('Language details'));
-    expect(getByText('Test Language'));
+      expect(getByText('Language details'));
+      expect(getByText('Test Language'));
+    });
+
+    it('displays its detail page on initial render', function () {
+      const props = {
+        language: languageFactory({ algo_code: 'TL' })
+      };
+
+      const { getByText } = render(Language, { props });
+
+      expect(getByText('TL')); // The algonquianist code should only appear on the detail page
+    });
+
+    it('indicates that the language is reconstructed', function () {
+      const props = {
+        language: languageFactory({ reconstructed: true })
+      };
+
+      const { getByText } = render(Language, { props });
+
+      expect(getByText('Reconstructed'));
+    });
   });
 
-  it('displays its detail page on initial render', function () {
-    const props = {
-      language: languageFactory({ algo_code: 'TL' })
-    };
+  describe('editing', function () {
+    beforeEach(function () { moxios.install(); });
 
-    const { getByText } = render(Language, { props });
+    afterEach(function () { moxios.uninstall(); });
 
-    expect(getByText('TL')); // The algonquianist code should only appear on the detail page
-  });
+    it('displays an input for its name', function () {
+      const props = {
+        mode: 'edit',
+        language: { name: 'Test Language' }
+      };
 
-  it('indicates that the language is reconstructed', function () {
-    const props = {
-      language: languageFactory({ reconstructed: true })
-    };
+      const { getByLabelText } = render(Language, { props });
 
-    const { getByText } = render(Language, { props });
+      expect(getByLabelText('Name')).to.have.value('Test Language');
+    });
 
-    expect(getByText('Reconstructed'));
+    it('displays a checkbox for its reconstructed value', function () {
+      const props = {
+        mode: 'edit',
+        language: { reconstructed: true }
+      };
+
+      const { getByLabelText } = render(Language, { props });
+
+      expect(getByLabelText('Reconstructed')).to.have.tagName('input');
+      expect(getByLabelText('Reconstructed').checked).to.be.true;
+    });
   });
 });

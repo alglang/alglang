@@ -1,15 +1,37 @@
 <template>
-  <alglang-details title="Language details" :pages="pages" v-model="language">
+  <alglang-details
+    title="Language details"
+    :pages="pages"
+    v-model="language"
+    :resources="resources"
+    :mode="mode"
+  >
     <template v-slot:header>
-      <h1 class="text-3xl font-light">
-        {{ language.name }}
-      </h1>
-      <p
-        v-if="language.reconstructed"
-        class="mb-2 p-1 inline text-sm leading-none bg-gray-300 rounded"
-      >
-        Reconstructed
-      </p>
+      <div class="flex align-items h-12">
+        <input
+          v-if="mode === 'edit'"
+          class="px-2 py-1 text-xl border border-gray-200 shadow-inner"
+          placeholder="Name"
+          aria-label="Name"
+          v-model="language.name"
+        />
+        <h1 v-else class="text-3xl font-light">
+          {{ language.name }}
+        </h1>
+      </div>
+
+      <div>
+        <label v-if="mode === 'edit'" class="mb-2 p-1 text-sm leading-none">
+          Reconstructed
+          <input type="checkbox" v-model="language.reconstructed" class="ml-2" />
+        </label>
+        <p
+          v-else-if="language.reconstructed"
+          class="mb-2 p-1 inline text-sm leading-none bg-gray-300 rounded"
+        >
+          Reconstructed
+        </p>
+      </div>
     </template>
 
     <alglang-map
@@ -30,8 +52,12 @@ export default {
   },
 
   props: {
+    mode: {
+      default: 'view'
+    },
+
     language: {
-      required: true
+      default: () => ({})
     }
   },
 
@@ -45,6 +71,13 @@ export default {
         {
           name: 'morphemes',
           component: Morphemes
+        }
+      ],
+
+      resources: [
+        {
+          key: 'groups',
+          url: '/groups'
         }
       ]
     };
