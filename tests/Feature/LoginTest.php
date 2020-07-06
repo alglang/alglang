@@ -70,4 +70,14 @@ class LoginTest extends TestCase
         $response->assertRedirect('/');
         $this->assertGuest();
     }
+
+    /** @test */
+    public function a_logged_in_user_cannot_visit_the_login_page()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->get('/login');
+
+        $response->assertRedirect('/');
+    }
 }
