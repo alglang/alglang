@@ -28,7 +28,7 @@ Route::get('/groups/{group:slug}', [GroupController::class, 'show'])->name('grou
 Route::post('/groups', [GroupController::class, 'create']);
 
 Route::get('/languages', [LanguageController::class, 'index']);
-Route::get('/languages/create', [LanguageController::class, 'create']);
+Route::get('/languages/create', [LanguageController::class, 'create'])->name('languages.create');
 Route::get('/languages/{language:slug}', [LanguageController::class, 'show'])->name('languages.show');
 Route::post('/languages', [LanguageController::class, 'store']);
 

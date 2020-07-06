@@ -69,7 +69,7 @@
                         <span>Languages</span>
                     </a>
                     
-                    <ul class="absolute py-1 border-1 border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                    <ul class="absolute py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
                         @foreach($languages as $language)
                         <li>
                             <a href="{{ $language->url }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
@@ -102,9 +102,19 @@
                     </ul>
                 </div>
                 @else
-                <a href="#" class="flex items-center bg-yellow-400 text-gray-900 uppercase tracking-wide px-3 h-full uppercase bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
-                    <span>Add</span>
-                </a>
+                <div class="relative group h-full">
+                    <span class="flex items-center bg-yellow-400 text-gray-900 uppercase tracking-wide px-3 h-full uppercase bg-yellow-400 text-gray-900 hover:bg-yellow-500 hover:text-gray-900">
+                        <span>Add</span>
+                    </span>
+
+                    <ul class="absolute py-1 right-0 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                        <li>
+                            <a href="{{ route('languages.create') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                                Language
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 @endguest
             </div>
         </nav>
