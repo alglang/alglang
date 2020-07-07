@@ -1,10 +1,10 @@
 import '../setup';
-import { render, fireEvent } from '@testing-library/vue';
+import { render, fireEvent, waitFor } from '@testing-library/vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
 
 import Language from '../../../resources/js/components/Language';
-import { languageFactory } from '../factory';
+import { groupFactory, languageFactory } from '../factory';
 
 describe('Language.vue', function () {
   describe('viewing', function () {
@@ -133,6 +133,64 @@ describe('Language.vue', function () {
       const { getByLabelText } = render(Language, { props });
 
       expect(getByLabelText('Reconstructed').checked).to.be.true;
+    });
+  });
+
+  describe('saving', function () {
+    beforeEach(function () { moxios.install(); });
+
+    afterEach(function () { moxios.uninstall(); });
+
+    it('switches to view mode', async function () {
+      const props = {
+        mode: 'edit',
+        canEdit: true,
+        language: languageFactory()
+      };
+
+      const { getByLabelText, queryByLabelText } = render(Language, { props });
+
+      expect(queryByLabelText('Name')).to.exist;
+
+      await fireEvent.click(getByLabelText('Save'));
+
+      expect(queryByLabelText('Name')).to.not.exist;
+    });
+
+    it('sends its data to the server', async function () {
+      moxios.stubRequest('POST', '/languages', {
+        status: 200
+      });
+
+      const props = {
+        mode: 'edit',
+        canEdit: true,
+        language: languageFactory({
+          name: 'Test Language',
+          algo_code: 'TL',
+          group_id: 440,
+          group: groupFactory({
+            name: 'Test Group'
+          })
+        })
+      };
+
+      const { getByLabelText } = render(Language, { props });
+
+      await fireEvent.click(getByLabelText('Save'));
+
+      await waitFor(() => expect(moxios.requests.count()).to.equal(2)); // +1 for the resource load
+
+      const request = moxios.requests.mostRecent();
+      expect(request.config.url).to.equal('/languages');
+      expect(JSON.parse(request.config.data)).to.deep.equal({
+        name: 'Test Language',
+        algo_code: 'TL',
+        group_id: 440,
+        group: {
+          name: 'Test Group'
+        }
+      });
     });
   });
 });

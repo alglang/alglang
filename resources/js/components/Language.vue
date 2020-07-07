@@ -7,6 +7,7 @@
     :mode="modeState"
     :can-edit="canEdit"
     @modeChange="modeState = $event"
+    @save="save"
   >
     <template v-slot:header>
       <div class="flex align-items h-12">
@@ -49,6 +50,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import Details from './Details';
 import BasicDetails from './Language/BasicDetails';
 import Morphemes from './Language/Morphemes';
@@ -104,6 +107,12 @@ export default {
   created() {
     this.languageData = JSON.parse(JSON.stringify(this.language));
     this.modeState = this.mode;
+  },
+
+  methods: {
+    save() {
+      axios.post('/languages', this.languageData);
+    }
   }
 };
 </script>

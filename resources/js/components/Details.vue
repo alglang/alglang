@@ -21,6 +21,7 @@
         <a
           v-if="mode === 'edit'"
           aria-label="Save"
+          @click="handleSave"
         >
           Save
         </a>
@@ -114,8 +115,10 @@ export default {
   },
 
   watch: {
-    mode() {
-      this.loadResources();
+    mode(newMode) {
+      if (newMode === 'edit') {
+        this.loadResources();
+      }
     }
   },
 
@@ -139,6 +142,11 @@ export default {
   methods: {
     handleClick(clickedPage) {
       window.location.hash = `#${clickedPage}`;
+    },
+
+    handleSave() {
+      this.$emit('save');
+      this.$emit('modeChange', 'view');
     },
 
     loadResources() {
