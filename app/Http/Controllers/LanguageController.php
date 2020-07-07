@@ -26,7 +26,7 @@ class LanguageController extends Controller
      */
     public function show(Language $language)
     {
-        $language->load('group', 'children');
+        $language->load('group', 'children', 'parent');
         return view('languages.show', ['language' => $language]);
     }
 

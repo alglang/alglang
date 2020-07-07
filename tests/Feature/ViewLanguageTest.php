@@ -23,7 +23,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
@@ -39,6 +38,19 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('PA');
         $response->assertSee('Test Group');
         $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_language_parent_comes_with_the_language()
+    {
+        $language = factory(Language::class)->create([
+            'parent_id' => factory(Language::class)->create(['name' => 'Parent Language'])->id
+        ]);
+
+        $response = $this->get($language->url);
+
+        $this->assertTrue($response['language']->relationLoaded('parent'));
+        $this->assertEquals('Parent Language', $response['language']->parent->name);
     }
 
     /** @test */

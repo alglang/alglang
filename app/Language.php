@@ -71,6 +71,11 @@ class Language extends Model
     |
     */
 
+    public function parent()
+    {
+        return $this->belongsTo(Language::class);
+    }
+
     public function group()
     {
         return $this->belongsTo(Group::class);
