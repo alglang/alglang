@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Group;
 use App\Language;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -12,9 +13,17 @@ class ViewLanguageTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withPermissions();
+    }
+
     /** @test */
     public function a_language_can_be_viewed()
     {
+        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
@@ -30,6 +39,29 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('PA');
         $response->assertSee('Test Group');
         $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_contributor_can_see_edit_mode()
+    {
+        $language = factory(Language::class)->create();
+        $contributor = factory(User::class)->create();
+        $contributor->assignRole('contributor');
+
+        $response = $this->actingAs($contributor)->get($language->url);
+
+        $response->assertSee(':can-edit="true"', false);
+    }
+
+    /** @test */
+    public function a_user_cannot_see_edit_mode_without_permission()
+    {
+        $language = factory(Language::class)->create();
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->get($language->url);
+
+        $response->assertSee(':can-edit="false"', false);
     }
 
     /** @test */

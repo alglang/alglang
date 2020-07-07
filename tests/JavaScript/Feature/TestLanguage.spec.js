@@ -1,5 +1,5 @@
 import '../setup';
-import { render } from '@testing-library/vue';
+import { render, fireEvent } from '@testing-library/vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
 
@@ -38,12 +38,64 @@ describe('Language.vue', function () {
 
       expect(getByText('Reconstructed'));
     });
+
+    it('shows an edit button when the user can edit', function () {
+      const props = {
+        mode: 'view',
+        canEdit: true,
+        language: languageFactory()
+      };
+
+      const { getByLabelText } = render(Language, { props });
+
+      expect(getByLabelText('Edit')).to.exist;
+    });
+
+    it('does not show an edit button when the user cannot edit', function () {
+      const props = {
+        mode: 'view',
+        canEdit: false,
+        language: languageFactory()
+      };
+
+      const { queryByLabelText } = render(Language, { props });
+
+      expect(queryByLabelText('Edit')).to.not.exist;
+    });
   });
 
   describe('editing', function () {
     beforeEach(function () { moxios.install(); });
 
     afterEach(function () { moxios.uninstall(); });
+
+    it('switches to edit mode when the edit button is pressed', async function () {
+      const props = {
+        mode: 'view',
+        canEdit: true,
+        language: languageFactory()
+      };
+
+      const { getByLabelText, queryByLabelText } = render(Language, { props });
+
+      expect(queryByLabelText('Name')).to.not.exist;
+
+      await fireEvent.click(getByLabelText('Edit'));
+
+      expect(queryByLabelText('Name')).to.exist;
+    });
+
+    it('shows a save button when in edit mode', function () {
+      const props = {
+        mode: 'edit',
+        canEdit: true
+      };
+
+      const { queryByLabelText } = render(Language, { props });
+
+      expect(queryByLabelText('Save')).to.exist;
+      expect(queryByLabelText('Edit')).to.not.exist;
+    });
 
     it('displays an input for its name', function () {
       const props = { mode: 'edit' };

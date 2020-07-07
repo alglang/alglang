@@ -18,9 +18,13 @@ class PermissionSeeder extends Seeder
 
         Permission::create(['name' => 'create groups']);
         Permission::create(['name' => 'create languages']);
+        Permission::create(['name' => 'edit languages']);
 
         Role::create(['name' => 'contributor'])
-            ->givePermissionTo('create groups')
-            ->givePermissionTo('create languages');
+            ->givePermissionTo(
+                'create groups',
+                'create languages',
+                'edit languages'
+            );
     }
 }

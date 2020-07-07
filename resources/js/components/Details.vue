@@ -16,6 +16,22 @@
       <div v-if="loading">
         Loading...
       </div>
+
+      <div v-if="canEdit">
+        <a
+          v-if="mode === 'edit'"
+          aria-label="Save"
+        >
+          Save
+        </a>
+        <a
+          v-else
+          aria-label="Edit"
+          @click="$emit('modeChange', 'edit')"
+        >
+          Edit
+        </a>
+      </div>
     </header>
 
     <div class="flex">
@@ -72,6 +88,11 @@ export default {
       default: 'view'
     },
 
+    canEdit: {
+      type: Boolean,
+      default: false
+    },
+
     resources: {
       type: Array,
       default: () => []
@@ -89,6 +110,12 @@ export default {
   computed: {
     activePage() {
       return this.hash || this.pages[0].name;
+    }
+  },
+
+  watch: {
+    mode() {
+      this.loadResources();
     }
   },
 

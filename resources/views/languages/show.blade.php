@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <alglang-language :language="{{ $language }}" />
+    @can('edit languages')
+    <alglang-language :language="{{ $language }}" :can-edit="true" />
+    @else
+    <alglang-language :language="{{ $language }}" :can-edit="false" />
+    @endcan
 @endsection

@@ -1,5 +1,10 @@
 import '../setup';
-import { render, fireEvent, waitForElementToBeRemoved } from '@testing-library/vue';
+import {
+  render,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/vue';
 import Vue from 'vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
@@ -159,9 +164,69 @@ describe('Details.vue', function () {
   });
 
   describe('editing details', function () {
-    it('loads resources when in edit mode', async function () {
-      moxios.install();
+    beforeEach(function () { moxios.install(); });
 
+    afterEach(function () { moxios.uninstall(); });
+
+    it('shows an edit button if the user can edit', function () {
+      const props = {
+        canEdit: true,
+        value: {},
+        title: '',
+        pages: [pageFactory('foo')]
+      };
+
+      const { getByLabelText } = render(Details, { props });
+
+      expect(getByLabelText('Edit')).to.have.tagName('a');
+    });
+
+    it('emits a modeChange event if the edit button is pressed', async function () {
+      const props = {
+        canEdit: true,
+        mode: 'view',
+        value: {},
+        title: '',
+        pages: [pageFactory('foo')]
+      };
+
+      const { getByLabelText, emitted } = render(Details, { props });
+
+      await fireEvent.click(getByLabelText('Edit'));
+
+      expect(emitted().modeChange).to.exist;
+      expect(emitted().modeChange[0][0]).to.equal('edit');
+    });
+    it('does not show an edit button if the user cannot edit', function () {
+      const props = {
+        canEdit: false,
+        mode: 'view',
+        value: {},
+        title: '',
+        pages: [pageFactory('foo')]
+      };
+
+      const { queryByLabelText } = render(Details, { props });
+
+      expect(queryByLabelText('Edit')).to.not.exist;
+    });
+
+    it('shows a save button when in edit mode', function () {
+      const props = {
+        value: {},
+        title: '',
+        canEdit: true,
+        mode: 'edit',
+        pages: [pageFactory('foo')]
+      };
+
+      const { queryByLabelText } = render(Details, { props });
+
+      expect(queryByLabelText('Save')).to.exist;
+      expect(queryByLabelText('Edit')).to.not.exist;
+    });
+
+    it('loads resources when in edit mode', async function () {
       moxios.stubRequest('/items', {
         status: 200,
         response: {
@@ -189,8 +254,52 @@ describe('Details.vue', function () {
       await waitForElementToBeRemoved(getByText('Loading...'));
 
       expect(getByText('Foo'));
+    });
 
-      moxios.uninstall();
+    it('loads resources when switched to edit mode', async function () {
+      moxios.stubRequest('/items', {
+        status: 200,
+        response: {
+          data: [{ name: 'Foo' }]
+        }
+      });
+
+      const wrapper = Vue.component('wrapper', {
+        components: {
+          'alglang-details': Details
+        },
+
+        data() {
+          return {
+            mode: 'view',
+            value: {},
+            pages: [
+              pageFactory('foo-bar', '<ul><li v-for="item of resources.items" :key="item.name">{{ item.name }}</li></ul>')
+            ],
+            resources: [{ key: 'items', url: '/items' }]
+          };
+        },
+
+        template: `<div>
+          <alglang-details
+            :can-edit="true"
+            :mode="mode"
+            :value="value"
+            :pages="pages"
+            :resources="resources"
+            title=""
+            @modeChange="mode = $event"
+          />
+        </div>`
+      });
+
+      const { queryByText, getByText, getByLabelText } = render(wrapper);
+
+      await fireEvent.click(getByLabelText('Edit'));
+      await waitFor(() => expect(getByText('Loading...')));
+      await waitForElementToBeRemoved(queryByText('Loading...'));
+      await waitFor(() => expect(moxios.requests.count()).to.equal(1));
+      expect(getByText('Foo'));
     });
   });
 });

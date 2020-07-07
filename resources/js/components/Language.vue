@@ -4,12 +4,14 @@
     title="Language details"
     :pages="pages"
     :resources="resources"
-    :mode="mode"
+    :mode="modeState"
+    :can-edit="canEdit"
+    @modeChange="modeState = $event"
   >
     <template v-slot:header>
       <div class="flex align-items h-12">
         <input
-          v-if="mode === 'edit'"
+          v-if="modeState === 'edit'"
           v-model="language.name"
           class="px-2 py-1 text-xl border border-gray-200 shadow-inner"
           placeholder="Name"
@@ -25,7 +27,7 @@
 
       <div>
         <label
-          v-if="mode === 'edit'"
+          v-if="modeState === 'edit'"
           class="mb-2 p-1 text-sm leading-none"
         >
           Reconstructed
@@ -62,6 +64,11 @@ export default {
       default: 'view'
     },
 
+    canEdit: {
+      type: Boolean,
+      default: false
+    },
+
     language: {
       type: Object,
       default: () => ({})
@@ -71,6 +78,8 @@ export default {
   data() {
     return {
       languageData: {},
+
+      modeState: 'view',
 
       pages: [
         {
@@ -94,6 +103,7 @@ export default {
 
   created() {
     this.languageData = JSON.parse(JSON.stringify(this.language));
+    this.modeState = this.mode;
   }
 };
 </script>
