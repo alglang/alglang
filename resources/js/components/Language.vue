@@ -99,6 +99,10 @@ export default {
         {
           key: 'groups',
           url: '/groups'
+        },
+        {
+          key: 'languages',
+          url: '/languages'
         }
       ]
     };

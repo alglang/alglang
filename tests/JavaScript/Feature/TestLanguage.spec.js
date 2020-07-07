@@ -1,5 +1,10 @@
 import '../setup';
-import { render, fireEvent, waitFor } from '@testing-library/vue';
+import {
+  render,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
 
@@ -97,6 +102,31 @@ describe('Language.vue', function () {
       expect(queryByLabelText('Edit')).to.not.exist;
     });
 
+    it('loads resources from the server', async function () {
+      moxios.stubRequest('/groups', {
+        status: 200,
+        response: {
+          data: [groupFactory({ name: 'Factory Group' })]
+        }
+      });
+      moxios.stubRequest('/languages', {
+        status: 200,
+        response: {
+          data: [languageFactory({ name: 'Factory Language' })]
+        }
+      });
+
+      const props = { mode: 'edit' };
+
+      const { queryByText, getByText } = render(Language, { props });
+
+      await waitFor(() => expect(getByText('Loading...')));
+      await waitForElementToBeRemoved(queryByText('Loading...'));
+
+      expect(getByText('Factory Language'));
+      expect(getByText('Factory Group'));
+    });
+
     it('displays an input for its name', function () {
       const props = { mode: 'edit' };
 
@@ -179,7 +209,7 @@ describe('Language.vue', function () {
 
       await fireEvent.click(getByLabelText('Save'));
 
-      await waitFor(() => expect(moxios.requests.count()).to.equal(2)); // +1 for the resource load
+      await waitFor(() => expect(moxios.requests.count()).to.equal(3)); // +2 for the resource loads
 
       const request = moxios.requests.mostRecent();
       expect(request.config.url).to.equal('/languages');

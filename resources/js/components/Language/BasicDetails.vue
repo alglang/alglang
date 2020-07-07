@@ -38,6 +38,30 @@
     </alglang-detail-row>
 
     <alglang-detail-row
+      v-if="mode === 'edit' || value.parent"
+      label="Parent"
+    >
+      <select
+        v-if="mode === 'edit'"
+        v-model="value.parent_id"
+      >
+        <option
+          v-for="language in resources.languages"
+          :key="language.id"
+          :value="language.id"
+          class="py-2"
+        >
+          {{ language.name }}
+        </option>
+      </select>
+      <p v-else>
+        <a :href="value.parent.url">
+          {{ value.parent.name }}
+        </a>
+      </p>
+    </alglang-detail-row>
+
+    <alglang-detail-row
       v-if="value.children && value.children.length"
       label="Direct children"
       :disabled="mode === 'edit'"

@@ -61,6 +61,34 @@ describe('Language/BasicDetails.vue', function () {
       });
     });
 
+    describe('displaying its parent', function () {
+      describe('when it has a parent', function () {
+        it('shows its parent', function () {
+          const props = {
+            value: languageFactory({
+              parent: languageFactory({ name: 'Parent language' })
+            })
+          };
+
+          const { getByLabelText } = render(BasicDetails, { props });
+
+          expect(getByLabelText('Parent')).to.contain.trimmed.text('Parent language');
+        });
+
+        it('links its parent', function () {
+          const props = {
+            value: languageFactory({
+              parent: languageFactory({ url: '/languages/PL' })
+            })
+          };
+
+          const { getByLabelText } = render(BasicDetails, { props });
+
+          expect(getByLabelText('Parent').querySelector('a')).to.have.attribute('href', '/languages/PL');
+        });
+      });
+    });
+
     describe('displaying children', function () {
       describe('when it has children', function () {
         it('shows its children', function () {
@@ -160,6 +188,21 @@ describe('Language/BasicDetails.vue', function () {
 
       expect(getByLabelText('Group')).to.have.descendant('select');
       expect(getByLabelText('Group').querySelector('select')).to.have.value('440');
+    });
+
+    it('shows a select for its parent', function () {
+      const props = {
+        mode: 'edit',
+        value: { parent_id: 440 },
+        resources: {
+          languages: [languageFactory({ id: 440 })]
+        }
+      };
+
+      const { getByLabelText } = render(BasicDetails, { props });
+
+      expect(getByLabelText('Parent')).to.have.descendant('select');
+      expect(getByLabelText('Parent').querySelector('select')).to.have.value('440');
     });
 
     it('disables its children', function () {
