@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<alglang-language mode="edit" />
+<alglang-language mode="edit" :can-edit="true" />
 @endsection
