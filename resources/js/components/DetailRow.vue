@@ -1,11 +1,13 @@
 <template>
   <div
     :aria-labelledby="ariaId"
-    class="p-2 mb-2 flex items-center"
+    :class="{ 'bg-gray-300': disabled, disabled: disabled }"
+    class="detail-row p-2 mb-2 flex items-center"
   >
     <h3
       :id="ariaId"
-      class="inline-block w-64 uppercase text-gray-700"
+      :class="{ 'text-gray-700': !disabled, 'text-gray-500': disabled }"
+      class="inline-block w-64 uppercase"
     >
       {{ label }}
     </h3>
@@ -21,6 +23,11 @@ export default {
     label: {
       type: String,
       required: true
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -31,3 +38,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.detail-row.disabled a {
+  pointer-events: none;
+  color: #718096;
+}
+</style>

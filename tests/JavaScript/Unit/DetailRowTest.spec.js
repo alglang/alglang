@@ -1,4 +1,4 @@
-import { render } from '@testing-library/vue';
+import { render, fireEvent } from '@testing-library/vue';
 import { expect } from 'chai';
 
 import DetailRow from '../../../resources/js/components/DetailRow';
@@ -19,5 +19,18 @@ describe('DetailRow.vue', function () {
     const { getByText } = render(DetailRow, { props, scopedSlots });
 
     expect(getByText('Bar'));
+  });
+
+  it('disables all links when disabled', async function () {
+    const props = { label: '', disabled: true };
+    const scopedSlots = { default: '<a href="#foo">Link</a>' };
+
+    const { container, getByText } = render(DetailRow, { props, scopedSlots });
+    const { location } = container.getRootNode();
+    expect(location.hash).to.equal('');
+
+    await fireEvent.click(getByText('Link'));
+
+    expect(location.hash).to.equal('');
   });
 });

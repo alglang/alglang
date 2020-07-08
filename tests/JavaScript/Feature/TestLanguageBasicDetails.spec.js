@@ -213,7 +213,7 @@ describe('Language/BasicDetails.vue', function () {
 
       const { getByLabelText } = render(BasicDetails, { props });
 
-      expect(getByLabelText('Direct children')).to.have.attribute('disabled');
+      expect(getByLabelText('Direct children')).to.have.class('disabled');
     });
 
     it('shows a textarea for its notes', function () {
