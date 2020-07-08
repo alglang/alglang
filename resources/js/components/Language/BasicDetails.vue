@@ -44,6 +44,7 @@
       <select
         v-if="mode === 'edit'"
         v-model="value.parent_id"
+        class="px-3 py-2 border border-gray-200 shadow-inner"
       >
         <option
           v-for="language in resources.languages"
@@ -86,7 +87,7 @@
         <textarea
           v-if="mode === 'edit'"
           v-model="value.notes"
-          class="px-3 w-full h-32 border border-gray-200 shadow-inner"
+          class="px-3 py-2 w-full h-32 border border-gray-200 shadow-inner"
         />
         <p v-else>
           {{ value.notes }}
