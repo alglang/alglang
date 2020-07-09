@@ -48,6 +48,7 @@ class LanguageController extends Controller
         ]);
 
         $language = Language::create($languageData);
-        return redirect($language->url);
+        $language->load('parent', 'group');
+        return $language;
     }
 }

@@ -38,7 +38,6 @@ class GroupController extends Controller
             'name' => 'required',
             'description' => 'nullable'
         ]);
-        $group = Group::create($data);
-        return redirect($group->url);
+        return Group::create($data);
     }
 }

@@ -33,9 +33,27 @@ class CreateGroupTest extends TestCase
 
         $group = Group::first();
 
+        $response->assertSuccessful();
         $this->assertEquals('Test Group', $group->name);
         $this->assertEquals('Lorem ipsum dolor sit amet', $group->description);
-        $response->assertRedirect($group->url);
+    }
+
+    /** @test */
+    public function the_group_is_contained_in_the_response()
+    {
+        $response = $this->actingAs($this->contributor)
+                         ->postJson('/groups', [
+                             'name' => 'Test Group',
+                             'description' => 'Lorem ipsum dolor sit amet'
+                         ]);
+
+        $group = Group::first();
+
+        $response->assertCreated();
+        $response->assertJson([
+            'name' => 'Test Group',
+            'description' => 'Lorem ipsum dolor sit amet'
+        ]);
     }
 
     /** @test */

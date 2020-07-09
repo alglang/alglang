@@ -39,11 +39,9 @@ class CreateLanguageTest extends TestCase
                             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
                         ]);
 
-        $response->assertRedirect();
-        $language = Language::where(['algo_code' => 'TL'])->first();
+        $response->assertSuccessful();
 
-        $this->assertNotNull($language);
-        $response->assertRedirect($language->url);
+        $language = Language::where(['algo_code' => 'TL'])->first();
 
         $this->assertEquals('Test Language', $language->name);
         $this->assertEquals('TL', $language->algo_code);
@@ -55,6 +53,36 @@ class CreateLanguageTest extends TestCase
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
             $language->notes
         );
+    }
+
+    /** @test */
+    public function the_created_language_is_returned_in_the_response()
+    {
+        $group = factory(Group::class)->create(['name' => 'Test Group']);
+        $parent = factory(Language::class)->create(['name' => 'Test Parent']);
+        $response = $this->actingAs($this->contributor)
+                        ->postJson('/api/languages', [
+                            'name' => 'Test Language',
+                            'algo_code' => 'TL',
+                            'group_id' => $group->id,
+                            'parent_id' => $parent->id,
+                            'reconstructed' => true,
+                            'position' => '{"lat":52,"lng":46}',
+                            'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
+                        ]);
+
+        $response->assertCreated();
+        $response->assertJson([
+            'name' => 'Test Language',
+            'algo_code' => 'TL',
+            'group_id' => $group->id,
+            'group' => ['name' => 'Test Group'],
+            'parent_id' => $parent->id,
+            'parent' => ['name' => 'Test Parent'],
+            'reconstructed' => true,
+            'position' => ['lat' => 52, 'lng' => 46],
+            'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
+        ]);
     }
 
     /** @test */
