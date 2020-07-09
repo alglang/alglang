@@ -20,7 +20,7 @@ const renderLanguage = props => render(Language, {
 });
 
 const renderLanguageAndWaitForResources = async props => {
-  mockResources('/languages', '/groups');
+  mockResources('/api/languages', '/api/groups');
   const wrapper = renderLanguage(props);
   await waitForElementToBeRemoved(() => wrapper.getByText('Loading...'));
   return wrapper;
@@ -100,13 +100,13 @@ describe('Language.vue', function () {
     });
 
     it('loads resources from the server', async function () {
-      moxios.stubRequest('/groups', {
+      moxios.stubRequest('/api/groups', {
         status: 200,
         response: {
           data: [groupFactory({ name: 'Factory Group' })]
         }
       });
-      moxios.stubRequest('/languages', {
+      moxios.stubRequest('/api/languages', {
         status: 200,
         response: {
           data: [languageFactory({ name: 'Factory Language' })]
@@ -173,7 +173,7 @@ describe('Language.vue', function () {
     });
 
     it('sends its data to the server', async function () {
-      moxios.stubRequest('POST', '/languages');
+      moxios.stubRequest('POST', '/api/languages');
 
       const { getByLabelText } = await renderLanguageAndWaitForResources({
         mode: 'edit',
@@ -191,7 +191,7 @@ describe('Language.vue', function () {
       await waitFor(() => expect(moxios.requests.count()).to.equal(requestsCount + 1));
 
       const request = moxios.requests.mostRecent();
-      expect(request.config.url).to.equal('/languages');
+      expect(request.config.url).to.equal('/api/languages');
       expect(JSON.parse(request.config.data)).to.deep.equal({
         name: 'Test Language',
         group: { name: 'Test Group' }

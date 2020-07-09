@@ -26,7 +26,7 @@ describe('Language/Morphemes.vue', function () {
       value: languageFactory({ url: '/languages/tl' })
     });
 
-    moxios.stubRequest('/languages/tl/morphemes', {
+    moxios.stubRequest('/api/languages/tl/morphemes', {
       response: {
         data: [
           morphemeFactory({ shape: 'aa-' }),

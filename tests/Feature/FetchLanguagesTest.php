@@ -23,7 +23,7 @@ class FetchLanguagesTest extends TestCase
             'position' => json_encode(['lat' => 53, 'lng' => 34])
         ]);
 
-        $response = $this->get('/languages');
+        $response = $this->get('/api/languages');
 
         $response->assertOk();
         $response->assertJson([

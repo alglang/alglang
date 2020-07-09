@@ -29,7 +29,7 @@ class CreateLanguageTest extends TestCase
     public function a_contributor_can_create_a_language()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -62,7 +62,7 @@ class CreateLanguageTest extends TestCase
     {
         $this->assertGuest();
 
-        $response = $this->postJson('/languages', [
+        $response = $this->postJson('/api/languages', [
             'name' => 'Test Language',
             'algo_code' => 'TL',
             'group_id' => $this->group->id,
@@ -79,7 +79,7 @@ class CreateLanguageTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -94,7 +94,7 @@ class CreateLanguageTest extends TestCase
     public function placeholder_morphemes_are_generated_with_the_language()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -117,7 +117,7 @@ class CreateLanguageTest extends TestCase
     public function language_name_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
                             'parent_id' => $this->parent->id
@@ -131,7 +131,7 @@ class CreateLanguageTest extends TestCase
     public function language_name_must_be_a_string()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
                             'parent_id' => $this->parent->id
@@ -147,7 +147,7 @@ class CreateLanguageTest extends TestCase
         factory(Language::class)->create(['name' => 'Test Language', 'algo_code' => 'XX']);
 
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -162,7 +162,7 @@ class CreateLanguageTest extends TestCase
     public function algo_code_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'group_id' => $this->group->id,
                             'parent_id' => $this->parent->id
@@ -176,7 +176,7 @@ class CreateLanguageTest extends TestCase
     public function algo_code_must_be_a_string()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 4,
                             'group_id' => $this->group->id,
@@ -191,7 +191,7 @@ class CreateLanguageTest extends TestCase
     public function algo_code_must_have_fewer_than_6_characters()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'ABCDEF',
                             'group_id' => $this->group->id,
@@ -206,7 +206,7 @@ class CreateLanguageTest extends TestCase
     public function group_id_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'parent_id' => $this->parent->id
@@ -220,7 +220,7 @@ class CreateLanguageTest extends TestCase
     public function group_id_must_exist()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => 440,
@@ -235,7 +235,7 @@ class CreateLanguageTest extends TestCase
     public function parent_id_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id
@@ -249,7 +249,7 @@ class CreateLanguageTest extends TestCase
     public function parent_id_must_exist()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -264,7 +264,7 @@ class CreateLanguageTest extends TestCase
     public function reconstructed_must_be_boolean()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -280,7 +280,7 @@ class CreateLanguageTest extends TestCase
     public function position_must_be_json()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,
@@ -296,7 +296,7 @@ class CreateLanguageTest extends TestCase
     public function notes_must_be_text()
     {
         $response = $this->actingAs($this->contributor)
-                        ->postJson('/languages', [
+                        ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'algo_code' => 'TL',
                             'group_id' => $this->group->id,

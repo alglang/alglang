@@ -98,11 +98,11 @@ export default {
       resources: [
         {
           key: 'groups',
-          url: '/groups'
+          url: '/api/groups'
         },
         {
           key: 'languages',
-          url: '/languages'
+          url: '/api/languages'
         }
       ]
     };
@@ -115,7 +115,7 @@ export default {
 
   methods: {
     save() {
-      axios.post('/languages', this.languageData);
+      axios.post('/api/languages', this.languageData);
     }
   }
 };

@@ -21,7 +21,7 @@ class FetchGroupsTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
-        $response = $this->get('/groups');
+        $response = $this->get('/api/groups');
 
         $response->assertOk();
         $response->assertJson([

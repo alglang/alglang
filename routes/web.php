@@ -23,16 +23,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/groups', [GroupController::class, 'index']);
 Route::get('/groups/{group:slug}', [GroupController::class, 'show'])->name('groups.show');
 Route::post('/groups', [GroupController::class, 'create']);
 
-Route::get('/languages', [LanguageController::class, 'index']);
 Route::get('/languages/create', [LanguageController::class, 'create'])->name('languages.create');
 Route::get('/languages/{language:slug}', [LanguageController::class, 'show'])->name('languages.show');
-Route::post('/languages', [LanguageController::class, 'store']);
 
-Route::get('/languages/{language:slug}/morphemes', [MorphemeController::class, 'index']);
 Route::get(
     '/languages/{language:slug}/morphemes/{morpheme:slug}',
     [MorphemeController::class, 'show']
