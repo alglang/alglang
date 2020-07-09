@@ -11,9 +11,8 @@ describe('Gloss.vue', function () {
       gloss: glossFactory({ abv: 'GLS' })
     };
 
-    const { getByText } = render(Gloss, { props });
-
-    expect(getByText('GLS'));
+    const { queryByText } = render(Gloss, { props });
+    expect(queryByText('GLS')).to.exist;
   });
 
   it('shows its basic details by default', function () {
@@ -24,9 +23,9 @@ describe('Gloss.vue', function () {
       })
     };
 
-    const { getByText } = render(Gloss, { props });
+    const { queryByText } = render(Gloss, { props });
 
-    expect(getByText('Gloss name'));
-    expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
+    expect(queryByText('Gloss name')).to.exist;
+    expect(queryByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam')).to.exist;
   });
 });

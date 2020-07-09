@@ -15,7 +15,6 @@ describe('Slot.vue', function () {
     };
 
     const { getByText } = render(Slot, { props });
-
     expect(getByText('SLT')).to.have.attribute('style', 'color: rgb(255, 0, 0);');
   });
 
@@ -27,9 +26,9 @@ describe('Slot.vue', function () {
       })
     };
 
-    const { getByText } = render(Slot, { props });
+    const { queryByText } = render(Slot, { props });
 
-    expect(getByText('Slot name'));
-    expect(getByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'));
+    expect(queryByText('Slot name')).to.exist;
+    expect(queryByText('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam')).to.exist;
   });
 });

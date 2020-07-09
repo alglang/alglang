@@ -110,7 +110,10 @@ export default {
 
   computed: {
     activePage() {
-      return this.hash || this.pages[0].name;
+      if (this.hash && this.pages.some(page => page.name === this.hash)) {
+        return this.hash;
+      }
+      return this.pages[0].name;
     }
   },
 

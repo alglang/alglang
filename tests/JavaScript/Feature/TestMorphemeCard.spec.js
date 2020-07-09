@@ -5,30 +5,28 @@ import { expect } from 'chai';
 import MorphemeCard from '../../../resources/js/components/MorphemeCard';
 import { glossFactory, morphemeFactory, slotFactory } from '../factory';
 
+const renderMorphemeCard = props => render(MorphemeCard, { props });
+
 describe('MorphemeCard.vue', function () {
   it('hyperlinks the card', function () {
-    const props = {
+    const { container } = renderMorphemeCard({
       morpheme: morphemeFactory({ url: '/morphemes/foo' })
-    };
-
-    const { container } = render(MorphemeCard, { props });
+    });
 
     expect(container.firstChild).to.have.tagName('a');
     expect(container.firstChild).to.have.attribute('href', '/morphemes/foo');
   });
 
   it('displays a morpheme shape', function () {
-    const props = {
+    const { queryByText } = renderMorphemeCard({
       morpheme: morphemeFactory({ shape: 'ak-' })
-    };
+    });
 
-    const { getByText } = render(MorphemeCard, { props });
-
-    expect(getByText('ak-'));
+    expect(queryByText('ak-')).to.exist;
   });
 
   it('displays a morpheme slot', function () {
-    const props = {
+    const { getByText } = renderMorphemeCard({
       morpheme: morphemeFactory({
         slot: slotFactory({
           abv: 'SLT',
@@ -36,9 +34,7 @@ describe('MorphemeCard.vue', function () {
           colour: '#ff0000'
         })
       })
-    };
-
-    const { getByText } = render(MorphemeCard, { props });
+    });
 
     expect(getByText('SLT')).to.have.tagName('a');
     expect(getByText('SLT')).to.have.attribute('href', '/slots/SLT');
@@ -46,18 +42,16 @@ describe('MorphemeCard.vue', function () {
   });
 
   it('displays morpheme glosses', function () {
-    const props = {
+    const { queryByText } = renderMorphemeCard({
       morpheme: morphemeFactory({
         glosses: [
           glossFactory({ abv: 'G1' }),
           glossFactory({ abv: 'G2' })
         ]
       })
-    };
+    });
 
-    const { getByText } = render(MorphemeCard, { props });
-
-    expect(getByText('G1'));
-    expect(getByText('G2'));
+    expect(queryByText('G1')).to.exist;
+    expect(queryByText('G2')).to.exist;
   });
 });

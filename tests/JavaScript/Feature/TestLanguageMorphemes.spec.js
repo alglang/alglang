@@ -6,30 +6,27 @@ import moxios from 'moxios';
 import Morphemes from '../../../resources/js/components/Language/Morphemes';
 import { morphemeFactory, languageFactory } from '../factory';
 
+const renderMorphemes = props => render(Morphemes, { props });
+
 describe('Language/Morphemes.vue', function () {
   beforeEach(function () { moxios.install(); });
 
   afterEach(function () { moxios.uninstall(); });
 
   it('displays loading text when it is first mounted', function () {
-    const props = {
+    const { queryByText } = renderMorphemes({
       value: languageFactory({ url: '/languages/tl' })
-    };
+    });
 
-    const { getByText } = render(Morphemes, { props });
-
-    expect(getByText('Loading...'));
+    expect(queryByText('Loading...')).to.exist;
   });
 
   it('loads morphemes', async function () {
-    const props = {
+    const { getByText, queryByText } = renderMorphemes({
       value: languageFactory({ url: '/languages/tl' })
-    };
-
-    const { getByText } = render(Morphemes, { props });
+    });
 
     moxios.stubRequest('/languages/tl/morphemes', {
-      status: 200,
       response: {
         data: [
           morphemeFactory({ shape: 'aa-' }),
@@ -40,7 +37,7 @@ describe('Language/Morphemes.vue', function () {
 
     await waitForElementToBeRemoved(getByText('Loading...'));
 
-    expect(getByText('aa-'));
-    expect(getByText('ab-'));
+    expect(queryByText('aa-')).to.exist;
+    expect(queryByText('ab-')).to.exist;
   });
 });

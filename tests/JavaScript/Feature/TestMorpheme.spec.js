@@ -18,9 +18,9 @@ describe('Morpheme.vue', function () {
       })
     };
 
-    const { getByText } = render(Morpheme, { props });
+    const { queryByText } = render(Morpheme, { props });
 
-    expect(getByText('-ak'));
-    expect(getByText('Test Language'));
+    expect(queryByText('-ak')).to.exist;
+    expect(queryByText('Test Language')).to.exist;
   });
 });

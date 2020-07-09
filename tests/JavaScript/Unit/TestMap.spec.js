@@ -5,84 +5,63 @@ import Vue from 'vue';
 
 import Map from '../../../resources/js/components/Map';
 
+const renderMap = async props => {
+  const wrapper = render(Map, { props });
+  await waitFor(() => expect(wrapper.container.querySelector('.leaflet-layer')).to.exist);
+  return {
+    getMarkers: () => wrapper.container.getElementsByClassName('leaflet-marker-icon'),
+    ...wrapper
+  };
+};
+
 describe('Map.vue', function () {
   it('renders no locations by default', async function () {
-    const { container } = render(Map);
-
-    await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
-
-    const markers = container.getElementsByClassName('leaflet-marker-icon');
-    expect(markers).to.have.lengthOf(0);
+    const { getMarkers } = await renderMap();
+    expect(getMarkers()).to.have.lengthOf(0);
   });
 
   it('renders locations', async function () {
-    const props = {
+    const { getMarkers } = await renderMap({
       locations: [
         {
-          position: {
-            lat: 45,
-            lng: 34
-          }
+          position: { lat: 45, lng: 34 }
         },
         {
-          position: {
-            lat: 34,
-            lng: 75
-          }
+          position: { lat: 34, lng: 75 }
         }
       ]
-    };
+    });
 
-    const { container } = render(Map, { props });
-
-    await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
-
-    const markers = container.getElementsByClassName('leaflet-marker-icon');
-    expect(markers).to.have.lengthOf(2);
+    expect(getMarkers()).to.have.lengthOf(2);
   });
 
   describe('when it has a value', function () {
     describe('when the value has a position', function () {
       it('renders the value', async function () {
-        const props = {
+        const { getMarkers } = await renderMap({
           value: {
-            position: {
-              lat: 45,
-              lng: 34
-            }
+            position: { lat: 45, lng: 34 }
           }
-        };
+        });
 
-        const { container } = render(Map, { props });
-
-        await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
-
-        const markers = container.getElementsByClassName('leaflet-marker-icon');
-        expect(markers).to.have.lengthOf(1);
+        expect(getMarkers()).to.have.lengthOf(1);
       });
     });
 
     describe('when the value has no position', function () {
       it('does not render the value', async function () {
-        const props = {
+        const { getMarkers } = await renderMap({
           value: { position: null }
-        };
+        });
 
-        const { container } = render(Map, { props });
-
-        await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
-
-        const markers = container.getElementsByClassName('leaflet-marker-icon');
-        expect(markers).to.have.lengthOf(0);
+        expect(getMarkers).to.have.lengthOf(0);
       });
     });
   });
 
   describe('interaction', function () {
     it('emits an input event when right clicked', async function () {
-      const { container, emitted } = render(Map);
-
-      await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
+      const { container, emitted } = await renderMap();
 
       await fireEvent(container.firstChild, new MouseEvent('contextmenu'));
 
@@ -92,17 +71,12 @@ describe('Map.vue', function () {
 
     it('can be used with v-model', async function () {
       const component = Vue.component('foo', {
-        components: {
-          'alglang-map': Map
-        },
+        components: { 'alglang-map': Map },
         data() {
           return {
             value: {
               foo: 'foo',
-              position: {
-                lat: 0,
-                lng: 0
-              }
+              position: { lat: 0, lng: 0 }
             }
           };
         },
@@ -116,11 +90,12 @@ describe('Map.vue', function () {
       });
 
       const { container, getByTestId } = render(component);
+      await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
+
       expect(getByTestId('lat')).to.have.text('0');
       expect(getByTestId('lng')).to.have.text('0');
       expect(getByTestId('foo')).to.have.text('foo');
 
-      await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
       await fireEvent(getByTestId('map'), new MouseEvent('contextmenu'));
 
       expect(getByTestId('lat')).to.have.text('46.01222384063236');
