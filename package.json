@@ -13,7 +13,9 @@
         "mocha": "cross-env NODE_ENV=testing mochapack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js --require tests/JavaScript/setup.js tests/JavaScript/\\*\\*/\\*.spec.js",
         "mocha-watch": "yarn mocha --watch",
         "test": "cross-env NODE_ENV=testing nyc yarn mocha",
-        "lint": "eslint --ext .js,.vue resources/js tests/JavaScript",
+        "lint-js": "eslint --ext .js,.vue resources/js tests/JavaScript",
+        "lint-css": "stylelint \"resources/**/*.(css|vue)\"",
+        "lint": "yarn lint-js && yarn lint-css",
         "serve": "php artisan serve",
         "start": "concurrently --kill-others \"yarn serve --quiet >/dev/null 2>&1\" \"yarn development-quiet --watch >/dev/null 2>&1\" \"yarn mocha-watch\""
     },
@@ -43,6 +45,8 @@
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^9.0.0",
+        "stylelint": "^13.6.1",
+        "stylelint-config-standard": "^20.0.0",
         "tailwindcss": "^1.4",
         "vue-template-compiler": "^2.6.11"
     },

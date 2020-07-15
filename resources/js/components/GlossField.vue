@@ -34,8 +34,8 @@ export default {
 </script>
 
 <style scoped>
-li:not(:last-child):after {
-    display: inline-block;
-    content: '.'
+li:not(:last-child)::after {
+  display: inline-block;
+  content: '.';
 }
 </style>

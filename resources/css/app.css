@@ -3,33 +3,32 @@
 @tailwind base;
 
 a {
-    @apply text-blue-600;
+  @apply text-blue-600;
 }
 
 a:hover {
-    @apply text-red-600;
+  @apply text-red-600;
 }
 
 [v-cloak] {
-    @apply hidden;
+  @apply hidden;
 }
 
 .active-nav {
-    @apply cursor-default text-gray-200 bg-red-700;
+  @apply cursor-default text-gray-200 bg-red-700;
 }
 
 .active-nav:hover {
-    @apply text-gray-200;
+  @apply text-gray-200;
 }
 
 .inactive-nav {
-    @apply cursor-pointer text-gray-700;
+  @apply cursor-pointer text-gray-700;
 }
 
 .inactive-nav:hover {
-    @hover bg-gray-300 text-gray-700;
+  @apply bg-gray-300 text-gray-700;
 }
 
 @tailwind components;
-
 @tailwind utilities;
