@@ -24,6 +24,8 @@ class ViewGroupTest extends TestCase
         $response = $this->get($group->url);
 
         $response->assertOk();
+
+        $response->assertViewHas('group', $group);
         $response->assertSee('Test Group');
         $response->assertSee('Lorem ipsum dolor sit amet');
     }
@@ -31,6 +33,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
+        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create();
 
         factory(Language::class)->create([
