@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import moxios from 'moxios';
 
 import Morphemes from '../../../resources/js/components/Language/Morphemes';
-import { morphemeFactory, languageFactory } from '../factory';
+import { morphemeFactory } from '../factory';
 
 const renderMorphemes = props => render(Morphemes, { props });
 
