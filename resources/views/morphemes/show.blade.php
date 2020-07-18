@@ -17,92 +17,35 @@
 
         <alglang-detail-page title="Basic details">
             <div>
-                <div
-                    aria-labelledby="gloss-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="gloss-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Gloss
-                    </h3>
-                    <div class="inline-block w-full">
-                        <p>
-                            {{ $morpheme->gloss }}
-                        </p>
-                    </div>
-                </div>
+                <alglang-detail-row label="Gloss">
+                    <p>{{ $morpheme->gloss }}</p>
+                </alglang-detail-row>
 
-                <div
-                    aria-labelledby="slot-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="slot-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Slot
-                    </h3>
-                    <div class="inline-block w-full">
-                        <p>
+                <alglang-detail-row label="Slot">
+                    <p>
                         <a href="{{ $morpheme->slot->url }}" style="color: {{ $morpheme->slot->colour }}">
-                                {{ $morpheme->slot->abv }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
+                            {{ $morpheme->slot->abv }}
+                        </a>
+                    </p>
+                </alglang-detail-row>
 
                 @if ($morpheme->historical_notes)
-                    <div
-                        aria-labelledby="historical-notes-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="historical-notes-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Historical notes
-                        </h3>
-                        <div class="inline-block w-full">
-                            {!! $morpheme->historical_notes !!}
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Historical notes">
+                        {!! $morpheme->historical_notes !!}
+                    </alglang-detail-row>
                 @endif
 
                 @if ($morpheme->allomorphy_notes)
-                    <div
-                        aria-labelledby="allomorphy-notes-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="allomorphy-notes-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Allomorphy notes
-                        </h3>
-                        <div class="inline-block w-full">
-                            {!! $morpheme->allomorphy_notes !!}
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Allomorphy notes">
+                        {!! $morpheme->allomorphy_notes !!}
+                    </alglang-detail-row>
                 @endif
 
                 @can('view private notes')
                 @if ($morpheme->private_notes)
-                    <div
-                        aria-labelledby="private-notes-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="private-notes-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Private notes
-                        </h3>
-                        <div class="inline-block w-full">
-                            {!! $morpheme->private_notes !!}
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Private notes">
+                        {!! $morpheme->private_notes !!}
+                    </alglang-detail-row>
                 @endif
                 @endcan
             </div>

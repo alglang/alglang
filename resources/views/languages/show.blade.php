@@ -16,95 +16,41 @@
 
         <alglang-detail-page title="Basic details">
             <div>
-                <div
-                    aria-labelledby="algonquianist-code-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="algonquianist-code-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Algonquianist code
-                    </h3>
-                    <div class="inline-block w-full">
-                        <p>
-                            {{ $language->algo_code }}
-                        </p>
-                    </div>
-                </div>
+                <alglang-detail-row label="Algonquianist code">
+                    <p>{{ $language->algo_code }}</p>
+                </alglang-detail-row>
 
-                <div
-                    aria-labelledby="group-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="group-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Group
-                    </h3>
-                    <div class="inline-block w-full">
-                        <p>
-                            <a href="{{ $language->group->url }}">
-                                {{ $language->group->name }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
+                <alglang-detail-row label="Group">
+                    <p>
+                        <a href="{{ $language->group->url }}">
+                            {{ $language->group->name }}
+                        </a>
+                    </p>
+                </alglang-detail-row>
 
                 @if($language->parent)
-                    <div
-                        aria-labelledby="parent-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="parent-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Parent
-                        </h3>
-                        <div class="inline-block w-full">
-                            <p>
-                                <a href="{{ $language->parent->url }}">
-                                    {{ $language->parent->name }}
-                                </a>
-                            </p>
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Parent">
+                        <p>
+                            <a href="{{ $language->parent->url }}">
+                                {{ $language->parent->name }}
+                            </a>
+                        </p>
+                    </alglang-detail-row>
                 @endif
 
                 @if ($language->notes)
-                    <div
-                        aria-labelledby="notes-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="notes-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Notes
-                        </h3>
-                        <div class="inline-block w-full">
-                            {!! $language->notes !!}
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Notes">
+                        {!! $language->notes !!}
+                    </alglang-detail-row>
                 @endif
 
                 @if ($language->position)
-                    <div
-                        aria-labelledby="location-detail-row-title"
-                        class="p-2 mb-2 flex items-center"
-                    >
-                        <h3
-                            id="location-detail-row-title"
-                            class="inline-block w-64 uppercase"
-                        >
-                            Location
-                        </h3>
-                        <div class="inline-block w-full">
-                            <alglang-map style="height: 300px" :locations="[{ name: '{{ $language->name }}', url: '{{ $language->url }}', position: {{ json_encode($language->position) }} }]" />
-                        </div>
-                    </div>
+                    <alglang-detail-row label="Location">
+                        <alglang-map
+                            style="height: 300px"
+                            :locations="[{ name: '{{ $language->name }}', url: '{{ $language->url }}', position: {{ json_encode($language->position) }} }]"
+                        />
+                    </alglang-detail-row>
                 @endif
             </div>
         </alglang-detail-page>

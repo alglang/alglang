@@ -14,6 +14,7 @@ Vue.component('alglang-slot', require('./components/Slot.vue').default);
 Vue.component('alglang-gloss', require('./components/Gloss.vue').default);
 Vue.component('alglang-details', require('./components/Details.vue').default);
 Vue.component('alglang-detail-page', require('./components/DetailPage.vue').default);
+Vue.component('alglang-detail-row', require('./components/DetailRow.vue').default);
 Vue.component('alglang-map', require('./components/Map.vue').default);
 
 Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);

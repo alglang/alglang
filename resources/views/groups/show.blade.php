@@ -10,37 +10,13 @@
 
         <alglang-detail-page title="Basic details">
             <div>
-                <div
-                    aria-labelledby="description-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="description-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Description
-                    </h3>
-                    <div class="inline-block w-full">
-                        <p>
-                            {{ $group->description }}
-                        </p>
-                    </div>
-                </div>
+                <alglang-detail-row label="Description">
+                    <p>{{ $group->description }}</p>
+                </alglang-detail-row>
 
-                <div
-                    aria-labelledby="languages-detail-row-title"
-                    class="p-2 mb-2 flex items-center"
-                >
-                    <h3
-                        id="languages-detail-row-title"
-                        class="inline-block w-64 uppercase"
-                    >
-                        Languages
-                    </h3>
-                    <div class="inline-block w-full">
-                        <alglang-map style="height: 300px" :locations="{{ $group->languages }}" />
-                    </div>
-                </div>
+                <alglang-detail-row label="Languages">
+                    <alglang-map style="height: 300px" :locations="{{ $group->languages }}" />
+                </alglang-detail-row>
             </div>
         </alglang-detail-page>
     </alglang-details>
