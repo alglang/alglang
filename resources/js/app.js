@@ -17,6 +17,8 @@ Vue.component('alglang-details', require('./components/Details.vue').default);
 Vue.component('alglang-detail-page', require('./components/DetailPage.vue').default);
 Vue.component('alglang-map', require('./components/Map.vue').default);
 
+Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);
+
 document.addEventListener('turbolinks:load', () => {
   new Vue({ // eslint-disable-line no-new
     el: '#app'

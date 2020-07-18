@@ -110,6 +110,7 @@
         </alglang-detail-page>
 
         <alglang-detail-page title="Morphemes">
+            <alglang-language-morphemes :language="{{ $language }}" />
         </alglang-detail-page>
     </alglang-details>
 @endsection

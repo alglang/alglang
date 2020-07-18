@@ -15,7 +15,7 @@ describe('Language/Morphemes.vue', function () {
 
   it('displays loading text when it is first mounted', function () {
     const { queryByText } = renderMorphemes({
-      value: languageFactory({ url: '/languages/tl' })
+      language: languageFactory({ url: '/languages/tl' })
     });
 
     expect(queryByText('Loading...')).to.exist;
@@ -23,7 +23,7 @@ describe('Language/Morphemes.vue', function () {
 
   it('loads morphemes', async function () {
     const { getByText, queryByText } = renderMorphemes({
-      value: languageFactory({ url: '/languages/tl' })
+      language: languageFactory({ url: '/languages/tl' })
     });
 
     moxios.stubRequest('/api/languages/tl/morphemes', {
