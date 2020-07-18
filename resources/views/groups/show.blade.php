@@ -1,31 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-white p-6">
-        <header class="flex justify-between mb-4">
-            <div class="leading-normal">
-                <h2 class="block text-lg uppercase text-gray-600">
-                    Group details
-                </h2>
-                <div>
-                    <h1 class="text-3xl font-light">
-                        {{ $group->name }} languages
-                    </h1>
-                </div>
-            </div>
-        </header>
+    <alglang-details title="Group details">
+        <template v-slot:header>
+            <h1 class="text-3xl font-light">
+                {{ $group->name }} languages
+            </h1>
+        </template>
 
-        <div class="flex">
-            <nav
-                class="flex flex-col uppercase bg-gray-200 font-semibold mr-4"
-                style="height: fit-content;"
-            >
-                <a class="p-2 whitespace-no-wrap cursor-default text-gray-200 bg-red-700">
-                    Basic details
-                </a>
-            </nav>
-
-            <article class="overflow-hidden w-full relative">
+        <alglang-detail-page title="Basic details">
+            <div>
                 <div
                     aria-labelledby="description-detail-row-title"
                     class="p-2 mb-2 flex items-center"
@@ -57,7 +41,7 @@
                         <alglang-map style="height: 300px" :locations="{{ $group->languages }}" />
                     </div>
                 </div>
-            </article>
-        </div>
-    </section>
+            </div>
+        </alglang-detail-page>
+    </alglang-details>
 @endsection

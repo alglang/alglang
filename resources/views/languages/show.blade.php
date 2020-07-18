@@ -1,40 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-white p-6">
-        <header class="flex justify-between mb-4">
-            <div class="leading-normal">
-                <h2 class="block text-lg uppercase text-gray-600">
-                    Language details
-                </h2>
-                <div>
-                    <h1 class="text-3xl font-light">
-                        {{ $language->name }}
-                    </h1>
-                    
-                    @if ($language->reconstructed)
-                        <p class="mb-2 p-1 inline text-sm leading-none bg-gray-300 rounded">
-                            Reconstructed
-                        </p>
-                    @endif
-                </div>
-            </div>
-        </header>
+    <alglang-details title="Language details">
+        <template v-slot:header>
+            <h1 class="text-3xl font-light">
+                {{ $language->name }}
+            </h1>
 
-        <div class="flex">
-            <nav
-                class="flex flex-col uppercase bg-gray-200 font-semibold mr-4"
-                style="height: fit-content;"
-            >
-                <a class="p-2 whitespace-no-wrap cursor-default text-gray-200 bg-red-700">
-                    Basic details
-                </a>
-                <a class="p-2 whitespace-no-wrap cursor-pointer text-gray-700">
-                    Morphemes
-                </a>
-            </nav>
+            @if ($language->reconstructed)
+                <p class="mb-2 p-1 inline text-sm leading-none bg-gray-300 rounded">
+                    Reconstructed
+                </p>
+            @endif
+        </template>
 
-            <article class="overflow-hidden w-full relative">
+        <alglang-detail-page title="Basic details">
+            <div>
                 <div
                     aria-labelledby="algonquianist-code-detail-row-title"
                     class="p-2 mb-2 flex items-center"
@@ -125,7 +106,10 @@
                         </div>
                     </div>
                 @endif
-            </article>
-        </div>
-    </section>
+            </div>
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Morphemes">
+        </alglang-detail-page>
+    </alglang-details>
 @endsection

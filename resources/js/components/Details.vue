@@ -2,168 +2,94 @@
   <section class="bg-white p-6">
     <header class="flex justify-between mb-4">
       <div class="leading-normal">
-        <h2
-          for="details-title"
-          class="block text-lg uppercase text-gray-600"
-        >
+        <h2 class="block text-lg uppercase text-gray-600">
           {{ title }}
         </h2>
         <div>
           <slot name="header" />
         </div>
       </div>
-
-      <div v-if="loading">
-        Loading...
-      </div>
-
-      <div v-if="canEdit">
-        <a
-          v-if="mode === 'edit'"
-          aria-label="Save"
-          @click="handleSave"
-        >
-          Save
-        </a>
-        <a
-          v-else
-          aria-label="Edit"
-          @click="$emit('modeChange', 'edit')"
-        >
-          Edit
-        </a>
-      </div>
     </header>
 
     <div class="flex">
-      <nav
-        class="flex flex-col uppercase bg-gray-200 font-semibold mr-4"
-        style="height: fit-content;"
+      <ul
+        role="tablist"
+        class="flex flex-col uppercase font-semibold mr-4"
       >
-        <a
-          v-for="{ name } in pages"
-          :key="name"
-          class="p-2 whitespace-no-wrap"
-          :class="{ 'active-nav': name === activePage, 'inactive-nav': name !== activePage }"
-          @click="handleClick(name)"
+        <li
+          v-for="(page, i) in pages"
+          :key="i"
+          class="bg-gray-200"
         >
-          {{ name.replace('-', ' ') }}
-        </a>
-      </nav>
+          <a
+            :aria-selected="page.isActive"
+            class="block p-2 whitespace-no-wrap text-gray-700 hover:bg-gray-300 hover:text-gray-700"
+            :href="page.isActive ? '' : '#' + page.hash"
+            role="tab"
+            @click.prevent="visit(page.hash)"
+          >
+            {{ page.title }}
+          </a>
+        </li>
+      </ul>
 
-      <article class="overflow-hidden w-full relative">
-        <component
-          :is="activePage"
-          :value="value"
-          :mode="mode"
-          :resources="repositories"
-          @input="$emit('input', $event)"
-        />
-      </article>
+      <div class="overflow-hidden w-full relative">
+        <slot />
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   props: {
     title: {
       type: String,
       required: true
-    },
-
-    pages: {
-      type: Array,
-      required: true
-    },
-
-    value: {
-      type: Object,
-      required: true
-    },
-
-    mode: {
-      type: String,
-      default: 'view'
-    },
-
-    canEdit: {
-      type: Boolean,
-      default: false
-    },
-
-    resources: {
-      type: Array,
-      default: () => []
     }
   },
 
   data() {
     return {
-      loading: false,
-      repositories: {},
-      hash: ''
+      pages: []
     };
-  },
-
-  computed: {
-    activePage() {
-      if (this.hash && this.pages.some(page => page.name === this.hash)) {
-        return this.hash;
-      }
-      return this.pages[0].name;
-    }
-  },
-
-  watch: {
-    mode(newMode) {
-      if (newMode === 'edit') {
-        this.loadResources();
-      }
-    }
-  },
-
-  created() {
-    this.hash = window.location.hash.substring(1);
-    this.pages.forEach(({ name, component }) => {
-      this.$options.components[name] = component;
-    });
-
-    if (this.mode === 'edit') {
-      this.loadResources();
-    }
   },
 
   mounted() {
     window.addEventListener('hashchange', () => {
-      this.hash = window.location.hash.substring(1);
+      this.visit(window.location.hash.substring(1));
     });
+
+    this.pages = this.$children;
+
+    if (!this.pages.length) {
+      return;
+    }
+
+    const hash = window.location.hash.substring(1);
+    if (this.pages.some(page => page.hash === hash)) {
+      this.visit(hash);
+    } else {
+      this.visit(this.pages[0].hash);
+    }
   },
 
   methods: {
-    handleClick(clickedPage) {
-      window.location.hash = `#${clickedPage}`;
-    },
-
-    handleSave() {
-      this.$emit('save');
-      this.$emit('modeChange', 'view');
-    },
-
-    loadResources() {
-      this.loading = true;
-
-      const promises = this.resources.map(this.loadResource);
-
-      Promise.all(promises).finally(() => { this.loading = false; });
-    },
-
-    async loadResource({ key, url }) {
-      const response = await axios.get(url);
-      this.$set(this.repositories, key, response.data.data);
+    visit(hash) {
+      window.location.hash = `#${hash}`;
+      this.pages.forEach(page => page.setIsActive(hash === page.hash));
     }
   }
 };
 </script>
+
+<style scoped>
+a[aria-selected] {
+  background-color: #c53030;  /* bg-red-700 */
+  cursor: default;
+}
+
+a[aria-selected], a[aria-selected]:hover {
+  color: #edf2f7;  /* text-gray-200 */
+}
+</style>
