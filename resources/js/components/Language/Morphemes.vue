@@ -30,8 +30,8 @@ export default {
   },
 
   props: {
-    language: {
-      type: Object,
+    url: {
+      type: String,
       required: true
     }
   },
@@ -44,7 +44,7 @@ export default {
   },
 
   async created() {
-    const response = await axios.get(`/api${this.language.url}/morphemes`);
+    const response = await axios.get(this.url);
     const json = response.data;
     this.morphemes = json.data;
     this.loading = false;

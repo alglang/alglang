@@ -15,7 +15,8 @@ describe('Language/Morphemes.vue', function () {
 
   it('displays loading text when it is first mounted', function () {
     const { queryByText } = renderMorphemes({
-      language: languageFactory({ url: '/languages/tl' })
+      url: '/api/languages/tl/morphemes'
+      // language: languageFactory({ url: '/languages/tl' })
     });
 
     expect(queryByText('Loading...')).to.exist;
@@ -32,7 +33,8 @@ describe('Language/Morphemes.vue', function () {
     });
 
     const { getByLabelText, queryByText } = renderMorphemes({
-      language: languageFactory({ url: '/languages/tl' })
+      // language: languageFactory({ url: '/languages/tl' })
+      url: '/api/languages/tl/morphemes'
     });
 
     await waitForElementToBeRemoved(getByLabelText('Loading'));
@@ -47,7 +49,8 @@ describe('Language/Morphemes.vue', function () {
     });
 
     const { getByLabelText, queryByText } = renderMorphemes({
-      language: languageFactory({ url: '/languages/tl' })
+      // language: languageFactory({ url: '/languages/tl' })
+      url: '/api/languages/tl/morphemes'
     });
 
     await waitForElementToBeRemoved(getByLabelText('Loading'));
