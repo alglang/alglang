@@ -89,7 +89,8 @@ a[aria-selected] {
   cursor: default;
 }
 
-a[aria-selected], a[aria-selected]:hover {
+a[aria-selected],
+a[aria-selected]:hover {
   color: #edf2f7;  /* text-gray-200 */
 }
 </style>
