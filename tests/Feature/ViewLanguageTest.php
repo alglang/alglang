@@ -111,6 +111,29 @@ class ViewLanguageTest extends TestCase
     }
 
     /** @test */
+    public function iso_code_is_displayed_if_it_exists()
+    {
+        $language = factory(Language::class)->create(['iso' => 'xyz']);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertSee('ISO');
+        $response->assertSee('xyz');
+    }
+
+    /** @test */
+    public function iso_code_is_not_displayed_if_it_does_not_exist()
+    {
+        $language = factory(Language::class)->create(['iso' => null]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertDontSee('ISO');
+    }
+
+    /** @test */
     public function notes_are_displayed_if_they_exist()
     {
         $language = factory(Language::class)->create([

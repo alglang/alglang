@@ -20,6 +20,12 @@
                     <p>{{ $language->algo_code }}</p>
                 </alglang-detail-row>
 
+                @if($language->iso)
+                    <alglang-detail-row label="ISO">
+                        <p>{{ $language->iso }}</p>
+                    </alglang-detail-row>
+                @endif
+
                 <alglang-detail-row label="Group">
                     <p>
                         <a href="{{ $language->group->url }}">
