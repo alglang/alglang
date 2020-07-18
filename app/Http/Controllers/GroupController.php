@@ -26,9 +26,13 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        $group->load(['languages' => function ($query) {
-            return $query->positioned();
-        }]);
+        $group->load([
+            'parent',
+            'children',
+            'languages' => function ($query) {
+                return $query->positioned();
+            }
+        ]);
         return view('groups.show', ['group' => $group]);
     }
 
