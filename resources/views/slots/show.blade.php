@@ -1,5 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-    <alglang-slot :morph-slot="{{ $slot }}" />
+    <alglang-details title="Slot details">
+        <template v-slot:header>
+            <h1 class="text-3xl font-light" style="color: {{ $slot->colour }}">
+                {{ $slot->abv }}
+            </h1>
+        </template>
+
+        <alglang-detail-page title="Basic details">
+            <div>
+                <alglang-detail-row label="Full name">
+                    <p>{{ $slot->name }}</p>
+                </alglang-detail-row>
+
+                @if ($slot->description)
+                    <alglang-detail-row label="Description">
+                        {!! $slot->description !!}
+                    </alglang-detail-row>
+                @endif
+            </div>
+        </alglang-detail-page>
+    </alglang-details>
 @endsection

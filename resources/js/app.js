@@ -10,7 +10,6 @@ window.Turbolinks = Turbolinks;
 
 Vue.use(TurbolinksAdapter);
 
-Vue.component('alglang-slot', require('./components/Slot.vue').default);
 Vue.component('alglang-details', require('./components/Details.vue').default);
 Vue.component('alglang-detail-page', require('./components/DetailPage.vue').default);
 Vue.component('alglang-detail-row', require('./components/DetailRow.vue').default);
