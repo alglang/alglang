@@ -6,6 +6,7 @@ use App\Gloss;
 use App\Language;
 use App\Morpheme;
 use App\Slot;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -19,7 +20,7 @@ class ViewMorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $slot = factory(Slot::class)->create(['abv' => 'PER']);
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN', 'name' => 'Gloss name']);
+        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
         $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
 
         $morpheme = factory(Morpheme::class)->create([
@@ -33,18 +34,108 @@ class ViewMorphemeTest extends TestCase
         ]);
 
         $response = $this->get($morpheme->url);
-
         $response->assertOk();
-        $response->assertSee('-ak');                          // Shape
-        $response->assertSee("\"disambiguator\":0");          // Disambiguator
-        $response->assertSee('Test Language');                // Language name
-        $response->assertSee('PER');                          // Slot abv
-        $response->assertSee("\"url\":\"\\/slots\\/PER\"");   // Slot url
-        $response->assertSee('AN.PL');                        // Gloss abbreviations
-        $response->assertSee('Gloss name');                   // Gloss name
-        $response->assertSee("\"url\":\"\\/glosses\\/AN\"");  // Gloss urls
-        $response->assertSee('The quick brown fox jumps over the lazy brown dog');  // Historical notes
-        $response->assertSee('Lorem ipsum dolor sit amet');  // Allomorphy notes
-        $response->assertSee('Abcdefghijklmnopqrstuvwxyz');  // Private notes
+
+        $response->assertViewHas('morpheme', $morpheme);
+        $response->assertSee('-ak');            // Shape
+        $response->assertSee('Test Language');  // Language name
+        $response->assertSee('PER');            // Slot abv
+        $response->assertSee('AN.PL');          // Gloss abbreviations
+    }
+
+    /** @test */
+    public function historical_notes_appear_if_the_morpheme_has_historical_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create([
+            'historical_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Historical notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function historical_notes_do_not_appear_if_the_morpheme_has_no_historical_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create(['historical_notes' => null]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Historical notes');
+    }
+
+    /** @test */
+    public function allomorphy_notes_appear_if_the_morpheme_has_allomorphy_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create([
+            'allomorphy_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Allomorphy notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function allomorphy_notes_do_not_appear_if_the_morpheme_has_no_allomorphy_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create(['allomorphy_notes' => null]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Allomorphy notes');
+    }
+
+    /** @test */
+    public function private_notes_appear_if_a_contributor_is_logged_in_and_the_morpheme_has_private_notes()
+    {
+        $this->withPermissions();
+
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('view private notes');
+
+        $morpheme = factory(Morpheme::class)->create([
+            'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->actingAs($user)->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Private notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function private_notes_do_not_appear_if_the_morpheme_has_no_private_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create(['private_notes' => null]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Private notes');
+    }
+
+    /** @test */
+    public function private_notes_do_not_appear_if_the_user_is_not_a_contributor()
+    {
+        $user = factory(User::class)->create();
+
+        $morpheme = factory(Morpheme::class)->create([
+            'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->actingAs($user)->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Private notes');
+        $response->assertDontSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
     }
 }

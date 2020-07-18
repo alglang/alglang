@@ -10,7 +10,6 @@ window.Turbolinks = Turbolinks;
 
 Vue.use(TurbolinksAdapter);
 
-Vue.component('alglang-morpheme', require('./components/Morpheme.vue').default);
 Vue.component('alglang-slot', require('./components/Slot.vue').default);
 Vue.component('alglang-gloss', require('./components/Gloss.vue').default);
 Vue.component('alglang-details', require('./components/Details.vue').default);

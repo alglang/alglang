@@ -19,12 +19,14 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create groups']);
         Permission::create(['name' => 'create languages']);
         Permission::create(['name' => 'edit languages']);
+        Permission::create(['name' => 'view private notes']);
 
         Role::create(['name' => 'contributor'])
             ->givePermissionTo(
                 'create groups',
                 'create languages',
-                'edit languages'
+                'edit languages',
+                'view private notes'
             );
     }
 }
