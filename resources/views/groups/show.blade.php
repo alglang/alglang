@@ -10,9 +10,11 @@
 
         <alglang-detail-page title="Basic details">
             <div>
-                <alglang-detail-row label="Description">
-                    <p>{{ $group->description }}</p>
-                </alglang-detail-row>
+                @if($group->description)
+                    <alglang-detail-row label="Description">
+                        <p>{{ $group->description }}</p>
+                    </alglang-detail-row>
+                @endif
 
                 <alglang-detail-row label="Languages">
                     <alglang-map style="height: 300px" :locations="{{ $group->languages }}" />

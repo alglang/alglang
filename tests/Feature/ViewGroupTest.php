@@ -15,19 +15,38 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function a_group_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
-        $group = factory(Group::class)->create([
-            'name' => 'Test Group',
-            'description' => 'Lorem ipsum dolor sit amet'
-        ]);
+        $group = factory(Group::class)->create(['name' => 'Test Group']);
 
         $response = $this->get($group->url);
-
         $response->assertOk();
 
         $response->assertViewHas('group', $group);
         $response->assertSee('Test Group');
+    }
+
+    /** @test */
+    public function the_description_is_displayed_if_the_group_has_a_description()
+    {
+        $group = factory(Group::class)->create([
+            'description' => 'Lorem ipsum dolor sit amet'
+        ]);
+
+        $response = $this->get($group->url);
+        $response->assertOk();
+
+        $response->assertSee('Description');
         $response->assertSee('Lorem ipsum dolor sit amet');
+    }
+
+    /** @test */
+    public function the_description_is_not_displayed_if_the_group_has_no_description()
+    {
+        $group = factory(Group::class)->create(['description' => null]);
+
+        $response = $this->get($group->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Description');
     }
 
     /** @test */
