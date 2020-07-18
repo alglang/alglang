@@ -22,10 +22,6 @@ describe('Language/Morphemes.vue', function () {
   });
 
   it('loads morphemes', async function () {
-    const { getByText, queryByText } = renderMorphemes({
-      language: languageFactory({ url: '/languages/tl' })
-    });
-
     moxios.stubRequest('/api/languages/tl/morphemes', {
       response: {
         data: [
@@ -35,9 +31,27 @@ describe('Language/Morphemes.vue', function () {
       }
     });
 
-    await waitForElementToBeRemoved(getByText('Loading...'));
+    const { getByLabelText, queryByText } = renderMorphemes({
+      language: languageFactory({ url: '/languages/tl' })
+    });
+
+    await waitForElementToBeRemoved(getByLabelText('Loading'));
 
     expect(queryByText('aa-')).to.exist;
     expect(queryByText('ab-')).to.exist;
+  });
+
+  it('informs the user when no morphemes exist', async function () {
+    moxios.stubRequest('/api/languages/tl/morphemes', {
+      response: { data: [] }
+    });
+
+    const { getByLabelText, queryByText } = renderMorphemes({
+      language: languageFactory({ url: '/languages/tl' })
+    });
+
+    await waitForElementToBeRemoved(getByLabelText('Loading'));
+
+    expect(queryByText('No morphemes')).to.exist;
   });
 });

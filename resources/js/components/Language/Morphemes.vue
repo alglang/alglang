@@ -1,9 +1,12 @@
 <template>
   <div>
-    <p v-if="loading">
+    <div
+      v-if="loading"
+      aria-label="Loading"
+    >
       Loading...
-    </p>
-    <ul v-else>
+    </div>
+    <ul v-else-if="morphemes.length">
       <li
         v-for="morpheme of morphemes"
         :key="morpheme.shape"
@@ -11,6 +14,9 @@
         <alglang-morpheme-card :morpheme="morpheme" />
       </li>
     </ul>
+    <p v-else>
+      No morphemes
+    </p>
   </div>
 </template>
 
