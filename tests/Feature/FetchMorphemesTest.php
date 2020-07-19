@@ -32,11 +32,13 @@ class FetchMorphemesTest extends TestCase
             'private_notes' => 'Abcdefghijklmnopqrstuvwxyz'
         ]);
 
-        $response = $this->get("$language->url/morphemes");
+        $response = $this->get("/api$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'shape' => '-ak',
                     'url' => $morpheme->url,
@@ -66,11 +68,13 @@ class FetchMorphemesTest extends TestCase
             'gloss' => 'G1.G2',
         ]);
 
-        $response = $this->get("$language->url/morphemes");
+        $response = $this->get("/api$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'gloss' => 'G1.G2',
                     'glosses' => [
@@ -94,11 +98,13 @@ class FetchMorphemesTest extends TestCase
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
 
-        $response = $this->get("$language->url/morphemes");
+        $response = $this->get("/api$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 [
                     'disambiguator' => $morpheme->disambiguator
                 ]
@@ -112,14 +118,14 @@ class FetchMorphemesTest extends TestCase
         $language = factory(Language::class)->create(['slug' => 'foo']);
         factory(Morpheme::class, 15)->create(['language_id' => $language->id]);
 
-        $response = $this->get("$language->url/morphemes");
+        $response = $this->get("/api$language->url/morphemes");
 
         $response->assertOk();
         $response->assertJsonCount(10, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
-        $nextResponse->assertJsonCount(5, 'data');
+        $nextResponse->assertJsonCount(7, 'data');  // +2 for the placeholders
     }
 
     /** @test */
@@ -134,12 +140,14 @@ class FetchMorphemesTest extends TestCase
         ]);
         factory(Morpheme::class, 5)->create(['language_id' => $language2->id]);
 
-        $response = $this->get("$language1->url/morphemes");
+        $response = $this->get("/api$language1->url/morphemes");
 
         $response->assertOk();
-        $response->assertJsonCount(1, 'data');
+        $response->assertJsonCount(3, 'data');  // +2 for the placeholders
         $response->assertJson([
             'data' => [
+                [],  // Auto-generated V placeholder
+                [],  // Auto-generated N placeholder
                 ['shape' => '-ak']
             ]
         ]);

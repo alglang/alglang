@@ -4,7 +4,7 @@
     "mocha": true
   },
   "extends": [
-    "plugin:vue/essential",
+    "plugin:vue/recommended",
     "plugin:mocha/recommended",
     "airbnb-base"
   ],
@@ -24,7 +24,16 @@
     "prefer-arrow-callback": "off",
     "import/extensions": ["error", "never", { "css": "always" }],
     "no-unused-expressions": "off",
-    "chai-friendly/no-unused-expressions": 2
+    "chai-friendly/no-unused-expressions": 2,
+    "vue/no-v-html": "off",
+    "vue/html-self-closing": [
+      "warn", {
+        "html": {
+          "normal": "always",
+          "void": "always"
+        }
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

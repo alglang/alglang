@@ -26,12 +26,27 @@ class Group extends Model
         return route('groups.show', ['group' => $this], false);
     }
 
+    public function getPreviewAttribute()
+    {
+        return $this->description;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations
     |--------------------------------------------------------------------------
     |
     */
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
 
     public function languages()
     {

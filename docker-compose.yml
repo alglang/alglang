@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    container_name: alglang-db
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=securerootpassword
+      - MYSQL_DATABASE=db
+    ports:
+      - "3306:3306"
+    networks:
+      alglang_net:
+        ipv4_address: 172.16.238.11
+
+  app:
+    build: '.'
+    restart: always
+    container_name: alglang-web
+    depends_on:
+      - db
+    ports:
+      - 8000:80
+    volumes:
+      - .:/var/www/alglang
+    networks:
+      alglang_net:
+        ipv4_address: 172.16.238.12
+
+volumes:
+  web-app:
+    driver: local
+
+networks:
+  alglang_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24

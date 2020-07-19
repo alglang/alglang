@@ -1,6 +1,14 @@
 <template>
-  <div :aria-labelledby="ariaId" class="p-2 mb-2 flex items-center">
-    <h3 :id="ariaId" class="inline-block w-64 uppercase text-gray-700">
+  <div
+    :aria-labelledby="ariaId"
+    :class="{ 'bg-gray-300': disabled, disabled: disabled }"
+    class="detail-row p-2 mb-2 flex items-center flex-wrap md:flex-no-wrap"
+  >
+    <h3
+      :id="ariaId"
+      :class="{ 'text-gray-700': !disabled, 'text-gray-500': disabled }"
+      class="inline-block w-64 uppercase mb-2 md:mb-0 text-sm md:text-base"
+    >
       {{ label }}
     </h3>
     <div class="inline-block w-full">
@@ -13,7 +21,13 @@
 export default {
   props: {
     label: {
+      type: String,
       required: true
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -24,3 +38,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.detail-row.disabled a {
+  pointer-events: none;
+  color: #718096;
+}
+</style>

@@ -1,35 +1,41 @@
 <template>
   <section class="bg-white p-6">
     <header class="flex justify-between mb-4">
-      <div class="leading-normal">
-        <h2 for="details-title" class="block text-lg uppercase text-gray-600">
+      <div class="leading-normal w-full md:w-auto text-center md:text-left">
+        <h2 class="block text-base md:text-lg uppercase text-gray-600">
           {{ title }}
         </h2>
         <div>
-          <slot name="header"></slot>
+          <slot name="header" />
         </div>
       </div>
     </header>
 
-    <div class="flex">
-      <nav
-        class="flex flex-col uppercase bg-gray-200 font-semibold mr-4"
-        style="height: fit-content;"
+    <div class="flex flex-wrap md:flex-no-wrap">
+      <ul
+        role="tablist"
+        class="flex md:flex-col uppercase font-semibold mr-4 mb-4"
       >
-        <a
-          v-for="{ name } in pages"
-          :key="name"
-          class="p-2 whitespace-no-wrap"
-          :class="{ 'active-nav': name === activePage, 'inactive-nav': name !== activePage }"
-          @click="handleClick(name)"
+        <li
+          v-for="(page, i) in pages"
+          :key="i"
+          class="bg-gray-200"
+        >
+          <a
+            :aria-selected="page.isActive"
+            class="block p-2 whitespace-no-wrap text-gray-700 hover:bg-gray-300 hover:text-gray-700"
+            :href="page.isActive ? '' : '#' + page.hash"
+            role="tab"
+            @click.prevent="visit(page.hash)"
           >
-          {{ name.replace('-', ' ') }}
-        </a>
-      </nav>
+            {{ page.title }}
+          </a>
+        </li>
+      </ul>
 
-      <article class="overflow-hidden w-full relative">
-        <component :is="activePage" v-model="value" />
-      </article>
+      <div class="overflow-hidden w-full relative">
+        <slot />
+      </div>
     </div>
   </section>
 </template>
@@ -38,48 +44,56 @@
 export default {
   props: {
     title: {
-      required: true
-    },
-
-    pages: {
-      required: true,
-      type: Array
-    },
-
-    value: {
+      type: String,
       required: true
     }
   },
 
   data() {
     return {
-      hash: ''
+      pages: []
     };
-  },
-
-  computed: {
-    activePage() {
-      return this.hash || this.pages[0].name;
-    }
-  },
-
-  created() {
-    this.hash = window.location.hash.substring(1);
-    this.pages.forEach(({ name, component }) => {
-      this.$options.components[name] = component;
-    });
   },
 
   mounted() {
     window.addEventListener('hashchange', () => {
-      this.hash = window.location.hash.substring(1);
+      this.visit(window.location.hash.substring(1));
     });
+
+    this.pages = this.$children.filter(child => child.$options.name === 'DetailPage');
+
+    if (!this.pages.length) {
+      return;
+    }
+
+    const hash = window.location.hash.substring(1);
+    if (!this.pages.some(page => page.hash === hash)) {
+      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}#${this.pages[0].hash}`);
+    }
+
+    this.visit(window.location.hash.substring(1));
   },
 
   methods: {
-    handleClick(clickedPage) {
-      window.location.hash = `#${clickedPage}`;
+    visit(hash) {
+      if (window.location.hash !== `#${hash}`) {
+        window.location.hash = `#${hash}`;
+      }
+
+      this.pages.forEach(page => page.setIsActive(hash === page.hash));
     }
   }
 };
 </script>
+
+<style scoped>
+a[aria-selected] {
+  background-color: #c53030;  /* bg-red-700 */
+  cursor: default;
+}
+
+a[aria-selected],
+a[aria-selected]:hover {
+  color: #edf2f7;  /* text-gray-200 */
+}
+</style>

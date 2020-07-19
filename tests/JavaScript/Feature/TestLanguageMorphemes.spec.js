@@ -4,7 +4,9 @@ import { expect } from 'chai';
 import moxios from 'moxios';
 
 import Morphemes from '../../../resources/js/components/Language/Morphemes';
-import { morphemeFactory, languageFactory } from '../factory';
+import { morphemeFactory } from '../factory';
+
+const renderMorphemes = props => render(Morphemes, { props });
 
 describe('Language/Morphemes.vue', function () {
   beforeEach(function () { moxios.install(); });
@@ -12,24 +14,16 @@ describe('Language/Morphemes.vue', function () {
   afterEach(function () { moxios.uninstall(); });
 
   it('displays loading text when it is first mounted', function () {
-    const props = {
-      value: languageFactory({ url: '/languages/tl' })
-    };
+    const { queryByText } = renderMorphemes({
+      url: '/api/languages/tl/morphemes'
+      // language: languageFactory({ url: '/languages/tl' })
+    });
 
-    const { getByText } = render(Morphemes, { props });
-
-    expect(getByText('Loading...'));
+    expect(queryByText('Loading...')).to.exist;
   });
 
   it('loads morphemes', async function () {
-    const props = {
-      value: languageFactory({ url: '/languages/tl' })
-    };
-
-    const { getByText } = render(Morphemes, { props });
-
-    moxios.stubRequest('/languages/tl/morphemes', {
-      status: 200,
+    moxios.stubRequest('/api/languages/tl/morphemes', {
       response: {
         data: [
           morphemeFactory({ shape: 'aa-' }),
@@ -38,9 +32,29 @@ describe('Language/Morphemes.vue', function () {
       }
     });
 
-    await waitForElementToBeRemoved(getByText('Loading...'));
+    const { getByLabelText, queryByText } = renderMorphemes({
+      // language: languageFactory({ url: '/languages/tl' })
+      url: '/api/languages/tl/morphemes'
+    });
 
-    expect(getByText('aa-'));
-    expect(getByText('ab-'));
+    await waitForElementToBeRemoved(getByLabelText('Loading'));
+
+    expect(queryByText('aa-')).to.exist;
+    expect(queryByText('ab-')).to.exist;
+  });
+
+  it('informs the user when no morphemes exist', async function () {
+    moxios.stubRequest('/api/languages/tl/morphemes', {
+      response: { data: [] }
+    });
+
+    const { getByLabelText, queryByText } = renderMorphemes({
+      // language: languageFactory({ url: '/languages/tl' })
+      url: '/api/languages/tl/morphemes'
+    });
+
+    await waitForElementToBeRemoved(getByLabelText('Loading'));
+
+    expect(queryByText('No morphemes')).to.exist;
   });
 });

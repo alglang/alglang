@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Gloss::class, function (Faker $faker) {
     return [
-        'name' => 'Foo bar'
+        'abv' => 'DGN',
+        'name' => 'Dummy gloss name'
     ];
 });

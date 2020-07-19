@@ -1,13 +1,26 @@
 <template>
-  <l-map :zoom="zoom" :center="center">
+  <l-map
+    :zoom="zoom"
+    :center="center"
+    @click.right="handleRightClick"
+  >
     <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      <l-marker v-for="(location, i) of locations" :key="i" :lat-lng="location.position">
-        <l-popup>
-          <a :href="location.url">
-            {{ location.name }}
-          </a>
-        </l-popup>
-      </l-marker>
+    <l-marker
+      v-if="value && value.position"
+      :lat-lng="value.position"
+    />
+
+    <l-marker
+      v-for="(location, i) of locations"
+      :key="i"
+      :lat-lng="location.position"
+    >
+      <l-popup>
+        <a :href="location.url">
+          {{ location.name }}
+        </a>
+      </l-popup>
+    </l-marker>
   </l-map>
 </template>
 
@@ -24,12 +37,6 @@ import {
 import 'leaflet-defaulticon-compatibility'; // eslint-disable-line import/no-unresolved
 
 export default {
-  props: {
-    locations: {
-      default: () => []
-    }
-  },
-
   components: {
     LMap,
     LTileLayer,
@@ -37,11 +44,32 @@ export default {
     LPopup
   },
 
+  props: {
+    value: {
+      type: Object,
+      default: () => ({})
+    },
+
+    locations: {
+      type: Array,
+      default: () => []
+    }
+  },
+
   data() {
     return {
       zoom: 4,
       center: [46.0, -87.659916]
     };
+  },
+
+  methods: {
+    handleRightClick(e) {
+      this.$emit('input', {
+        ...this.value,
+        position: e.latlng
+      });
+    }
   }
 };
 </script>

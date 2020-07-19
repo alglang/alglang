@@ -8,20 +8,21 @@ export const glossFactory = props => ({
   ...props
 });
 
-export const languageFactory = props => ({
-  name: 'Test Language',
-  algo_code: 'TL',
-  group: {},
-  ...props
-});
-
 export const groupFactory = props => ({
   name: 'Test Group',
   ...props
 });
 
+export const languageFactory = props => ({
+  name: 'Test Language',
+  algo_code: 'TL',
+  group: groupFactory(),
+  ...props
+});
+
 export const morphemeFactory = props => ({
   slot: slotFactory(),
-  glosses: [glossFactory()],
+  gloss: 'TGL',
+  glosses: [glossFactory({ abv: 'TGL' })],
   ...props
 });

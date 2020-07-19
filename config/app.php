@@ -190,7 +190,7 @@ return [
          * Other Service Providers...
          *
          */
-        App\Providers\ViewServiceProvider::class
+        //
     ],
 
     /*

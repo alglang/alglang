@@ -1,11 +1,22 @@
 <template>
   <div>
-    <p v-if="loading">Loading...</p>
-    <ul v-else>
-      <li v-for="morpheme of morphemes" :key="morpheme.shape">
+    <div
+      v-if="loading"
+      aria-label="Loading"
+    >
+      Loading...
+    </div>
+    <ul v-else-if="morphemes.length">
+      <li
+        v-for="morpheme of morphemes"
+        :key="morpheme.shape"
+      >
         <alglang-morpheme-card :morpheme="morpheme" />
       </li>
     </ul>
+    <p v-else>
+      No morphemes
+    </p>
   </div>
 </template>
 
@@ -14,14 +25,15 @@ import axios from 'axios';
 import MorphemeCard from '../MorphemeCard';
 
 export default {
-  props: {
-    value: {
-      required: true
-    }
-  },
-
   components: {
     'alglang-morpheme-card': MorphemeCard
+  },
+
+  props: {
+    url: {
+      type: String,
+      required: true
+    }
   },
 
   data() {
@@ -32,7 +44,7 @@ export default {
   },
 
   async created() {
-    const response = await axios.get(`${this.value.url}/morphemes`);
+    const response = await axios.get(this.url);
     const json = response.data;
     this.morphemes = json.data;
     this.loading = false;

@@ -16,21 +16,89 @@ class ViewGroupTest extends TestCase
     public function a_group_can_be_viewed()
     {
         $this->withoutExceptionHandling();
+        $group = factory(Group::class)->create(['name' => 'Test Group']);
+
+        $response = $this->get($group->url);
+        $response->assertOk();
+
+        $response->assertViewHas('group', $group);
+        $response->assertSee('Test Group');
+    }
+
+    /** @test */
+    public function the_description_is_displayed_if_the_group_has_a_description()
+    {
         $group = factory(Group::class)->create([
-            'name' => 'Test Group',
             'description' => 'Lorem ipsum dolor sit amet'
         ]);
 
         $response = $this->get($group->url);
-
         $response->assertOk();
-        $response->assertSee('Test Group');
+
+        $response->assertSee('Description');
         $response->assertSee('Lorem ipsum dolor sit amet');
+    }
+
+    /** @test */
+    public function the_group_parent_is_displayed_if_the_group_has_a_parent()
+    {
+        $parent = factory(Group::class)->create(['name' => 'Supergroup']);
+        $child = factory(Group::class)->create(['parent_id' => $parent->id]);
+
+        $response = $this->get($child->url);
+        $response->assertOk();
+
+        $response->assertSee('Parent');
+        $response->assertSee('Supergroup');
+    }
+
+    /** @test */
+    public function the_group_children_are_displayed_if_there_are_any_children()
+    {
+        $parent = factory(Group::class)->create();
+        $child1 = factory(Group::class)->create([
+            'name' => 'Child 1',
+            'parent_id' => $parent->id
+        ]);
+        $child2 = factory(Group::class)->create([
+            'name' => 'Child 2',
+            'parent_id' => $parent->id
+        ]);
+
+        $response = $this->get($parent->url);
+        $response->assertOk();
+
+        $response->assertSee('Children');
+        $response->assertSee('Child 1');
+        $response->assertSee('Child 2');
+    }
+
+    /** @test */
+    public function the_children_field_is_not_displayed_if_there_are_no_children()
+    {
+        $group = factory(Group::class)->create();
+
+        $response = $this->get($group->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Children');
+    }
+
+    /** @test */
+    public function the_description_is_not_displayed_if_the_group_has_no_description()
+    {
+        $group = factory(Group::class)->create(['description' => null]);
+
+        $response = $this->get($group->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Description');
     }
 
     /** @test */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
+        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create();
 
         factory(Language::class)->create([

@@ -9,7 +9,13 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
+        $this->middleware('auth')->except('show', 'index');
+        $this->middleware('permission:create groups')->except('show', 'index');
+    }
+
+    public function index()
+    {
+        return ['data' => Group::all()];
     }
 
     /**
@@ -20,9 +26,13 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        $group->load(['languages' => function ($query) {
-            return $query->positioned();
-        }]);
+        $group->load([
+            'parent',
+            'children',
+            'languages' => function ($query) {
+                return $query->positioned();
+            }
+        ]);
         return view('groups.show', ['group' => $group]);
     }
 
@@ -32,7 +42,6 @@ class GroupController extends Controller
             'name' => 'required',
             'description' => 'nullable'
         ]);
-        $group = Group::create($data);
-        return redirect($group->url);
+        return Group::create($data);
     }
 }

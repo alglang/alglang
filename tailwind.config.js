@@ -1,3 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
+const customForms = require('@tailwindcss/custom-forms');
+
 module.exports = {
   purge: [
     './resources/views/**/*.blade.php',
@@ -19,6 +22,6 @@ module.exports = {
     display: ['responsive', 'group-hover']
   },
   plugins: [
-    require('@tailwindcss/custom-forms')
+    customForms
   ]
 };
