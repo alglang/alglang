@@ -6,6 +6,16 @@ import Vue from 'vue';
 import Details from '../../../resources/js/components/Details';
 import DetailPage from '../../../resources/js/components/DetailPage';
 
+Vue.component('dummy-page', {
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  },
+  template: '<div />'
+});
+
 const renderDetails = ({ props, slots }) => render(Details, {
   props: {
     title: 'Dummy title',
@@ -89,6 +99,20 @@ describe('Details.vue', function () {
     expect(queryByTestId('page2-content')).to.not.exist;
     expect(tabs[0]).to.have.attribute('aria-selected');
     expect(tabs[1]).to.not.have.attribute('aria-selected');
+  });
+
+  it('only treats detail-pages as pages', async function () {
+    const slots = {
+      header: '<dummy-page title="c" />',
+      default: '<detail-page title="a"><div data-testid="page1-content" /></detail-page>'
+    };
+
+    const { getAllByRole } = await renderDetailsAndWait({ slots });
+
+    const tabs = getAllByRole('tab');
+
+    expect(tabs).to.have.length(1);
+    expect(tabs[0]).to.contain.trimmed.text('a');
   });
 
   it('navigates to page when its title is clicked', async function () {

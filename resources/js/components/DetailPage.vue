@@ -6,6 +6,8 @@
 
 <script>
 export default {
+  name: 'DetailPage',
+
   props: {
     title: {
       type: String,

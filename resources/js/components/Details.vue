@@ -60,7 +60,7 @@ export default {
       this.visit(window.location.hash.substring(1));
     });
 
-    this.pages = this.$children;
+    this.pages = this.$children.filter(child => child.$options.name === 'DetailPage');
 
     if (!this.pages.length) {
       return;
