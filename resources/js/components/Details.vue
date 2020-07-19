@@ -67,16 +67,19 @@ export default {
     }
 
     const hash = window.location.hash.substring(1);
-    if (this.pages.some(page => page.hash === hash)) {
-      this.visit(hash);
-    } else {
-      this.visit(this.pages[0].hash);
+    if (!this.pages.some(page => page.hash === hash)) {
+      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}#${this.pages[0].hash}`);
     }
+
+    this.visit(window.location.hash.substring(1));
   },
 
   methods: {
     visit(hash) {
-      window.location.hash = `#${hash}`;
+      if (window.location.hash !== `#${hash}`) {
+        window.location.hash = `#${hash}`;
+      }
+
       this.pages.forEach(page => page.setIsActive(hash === page.hash));
     }
   }

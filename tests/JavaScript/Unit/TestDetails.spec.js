@@ -31,17 +31,6 @@ const hashChange = async hash => {
 };
 
 describe('Details.vue', function () {
-  beforeEach(function () {
-    this.oldLocation = window.location;
-    delete window.location;
-    window.location = new URL('http://localhost');
-  });
-
-  afterEach(function () {
-    delete window.location;
-    window.location = this.oldLocation;
-  });
-
   it('shows its title', function () {
     const props = { title: 'Test title' };
     const { getByText } = renderDetails({ props });
