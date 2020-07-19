@@ -1,8 +1,8 @@
 <template>
   <section class="bg-white p-6">
     <header class="flex justify-between mb-4">
-      <div class="leading-normal">
-        <h2 class="block text-lg uppercase text-gray-600">
+      <div class="leading-normal w-full md:w-auto text-center md:text-left">
+        <h2 class="block text-base md:text-lg uppercase text-gray-600">
           {{ title }}
         </h2>
         <div>
@@ -11,10 +11,10 @@
       </div>
     </header>
 
-    <div class="flex">
+    <div class="flex flex-wrap md:flex-no-wrap">
       <ul
         role="tablist"
-        class="flex flex-col uppercase font-semibold mr-4"
+        class="flex md:flex-col uppercase font-semibold mr-4 mb-4"
       >
         <li
           v-for="(page, i) in pages"
