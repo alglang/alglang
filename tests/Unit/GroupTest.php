@@ -16,4 +16,17 @@ class GroupTest extends TestCase
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $this->assertEquals('/groups/test-group', $group->url);
     }
+
+    /** @test */
+    public function its_preview_is_its_description()
+    {
+        $group = factory(Group::class)->create([
+            'description' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $this->assertEquals(
+            '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>',
+            $group->preview
+        );
+    }
 }

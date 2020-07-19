@@ -26,6 +26,11 @@ class Group extends Model
         return route('groups.show', ['group' => $this], false);
     }
 
+    public function getPreviewAttribute()
+    {
+        return $this->description;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations
