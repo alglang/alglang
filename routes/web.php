@@ -77,3 +77,9 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');
 Route::get('/auth/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+if (app('env') === 'testing') {
+    Route::get('/500', function () {
+        abort(500);
+    });
+}

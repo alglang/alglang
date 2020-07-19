@@ -30,4 +30,13 @@ class ViewErrorsTest extends TestCase
 
         $response->assertSee(config('app.admin_email'));
     }
+
+    /** @test */
+    public function error_500_contains_a_contact_email()
+    {
+        $response = $this->get('/500');  // Dummy route - only exists while testing
+        $response->assertStatus(500);
+
+        $response->assertSee(config('app.admin_email'));
+    }
 }
