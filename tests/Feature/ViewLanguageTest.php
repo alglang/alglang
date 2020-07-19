@@ -76,7 +76,7 @@ class ViewLanguageTest extends TestCase
     /* } */
 
     /** @test */
-    public function a_language_shows_its_children()
+    public function a_language_shows_its_children_if_it_has_children()
     {
         $language = factory(Language::class)->create();
         $child1 = factory(Language::class)->create([
@@ -91,8 +91,20 @@ class ViewLanguageTest extends TestCase
         $response = $this->get($language->url);
 
         $response->assertOk();
+        $response->assertSee('Direct descendants');
         $response->assertSee('Test Child 1');
         $response->assertSee('Test Child 2');
+    }
+
+    /** @test */
+    public function a_language_does_not_show_children_if_it_has_no_children()
+    {
+        $language = factory(Language::class)->create();
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Direct descendants');
     }
 
     /** @test */

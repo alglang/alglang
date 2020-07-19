@@ -44,6 +44,20 @@
                     </alglang-detail-row>
                 @endif
 
+                @if($language->children->count() > 0)
+                    <alglang-detail-row label="Direct descendants">
+                        <ul>
+                            @foreach($language->children as $child)
+                                <li>
+                                    <a href="{{ $child->url }}">
+                                        {{ $child->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </alglang-detail-row>
+                @endif
+
                 @if ($language->notes)
                     <alglang-detail-row label="Notes">
                         {!! $language->notes !!}
