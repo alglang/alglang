@@ -35,7 +35,7 @@ class HomeTest extends TestCase
     }
 
     /** @test */
-    public function a_logged_in_user_sees_the_add_menu_and_a_logout_link()
+    public function a_logged_in_user_sees_a_logout_link()
     {
         $this->withoutMix();
 
@@ -44,16 +44,35 @@ class HomeTest extends TestCase
         $response = $this->actingAs($user)->get('/');
 
         $response->assertOk();
-        $response->assertSee('Add');
         $response->assertSee('Log out');
+    }
 
-        $response->assertSee('alglang.net');
-        $response->assertSee('Smart search...');
-        $response->assertSee('Languages');
-        $response->assertSee('Search');
+    /** @test */
+    public function a_contributor_sees_the_add_menu()
+    {
+        $this->withoutMix();
+        $this->withPermissions();
 
-        $response->assertSee('Database of Algonquian Language Structures');
-        $response->assertSeeText('This database provides information about the sounds and grammar of the Algonquian languages');
+        $user = factory(User::class)->create();
+        $user->assignRole('contributor');
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertOk();
+        $response->assertSee('Add');
+    }
+
+    /** @test */
+    public function a_non_contributor_does_not_see_the_add_menu()
+    {
+        $this->withoutMix();
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertOk();
+        $response->assertDontSee('Add');
     }
 
     /** @test */

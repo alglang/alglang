@@ -84,19 +84,21 @@
             </ul>
         </div>
         @else
-        <div class="relative group h-full">
-            <span class="flex items-center uppercase tracking-wide px-3 h-full uppercase text-gray-100 hover:text-gray-100 hover:bg-red-700 md:bg-yellow-400 md:text-gray-900 md:hover:bg-yellow-500 md:hover:text-gray-900">
-                <span>Add</span>
-            </span>
+            @role('contributor')
+                <div class="relative group h-full">
+                    <span class="flex items-center uppercase tracking-wide px-3 h-full uppercase text-gray-100 hover:text-gray-100 hover:bg-red-700 md:bg-yellow-400 md:text-gray-900 md:hover:bg-yellow-500 md:hover:text-gray-900">
+                        <span>Add</span>
+                    </span>
 
-            <ul class="absolute py-1 right-0 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
-                <li>
-                    <a href="{{ route('languages.create') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
-                        Language
-                    </a>
-                </li>
-            </ul>
-        </div>
+                    <ul class="absolute py-1 right-0 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                        <li>
+                            <a href="{{ route('languages.create') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                                Language
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @endrole
         @endguest
     </div>
 </nav>
