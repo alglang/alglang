@@ -57,6 +57,7 @@
         "leaflet-defaulticon-compatibility": "^0.1.1",
         "lodash": "^4.17.13",
         "turbolinks": "^5.2.0",
+        "v-tooltip": "^2.0.3",
         "vue": "^2.6.11",
         "vue-turbolinks": "^2.1.0",
         "vue2-leaflet": "^2.5.2"

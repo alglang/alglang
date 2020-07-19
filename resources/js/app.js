@@ -2,6 +2,7 @@ require('./bootstrap');
 const Turbolinks = require('turbolinks');
 const TurbolinksAdapter = require('vue-turbolinks');
 const Vue = require('vue');
+const VTooltip = require('v-tooltip');
 
 Turbolinks.start();
 
@@ -9,6 +10,7 @@ window.Vue = Vue;
 window.Turbolinks = Turbolinks;
 
 Vue.use(TurbolinksAdapter);
+Vue.use(VTooltip);
 
 Vue.component('alglang-details', require('./components/Details.vue').default);
 Vue.component('alglang-detail-page', require('./components/DetailPage.vue').default);

@@ -13,9 +13,9 @@
                 @if($group->parent)
                     <alglang-detail-row label="Parent">
                         <p>
-                            <a href="{{ $group->parent->url }}">
+                            <x-preview-link :model="$group->parent">
                                 {{ $group->parent->name }}
-                            </a>
+                            </x-preview-link>
                         </p>
                     </alglang-detail-row>
                 @endif
@@ -25,9 +25,9 @@
                         <ul>
                             @foreach($group->children as $child)
                                 <li>
-                                    <a href="{{ $child->url }}">
+                                    <x-preview-link :model="$child">
                                         {{ $child->name }}
-                                    </a>
+                                    </x-preview-link>
                                 </li>
                             @endforeach
                         </ul>

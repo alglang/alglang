@@ -9,9 +9,9 @@
             </h1>
 
             <p class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
-                <a href="{{ $morpheme->language->url }}">
+                <x-preview-link :model="$morpheme->language">
                     {{ $morpheme->language->name }}
-                </a>
+                </x-preview-link>
             </p>
         </template>
 

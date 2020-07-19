@@ -14,5 +14,40 @@ a:hover {
   @apply hidden;
 }
 
+.tooltip {
+  z-index: 1000000;
+
+  @apply block;
+}
+
+.tooltip .tooltip-inner {
+  max-width: 16rem;
+
+  @apply py-1 px-2 text-base antialiased bg-white text-gray-900 border border-gray-100 shadow-lg;
+}
+
+.tooltip .tooltip-arrow {
+  @apply w-0 h-0 m-1 border absolute border-black z-10;
+}
+
+.tooltip[x-placement^="bottom"] {
+  @apply mt-1;
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow {
+  border-bottom-color: #f7fafc;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  top: -0.25rem;
+  left: calc(50% - 0.25rem);
+
+  @apply my-0 border-r-4 border-l-4 border-b-4;
+}
+
+.tooltip.popover .popover-inner {
+  @apply p-6 shadow-lg;
+}
+
 @tailwind components;
 @tailwind utilities;
