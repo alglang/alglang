@@ -4,7 +4,7 @@
       v-if="loading"
       aria-label="Loading"
     >
-      Loading...
+      <alglang-loader class="w-16 h-16" />
     </div>
     <ul v-else-if="morphemes.length">
       <li
@@ -23,9 +23,11 @@
 <script>
 import axios from 'axios';
 import MorphemeCard from '../MorphemeCard';
+import Loader from '../Loader';
 
 export default {
   components: {
+    'alglang-loader': Loader,
     'alglang-morpheme-card': MorphemeCard
   },
 
