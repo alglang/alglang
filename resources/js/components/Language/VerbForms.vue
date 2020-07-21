@@ -12,7 +12,7 @@
         v-for="verbForm in verbForms"
         :key="verbForm.shape"
       >
-        {{ verbForm.shape }}
+        <alglang-verb-form-card :verb-form="verbForm" />
       </li>
     </ul>
 
@@ -26,10 +26,12 @@
 import axios from 'axios';
 
 import Loader from '../Loader';
+import VerbFormCard from '../VerbFormCard';
 
 export default {
   components: {
-    'alglang-loader': Loader
+    'alglang-loader': Loader,
+    'alglang-verb-form-card': VerbFormCard
   },
 
   props: {
