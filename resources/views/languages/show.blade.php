@@ -78,5 +78,9 @@
         <alglang-detail-page title="Morphemes">
             <alglang-language-morphemes url="/api{{ $language->url }}/morphemes" />
         </alglang-detail-page>
+
+        <alglang-detail-page title="Verb forms">
+            <alglang-language-verb-forms url="/api{{ $language->url }}/verb-forms" />
+        </alglang-detail-page>
     </alglang-details>
 @endsection
