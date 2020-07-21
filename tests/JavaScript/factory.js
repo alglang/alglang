@@ -26,3 +26,7 @@ export const morphemeFactory = props => ({
   glosses: [glossFactory({ abv: 'TGL' })],
   ...props
 });
+
+export const verbFormFactory = props => ({
+  ...props
+});

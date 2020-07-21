@@ -18,6 +18,7 @@ Vue.component('alglang-detail-row', require('./components/DetailRow.vue').defaul
 Vue.component('alglang-map', require('./components/Map.vue').default);
 
 Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);
+Vue.component('alglang-language-verb-forms', require('./components/Language/VerbForms.vue').default);
 
 document.addEventListener('turbolinks:load', () => {
   new Vue({ // eslint-disable-line no-new
