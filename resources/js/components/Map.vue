@@ -1,7 +1,10 @@
 <template>
   <l-map
     :zoom="zoom"
+    :min-zoom="zoom"
     :center="center"
+    :max-bounds="maxBounds"
+    :max-bounds-viscosity="1.0"
     @click.right="handleRightClick"
   >
     <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -59,7 +62,11 @@ export default {
   data() {
     return {
       zoom: 4,
-      center: [46.0, -87.659916]
+      center: [46.0, -87.659916],
+      maxBounds: [
+        [71.29, -167.12],
+        [26.64, -48.57]
+      ]
     };
   },
 
