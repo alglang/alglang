@@ -26,12 +26,12 @@ class Morpheme extends Model
 
     protected static function booted()
     {
-        static::saved(function (Model $model) {
+        static::saved(function (Morpheme $model) {
             $model->updateSlugBasedOnDisambiguator();
         });
 
-        static::deleted(function (Model $model) {
-            $model->_disambiguatableDuplicates()
+        static::deleted(function (Morpheme $model) {
+            $model->disambiguatableDuplicates()
                   ->each(function (Morpheme $morpheme) {
                       $morpheme->updateSlugBasedOnDisambiguator();
                   });

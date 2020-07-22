@@ -22,7 +22,7 @@ class GroupController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Group $group)
     {

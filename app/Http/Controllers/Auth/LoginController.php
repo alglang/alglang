@@ -32,7 +32,7 @@ class LoginController extends Controller
         try {
             return Socialite::driver($provider)->redirect();
         } catch (\InvalidArgumentException $e) {
-            return abort(404);
+            abort(404);
         }
     }
 
@@ -41,7 +41,7 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver($provider)->user();
         } catch (\InvalidArgumentException $e) {
-            return abort(404);
+            abort(404);
         } catch (\Exception $e) {
             return redirect()->route('auth', ['provider' => $provider]);
         }

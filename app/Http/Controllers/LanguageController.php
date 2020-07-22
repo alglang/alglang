@@ -22,7 +22,7 @@ class LanguageController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Language  $language
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Language $language)
     {
