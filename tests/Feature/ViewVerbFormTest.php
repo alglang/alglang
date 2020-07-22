@@ -56,7 +56,7 @@ class ViewVerbFormTest extends TestCase
         $response = $this->get($verbForm->url);
 
         $response->assertOk();
-        $response->assertSee('2s');
+        $response->assertSee('→2s');
     }
 
     /** @test */
@@ -69,7 +69,7 @@ class ViewVerbFormTest extends TestCase
         $response = $this->get($verbForm->url);
 
         $response->assertOk();
-        $response->assertSee('1p');
+        $response->assertSee('+1p');
     }
 
     /** @test */

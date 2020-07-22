@@ -10,11 +10,11 @@ class VerbFormCollection extends ResourceCollection
     public static function fromLanguage(Language $language)
     {
         $verbForms = $language->verbForms()
-                              ->with('mode', 'subject', 'order', 'class')
+                              ->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')
                               ->get();
 
         $verbForms->each(function ($verbForm) {
-            $verbForm->append('url');
+            $verbForm->append('url', 'argument_string');
         });
 
         return new self($verbForms);

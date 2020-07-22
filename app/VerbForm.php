@@ -33,6 +33,21 @@ class VerbForm extends Model
         );
     }
 
+    public function getArgumentStringAttribute()
+    {
+        $string = $this->subject->name;
+
+        if ($this->primaryObject) {
+            $string .= "→{$this->primaryObject->name}";
+        }
+
+        if ($this->secondaryObject) {
+            $string .= "+{$this->secondaryObject->name}";
+        }
+
+        return $string;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Relations
