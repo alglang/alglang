@@ -1,4 +1,6 @@
 require('./bootstrap');
+require('lato-font/css/lato-font.css');
+
 const Turbolinks = require('turbolinks');
 const TurbolinksAdapter = require('vue-turbolinks');
 const Vue = require('vue');
