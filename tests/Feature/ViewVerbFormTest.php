@@ -32,10 +32,7 @@ class ViewVerbFormTest extends TestCase
             'class_id' => $class->id,
             'order_id' => $order->id,
             'mode_id' => $mode->id,
-            'subject_id' => $subject->id,
-
-            /* 'usage_notes' => 'Would you be in any way offended if I said that you were the visible personification of absolute perfection?', */
-            /* 'private_notes' => ';jkals;jfkld;sjfkasd;jfklsafkl;jkaslf;' */
+            'subject_id' => $subject->id
         ]);
 
         $response = $this->get($verbForm->url);
@@ -47,8 +44,32 @@ class ViewVerbFormTest extends TestCase
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');
         $response->assertSee('3s');
-        /* $response->assertSee('Would you be in any way offended if I said that you were the visible personification of absolute perfection?'); */
-        /* $response->assertSee(';jkals;jfkld;sjfkasd;jfklsafkl;jkaslf;'); */
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_primary_object()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2s'])->id
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('2s');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_secondary_object()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '1p'])->id
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('1p');
     }
 
     /** @test */

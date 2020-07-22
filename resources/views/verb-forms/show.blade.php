@@ -19,6 +19,12 @@
                 <alglang-detail-row label="Description">
                     <p>
                         <span>{{ $verbForm->subject->name }}</span>
+                        @if ($verbForm->primaryObject)
+                            <span>{{ $verbForm->primaryObject->name }}</span>
+                        @endif
+                        @if ($verbForm->secondaryObject)
+                            <span>{{ $verbForm->secondaryObject->name }}</span>
+                        @endif
                         <span>{{ $verbForm->class->abv }}</span>
                         <span>{{ $verbForm->order->name }}</span>
                         <span>{{ $verbForm->mode->name }}</span>

@@ -14,6 +14,13 @@ class VerbForm extends Model
 
     protected $with = ['language'];
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getUrlAttribute()
     {
         return route(
@@ -26,12 +33,29 @@ class VerbForm extends Model
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function language()
     {
         return $this->belongsTo(Language::class);
     }
 
     public function subject()
+    {
+        return $this->belongsTo(VerbFeature::class);
+    }
+
+    public function primaryObject()
+    {
+        return $this->belongsTo(VerbFeature::class);
+    }
+
+    public function secondaryObject()
     {
         return $this->belongsTo(VerbFeature::class);
     }
@@ -50,6 +74,13 @@ class VerbForm extends Model
     {
         return $this->belongsTo(VerbMode::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HasSlug config
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getSlugOptions(): SlugOptions
     {
