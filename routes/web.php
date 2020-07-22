@@ -44,6 +44,7 @@ Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.
 Route::get('/slots/{slot}', [SlotController::class, 'show'])->name('slots.show');
 
 Route::view('/about', 'about')->name('about');
+Route::view('/verb-forms', 'verb-forms.index')->name('verb-forms');
 
 Route::get('/resources', function () {
     abort(404);
@@ -53,13 +54,9 @@ Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
 
-Route::get('/verbs', function () {
+Route::get('/nominal-forms', function () {
     abort(404);
-})->name('verbs');
-
-Route::get('/nominals', function () {
-    abort(404);
-})->name('nominals');
+})->name('nominal-forms');
 
 Route::get('/phonology', function () {
     abort(404);
