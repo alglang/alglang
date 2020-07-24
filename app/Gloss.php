@@ -14,10 +14,12 @@ class Gloss extends Model
 
     protected $appends = ['url'];
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         if ($this->exists) {
             return route('glosses.show', $this, false);
         }
+
+        return '';
     }
 }

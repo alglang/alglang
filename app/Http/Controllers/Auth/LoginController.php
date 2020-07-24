@@ -22,12 +22,12 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login()
+    public function login(): \Illuminate\View\View
     {
         return view('auth.login');
     }
 
-    public function redirectToProvider($provider)
+    public function redirectToProvider(string $provider): \Illuminate\Http\RedirectResponse
     {
         try {
             return Socialite::driver($provider)->redirect();
@@ -36,7 +36,7 @@ class LoginController extends Controller
         }
     }
 
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback(string $provider): \Illuminate\Http\RedirectResponse
     {
         try {
             $user = Socialite::driver($provider)->user();
@@ -53,7 +53,7 @@ class LoginController extends Controller
         return redirect()->route('home');
     }
 
-    public function findOrCreateUser($githubUser)
+    public function findOrCreateUser(\Laravel\Socialite\AbstractUser $githubUser): User
     {
         return User::firstOrCreate(
             ['github_id' => $githubUser->id],

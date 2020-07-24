@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class VerbFormCollection extends ResourceCollection
 {
-    public static function fromLanguage(Language $language)
+    public static function fromLanguage(Language $language): self
     {
         $verbForms = $language->verbForms()
                               ->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')

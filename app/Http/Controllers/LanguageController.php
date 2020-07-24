@@ -13,7 +13,7 @@ class LanguageController extends Controller
         $this->middleware('permission:create languages')->except('show', 'index');
     }
 
-    public function index()
+    public function index(): array
     {
         return ['data' => Language::all()];
     }
@@ -30,12 +30,12 @@ class LanguageController extends Controller
         return view('languages.show', ['language' => $language]);
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         return view('languages.create');
     }
 
-    public function store()
+    public function store(): Language
     {
         $languageData = request()->validate([
             'name' => 'required|string|unique:App\Language',

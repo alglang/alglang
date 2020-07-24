@@ -6,6 +6,8 @@ use Adoxography\Disambiguatable\Disambiguatable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Morpheme extends Model
@@ -19,9 +21,19 @@ class Morpheme extends Model
 
     protected $appends = ['url'];
 
+    /**
+     * @var Collection
+     */
     protected $glosses_;
 
+    /**
+     * @var bool
+     */
     protected $alwaysDisambiguate = true;
+
+    /**
+     * @var array
+     */
     protected $disambiguatableFields = ['language_id', 'shape'];
 
     protected static function booted()
@@ -38,7 +50,7 @@ class Morpheme extends Model
         });
     }
 
-    protected function updateSlugBasedOnDisambiguator()
+    protected function updateSlugBasedOnDisambiguator(): void
     {
         $pieces = collect(explode('-', $this->slug));
         $disambiguator = $this->disambiguator + 1;
@@ -61,7 +73,7 @@ class Morpheme extends Model
     |
     */
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route(
             'morphemes.show',
@@ -73,7 +85,7 @@ class Morpheme extends Model
         );
     }
 
-    public function getGlossesAttribute()
+    public function getGlossesAttribute(): Collection
     {
         if (isset($this->glosses_)) {
             return $this->glosses_;
@@ -96,12 +108,12 @@ class Morpheme extends Model
     |
     */
 
-    public function language()
+    public function language(): Relation
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function slot()
+    public function slot(): Relation
     {
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
@@ -129,6 +141,10 @@ class Morpheme extends Model
         }
 
         $sourceString = mb_ereg_replace('·', '0', $this->getSlugSourceString());
+
+        if ($sourceString === false) {
+            $sourceString = '';
+        }
 
         return Str::slug($sourceString, $this->slugOptions->slugSeparator, $this->slugOptions->slugLanguage);
     }

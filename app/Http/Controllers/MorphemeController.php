@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 
 class MorphemeController extends Controller
 {
-    public function index(Language $language)
+    public function index(Language $language): MorphemeCollection
     {
         return new MorphemeCollection($language->morphemes()->with('slot')->paginate(10));
     }
 
-    public function show(Language $language, Morpheme $morpheme)
+    public function show(Language $language, Morpheme $morpheme): \Illuminate\View\View
     {
         $morpheme->load('slot');
         $morpheme->append('glosses', 'disambiguator');
