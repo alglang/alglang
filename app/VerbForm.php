@@ -5,6 +5,7 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbForm extends Model
 {
@@ -14,7 +15,14 @@ class VerbForm extends Model
 
     protected $with = ['language'];
 
-    public function getUrlAttribute()
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getUrlAttribute(): string
     {
         return route(
             'verb-forms.show',
@@ -26,30 +34,69 @@ class VerbForm extends Model
         );
     }
 
-    public function language()
+    public function getArgumentStringAttribute(): string
+    {
+        $string = $this->subject->name;
+
+        if ($this->primaryObject) {
+            $string .= "→{$this->primaryObject->name}";
+        }
+
+        if ($this->secondaryObject) {
+            $string .= "+{$this->secondaryObject->name}";
+        }
+
+        return $string;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function language(): Relation
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function subject()
+    public function subject(): Relation
     {
         return $this->belongsTo(VerbFeature::class);
     }
 
-    public function class()
+    public function primaryObject(): Relation
+    {
+        return $this->belongsTo(VerbFeature::class);
+    }
+
+    public function secondaryObject(): Relation
+    {
+        return $this->belongsTo(VerbFeature::class);
+    }
+
+    public function class(): Relation
     {
         return $this->belongsTo(VerbClass::class);
     }
 
-    public function order()
+    public function order(): Relation
     {
         return $this->belongsTo(VerbOrder::class);
     }
 
-    public function mode()
+    public function mode(): Relation
     {
         return $this->belongsTo(VerbMode::class);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | HasSlug config
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getSlugOptions(): SlugOptions
     {

@@ -13,18 +13,12 @@ class GroupController extends Controller
         $this->middleware('permission:create groups')->except('show', 'index');
     }
 
-    public function index()
+    public function index(): array
     {
         return ['data' => Group::all()];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
+    public function show(Group $group): \Illuminate\View\View
     {
         $group->load([
             'parent',
@@ -36,7 +30,7 @@ class GroupController extends Controller
         return view('groups.show', ['group' => $group]);
     }
 
-    public function create()
+    public function create(): Group
     {
         $data = request()->validate([
             'name' => 'required',

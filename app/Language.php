@@ -5,6 +5,8 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Builder as Builder;
 
 class Language extends Model
 {
@@ -42,12 +44,12 @@ class Language extends Model
     |
     */
 
-    public function getPositionAttribute($value)
+    public function getPositionAttribute(?string $value): ?object
     {
         return json_decode($value);
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route('languages.show', ['language' => $this], false);
     }
@@ -59,7 +61,7 @@ class Language extends Model
     |
     */
 
-    public static function scopePositioned($query)
+    public static function scopePositioned(Builder $query): Builder
     {
         return $query->whereNotNull('position');
     }
@@ -71,27 +73,27 @@ class Language extends Model
     |
     */
 
-    public function parent()
+    public function parent(): Relation
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function group()
+    public function group(): Relation
     {
         return $this->belongsTo(Group::class);
     }
 
-    public function children()
+    public function children(): Relation
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    public function morphemes()
+    public function morphemes(): Relation
     {
         return $this->hasMany(Morpheme::class);
     }
 
-    public function verbForms()
+    public function verbForms(): Relation
     {
         return $this->hasMany(VerbForm::class);
     }

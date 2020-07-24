@@ -15,6 +15,9 @@ module.exports = {
     extend: {
       listStyleType: {
         square: 'square'
+      },
+      width: {
+        fit: 'fit-content'
       }
     }
   },

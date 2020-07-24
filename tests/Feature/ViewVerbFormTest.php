@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use App\Language;
 use App\VerbForm;
 use App\VerbClass;
@@ -31,12 +32,7 @@ class ViewVerbFormTest extends TestCase
             'class_id' => $class->id,
             'order_id' => $order->id,
             'mode_id' => $mode->id,
-            'subject_id' => $subject->id,
-
-            'historical_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'allomorphy_notes' => 'the quick brown fox jumps over the lazy dog',
-            'usage_notes' => 'Would you be in any way offended if I said that you were the visible personification of absolute perfection?',
-            'private_notes' => ';jkals;jfkld;sjfkasd;jfklsafkl;jkaslf;'
+            'subject_id' => $subject->id
         ]);
 
         $response = $this->get($verbForm->url);
@@ -48,9 +44,152 @@ class ViewVerbFormTest extends TestCase
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');
         $response->assertSee('3s');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_primary_object()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2s'])->id
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('→2s');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_secondary_object()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '1p'])->id
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('+1p');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_historical_notes_if_it_has_them()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'historical_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Historical notes');
         $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
-        $response->assertSee('the quick brown fox jumps over the lazy dog');
-        $response->assertSee('Would you be in any way offended if I said that you were the visible personification of absolute perfection?');
-        $response->assertSee(';jkals;jfkld;sjfkasd;jfklsafkl;jkaslf;');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_historical_notes_if_it_does_not_have_them()
+    {
+        $verbForm = factory(VerbForm::class)->create(['historical_notes' => null]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Historical notes');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_allomorphy_notes_if_it_has_them()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'allomorphy_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Allomorphy');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_allomorphy_notes_if_it_does_not_have_them()
+    {
+        $verbForm = factory(VerbForm::class)->create(['allomorphy_notes' => null]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Allomorphy notes');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_usage_notes_if_it_has_them()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'usage_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Usage notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_usage_notes_if_it_does_not_have_them()
+    {
+        $verbForm = factory(VerbForm::class)->create(['usage_notes' => null]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Usage notes');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_private_notes_if_it_has_them_and_the_user_has_permission()
+    {
+        $this->withPermissions();
+
+        $user = factory(User::class)->create();
+        $user->givePermissionTo('view private notes');
+
+        $verbForm = factory(VerbForm::class)->create([
+            'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+        ]);
+
+        $response = $this->actingAs($user)->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Private notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_private_notes_if_it_does_not_have_them()
+    {
+        $verbForm = factory(VerbForm::class)->create(['private_notes' => null]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Private notes');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_private_note_if_the_user_does_not_have_permission()
+    {
+        $user = factory(User::class)->create();
+
+        $verbForm = factory(VerbForm::class)->create([
+            'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
+        ]);
+
+        $response = $this->actingAs($user)->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Private notes');
+        $response->assertDontSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
     }
 }

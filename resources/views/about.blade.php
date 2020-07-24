@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-white p-6">
-        <h1 class="text-2xl mb-8">
+    <section class="bg-white p-6 w-fit m-auto">
+        <h1 class="text-2xl mb-4 md:mb-6 text-center md:text-left">
             About
         </h1>
 
-        <h2 class="text-xl mt-6 mb-2">
+        <h2 class="text-xl mb-2">
             Goals
         </h2>
 
@@ -31,7 +31,7 @@
                 The project was made possible through funding from the following sources:
             </p>
 
-            <ul class="list-square list-inside ml-4">
+            <ul class="list-square ml-8">
                 <li>
                     Social Sciences and Humanities Research Council of Canada: Insight Development Grant 430-2016-00680, <i>Structure and Change in Direct-Inverse Systems</i>, 2016-18 (PI Will Oxford, University of Manitoba; collaborator Heather Bliss, University of Victoria)
                 </li>
@@ -55,7 +55,7 @@
                 The database would not exist without the contributions of a large number of student research assistants. As of November 2017, the following RAs are working on the project in various capacities:
             </p>
 
-            <ul class="list-square list-inside ml-4">
+            <ul class="list-square ml-8">
                 <li>
                     Nicole Brunette
                 </li>
@@ -77,7 +77,7 @@
                 And the following students have contributed to the project in the past:
             </p>
 
-            <ul class="list-square list-inside ml-4">
+            <ul class="list-square ml-8">
                 <li>
                     Samantha Frederick
                 </li>

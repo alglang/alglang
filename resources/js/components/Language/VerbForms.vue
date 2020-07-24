@@ -6,29 +6,32 @@
     >
       <alglang-loader class="w-16 h-16" />
     </div>
-    <ul v-else-if="morphemes.length">
+
+    <ul v-else-if="verbForms.length">
       <li
-        v-for="morpheme of morphemes"
-        :key="morpheme.shape"
+        v-for="verbForm in verbForms"
+        :key="verbForm.shape"
       >
-        <alglang-morpheme-card :morpheme="morpheme" />
+        <alglang-verb-form-card :verb-form="verbForm" />
       </li>
     </ul>
+
     <p v-else>
-      No morphemes
+      No verb forms
     </p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import MorphemeCard from '../MorphemeCard';
+
 import Loader from '../Loader';
+import VerbFormCard from '../VerbFormCard';
 
 export default {
   components: {
     'alglang-loader': Loader,
-    'alglang-morpheme-card': MorphemeCard
+    'alglang-verb-form-card': VerbFormCard
   },
 
   props: {
@@ -41,14 +44,14 @@ export default {
   data() {
     return {
       loading: true,
-      morphemes: []
+      verbForms: []
     };
   },
 
   async created() {
     const response = await axios.get(this.url);
     const json = response.data;
-    this.morphemes = json.data;
+    this.verbForms = json.data;
     this.loading = false;
   }
 };

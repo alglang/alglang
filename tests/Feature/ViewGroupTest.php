@@ -42,6 +42,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function the_group_parent_is_displayed_if_the_group_has_a_parent()
     {
+        $this->withoutExceptionHandling();
         $parent = factory(Group::class)->create(['name' => 'Supergroup']);
         $child = factory(Group::class)->create(['parent_id' => $parent->id]);
 

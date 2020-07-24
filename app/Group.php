@@ -5,6 +5,7 @@ namespace App;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Group extends Model
 {
@@ -21,12 +22,12 @@ class Group extends Model
     |
     */
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route('groups.show', ['group' => $this], false);
     }
 
-    public function getPreviewAttribute()
+    public function getPreviewAttribute(): ?string
     {
         return $this->description;
     }
@@ -38,17 +39,17 @@ class Group extends Model
     |
     */
 
-    public function parent()
+    public function parent(): Relation
     {
         return $this->belongsTo(self::class);
     }
 
-    public function children()
+    public function children(): Relation
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    public function languages()
+    public function languages(): Relation
     {
         return $this->hasMany(Language::class);
     }

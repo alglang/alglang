@@ -20,12 +20,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('verbs') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                    <a href="{{ route('verb-forms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
                         Verb forms
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('nominals') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                    <a href="{{ route('nominal-forms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
                         Nominal forms
                     </a>
                 </li>
