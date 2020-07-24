@@ -27,7 +27,7 @@ class Group extends Model
         return route('groups.show', ['group' => $this], false);
     }
 
-    public function getPreviewAttribute(): string
+    public function getPreviewAttribute(): ?string
     {
         return $this->description;
     }

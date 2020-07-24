@@ -38,7 +38,6 @@
         "jsdom-global": "^3.0.2",
         "laravel-mix": "^5.0.1",
         "laravel-mix-merge-manifest": "^0.1.2",
-        "lato-font": "^3.0.0",
         "mocha": "^8.0.1",
         "mochapack": "^2.0.0",
         "moxios": "^0.4.0",
@@ -54,6 +53,7 @@
     "dependencies": {
         "axios": "^0.19",
         "eslint-plugin-mocha": "^7.0.1",
+        "lato-font": "^3.0.0",
         "leaflet": "^1.6.0",
         "leaflet-defaulticon-compatibility": "^0.1.1",
         "lodash": "^4.17.13",

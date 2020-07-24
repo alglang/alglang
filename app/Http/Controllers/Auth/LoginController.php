@@ -53,7 +53,7 @@ class LoginController extends Controller
         return redirect()->route('home');
     }
 
-    public function findOrCreateUser(\Laravel\Socialite\AbstractUser $githubUser): User
+    public function findOrCreateUser(object $githubUser): User
     {
         return User::firstOrCreate(
             ['github_id' => $githubUser->id],

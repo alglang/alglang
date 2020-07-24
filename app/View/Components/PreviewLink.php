@@ -22,7 +22,7 @@ class PreviewLink extends Component
      *
      * @return void
      */
-    public function __construct(Model $model, string $class = '')
+    public function __construct(object $model, string $class = '')
     {
         $this->model = $model;
         $this->class = $class;

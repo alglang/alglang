@@ -6,7 +6,7 @@ use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder as Builder;
 
 class Language extends Model
 {
@@ -44,7 +44,7 @@ class Language extends Model
     |
     */
 
-    public function getPositionAttribute(string $value): array
+    public function getPositionAttribute(?string $value): ?object
     {
         return json_decode($value);
     }
@@ -61,7 +61,7 @@ class Language extends Model
     |
     */
 
-    public static function scopePositioned(QueryBuilder $query): QueryBuilder
+    public static function scopePositioned(Builder $query): Builder
     {
         return $query->whereNotNull('position');
     }
