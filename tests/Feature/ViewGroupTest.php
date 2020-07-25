@@ -99,7 +99,6 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
-        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create();
 
         factory(Language::class)->create([
@@ -120,5 +119,22 @@ class ViewGroupTest extends TestCase
         $response->assertSee('{"lat":46.1,"lng":-87.1}');
         $response->assertSee('Test Language 2');
         $response->assertSee('{"lat":47.1,"lng":-86.1}');
+    }
+
+    /** @test */
+    public function languages_without_positions_appear_under_the_map()
+    {
+        $group = factory(Group::class)->create();
+
+        factory(Language::class)->create([
+            'name' => 'Test Language',
+            'group_id' => $group->id,
+            'position' => null
+        ]);
+
+        $response = $this->get($group->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Not shown', 'Test Language']);
     }
 }
