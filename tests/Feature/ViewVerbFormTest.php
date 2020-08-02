@@ -9,6 +9,7 @@ use App\VerbClass;
 use App\VerbOrder;
 use App\VerbMode;
 use App\VerbFeature;
+use App\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -191,5 +192,30 @@ class ViewVerbFormTest extends TestCase
         $response->assertOk();
         $response->assertDontSee('Private notes');
         $response->assertDontSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function sources_appear_if_the_verb_form_has_sources()
+    {
+        $verbForm = factory(VerbForm::class)->create();
+        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $verbForm->addSource($source);
+
+        $response = $this->get($verbForm->url);
+        $response->assertOk();
+
+        $response->assertSee('Sources');
+        $response->assertSee('Foo Bar');
+    }
+
+    /** @test */
+    public function sources_do_not_appear_if_the_verb_form_has_no_sources()
+    {
+        $verbForm = factory(VerbForm::class)->create();
+
+        $response = $this->get($verbForm->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Sources');
     }
 }

@@ -48,6 +48,20 @@
                     </alglang-detail-row>
                 @endif
                 @endcan
+
+                @if ($morpheme->sources->count() > 0)
+                    <alglang-detail-row label="Sources">
+                        <ul>
+                            @foreach($morpheme->sources as $source)
+                                <li>
+                                    <x-preview-link :model="$source">
+                                        {{ $source->short_citation }}
+                                    </x-preview-link>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </alglang-detail-row>
+                @endif
             </div>
         </alglang-detail-page>
     </alglang-details>
