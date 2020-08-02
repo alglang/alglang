@@ -15,6 +15,15 @@ class VerbForm extends Model
 
     protected $with = ['language'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::saving(function (self $model) {
+            $model->slug = $model->shape;
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors
@@ -24,14 +33,7 @@ class VerbForm extends Model
 
     public function getUrlAttribute(): string
     {
-        return route(
-            'verb-forms.show',
-            [
-                'language' => $this->language,
-                'verbForm' => $this
-            ],
-            false
-        );
+        return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
     }
 
     public function getArgumentStringAttribute(): string

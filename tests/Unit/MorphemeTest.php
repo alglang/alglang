@@ -25,6 +25,17 @@ class MorphemeTest extends TestCase
     }
 
     /** @test */
+    public function it_preserves_utf_8_in_its_url()
+    {
+        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $morpheme = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'shape' => '-a·'
+        ]);
+        $this->assertEquals('/languages/pa/morphemes/a·-1', $morpheme->url);
+    }
+
+    /** @test */
     public function it_updates_its_url_when_its_disambiguator_changes()
     {
         
@@ -43,17 +54,6 @@ class MorphemeTest extends TestCase
         $morpheme1->delete();
 
         $this->assertEquals('/languages/pa/morphemes/ak-1', $morpheme2->fresh()->url);
-    }
-
-    /** @test */
-    public function shapes_with_length_symbols_are_handled_in_slugs()
-    {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
-        $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
-            'shape' => '-a·'
-        ]);
-        $this->assertEquals('/languages/pa/morphemes/a0-1', $morpheme->url);
     }
 
     /** @test */

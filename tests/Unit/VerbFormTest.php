@@ -20,7 +20,18 @@ class VerbFormTest extends TestCase
             'shape' => 'V-test',
             'language_id' => $language->id
         ]);
-        $this->assertEquals('/languages/pa/verb-forms/v-test', $verbForm->url);
+        $this->assertEquals('/languages/pa/verb-forms/V-test', $verbForm->url);
+    }
+
+    /** @test */
+    public function it_preserves_utf_8_in_its_url()
+    {
+        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $verbForm = factory(VerbForm::class)->create([
+            'shape' => 'V-(o)wa·či',
+            'language_id' => $language->id
+        ]);
+        $this->assertEquals('/languages/pa/verb-forms/V-(o)wa·či', $verbForm->url);
     }
 
     /** @test */

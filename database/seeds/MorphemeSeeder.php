@@ -80,7 +80,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 2,
                 'shape' => '-a·n',
-                'slug' => 'a0n-1',
+                'slug' => 'a·n-1',
                 'language_id' => 1,
                 'slot_abv' => 'CCEN',
                 'gloss' => '1s',
@@ -102,7 +102,7 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 4,
                 'shape' => 'wa·pam-',
-                'slug' => 'wa0pam-1',
+                'slug' => 'wa·pam-1',
                 'language_id' => 1,
                 'slot_abv' => 'STM',
                 'gloss' => 'see',
