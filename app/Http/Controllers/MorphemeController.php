@@ -16,7 +16,7 @@ class MorphemeController extends Controller
 
     public function show(Language $language, Morpheme $morpheme): \Illuminate\View\View
     {
-        $morpheme->load('slot');
+        $morpheme->load('slot', 'sources');
         $morpheme->append('glosses', 'disambiguator');
         return view('morphemes.show', ['morpheme' => $morpheme]);
     }

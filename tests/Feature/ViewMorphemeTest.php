@@ -6,6 +6,7 @@ use App\Gloss;
 use App\Language;
 use App\Morpheme;
 use App\Slot;
+use App\Source;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -137,5 +138,30 @@ class ViewMorphemeTest extends TestCase
 
         $response->assertDontSee('Private notes');
         $response->assertDontSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function sources_appear_if_the_morpheme_has_sources()
+    {
+        $morpheme = factory(Morpheme::class)->create();
+        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $morpheme->addSource($source);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Sources');
+        $response->assertSee('Foo Bar');
+    }
+
+    /** @test */
+    public function sources_do_not_appear_if_the_morpheme_has_no_sources()
+    {
+        $morpheme = factory(Morpheme::class)->create();
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Sources');
     }
 }

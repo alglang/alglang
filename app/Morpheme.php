@@ -3,6 +3,7 @@
 namespace App;
 
 use Adoxography\Disambiguatable\Disambiguatable;
+use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ class Morpheme extends Model
 {
     use Disambiguatable;
     use HasSlug;
+    use Sourceable;
 
     protected $guarded = [];
 

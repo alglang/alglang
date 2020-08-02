@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class VerbForm extends Model
 {
     use HasSlug;
+    use Sourceable;
 
     protected $guarded = [];
 

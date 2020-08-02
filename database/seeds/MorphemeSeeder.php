@@ -1,5 +1,7 @@
 <?php
 
+use App\Morpheme;
+use App\Source;
 use Illuminate\Database\Seeder;
 
 class MorphemeSeeder extends Seeder
@@ -122,5 +124,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ]
         ]);
+
+        Morpheme::find(5)->addSource(Source::find(2)); // Goddard 2007
     }
 }
