@@ -83,6 +83,16 @@ describe('Details.vue', function () {
     expect(queryByTestId('page1-content')).to.exist;
   });
 
+  it('shows counts on tabs', async function () {
+    const slots = {
+      default: '<detail-page title="a" :count="2"></detail-page>'
+    };
+
+    const { queryByRole } = await renderDetailsAndWait({ slots });
+
+    expect(queryByRole('tab')).to.contain.text('2');
+  });
+
   it('only renders one page at a time', async function () {
     const slots = {
       default: [
