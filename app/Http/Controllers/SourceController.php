@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class SourceController extends Controller
 {
     /** @test */
-    public function show(Source $source)
+    public function show(Source $source): \Illuminate\View\View
     {
         return view('sources.show', ['source' => $source]);
     }
