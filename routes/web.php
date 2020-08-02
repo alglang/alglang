@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\SlotController;
+use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,8 @@ Route::get(
 Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.show');
 
 Route::get('/slots/{slot}', [SlotController::class, 'show'])->name('slots.show');
+
+Route::get('/sources/{source:slug}', [SourceController::class, 'show']);
 
 Route::view('/about', 'about')->name('about');
 Route::view('/verb-forms', 'verb-forms.index')->name('verb-forms');
