@@ -4,6 +4,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\VerbFormController;
+use App\Http\Controllers\SourceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::post('/languages', [LanguageController::class, 'store']);
 
 Route::get('/verb-forms', [VerbFormController::class, 'index']);
 Route::get('/morphemes', [MorphemeController::class, 'index']);
+Route::get('/sources', [SourceController::class, 'fetch']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
