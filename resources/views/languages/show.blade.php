@@ -80,7 +80,7 @@
         </alglang-detail-page>
 
         <alglang-detail-page title="Verb forms" :count="{{ $language->verb_forms_count }}">
-            <alglang-language-verb-forms url="/api{{ $language->url }}/verb-forms" />
+            <alglang-language-verb-forms url="/api/verb-forms?language_id={{ $language->id }}" />
         </alglang-detail-page>
     </alglang-details>
 @endsection

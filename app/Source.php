@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Morpheme;
+use App\VerbForm;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,11 @@ class Source extends Model
     public function morphemes(): Relation
     {
         return $this->morphedByMany(Morpheme::class, 'sourceable');
+    }
+
+    public function verbForms(): Relation
+    {
+        return $this->morphedByMany(VerbForm::class, 'sourceable');
     }
 
     public function getSlugOptions(): SlugOptions
