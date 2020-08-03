@@ -175,7 +175,6 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_paginates_source_morphemes()
     {
-        $this->withoutExceptionHandling();
         $source = factory(Source::class)->create();
         $morphemes = factory(Morpheme::class, 11)->create();
 

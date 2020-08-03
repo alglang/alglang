@@ -7,19 +7,6 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class VerbFormCollection extends ResourceCollection
 {
-    public static function fromLanguage(Language $language): self
-    {
-        $verbForms = $language->verbForms()
-                              ->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')
-                              ->get();
-
-        $verbForms->each(function ($verbForm) {
-            $verbForm->append('url', 'argument_string');
-        });
-
-        return new self($verbForms);
-    }
-
     /**
      * Transform the resource collection into an array.
      *
@@ -28,6 +15,10 @@ class VerbFormCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        $this->collection->each(function ($verbForm) {
+            $verbForm->append('url', 'argument_string');
+        });
+
         return parent::toArray($request);
     }
 }
