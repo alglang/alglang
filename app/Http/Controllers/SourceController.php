@@ -10,7 +10,7 @@ class SourceController extends Controller
     /** @test */
     public function show(Source $source): \Illuminate\View\View
     {
-        $source->loadCount('morphemes');
+        $source->loadCount('morphemes', 'verbForms');
         return view('sources.show', ['source' => $source]);
     }
 }
