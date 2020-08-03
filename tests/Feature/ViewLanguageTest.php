@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Group;
 use App\Language;
 use App\Morpheme;
+use App\Source;
 use App\User;
 use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -68,6 +69,22 @@ class ViewLanguageTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('language', $language);
         $this->assertEquals(2, $response['language']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_source_count()
+    {
+        $language = factory(Language::class)->create();
+        $source = factory(Source::class)->create();
+        factory(Morpheme::class)->create([
+            'language_id' => $language->id
+        ])->addSource($source);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(1, $response['language']->sources_count);
     }
 
     /** @test */
