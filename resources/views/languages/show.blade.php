@@ -76,7 +76,7 @@
         </alglang-detail-page>
 
         <alglang-detail-page title="Morphemes" :count="{{ $language->morphemes_count }}">
-            <alglang-language-morphemes url="/api{{ $language->url }}/morphemes" />
+            <alglang-language-morphemes url="/api/morphemes?language_id={{ $language->id }}" />
         </alglang-detail-page>
 
         <alglang-detail-page title="Verb forms" :count="{{ $language->verb_forms_count }}">
