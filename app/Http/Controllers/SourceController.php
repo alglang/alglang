@@ -9,6 +9,10 @@ use Illuminate\View\View;
 
 class SourceController extends Controller
 {
+    public function index(): View
+    {
+        return view('sources.index');
+    }
 
     public function fetch(): SourceCollection
     {
