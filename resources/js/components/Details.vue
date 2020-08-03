@@ -87,7 +87,7 @@ export default {
   methods: {
     visit(hash) {
       if (window.location.hash !== `#${hash}`) {
-        window.location.hash = `#${hash}`;
+        window.Turbolinks.visit(`#${hash}`);
       }
 
       this.pages.forEach(page => page.setIsActive(hash === page.hash));
