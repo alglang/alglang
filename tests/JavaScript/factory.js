@@ -30,3 +30,8 @@ export const morphemeFactory = props => ({
 export const verbFormFactory = props => ({
   ...props
 });
+
+export const sourceFactory = props => ({
+  id: Math.floor(Math.random() * 10000),
+  ...props
+});
