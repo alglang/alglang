@@ -82,5 +82,11 @@
         <alglang-detail-page title="Verb forms" :count="{{ $language->verb_forms_count }}">
             <alglang-language-verb-forms url="/api/verb-forms?language_id={{ $language->id }}" />
         </alglang-detail-page>
+
+        @if($language->sources_count)
+            <alglang-detail-page title="Sources" :count="{{ $language->sources_count }}">
+                <alglang-sources url="/api/sources?language_id={{ $language->id }}" />
+            </alglang-detail-page>
+        @endif
     </alglang-details>
 @endsection

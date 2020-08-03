@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class ViewSourcesTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function sources_can_be_viewed()
     {
