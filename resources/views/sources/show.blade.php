@@ -17,5 +17,9 @@
                 </alglang-detail-row>
             </div>
         </alglang-detail-page>
+
+        <alglang-detail-page title="Morphemes" :count="{{ $source->morphemes_count }}">
+            <alglang-language-morphemes url="/api/morphemes?source_id={{ $source->id }}" />
+        </alglang-detail-page>
     </alglang-details>
 @endsection
