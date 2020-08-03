@@ -18,7 +18,6 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_fetches_language_morphemes()
     {
-        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => $language->id,
@@ -29,6 +28,7 @@ class FetchMorphemesTest extends TestCase
         $response = $this->get("/api/morphemes?language_id=$language->id");
 
         $response->assertOk();
+        $response->assertJsonCount(3, 'data');
         $response->assertJson([
             'data' => [
                 [],  // Auto-generated V placeholder
@@ -46,7 +46,6 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_fetches_source_morphemes()
     {
-        $this->withoutExceptionHandling();
         $source = factory(Source::class)->create();
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => factory(Language::class)->create(['name' => 'Test Language'])->id,
@@ -57,6 +56,7 @@ class FetchMorphemesTest extends TestCase
 
         $response = $this->get("/api/morphemes?source_id=$source->id");
         $response->assertOk();
+        $response->assertJsonCount(1, 'data');
         $response->assertJson([
             'data' => [
                 [

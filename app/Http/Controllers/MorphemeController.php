@@ -6,6 +6,7 @@ use App\Morpheme;
 use App\Language;
 use App\Source;
 use App\Http\Resources\MorphemeCollection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class MorphemeController extends Controller
@@ -19,13 +20,13 @@ class MorphemeController extends Controller
         $query = Morpheme::query();
 
         if (request()->language_id) {
-            $query->whereHas('language', function ($query) {
+            $query->whereHas('language', function (Builder $query) {
                 $query->where('id', request()->language_id);
             });
         }
 
         if (request()->source_id) {
-            $query->whereHas('sources', function ($query) {
+            $query->whereHas('sources', function (Builder $query) {
                 $query->where('sources.id', request()->source_id);
             });
         }
