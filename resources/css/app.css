@@ -49,3 +49,9 @@ a:hover {
 
 @tailwind components;
 @tailwind utilities;
+
+.hanging-indent {
+  text-indent: -1.5rem;
+
+  @apply pl-6;
+}

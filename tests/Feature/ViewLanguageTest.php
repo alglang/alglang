@@ -4,7 +4,10 @@ namespace Tests\Feature;
 
 use App\Group;
 use App\Language;
+use App\Morpheme;
+use App\Source;
 use App\User;
+use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -23,7 +26,6 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
@@ -39,6 +41,50 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('Test Language');
         $response->assertSee('PA');
         $response->assertSee('Test Group');
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_morpheme_count()
+    {
+        $language = factory(Language::class)->create();
+        factory(Morpheme::class)->create(['language_id' => $language->id]);
+        factory(Morpheme::class)->create(['language_id' => $language->id]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(4, $response['language']->morphemes_count); // +2 for placeholder morphemes
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_verb_form_count()
+    {
+        $language = factory(Language::class)->create();
+        factory(VerbForm::class)->create(['language_id' => $language->id]);
+        factory(VerbForm::class)->create(['language_id' => $language->id]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(2, $response['language']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_source_count()
+    {
+        $language = factory(Language::class)->create();
+        $source = factory(Source::class)->create();
+        factory(Morpheme::class)->create([
+            'language_id' => $language->id
+        ])->addSource($source);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(1, $response['language']->sources_count);
     }
 
     /** @test */

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -10,10 +11,20 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class VerbForm extends Model
 {
     use HasSlug;
+    use Sourceable;
 
     protected $guarded = [];
 
     protected $with = ['language'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::saving(function (self $model) {
+            $model->slug = $model->shape;
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -24,14 +35,7 @@ class VerbForm extends Model
 
     public function getUrlAttribute(): string
     {
-        return route(
-            'verb-forms.show',
-            [
-                'language' => $this->language,
-                'verbForm' => $this
-            ],
-            false
-        );
+        return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
     }
 
     public function getArgumentStringAttribute(): string

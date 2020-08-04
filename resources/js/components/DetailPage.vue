@@ -12,6 +12,11 @@ export default {
     title: {
       type: String,
       required: true
+    },
+
+    count: {
+      type: Number,
+      default: null
     }
   },
 

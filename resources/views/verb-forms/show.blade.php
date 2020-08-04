@@ -50,6 +50,20 @@
                     </alglang-detail-row>
                 @endif
                 @endcan
+
+                @if($verbForm->sources->count() > 0)
+                    <ul>
+                        <alglang-detail-row label="Sources">
+                            <ul>
+                                @foreach($verbForm->sources as $source)
+                                    <x-preview-link :model="$source">
+                                        {{ $source->short_citation }}
+                                    </x-preview-link>
+                                @endforeach
+                            </ul>
+                        </alglang-detail-row>
+                    </ul>
+                @endif
             </div>
         </alglang-detail-page>
     </alglang-details>

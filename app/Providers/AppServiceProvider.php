@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\ServiceProvider;
+use \Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->isLocal()) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**

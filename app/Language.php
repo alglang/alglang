@@ -7,6 +7,7 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class Language extends Model
 {
@@ -19,6 +20,18 @@ class Language extends Model
     protected $casts = [
         'reconstructed' => 'bool'
     ];
+
+    /** @var array */
+    protected $sourcedRelations = [
+        'morphemes',
+        'verbForms'
+    ];
+
+    /** @var Collection */
+    private $_sources;
+
+    /** @var int */
+    public $sources_count;
 
     public static function booted()
     {
@@ -52,6 +65,28 @@ class Language extends Model
     public function getUrlAttribute(): string
     {
         return route('languages.show', ['language' => $this], false);
+    }
+
+    public function getSourcesAttribute(): Collection
+    {
+        if (isset($this->_sources)) {
+            return $this->_sources;
+        }
+
+        $this->_sources = $this->sources()->get();
+        return $this->_sources;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function loadSourcesCount(): void
+    {
+        $this->sources_count = $this->sources()->count();
     }
 
     /*
@@ -96,6 +131,19 @@ class Language extends Model
     public function verbForms(): Relation
     {
         return $this->hasMany(VerbForm::class);
+    }
+
+    public function sources(): Builder
+    {
+        $query = Source::query();
+
+        foreach ($this->sourcedRelations as $relation) {
+            $query = $query->orWhereHas($relation, function ($query) {
+                return $query->where('language_id', $this->id);
+            });
+        }
+
+        return $query;
     }
 
     /*

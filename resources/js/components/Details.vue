@@ -23,12 +23,22 @@
         >
           <a
             :aria-selected="page.isActive"
-            class="block p-2 whitespace-no-wrap text-gray-700 hover:bg-gray-300 hover:text-gray-700"
+            class="flex justify-between items-center p-2 whitespace-no-wrap text-gray-700
+                   hover:bg-gray-300 hover:text-gray-700"
             :href="page.isActive ? '' : '#' + page.hash"
             role="tab"
             @click.prevent="visit(page.hash)"
           >
-            {{ page.title }}
+            <div>
+              {{ page.title }}
+            </div>
+            <div
+              v-if="page.count !== null"
+              class="ml-4 bg-white shadow-inner text-gray-600 px-1 rounded-full
+                     text-xs font-bold"
+            >
+              {{ page.count }}
+            </div>
           </a>
         </li>
       </ul>
@@ -77,7 +87,7 @@ export default {
   methods: {
     visit(hash) {
       if (window.location.hash !== `#${hash}`) {
-        window.location.hash = `#${hash}`;
+        window.Turbolinks.visit(`#${hash}`);
       }
 
       this.pages.forEach(page => page.setIsActive(hash === page.hash));

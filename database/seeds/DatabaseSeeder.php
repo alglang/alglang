@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionSeeder::class);
 
+        $this->call(SourceSeeder::class);
         $this->call(GroupSeeder::class);
         $this->call(LanguageSeeder::class);
         $this->call(MorphemeSeeder::class);

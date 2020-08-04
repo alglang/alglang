@@ -75,12 +75,18 @@
             </div>
         </alglang-detail-page>
 
-        <alglang-detail-page title="Morphemes">
-            <alglang-language-morphemes url="/api{{ $language->url }}/morphemes" />
+        <alglang-detail-page title="Morphemes" :count="{{ $language->morphemes_count }}">
+            <alglang-language-morphemes url="/api/morphemes?language_id={{ $language->id }}" />
         </alglang-detail-page>
 
-        <alglang-detail-page title="Verb forms">
-            <alglang-language-verb-forms url="/api{{ $language->url }}/verb-forms" />
+        <alglang-detail-page title="Verb forms" :count="{{ $language->verb_forms_count }}">
+            <alglang-language-verb-forms url="/api/verb-forms?language_id={{ $language->id }}" />
         </alglang-detail-page>
+
+        @if($language->sources_count)
+            <alglang-detail-page title="Sources" :count="{{ $language->sources_count }}">
+                <alglang-sources url="/api/sources?language_id={{ $language->id }}" />
+            </alglang-detail-page>
+        @endif
     </alglang-details>
 @endsection

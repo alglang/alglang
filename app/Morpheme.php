@@ -3,6 +3,7 @@
 namespace App;
 
 use Adoxography\Disambiguatable\Disambiguatable;
+use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ class Morpheme extends Model
 {
     use Disambiguatable;
     use HasSlug;
+    use Sourceable;
 
     protected $guarded = [];
 
@@ -38,6 +40,10 @@ class Morpheme extends Model
 
     protected static function booted()
     {
+        static::creating(function (Morpheme $model) {
+            $model->slug = trim($model->shape, '-');
+        });
+
         static::saved(function (Morpheme $model) {
             $model->updateSlugBasedOnDisambiguator();
         });
@@ -75,14 +81,7 @@ class Morpheme extends Model
 
     public function getUrlAttribute(): string
     {
-        return route(
-            'morphemes.show',
-            [
-                'language' => $this->language,
-                'morpheme' => $this
-            ],
-            false
-        );
+        return "/languages/{$this->language->slug}/morphemes/{$this->slug}";
     }
 
     public function getGlossesAttribute(): Collection
@@ -130,22 +129,5 @@ class Morpheme extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('shape')
             ->saveSlugsTo('slug');
-    }
-
-    protected function generateNonUniqueSlug(): string
-    {
-        $slugField = $this->slugOptions->slugField;
-
-        if ($this->hasCustomSlugBeenUsed() && ! empty($this->$slugField)) {
-            return $this->$slugField;
-        }
-
-        $sourceString = mb_ereg_replace('·', '0', $this->getSlugSourceString());
-
-        if ($sourceString === false) {
-            $sourceString = '';
-        }
-
-        return Str::slug($sourceString, $this->slugOptions->slugSeparator, $this->slugOptions->slugLanguage);
     }
 }
