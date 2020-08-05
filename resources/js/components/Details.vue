@@ -14,12 +14,13 @@
     <div class="flex flex-wrap md:flex-no-wrap">
       <ul
         role="tablist"
-        class="flex md:flex-col uppercase font-semibold mr-4 mb-4"
+        class="flex justify-center md:justify-start flex-wrap md:flex-col mr-4 mb-4
+               uppercase font-semibold"
       >
         <li
           v-for="(page, i) in pages"
           :key="i"
-          class="bg-gray-200"
+          class="bg-gray-200 flex-1 md:flex-none"
         >
           <a
             :aria-selected="page.isActive"
