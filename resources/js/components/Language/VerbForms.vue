@@ -7,10 +7,14 @@
       <alglang-loader class="w-16 h-16" />
     </div>
 
-    <ul v-else-if="verbForms.length">
+    <ul
+      v-else-if="verbForms.length"
+      class="flex flex-wrap justify-center md:justify-start"
+    >
       <li
         v-for="verbForm in verbForms"
         :key="verbForm.shape"
+        class="mr-4"
       >
         <alglang-verb-form-card :verb-form="verbForm" />
       </li>
