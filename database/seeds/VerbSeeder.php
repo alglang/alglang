@@ -61,6 +61,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',
+                'morpheme_structure' => '1-6-7-8',  // V-wa·-t-i
                 'language_id' => 1,  // Proto-Algonquian
                 'class_id' => 1,  // TA
                 'mode_id' => 1,  // Indicative
@@ -72,6 +73,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 2,
                 'shape' => 'V-pa',
+                'morpheme_structure' => null,
                 'language_id' => 1,  // Proto-Algonquian
                 'class_id' => 2,  // AI
                 'mode_id' => 2,  // Preterit

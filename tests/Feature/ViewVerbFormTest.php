@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Language;
+use App\Morpheme;
 use App\VerbForm;
 use App\VerbClass;
 use App\VerbOrder;
@@ -45,6 +46,39 @@ class ViewVerbFormTest extends TestCase
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');
         $response->assertSee('3s');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_its_morphemes()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create([
+            'language_id' => $language->id,
+            'shape' => '-morph',
+            'gloss' => 'GLS'
+        ]);
+        $verbForm = factory(VerbForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "{$morpheme->id}"
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Morphology');
+        $response->assertSee('morph');
+        $response->assertSee('GLS');
+    }
+
+    /** @test */
+    public function the_morphology_section_is_not_shown_if_the_verb_form_has_no_morphemes()
+    {
+        $verbForm = factory(VerbForm::class)->create(['morpheme_structure' => null]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Morphology');
     }
 
     /** @test */

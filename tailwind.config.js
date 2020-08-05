@@ -22,6 +22,7 @@ module.exports = {
     }
   },
   variants: {
+    padding: ['responsive', 'first'],
     display: ['responsive', 'group-hover']
   },
   plugins: [

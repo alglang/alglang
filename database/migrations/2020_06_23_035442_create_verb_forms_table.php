@@ -16,6 +16,7 @@ class CreateVerbFormsTable extends Migration
         Schema::create('verb_forms', function (Blueprint $table) {
             $table->id();
             $table->string('shape');
+            $table->string('morpheme_structure')->nullable();
 
             $table->unsignedInteger('language_id');
             $table->unsignedInteger('class_id');
