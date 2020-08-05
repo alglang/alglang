@@ -32,7 +32,11 @@
                                 <tr class="hyphenated">
                                     @foreach($verbForm->morphemes as $morpheme)
                                         <td class="px-3 first:pl-0 pb-1">
-                                            <a href="{{ $morpheme->url }}" style="color: {{ $morpheme->slot->colour }};">
+                                            <a
+                                                href="{{ $morpheme->url }}"
+                                                class="hover:filter-brightness-5/4"
+                                                style="color: {{ $morpheme->slot->colour }};"
+                                            >
                                                 {{ trim($morpheme->shape, '-') }}
                                             </a>
                                         </td>

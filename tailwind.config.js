@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const customForms = require('@tailwindcss/custom-forms');
+const filters = require('tailwindcss-filters');
 
 module.exports = {
   purge: [
@@ -12,6 +13,11 @@ module.exports = {
       body: ['Lato', 'sans-serif'],
       display: ['Lato', 'sans-serif']
     },
+    filter: {
+      none: 'none',
+      'brightness-1': 'brightness(1)',
+      'brightness-5/4': 'brightness(1.25)'
+    },
     extend: {
       listStyleType: {
         square: 'square'
@@ -23,9 +29,11 @@ module.exports = {
   },
   variants: {
     padding: ['responsive', 'first'],
-    display: ['responsive', 'group-hover']
+    display: ['responsive', 'group-hover'],
+    filter: ['responsive', 'hover', 'focus']
   },
   plugins: [
-    customForms
+    customForms,
+    filters
   ]
 };
