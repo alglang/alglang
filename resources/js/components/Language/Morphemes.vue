@@ -3,6 +3,7 @@
     <div
       v-if="loading"
       aria-label="Loading"
+      class="flex justify-center"
     >
       <alglang-loader class="w-16 h-16" />
     </div>
