@@ -37,6 +37,18 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => 'pret',
                 'name' => 'preterit'
+            ],
+            [
+                'abv' => '3',
+                'name' => 'third person'
+            ],
+            [
+                'abv' => 'indic',
+                'name' => 'conjunct indicative'
+            ],
+            [
+                'abv' => '3p',
+                'name' => 'third person plural'
             ]
         ]);
 
