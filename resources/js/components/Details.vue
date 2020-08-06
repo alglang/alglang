@@ -14,8 +14,8 @@
     <div class="flex flex-wrap md:flex-no-wrap">
       <ul
         role="tablist"
-        class="flex justify-center md:justify-start flex-wrap md:flex-col mr-4 mb-4
-               uppercase font-semibold"
+        class="flex justify-center md:justify-start flex-wrap md:flex-col
+               mb-4 md:mr-4 uppercase font-semibold"
       >
         <li
           v-for="(page, i) in pages"
