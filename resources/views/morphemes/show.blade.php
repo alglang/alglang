@@ -18,7 +18,7 @@
         <alglang-detail-page title="Basic details">
             <div>
                 <alglang-detail-row label="Gloss">
-                    <p>{{ $morpheme->gloss }}</p>
+                    <p class="small-caps">{{ $morpheme->gloss }}</p>
                 </alglang-detail-row>
 
                 <alglang-detail-row label="Slot">
