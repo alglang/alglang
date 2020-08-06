@@ -42,6 +42,12 @@
             </div>
           </a>
         </li>
+
+        <li
+          v-if="pages.length % 2 === 1"
+          aria-hidden
+          class="flex-1 md:hidden"
+        />
       </ul>
 
       <div class="overflow-hidden w-full relative">
