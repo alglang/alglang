@@ -23,15 +23,15 @@ class MorphemeSeeder extends Seeder
                 'name' => 'first person singular'
             ],
             [
-                'abv' => 'AN',
+                'abv' => 'an',
                 'name' => 'animate'
             ],
             [
-                'abv' => 'OBV',
+                'abv' => 'obv',
                 'name' => 'obviative'
             ],
             [
-                'abv' => 'SG',
+                'abv' => 'sg',
                 'name' => 'singular'
             ],
             [
@@ -116,7 +116,7 @@ class MorphemeSeeder extends Seeder
                 'slug' => 'ari-1',
                 'language_id' => 1,
                 'slot_abv' => 'PER',
-                'gloss' => 'AN.OBV.SG',
+                'gloss' => 'an.obv.sg',
                 'allomorphy_notes' => null,
                 'historical_notes' => '<p>This is a test historical note.</p>',
                 /* 'usage_notes' => null, */
@@ -140,7 +140,7 @@ class MorphemeSeeder extends Seeder
                 'slug' => '(e)pan-1',
                 'language_id' => 1,
                 'slot_abv' => 'MOD',
-                'gloss' => 'PRET',
+                'gloss' => 'pret',
                 'allomorphy_notes' => '<p>Word-finally -(e)pa (Goddard 2007:249). Also, although Goddard represents it as *-(e)pan, he states (p. 250) that "*-pa(n-) did not originally take connective *e (Pentland 1979:381; Proulx 1990:106; Costa 2003:355-360)".</p>',
                 'historical_notes' => null,
                 /* 'usage_notes' => null, */
