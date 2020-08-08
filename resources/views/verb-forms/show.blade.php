@@ -27,31 +27,7 @@
 
                 @if($verbForm->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">
-                        <table class="text-center">
-                            <tbody>
-                                <tr class="hyphenated">
-                                    @foreach($verbForm->morphemes as $morpheme)
-                                        <td class="px-3 first:pl-0 pb-1">
-                                            <a
-                                                href="{{ $morpheme->url }}"
-                                                class="hover:filter-brightness-5/4"
-                                                style="color: {{ $morpheme->slot->colour }};"
-                                            >
-                                                {{ trim($morpheme->shape, '-') }}
-                                            </a>
-                                        </td>
-                                    @endforeach
-                                </tr>
-
-                                <tr>
-                                    @foreach($verbForm->morphemes as $morpheme)
-                                        <td class="px-3 first:pl-0" style="color: {{ $morpheme->slot->colour }};">
-                                            <alglang-gloss-field :value="{{ $morpheme->glosses }}" />
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            </tbody>
-                        </table>
+                        <x-morpheme-table :morphemes="$verbForm->morphemes" />
                     </alglang-detail-row>
                 @endif
 
@@ -82,17 +58,9 @@
                 @endcan
 
                 @if($verbForm->sources->count() > 0)
-                    <ul>
-                        <alglang-detail-row label="Sources">
-                            <ul>
-                                @foreach($verbForm->sources as $source)
-                                    <x-preview-link :model="$source">
-                                        {{ $source->short_citation }}
-                                    </x-preview-link>
-                                @endforeach
-                            </ul>
-                        </alglang-detail-row>
-                    </ul>
+                    <alglang-detail-row label="Sources">
+                        <x-source-list :sources="$verbForm->sources" />
+                    </alglang-detail-row>
                 @endif
             </div>
         </alglang-detail-page>

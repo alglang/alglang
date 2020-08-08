@@ -54,4 +54,11 @@ class LanguageTest extends TestCase
 
         $this->assertEquals(1, $language->sources_count);
     }
+
+    /** @test */
+    public function it_retrieves_its_verb_stem()
+    {
+        $language = factory(Language::class)->create();
+        $this->assertEquals('V-', $language->vStem->shape);
+    }
 }

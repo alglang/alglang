@@ -132,4 +132,18 @@ class MorphemeTest extends TestCase
         $this->assertSame(0, $morpheme3->fresh()->disambiguator);  // Different shape - no duplicate
         $this->assertSame(0, $morpheme4->fresh()->disambiguator);  // Different language - no duplicate
     }
+
+    /** @test */
+    public function it_determines_if_it_is_a_stem()
+    {
+        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'STM']);
+        $this->assertTrue($morpheme->isStem());
+    }
+
+    /** @test */
+    public function it_determines_if_it_is_not_a_stem()
+    {
+        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'FOO']);
+        $this->assertFalse($morpheme->isStem());
+    }
 }

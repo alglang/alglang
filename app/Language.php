@@ -77,6 +77,11 @@ class Language extends Model
         return $this->_sources;
     }
 
+    public function getVStemAttribute(): Morpheme
+    {
+        return $this->morphemes()->where('shape', 'V-')->first();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Methods

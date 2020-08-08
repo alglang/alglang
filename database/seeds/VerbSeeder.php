@@ -1,5 +1,6 @@
 <?php
 
+use App\Example;
 use App\Source;
 use App\VerbForm;
 use Illuminate\Database\Seeder;
@@ -84,6 +85,18 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
+        DB::table('examples')->insert([
+            [
+                'id' => 1,
+                'shape' => 'mi·čihswiwa·či',
+                'stem_id' => 9,
+                'form_id' => 1,
+                'translation' => 'they eat',
+                'slug' => 'mi·čihswiwa·či'
+            ]
+        ]);
+
         VerbForm::find(2)->addSource(Source::find(3));
+        Example::find(1)->addSource(Source::find(3));
     }
 }

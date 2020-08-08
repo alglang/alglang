@@ -117,6 +117,11 @@ class Morpheme extends Model
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
 
+    public function isStem(): bool
+    {
+        return $this->slot_abv === 'STM';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HasSlug config

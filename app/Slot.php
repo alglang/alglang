@@ -10,15 +10,9 @@ class Slot extends Model
     protected $keyType = 'str';
     public $incrementing = false;
 
-    /**
-     * @var array<string>
-     */
     protected $appends = ['url'];
 
-    /**
-     * @return string
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route('slots.show', $this, false);
     }

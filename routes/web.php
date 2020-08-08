@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GlossController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
@@ -39,6 +40,11 @@ Route::get(
     '/languages/{language:slug}/verb-forms/{verbForm:slug}',
     [VerbFormController::class, 'show']
 )->name('verb-forms.show');
+
+Route::get(
+    '/languages/{language:slug}/verb-forms/{verbForm:slug}/examples/{example:slug}',
+    [ExampleController::class, 'show']
+);
 
 Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.show');
 

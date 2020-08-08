@@ -125,6 +125,11 @@ class VerbForm extends Model
         return $this->belongsTo(VerbMode::class);
     }
 
+    public function examples(): Relation
+    {
+        return $this->hasMany(Example::class, 'form_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HasSlug config

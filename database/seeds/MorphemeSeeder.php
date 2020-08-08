@@ -172,12 +172,23 @@ class MorphemeSeeder extends Seeder
             [
                 'id' => 8,
                 'shape' => '-i',
-                'slug' => '-i-1',
+                'slug' => 'i-1',
                 'language_id' => 1,
                 'slot_abv' => 'MOD',
                 'gloss' => 'indic',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 9,
+                'shape' => 'mi·čihswi-',
+                'slug' => 'mi·čihswi-1',
+                'language_id' => 1,
+                'slot_abv' => 'STM',
+                'gloss' => 'eat',
+                'allomorphy_notes' => '<p>-wi- becomes -o- before w. (at least in Independent, not in Conjunct 3p)</p>',
+                'historical_notes' => '<p>Reflected in Cheyenne, Arapaho, Cree, Menominee (Goddard 2000:91).</p>',
                 'private_notes' => null
             ]
         ]);
