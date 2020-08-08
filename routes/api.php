@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
@@ -24,6 +25,7 @@ Route::get('/groups', [GroupController::class, 'index']);
 Route::get('/languages', [LanguageController::class, 'index']);
 Route::post('/languages', [LanguageController::class, 'store']);
 
+Route::get('/examples', [ExampleController::class, 'fetch']);
 Route::get('/verb-forms', [VerbFormController::class, 'index']);
 Route::get('/morphemes', [MorphemeController::class, 'index']);
 Route::get('/sources', [SourceController::class, 'fetch']);

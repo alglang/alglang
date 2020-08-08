@@ -35,3 +35,9 @@ export const sourceFactory = props => ({
   id: Math.floor(Math.random() * 10000),
   ...props
 });
+
+export const exampleFactory = props => ({
+  id: Math.floor(Math.random() * 10000),
+  form: verbFormFactory(),
+  ...props
+});

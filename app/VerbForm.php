@@ -21,7 +21,7 @@ class VerbForm extends Model
 
     protected $with = ['language'];
 
-    protected $appends = ['morphemes'];
+    protected $appends = ['morphemes', 'url'];
 
     public static function boot()
     {

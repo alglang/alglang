@@ -21,6 +21,7 @@ Vue.component('alglang-map', require('./components/Map.vue').default);
 Vue.component('alglang-gloss-field', require('./components/GlossField.vue').default);
 
 Vue.component('alglang-sources', require('./components/Sources.vue').default);
+Vue.component('alglang-examples', require('./components/Examples.vue').default);
 Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);
 Vue.component('alglang-language-verb-forms', require('./components/Language/VerbForms.vue').default);
 

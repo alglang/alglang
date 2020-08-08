@@ -64,5 +64,9 @@
                 @endif
             </div>
         </alglang-detail-page>
+
+        <alglang-detail-page title="Examples">
+            <alglang-examples url="/api/examples?form_id={{ $verbForm->id }}"></alglang-examples>
+        </alglang-detail-page>
     </alglang-details>
 @endsection
