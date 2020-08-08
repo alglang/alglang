@@ -19,7 +19,7 @@ class CreateExamplesTable extends Migration
             $table->unsignedInteger('stem_id');
             $table->unsignedInteger('form_id');
             $table->string('slug');
-            $table->text('translation');
+            $table->string('translation');
             $table->text('notes')->nullable();
             $table->text('private_notes')->nullable();
             $table->timestamps();

@@ -26,7 +26,9 @@
             </alglang-detail-row>
 
             <alglang-detail-row label="Translation">
-                {!! $example->translation !!}
+                <p>
+                    {{ $example->translation }}
+                </p>
             </alglang-detail-row>
 
             @if($example->notes)

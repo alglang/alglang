@@ -21,7 +21,7 @@ class ViewExampleTest extends TestCase
     {
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
-            'translation' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>',
+            'translation' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
             'form_id' => factory(VerbForm::class)->create(['shape' => 'V-bar'])->id
         ]);
 
