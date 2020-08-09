@@ -159,15 +159,15 @@ class FetchExamplesTest extends TestCase
     }
 
     /** @test */
-    public function it_paginates_verb_form_examples()
+    public function it_paginates_examples()
     {
         $form = factory(VerbForm::class)->create();
-        factory(Example::class, 11)->create(['form_id' => $form->id]);
+        factory(Example::class, 3)->create(['form_id' => $form->id]);
 
-        $response = $this->get("/api/examples?form_id=$form->id");
+        $response = $this->get("/api/examples?form_id=$form->id&per_page=2");
 
         $response->assertOk();
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(2, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();

@@ -32,11 +32,8 @@ class VerbFormController extends Controller
         }
 
         $paginator = $query->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')
-              ->paginate(10)
-              ->appends([
-                  'language_id' => request()->language_id,
-                  'source_id' => request()->source_id
-              ]);
+              ->paginate(request()->per_page ?? 10)
+              ->appends(request()->query());
 
         return new VerbFormCollection($paginator);
     }

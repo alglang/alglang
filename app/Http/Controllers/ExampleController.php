@@ -41,10 +41,8 @@ class ExampleController extends Controller
         }
 
         $paginator = $query->with('form')
-                          ->paginate(10)
-                          ->appends([
-                              'form_id' => request()->form_id
-                          ]);
+                          ->paginate(request()->per_page ?? 10)
+                          ->appends(request()->query());
 
         return new ExampleCollection($paginator);
     }

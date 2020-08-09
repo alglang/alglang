@@ -179,35 +179,15 @@ class FetchVerbFormsTest extends TestCase
     }
 
     /** @test */
-    public function it_paginates_language_verb_forms()
+    public function it_paginates_verb_forms()
     {
         $language = factory(Language::class)->create();
-        factory(VerbForm::class, 11)->create(['language_id' => $language->id]);
+        factory(VerbForm::class, 3)->create(['language_id' => $language->id]);
 
-        $response = $this->get("/api/verb-forms?language_id=$language->id");
-
-        $response->assertOk();
-        $response->assertJsonCount(10, 'data');
-
-        $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
-        $nextResponse->assertOk();
-        $nextResponse->assertJsonCount(1, 'data');
-    }
-
-    /** @test */
-    public function it_paginates_source_verb_forms()
-    {
-        $source = factory(Source::class)->create();
-        $verbForms = factory(VerbForm::class, 11)->create();
-
-        foreach ($verbForms as $verbForm) {
-            $verbForm->addSource($source);
-        }
-
-        $response = $this->get("/api/verb-forms?source_id=$source->id");
+        $response = $this->get("/api/verb-forms?language_id=$language->id&per_page=2");
 
         $response->assertOk();
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(2, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();

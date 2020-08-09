@@ -88,11 +88,11 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_paginates_sources()
     {
-        factory(Source::class, 11)->create();
+        factory(Source::class, 3)->create();
 
-        $response = $this->get('/api/sources');
+        $response = $this->get('/api/sources?per_page=2');
         $response->assertOk();
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(2, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
