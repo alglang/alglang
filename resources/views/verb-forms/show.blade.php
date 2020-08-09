@@ -65,7 +65,7 @@
             </div>
         </alglang-detail-page>
 
-        <alglang-detail-page title="Examples">
+        <alglang-detail-page title="Examples" :count="{{ $verbForm->examples_count }}">
             <alglang-examples url="/api/examples?form_id={{ $verbForm->id }}"></alglang-examples>
         </alglang-detail-page>
     </alglang-details>

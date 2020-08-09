@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Example;
 use App\Language;
 use App\Morpheme;
+use App\User;
 use App\VerbForm;
 use App\VerbClass;
 use App\VerbOrder;
@@ -251,5 +252,18 @@ class ViewVerbFormTest extends TestCase
         $response->assertOk();
 
         $response->assertDontSee('Sources');
+    }
+
+    /** @test */
+    public function the_form_comes_with_its_example_count()
+    {
+        $form = factory(VerbForm::class)->create();
+        $example = factory(Example::class)->create(['form_id' => $form->id]);
+
+        $response = $this->get($form->url);
+
+        $response->assertOk();
+        $response->assertViewHas('verbForm', $form);
+        $this->assertEquals(1, $response['verbForm']->examples_count);
     }
 }

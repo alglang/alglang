@@ -44,6 +44,7 @@ class VerbFormController extends Controller
     public function show(Language $language, VerbForm $verbForm): \Illuminate\View\View
     {
         $verbForm->load('sources');
+        $verbForm->loadCount('examples');
         return view('verb-forms.show', ['verbForm' => $verbForm]);
     }
 }
