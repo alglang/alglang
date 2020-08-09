@@ -92,7 +92,7 @@ class FetchVerbFormsTest extends TestCase
     }
 
     /** @test */
-    public function it_response_with_a_400_if_a_suitable_key_is_not_provided()
+    public function it_responds_with_a_400_if_a_suitable_key_is_not_provided()
     {
         $response = $this->get('/api/verb-forms');
         $response->assertStatus(400);
