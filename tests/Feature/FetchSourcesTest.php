@@ -98,4 +98,31 @@ class FetchSourcesTest extends TestCase
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
     }
+
+    /** @test */
+    public function it_sorts_sources_by_author_then_year()
+    {
+        $source1 = factory(Source::class)->create([
+            'author' => 'Beta',
+            'year' => 10
+        ]);
+        $source2 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 11
+        ]);
+        $source3 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 12
+        ]);
+
+        $response = $this->get('/api/sources');
+
+        $response->assertJson([
+            'data' => [
+                ['id' => $source3->id],
+                ['id' => $source2->id],
+                ['id' => $source1->id]
+            ]
+        ]);
+    }
 }

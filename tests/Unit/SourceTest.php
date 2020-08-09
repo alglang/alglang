@@ -82,4 +82,26 @@ class SourceTest extends TestCase
         $this->assertEquals('Foo Bar 1234a', $sourceA->fresh()->short_citation);
         $this->assertEquals('Foo Bar 1234b', $sourceB->fresh()->short_citation);
     }
+
+    /** @test */
+    public function it_orders_queries_by_author_then_year()
+    {
+        $source1 = factory(Source::class)->create([
+            'author' => 'Beta',
+            'year' => 10
+        ]);
+        $source2 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 11
+        ]);
+        $source3 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 12
+        ]);
+
+        $sources = Source::all();
+
+        $targets = [$source3->id, $source2->id, $source1->id];
+        $this->assertEquals($targets, $sources->pluck('id')->toArray());
+    }
 }

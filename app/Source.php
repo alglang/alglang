@@ -6,6 +6,7 @@ use App\Example;
 use App\Morpheme;
 use App\VerbForm;
 use Adoxography\Disambiguatable\Disambiguatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
@@ -28,6 +29,10 @@ class Source extends Model
 
             $model->slug = $slug;
             $model->save();
+        });
+
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('author')->orderBy('year', 'desc');
         });
     }
 
