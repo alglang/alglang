@@ -1,5 +1,6 @@
 <?php
 
+use App\Source;
 use Illuminate\Database\Seeder;
 
 class SourceSeeder extends Seeder
@@ -43,6 +44,37 @@ class SourceSeeder extends Seeder
                 'full_citation' => '<p>Bloomfield, Leonard. 1946. Algonquian. In <i>Linguistic Structures of Native America</i>, ed. by Harry Hoijer et al., pp. 85-129. Viking Fund Publications in Anthropology 6. New York.</p>',
                 'slug' => 'bloomfield-1946',
                 'website' => 'https://home.cc.umanitoba.ca/~oxfordwr/bloomfield1946/'
+            ],
+            [
+                'id' => 5,
+                'author' => 'Goddard',
+                'year' => 2001,
+                'full_citation' => '<p>Goddard, Ives. 2001. Contraction in Fox (Meskwaki). <i>Actes du 32e Congrès des Algonquinistes</i>, ed. by John D. Nichols, pp. 164-230. Winnipeg: University of Manitoba.</p>',
+                'slug' => 'goddard-2001-a',
+                'website' => null
+            ],
+            [
+                'id' => 6,
+                'author' => 'Goddard',
+                'year' => 2001,
+                'full_citation' => '<p>Goddard, Ives. 2001. The Algonquian languages of the Plains. <i>Handbook of North American Indians</i>, vol. 13: Plains, ed. by Raymond J. DeMallie, 71–79. Washington, DC: Smithsonian Institution.</p>',
+                'slug' => 'goddard-2001-b',
+                'website' => null
+            ]
+        ]);
+
+        DB::table('disambiguations')->insert([
+            [
+                'id' => 1,
+                'disambiguatable_type' => Source::class,
+                'disambiguatable_id' => 5,
+                'disambiguator' => 0
+            ],
+            [
+                'id' => 2,
+                'disambiguatable_type' => Source::class,
+                'disambiguatable_id' => 6,
+                'disambiguator' => 1
             ]
         ]);
     }

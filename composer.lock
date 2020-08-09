@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b266567be84225c89754ca22b4c352a",
+    "content-hash": "bd10c58a9f7a12beda36020ac0c90a28",
     "packages": [
         {
             "name": "adoxography/disambiguatable",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/adoxography/disambiguatable.git",
-                "reference": "ec05654d41fd8ffa403cbcba4018c1a7dca43add"
+                "reference": "442947ff722161d203a804fbc53918aa3c40acfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/adoxography/disambiguatable/zipball/ec05654d41fd8ffa403cbcba4018c1a7dca43add",
-                "reference": "ec05654d41fd8ffa403cbcba4018c1a7dca43add",
+                "url": "https://api.github.com/repos/adoxography/disambiguatable/zipball/442947ff722161d203a804fbc53918aa3c40acfa",
+                "reference": "442947ff722161d203a804fbc53918aa3c40acfa",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
                 "source": "https://github.com/adoxography/disambiguatable/tree/master",
                 "issues": "https://github.com/adoxography/disambiguatable/issues"
             },
-            "time": "2020-07-22T14:05:49+00:00"
+            "time": "2020-08-09T04:11:20+00:00"
         },
         {
             "name": "asm89/stack-cors",
