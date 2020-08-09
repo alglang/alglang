@@ -31,7 +31,7 @@ class SourceController extends Controller
     
     public function show(Source $source): View
     {
-        $source->loadCount('morphemes', 'verbForms');
+        $source->loadCount('examples', 'morphemes', 'verbForms');
         return view('sources.show', ['source' => $source]);
     }
 }

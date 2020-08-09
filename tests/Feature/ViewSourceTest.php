@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Example;
 use App\Morpheme;
 use App\Source;
 use App\VerbForm;
@@ -57,5 +58,19 @@ class ViewSourceTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_example_count()
+    {
+        $source = factory(Source::class)->create();
+        $example = factory(Example::class)->create();
+        $example->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->examples_count);
     }
 }

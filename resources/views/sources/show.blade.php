@@ -25,5 +25,9 @@
         <alglang-detail-page title="Verb forms" :count="{{ $source->verb_forms_count }}">
             <alglang-language-verb-forms url="/api/verb-forms?source_id={{ $source->id }}" />
         </alglang-detail-page>
+
+        <alglang-detail-page title="Examples" :count="{{ $source->examples_count }}">
+            <alglang-examples url="/api/examples?source_id={{ $source->id }}" />
+        </alglang-detail-page>
     </alglang-details>
 @endsection
