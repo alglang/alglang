@@ -15,6 +15,14 @@
                         {!! $source->full_citation !!}
                     </div>
                 </alglang-detail-row>
+
+                @if($source->website)
+                    <alglang-detail-row label="Website">
+                        <a href="{{ $source->website }}">
+                            {{ $source->website }}
+                        </a>
+                    </alglang-detail-row>
+                @endif
             </div>
         </alglang-detail-page>
 

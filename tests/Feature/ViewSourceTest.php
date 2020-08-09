@@ -33,6 +33,31 @@ class ViewSourceTest extends TestCase
     }
 
     /** @test */
+    public function a_source_shows_its_website_if_it_has_one()
+    {
+        $source = factory(Source::class)->create([
+            'website' => 'https://google.ca'
+        ]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertSee('Website');
+        $response->assertSee('https://google.ca');
+    }
+
+    /** @test */
+    public function a_source_does_not_show_a_website_if_it_has_none()
+    {
+        $source = factory(Source::class)->create(['website' => null]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Website');
+    }
+
+    /** @test */
     public function the_source_comes_with_its_morpheme_count()
     {
         $source = factory(Source::class)->create();

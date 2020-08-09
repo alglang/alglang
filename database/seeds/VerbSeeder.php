@@ -96,6 +96,8 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
+        VerbForm::find(1)->addSource(Source::find(3));
+        VerbForm::find(1)->addSource(Source::find(4));
         VerbForm::find(2)->addSource(Source::find(3));
         Example::find(1)->addSource(Source::find(3));
     }
