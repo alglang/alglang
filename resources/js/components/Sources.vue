@@ -20,7 +20,8 @@
     <ul
       ref="sources"
       class="mt-4 flex flex-col flex-wrap content-start
-             h-full leading-relaxed text-lg h-screen"
+             h-full leading-relaxed text-lg"
+      :style="{height: height}"
     >
       <li
         v-for="source in visibleSources"
@@ -60,9 +61,9 @@ export default {
   data() {
     return {
       loading: true,
-      next: null,
       maxPerPage: 200,
       nextUrl: null,
+      height: '100vh',
       filter: '',
       sources: []
     };
@@ -84,17 +85,20 @@ export default {
     }
   },
 
-  async created() {
+  created() {
     this.nextUrl = this.url;
-    this.loadSources();
     this.maxPerPage = this.perPage;
   },
 
-  mounted() {
+  async mounted() {
     window.addEventListener('resize', () => {
       this.maxPerPage = this.perPage;
+      this.resizeWindow();
       this.$nextTick(this.shrink);
     });
+
+    await this.loadSources();
+    this.resizeWindow();
   },
 
   methods: {
@@ -117,6 +121,12 @@ export default {
       this.loading = false;
 
       this.$nextTick(this.shrink);
+    },
+
+    resizeWindow() {
+      const viewportHeight = window.innerHeight;
+      const sourcesTop = this.$refs.sources.offsetTop;
+      this.height = `${viewportHeight - sourcesTop}px`;
     },
 
     shrink() {
