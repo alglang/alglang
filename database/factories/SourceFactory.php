@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Source::class, function (Faker $faker) {
     return [
-        'author' => 'John Doe',
-        'year' => 2020,
+        'author' => $faker->lastName,
+        'year' => $faker->year,
         'full_citation' => '<p>Joe Brown. 1984. <i>This is the title</i>. Winnipeg: Some Publisher.</p>'
     ];
 });

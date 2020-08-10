@@ -1,17 +1,31 @@
 <template>
   <div>
+    <input
+      v-model="filter"
+      aria-label="Filter"
+      class="border border-gray-700 py-1 px-2 text-lg w-full"
+      @input="onUpdate"
+    />
+
     <div
       v-if="loading"
-      aria-label="Loading"
       class="flex justify-center"
     >
-      <alglang-loader class="w-16 h-16" />
+      <alglang-loader
+        aria-label="Loading"
+        class="w-16 h-16 absolute mt-12"
+      />
     </div>
 
-    <ul>
+    <ul
+      ref="sources"
+      class="mt-4 flex flex-col flex-wrap content-start
+             h-full leading-relaxed text-lg h-screen"
+    >
       <li
-        v-for="source in sources"
+        v-for="source in visibleSources"
         :key="source.id"
+        class="mr-12"
       >
         <a :href="source.url">
           {{ source.short_citation }}
@@ -35,21 +49,82 @@ export default {
     url: {
       type: String,
       required: true
+    },
+
+    perPage: {
+      type: Number,
+      default: 200
     }
   },
 
   data() {
     return {
       loading: true,
+      next: null,
+      maxPerPage: 200,
+      nextUrl: null,
+      filter: '',
       sources: []
     };
   },
 
+  computed: {
+    visibleSources() {
+      const filteredSources = this.sources.filter(
+        source => source.short_citation.toLowerCase().includes(this.filter.toLowerCase())
+      );
+
+      const slice = filteredSources.slice(0, this.computedPerPage);
+
+      return slice;
+    },
+
+    computedPerPage() {
+      return Math.min(this.perPage, this.maxPerPage);
+    }
+  },
+
   async created() {
-    const response = await axios.get(this.url);
-    const json = response.data;
-    this.sources = json.data;
-    this.loading = false;
+    this.nextUrl = this.url;
+    this.loadSources();
+    this.maxPerPage = this.perPage;
+  },
+
+  mounted() {
+    window.addEventListener('resize', () => {
+      this.maxPerPage = this.perPage;
+      this.$nextTick(this.shrink);
+    });
+  },
+
+  methods: {
+    async onUpdate() {
+      if (this.visibleSources.length < this.computedPerPage && this.nextUrl && !this.loading) {
+        this.loadSources();
+      }
+    },
+
+    async loadSources() {
+      if (!this.nextUrl) {
+        return;
+      }
+
+      this.loading = true;
+      const response = await axios.get(this.nextUrl);
+      const json = response.data;
+      this.nextUrl = json.links.next;
+      this.sources = this.sources.concat(json.data);
+      this.loading = false;
+
+      this.$nextTick(this.shrink);
+    },
+
+    shrink() {
+      if (this.$refs.sources.scrollWidth > this.$refs.sources.clientWidth) {
+        this.maxPerPage -= 1;
+        this.$nextTick(this.shrink);
+      }
+    }
   }
 };
 </script>
