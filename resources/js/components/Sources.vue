@@ -7,6 +7,22 @@
       @input="onUpdate"
     />
 
+    <button
+      aria-label="Previous"
+      :disabled="page > 0"
+      @click="prevPage"
+    >
+      Previous
+    </button>
+
+    <button
+      aria-label="Next"
+      :disabled="!hasMoreSources"
+      @click="nextPage"
+    >
+      Next
+    </button>
+
     <div
       v-if="loading"
       class="flex justify-center"
@@ -62,6 +78,7 @@ export default {
     return {
       loading: true,
       maxPerPage: 200,
+      page: 0,
       nextUrl: null,
       height: '100vh',
       filter: '',
@@ -70,18 +87,25 @@ export default {
   },
 
   computed: {
-    visibleSources() {
-      const filteredSources = this.sources.filter(
+    filteredSources() {
+      return this.sources.filter(
         source => source.short_citation.toLowerCase().includes(this.filter.toLowerCase())
       );
+    },
 
-      const slice = filteredSources.slice(0, this.computedPerPage);
-
-      return slice;
+    visibleSources() {
+      return this.filteredSources.slice(
+        this.computedPerPage * this.page,
+        this.computedPerPage * (this.page + 1)
+      );
     },
 
     computedPerPage() {
       return Math.min(this.perPage, this.maxPerPage);
+    },
+
+    hasMoreSources() {
+      return this.nextUrl || this.filteredSources.length > this.computedPerPage * (this.page + 1);
     }
   },
 
@@ -102,6 +126,19 @@ export default {
   },
 
   methods: {
+    nextPage() {
+      if (this.hasMoreSources && !this.loading) {
+        this.page += 1;
+        this.onUpdate();
+      }
+    },
+
+    prevPage() {
+      if (this.page > 0) {
+        this.page -= 1;
+      }
+    },
+
     async onUpdate() {
       if (this.visibleSources.length < this.computedPerPage && this.nextUrl && !this.loading) {
         this.loadSources();

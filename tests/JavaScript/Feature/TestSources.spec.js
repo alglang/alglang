@@ -6,16 +6,49 @@ import moxios from 'moxios';
 import Sources from '../../../resources/js/components/Sources';
 import { sourceFactory } from '../factory';
 
-const renderSources = props => render(Sources, {
-  props: {
-    url: '/api/sources',
-    ...props
-  }
-});
+const renderSources = props => {
+  const wrapper = render(Sources, {
+    props: {
+      url: '/api/sources',
+      ...props
+    }
+  });
+
+  const waitForLoad = async () => waitForElementToBeRemoved(wrapper.getByLabelText('Loading'));
+
+  const filterByText = async text => {
+    await fireEvent.input(wrapper.getByLabelText('Filter'), {
+      target: { value: text }
+    });
+  };
+
+  const filterByTextAndWait = async text => {
+    await filterByText(text);
+    await waitForLoad();
+  };
+
+  const clickNext = async () => fireEvent.click(wrapper.getByLabelText('Next'));
+  const clickPrev = async () => fireEvent.click(wrapper.getByLabelText('Previous'));
+
+  const clickNextAndWait = async () => {
+    await clickNext();
+    await waitForLoad();
+  };
+
+  return {
+    clickNext,
+    clickNextAndWait,
+    clickPrev,
+    filterByText,
+    filterByTextAndWait,
+    waitForLoad,
+    ...wrapper
+  };
+};
 
 const renderSourcesAndWait = async props => {
   const wrapper = renderSources(props);
-  await waitForElementToBeRemoved(wrapper.getByLabelText('Loading'));
+  await wrapper.waitForLoad();
   return wrapper;
 };
 
@@ -54,7 +87,7 @@ describe('Sources.vue', function () {
   });
 
   it('loads sources', async function () {
-    const { queryByText } = await renderSourcesAndWait({ url: '/api/sources' });
+    const { queryByText } = await renderSourcesAndWait();
 
     expect(queryByText('Jane Doe 2000a')).to.exist;
     expect(queryByText('John Doe 1234b')).to.exist;
@@ -62,10 +95,7 @@ describe('Sources.vue', function () {
   });
 
   it('restricts the number of sources', async function () {
-    const { queryByText } = await renderSourcesAndWait({
-      url: '/api/sources',
-      perPage: 2
-    });
+    const { queryByText } = await renderSourcesAndWait({ perPage: 2 });
 
     expect(queryByText('Jane Doe 2000a')).to.exist;
     expect(queryByText('John Doe 1234b')).to.exist;
@@ -73,11 +103,9 @@ describe('Sources.vue', function () {
   });
 
   it('filters sources', async function () {
-    const { getByLabelText, queryByText } = await renderSourcesAndWait({ url: '/api/sources' });
+    const { filterByText, queryByText } = await renderSourcesAndWait();
 
-    await fireEvent.input(getByLabelText('Filter'), {
-      target: { value: 'John' }
-    });
+    await filterByText('John');
 
     expect(queryByText('Jane Doe 2000a')).to.not.exist;
     expect(queryByText('John Doe 1234b')).to.exist;
@@ -85,19 +113,75 @@ describe('Sources.vue', function () {
   });
 
   it('loads the next page if it runs out of sources', async function () {
-    const { getByLabelText, queryByText } = await renderSourcesAndWait({
-      url: '/api/sources',
-      perPage: 2
-    });
+    const { filterByTextAndWait, queryByText } = await renderSourcesAndWait({ perPage: 2 });
 
     expect(queryByText('Jane Doe 2000b')).to.not.exist;
 
-    await fireEvent.input(getByLabelText('Filter'), {
-      target: { value: 'Jane' }
-    });
-
-    await waitForElementToBeRemoved(getByLabelText('Loading'), { timeout: 3000 });
+    await filterByTextAndWait('Jane');
 
     expect(queryByText('Jane Doe 2000b')).to.exist;
+  });
+
+  it('navigates to the next page', async function () {
+    const { clickNext, queryByText } = await renderSourcesAndWait({ perPage: 1 });
+    expect(queryByText('Jane Doe 2000a')).to.exist;
+    expect(queryByText('John Doe 1234b')).to.not.exist;
+
+    await clickNext();
+
+    expect(queryByText('Jane Doe 2000a')).to.not.exist;
+    expect(queryByText('John Doe 1234b')).to.exist;
+  });
+
+  it('does not navigate to the next page if there are no more sources', async function () {
+    const { clickNext, queryByText } = await renderSourcesAndWait({ url: '/api/sources-next' });
+    expect(queryByText('Jane Doe 2000b')).to.exist;
+
+    await clickNext();
+
+    expect(queryByText('Jane Doe 2000b')).to.exist;
+  });
+
+  it('navigates to the next page if there are more loadable sources', async function () {
+    const { clickNextAndWait, queryByText } = await renderSourcesAndWait({ perPage: 3 });
+    expect(queryByText('Jane Doe 2000a')).to.exist;
+    expect(queryByText('Jane Doe 2000b')).to.not.exist;
+
+    await clickNextAndWait();
+
+    expect(queryByText('Jane Doe 2000a')).to.not.exist;
+    expect(queryByText('Jane Doe 2000b')).to.exist;
+  });
+
+  it('does not navigate to the next page if sources are loading', async function () {
+    const { clickNext, queryByText, waitForLoad } = await renderSourcesAndWait({ perPage: 3 });
+
+    clickNext();
+    await clickNext();
+    await waitForLoad();
+
+    expect(queryByText('Jane Doe 2000b')).to.exist;
+  });
+
+  it('navigates to the previous page', async function () {
+    const { clickNext, clickPrev, queryByText } = await renderSourcesAndWait({ perPage: 1 });
+    expect(queryByText('Jane Doe 2000a')).to.exist;
+
+    await clickNext();
+
+    expect(queryByText('Jane Doe 2000a')).to.not.exist;
+
+    await clickPrev();
+
+    expect(queryByText('Jane Doe 2000a')).to.exist;
+  });
+
+  it('does not navigate to the previous page if it is on the first page', async function () {
+    const { clickPrev, queryByText } = await renderSourcesAndWait({ perPage: 1 });
+    expect(queryByText('Jane Doe 2000a')).to.exist;
+
+    await clickPrev();
+
+    expect(queryByText('Jane Doe 2000a')).to.exist;
   });
 });
