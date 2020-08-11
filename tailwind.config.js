@@ -30,7 +30,9 @@ module.exports = {
   variants: {
     padding: ['responsive', 'first'],
     display: ['responsive', 'group-hover'],
-    filter: ['responsive', 'hover', 'focus']
+    filter: ['responsive', 'hover', 'focus'],
+    cursor: ['responsive', 'disabled'],
+    textColor: ['responsive', 'hover', 'focus', 'disabled']
   },
   plugins: [
     customForms,

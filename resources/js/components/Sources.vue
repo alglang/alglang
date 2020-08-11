@@ -1,27 +1,78 @@
 <template>
   <div>
-    <input
-      v-model="filter"
-      aria-label="Filter"
-      class="border border-gray-700 py-1 px-2 text-lg w-full"
-      @input="onUpdate"
-    />
+    <div class="flex justify-between">
+      <div class="relative text-lg">
+        <span class="text-gray-600">
+          <svg
+            class="absolute w-6 m-1 stroke-current"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M3 4C3 3.44772 3.44772 3 4 3H20C20.5523 3 21 3.44772 21 4V6.58579C21 6.851 20.8946
+                 7.10536 20.7071 7.29289L14.2929 13.7071C14.1054 13.8946 14 14.149 14 14.4142V17L10
+                 21V14.4142C10 14.149 9.89464 13.8946 9.70711 13.7071L3.29289 7.29289C3.10536
+                 7.10536 3 6.851 3 6.58579V4Z"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="filter"
+          aria-label="Filter"
+          class="py-1 pl-8 pr-2 bg-gray-100 shadow-inner bg-transparent
+                 focus:outline-none focus:shadow-outline"
+          @input="onUpdate"
+        />
+      </div>
 
-    <button
-      aria-label="Previous"
-      :disabled="page > 0"
-      @click="prevPage"
-    >
-      Previous
-    </button>
+      <div>
+        <button
+          aria-label="Previous"
+          class="text-blue-600 hover:text-red-600 disabled:text-gray-500 disabled:cursor-default"
+          :disabled="!canNavigatePrev"
+          @click="prevPage"
+        >
+          <svg
+            class="w-8 stroke-current"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 19L8 12L15 5"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
 
-    <button
-      aria-label="Next"
-      :disabled="!hasMoreSources"
-      @click="nextPage"
-    >
-      Next
-    </button>
+        <button
+          aria-label="Next"
+          class="text-blue-600 hover:text-red-600 disabled:text-gray-500 disabled:cursor-default"
+          :disabled="!canNavigateNext"
+          @click="nextPage"
+        >
+          <svg
+            class="w-8 stroke-current"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 5L16 12L9 19"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
 
     <div
       v-if="loading"
@@ -106,6 +157,14 @@ export default {
 
     hasMoreSources() {
       return this.nextUrl || this.filteredSources.length > this.computedPerPage * (this.page + 1);
+    },
+
+    canNavigateNext() {
+      return this.hasMoreSources && !this.loading;
+    },
+
+    canNavigatePrev() {
+      return this.page > 0;
     }
   },
 
@@ -127,14 +186,14 @@ export default {
 
   methods: {
     nextPage() {
-      if (this.hasMoreSources && !this.loading) {
+      if (this.canNavigateNext) {
         this.page += 1;
         this.onUpdate();
       }
     },
 
     prevPage() {
-      if (this.page > 0) {
+      if (this.canNavigatePrev) {
         this.page -= 1;
       }
     },
