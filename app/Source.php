@@ -63,9 +63,19 @@ class Source extends Model
         return $this->morphedByMany(Morpheme::class, 'sourceable');
     }
 
+    public function forms(): Relation
+    {
+        return $this->morphedByMany(Form::class, 'sourceable');
+    }
+
     public function verbForms(): Relation
     {
         return $this->morphedByMany(VerbForm::class, 'sourceable');
+    }
+
+    public function nominalForms(): Relation
+    {
+        return $this->morphedByMany(NominalForm::class, 'sourceable');
     }
 
     public function examples(): Relation

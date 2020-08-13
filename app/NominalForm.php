@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class NominalForm extends Form
 {
     public $table = 'forms';
@@ -9,6 +11,13 @@ class NominalForm extends Form
     public function getMorphClass()
     {
         return Form::class;
+    }
+
+    public static function booted()
+    {
+        static::addGlobalScope(function (Builder $query) {
+            $query->where('structure_type', NominalStructure::class);
+        });
     }
 
     public function getUrlAttribute(): string

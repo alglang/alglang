@@ -24,6 +24,7 @@ Vue.component('alglang-sources', require('./components/Sources.vue').default);
 Vue.component('alglang-examples', require('./components/Examples.vue').default);
 Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);
 Vue.component('alglang-language-verb-forms', require('./components/Language/VerbForms.vue').default);
+Vue.component('alglang-nominal-forms', require('./components/NominalForms.vue').default);
 
 document.addEventListener('turbolinks:load', () => {
   new Vue({ // eslint-disable-line no-new

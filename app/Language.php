@@ -24,7 +24,7 @@ class Language extends Model
     /** @var array */
     protected $sourcedRelations = [
         'morphemes',
-        'verbForms'
+        'forms'
     ];
 
     /** @var Collection */
@@ -131,6 +131,11 @@ class Language extends Model
     public function morphemes(): Relation
     {
         return $this->hasMany(Morpheme::class);
+    }
+
+    public function forms(): Relation
+    {
+        return $this->hasMany(Form::class);
     }
 
     public function verbForms(): Relation

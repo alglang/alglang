@@ -60,6 +60,14 @@ class SourceSeeder extends Seeder
                 'full_citation' => '<p>Goddard, Ives. 2001. The Algonquian languages of the Plains. <i>Handbook of North American Indians</i>, vol. 13: Plains, ed. by Raymond J. DeMallie, 71–79. Washington, DC: Smithsonian Institution.</p>',
                 'slug' => 'goddard-2001-b',
                 'website' => null
+            ],
+            [
+                'id' => 7,
+                'author' => 'Pentland',
+                'year' => 1999,
+                'full_citation' => '<p>Pentland, David H. 1999. The morphology of the Algonquian independent order. <i>Papers of the 30th Algonquian Conference</i>, ed. by David H. Pentland, pp. 222-266. Winnipeg: University of Manitoba.</p>',
+                'slug' => 'pentland-1999',
+                'website' => null
             ]
         ]);
 

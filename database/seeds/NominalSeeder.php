@@ -1,6 +1,8 @@
 <?php
 
+use App\NominalForm;
 use App\NominalStructure;
+use App\Source;
 use Illuminate\Database\Seeder;
 
 class NominalSeeder extends Seeder
@@ -49,5 +51,7 @@ class NominalSeeder extends Seeder
                 'slug' => 'ne-N-a'
             ]
         ]);
+
+        NominalForm::find(3)->addSource(Source::find(7));  // Pentland 1999
     }
 }
