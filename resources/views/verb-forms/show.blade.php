@@ -18,10 +18,10 @@
             <div>
                 <alglang-detail-row label="Description">
                     <p>
-                        <span>{{ $verbForm->argument_string }}</span>
-                        <span>{{ $verbForm->class->abv }}</span>
-                        <span>{{ $verbForm->order->name }}</span>
-                        <span>{{ $verbForm->mode->name }}</span>
+                        <span>{{ $verbForm->structure->argument_string }}</span>
+                        <span>{{ $verbForm->structure->class->abv }}</span>
+                        <span>{{ $verbForm->structure->order->name }}</span>
+                        <span>{{ $verbForm->structure->mode->name }}</span>
                     </p>
                 </alglang-detail-row>
 

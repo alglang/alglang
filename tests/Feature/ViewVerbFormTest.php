@@ -11,6 +11,7 @@ use App\VerbClass;
 use App\VerbOrder;
 use App\VerbMode;
 use App\VerbFeature;
+use App\VerbStructure;
 use App\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,6 +24,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_can_be_viewed()
     {
+        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $class = factory(VerbClass::class)->create(['abv' => 'TA']);
         $order = factory(VerbOrder::class)->create(['name' => 'Conjunct']);
@@ -32,10 +34,12 @@ class ViewVerbFormTest extends TestCase
             'shape' => 'V-test',
             'language_id' => $language->id,
 
-            'class_id' => $class->id,
-            'order_id' => $order->id,
-            'mode_id' => $mode->id,
-            'subject_id' => $subject->id
+            'structure_id' => factory(VerbStructure::class)->create([
+                'class_id' => $class->id,
+                'order_id' => $order->id,
+                'mode_id' => $mode->id,
+                'subject_id' => $subject->id
+            ])->id
         ]);
 
         $response = $this->get($verbForm->url);
@@ -86,7 +90,9 @@ class ViewVerbFormTest extends TestCase
     public function a_verb_form_shows_its_primary_object()
     {
         $verbForm = factory(VerbForm::class)->create([
-            'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2s'])->id
+            'structure_id' => factory(VerbStructure::class)->create([
+                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2s'])->id
+            ])->id
         ]);
 
         $response = $this->get($verbForm->url);
@@ -99,7 +105,9 @@ class ViewVerbFormTest extends TestCase
     public function a_verb_form_shows_its_secondary_object()
     {
         $verbForm = factory(VerbForm::class)->create([
-            'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '1p'])->id
+            'structure_id' => factory(VerbStructure::class)->create([
+                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '1p'])->id
+            ])->id
         ]);
 
         $response = $this->get($verbForm->url);

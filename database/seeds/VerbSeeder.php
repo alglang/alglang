@@ -58,16 +58,30 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
+        DB::table('verb_structures')->insert([
+            [
+                'id' => 1,
+                'subject_id' => 1,  // 3p
+                'class_id' => 1,    // TA
+                'order_id' => 1,    // Conjunct
+                'mode_id' => 1      // Indicative
+            ],
+            [
+                'id' => 2,
+                'subject_id' => 2,  // 3s
+                'class_id' => 2,    // AI
+                'order_id' => 2,    // Independent
+                'mode_id' => 2      // Preterit
+            ]
+        ]);
+
         DB::table('verb_forms')->insert([
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',
                 'morpheme_structure' => '1-6-7-8',  // V-wa·-t-i
                 'language_id' => 1,  // Proto-Algonquian
-                'class_id' => 1,  // TA
-                'mode_id' => 1,  // Indicative
-                'order_id' => 1,  // Conjunct
-                'subject_id' => 1,  // 3p
+                'structure_id' => 1,  // 3p TA Conjunct Indicative
                 'slug' => 'V-(o)wa·či',
                 'allomorphy_notes' => 'Insert /o/ after a consonant'
             ],
@@ -76,10 +90,7 @@ class VerbSeeder extends Seeder
                 'shape' => 'V-pa',
                 'morpheme_structure' => null,
                 'language_id' => 1,  // Proto-Algonquian
-                'class_id' => 2,  // AI
-                'mode_id' => 2,  // Preterit
-                'order_id' => 2,  // Independent
-                'subject_id' => 2,  // 3s
+                'structure_id' => 2,  // 3s AI Independent Preterit
                 'slug' => 'V-pa',
                 'allomorphy_notes' => '<p>Presence of underlying -w\' diagnosed by umlaut of preceding vowel (Goddard 2007:249). On the surface -w\' deletes because *-pan "did not originally take connective *e" (250).</p>'
             ]

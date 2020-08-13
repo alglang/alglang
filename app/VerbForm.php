@@ -44,21 +44,6 @@ class VerbForm extends Model
         return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
     }
 
-    public function getArgumentStringAttribute(): string
-    {
-        $string = $this->subject->name;
-
-        if ($this->primaryObject) {
-            $string .= "→{$this->primaryObject->name}";
-        }
-
-        if ($this->secondaryObject) {
-            $string .= "+{$this->secondaryObject->name}";
-        }
-
-        return $string;
-    }
-
     public function getMorphemesAttribute(): Collection
     {
         if (isset($this->_morphemes)) {
@@ -95,34 +80,9 @@ class VerbForm extends Model
         return $this->belongsTo(Language::class);
     }
 
-    public function subject(): Relation
+    public function structure(): Relation
     {
-        return $this->belongsTo(VerbFeature::class);
-    }
-
-    public function primaryObject(): Relation
-    {
-        return $this->belongsTo(VerbFeature::class);
-    }
-
-    public function secondaryObject(): Relation
-    {
-        return $this->belongsTo(VerbFeature::class);
-    }
-
-    public function class(): Relation
-    {
-        return $this->belongsTo(VerbClass::class);
-    }
-
-    public function order(): Relation
-    {
-        return $this->belongsTo(VerbOrder::class);
-    }
-
-    public function mode(): Relation
-    {
-        return $this->belongsTo(VerbMode::class);
+        return $this->belongsTo(VerbStructure::class);
     }
 
     public function examples(): Relation

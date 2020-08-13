@@ -9,6 +9,7 @@ use App\VerbForm;
 use App\VerbClass;
 use App\VerbMode;
 use App\VerbOrder;
+use App\VerbStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -20,17 +21,20 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_verb_forms()
     {
+        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
 
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-a',
             'language_id' => $language->id,
-            'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
-            'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
-            'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
-            'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
-            'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-            'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            'structure_id' => factory(VerbStructure::class)->create([
+                'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
+                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
+                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
+                'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
+                'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
+                'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            ])->id
         ]);
 
         $response = $this->get("/api/verb-forms?language_id=$language->id");
@@ -41,14 +45,16 @@ class FetchVerbFormsTest extends TestCase
                 [
                     'shape' => 'V-a',
                     'url' => $verbForm->url,
-                    'argument_string' => '1s→2p+3d',
                     'language' => ['algo_code' => 'TL'],
-                    'subject' => ['name' => '1s'],
-                    'primary_object' => ['name' => '2p'],
-                    'secondary_object' => ['name' => '3d'],
-                    'mode' => ['name' => 'Indicative'],
-                    'order' =>['name' => 'Conjunct'],
-                    'class' => ['abv' => 'TA']
+                    'structure' => [
+                        'argument_string' => '1s→2p+3d',
+                        'subject' => ['name' => '1s'],
+                        'primary_object' => ['name' => '2p'],
+                        'secondary_object' => ['name' => '3d'],
+                        'mode' => ['name' => 'Indicative'],
+                        'order' =>['name' => 'Conjunct'],
+                        'class' => ['abv' => 'TA']
+                    ]
                 ]
             ]
         ]);
@@ -61,12 +67,14 @@ class FetchVerbFormsTest extends TestCase
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-a',
             'language_id' => factory(Language::class)->create(['algo_code' => 'TL'])->id,
-            'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
-            'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
-            'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
-            'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
-            'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-            'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            'structure_id' => factory(VerbStructure::class)->create([
+                'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
+                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
+                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
+                'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
+                'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
+                'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            ])
         ]);
         $verbForm->addSource($source);
 
@@ -78,14 +86,16 @@ class FetchVerbFormsTest extends TestCase
                 [
                     'shape' => 'V-a',
                     'url' => $verbForm->url,
-                    'argument_string' => '1s→2p+3d',
                     'language' => ['algo_code' => 'TL'],
-                    'subject' => ['name' => '1s'],
-                    'primary_object' => ['name' => '2p'],
-                    'secondary_object' => ['name' => '3d'],
-                    'mode' => ['name' => 'Indicative'],
-                    'order' =>['name' => 'Conjunct'],
-                    'class' => ['abv' => 'TA']
+                    'structure' => [
+                        'argument_string' => '1s→2p+3d',
+                        'subject' => ['name' => '1s'],
+                        'primary_object' => ['name' => '2p'],
+                        'secondary_object' => ['name' => '3d'],
+                        'mode' => ['name' => 'Indicative'],
+                        'order' =>['name' => 'Conjunct'],
+                        'class' => ['abv' => 'TA']
+                    ]
                 ]
             ]
         ]);

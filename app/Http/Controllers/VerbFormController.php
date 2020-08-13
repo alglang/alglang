@@ -31,16 +31,32 @@ class VerbFormController extends Controller
             });
         }
 
-        $paginator = $query->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')
-              ->paginate(request()->per_page ?? 10)
-              ->appends(request()->query());
+        $paginator = $query->with(
+            'structure',
+            'structure.subject',
+            'structure.primaryObject',
+            'structure.secondaryObject',
+            'structure.mode',
+            'structure.order',
+            'structure.class'
+        )->paginate(request()->per_page ?? 10)
+         ->appends(request()->query());
 
         return new VerbFormCollection($paginator);
     }
 
     public function show(Language $language, VerbForm $verbForm): \Illuminate\View\View
     {
-        $verbForm->load('sources');
+        $verbForm->load(
+            'structure',
+            'structure.subject',
+            'structure.primaryObject',
+            'structure.secondaryObject',
+            'structure.mode',
+            'structure.order',
+            'structure.class',
+            'sources'
+        );
         $verbForm->loadCount('examples');
         return view('verb-forms.show', ['verbForm' => $verbForm]);
     }

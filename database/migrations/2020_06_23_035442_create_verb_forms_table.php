@@ -19,12 +19,8 @@ class CreateVerbFormsTable extends Migration
             $table->string('morpheme_structure')->nullable();
 
             $table->unsignedInteger('language_id');
-            $table->unsignedInteger('class_id');
-            $table->unsignedInteger('order_id');
-            $table->unsignedInteger('mode_id');
-            $table->unsignedInteger('subject_id');
-            $table->unsignedInteger('primary_object_id')->nullable();
-            $table->unsignedInteger('secondary_object_id')->nullable();
+
+            $table->unsignedInteger('structure_id');
 
             $table->text('historical_notes')->nullable();
             $table->text('allomorphy_notes')->nullable();
