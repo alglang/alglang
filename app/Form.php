@@ -82,7 +82,7 @@ class Form extends Model
 
     public function structure(): Relation
     {
-        return $this->belongsTo(VerbStructure::class);
+        return $this->morphTo();
     }
 
     public function examples(): Relation

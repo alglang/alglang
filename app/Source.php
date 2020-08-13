@@ -65,7 +65,7 @@ class Source extends Model
 
     public function verbForms(): Relation
     {
-        return $this->morphedByMany(Form::class, 'sourceable');
+        return $this->morphedByMany(VerbForm::class, 'sourceable');
     }
 
     public function examples(): Relation

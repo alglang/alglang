@@ -20,7 +20,7 @@ class CreateFormsTable extends Migration
 
             $table->unsignedInteger('language_id');
 
-            $table->unsignedInteger('structure_id');
+            $table->morphs('structure');
 
             $table->text('historical_notes')->nullable();
             $table->text('allomorphy_notes')->nullable();

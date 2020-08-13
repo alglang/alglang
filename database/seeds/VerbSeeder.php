@@ -1,8 +1,9 @@
 <?php
 
 use App\Example;
+use App\Form;
 use App\Source;
-use App\VerbForm;
+use App\VerbStructure;
 use Illuminate\Database\Seeder;
 
 class VerbSeeder extends Seeder
@@ -81,6 +82,7 @@ class VerbSeeder extends Seeder
                 'shape' => 'V-(o)wa·či',
                 'morpheme_structure' => '1-6-7-8',  // V-wa·-t-i
                 'language_id' => 1,  // Proto-Algonquian
+                'structure_type' => VerbStructure::class,
                 'structure_id' => 1,  // 3p TA Conjunct Indicative
                 'slug' => 'V-(o)wa·či',
                 'allomorphy_notes' => 'Insert /o/ after a consonant'
@@ -90,6 +92,7 @@ class VerbSeeder extends Seeder
                 'shape' => 'V-pa',
                 'morpheme_structure' => null,
                 'language_id' => 1,  // Proto-Algonquian
+                'structure_type' => VerbStructure::class,
                 'structure_id' => 2,  // 3s AI Independent Preterit
                 'slug' => 'V-pa',
                 'allomorphy_notes' => '<p>Presence of underlying -w\' diagnosed by umlaut of preceding vowel (Goddard 2007:249). On the surface -w\' deletes because *-pan "did not originally take connective *e" (250).</p>'
@@ -107,9 +110,9 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
-        VerbForm::find(1)->addSource(Source::find(3));
-        VerbForm::find(1)->addSource(Source::find(4));
-        VerbForm::find(2)->addSource(Source::find(3));
+        Form::find(1)->addSource(Source::find(3));
+        Form::find(1)->addSource(Source::find(4));
+        Form::find(2)->addSource(Source::find(3));
         Example::find(1)->addSource(Source::find(3));
     }
 }

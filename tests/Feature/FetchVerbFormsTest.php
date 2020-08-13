@@ -21,7 +21,6 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_verb_forms()
     {
-        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
 
         $verbForm = factory(Form::class)->state('verb')->create([
@@ -99,6 +98,19 @@ class FetchVerbFormsTest extends TestCase
                 ]
             ]
         ]);
+    }
+
+    /** @test */
+    public function it_does_not_include_other_kinds_of_verb_forms()
+    {
+        $language = factory(Language::class)->create();
+        factory(Form::class, 2)->state('verb')->create(['language_id' => $language->id]);
+        factory(Form::class, 2)->state('nominal')->create(['language_id' => $language->id]);
+
+        $response = $this->get("/api/verb-forms?language_id=$language->id");
+
+        $response->assertOk();
+        $response->assertJsonCount(2, 'data');
     }
 
     /** @test */
