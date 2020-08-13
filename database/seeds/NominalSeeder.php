@@ -42,7 +42,7 @@ class NominalSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => 'ne-N-a',
-                'morpheme_structure' => 'ne-N-a',
+                'morpheme_structure' => '11-2-12',
                 'language_id' => 1,  // Proto-Algonquian
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 1,

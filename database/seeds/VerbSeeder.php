@@ -80,7 +80,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',
-                'morpheme_structure' => '1-6-7-8',  // V-wa·-t-i
+                'morpheme_structure' => '1-7-8-9',  // V-wa·-t-i
                 'language_id' => 1,  // Proto-Algonquian
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 1,  // 3p TA Conjunct Indicative

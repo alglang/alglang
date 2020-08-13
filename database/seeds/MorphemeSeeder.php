@@ -19,6 +19,10 @@ class MorphemeSeeder extends Seeder
                 'name' => 'verb stem'
             ],
             [
+                'abv' => 'N',
+                'name' => 'noun stem'
+            ],
+            [
                 'abv' => '1s',
                 'name' => 'first person singular'
             ],
@@ -49,6 +53,10 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => '3p',
                 'name' => 'third person plural'
+            ],
+            [
+                'abv' => '1',
+                'name' => 'first person'
             ]
         ]);
 
@@ -82,6 +90,12 @@ class MorphemeSeeder extends Seeder
                 'name' => 'central suffix argument',
                 'colour' => 'rgb(0, 127, 255)',
                 'description' => '<p>Obviative */-ri/, conjunct plural */-wa·(w)/, conjunct impersonal */-en/</p>'
+            ],
+            [
+                'abv' => 'PFX',
+                'name' => 'prefix',
+                'colour' => 'rgb(0, 0, 255)',
+                'description' => null
             ]
         ]);
 
@@ -100,6 +114,18 @@ class MorphemeSeeder extends Seeder
             ],
             [
                 'id' => 2,
+                'shape' => 'N-',
+                'slug' => 'N-1',
+                'language_id' => 1,
+                'slot_abv' => 'STM',
+                'gloss' => 'N',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                /* 'usage_notes' => null, */
+                'private_notes' => null
+            ],
+            [
+                'id' => 3,
                 'shape' => '-a·n',
                 'slug' => 'a·n-1',
                 'language_id' => 1,
@@ -111,7 +137,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 3,
+                'id' => 4,
                 'shape' => '-ari',
                 'slug' => 'ari-1',
                 'language_id' => 1,
@@ -123,7 +149,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 4,
+                'id' => 5,
                 'shape' => 'wa·pam-',
                 'slug' => 'wa·pam-1',
                 'language_id' => 1,
@@ -135,7 +161,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 5,
+                'id' => 6,
                 'shape' => '-(e)pan',
                 'slug' => '(e)pan-1',
                 'language_id' => 1,
@@ -147,7 +173,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 6,
+                'id' => 7,
                 'shape' => '-wa·',
                 'slug' => 'wa·-1',
                 'language_id' => 1,
@@ -159,7 +185,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 7,
+                'id' => 8,
                 'shape' => '-t',
                 'slug' => 't-1',
                 'language_id' => 1,
@@ -170,7 +196,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 8,
+                'id' => 9,
                 'shape' => '-i',
                 'slug' => 'i-1',
                 'language_id' => 1,
@@ -181,7 +207,7 @@ class MorphemeSeeder extends Seeder
                 'private_notes' => null
             ],
             [
-                'id' => 9,
+                'id' => 10,
                 'shape' => 'mi·čihswi-',
                 'slug' => 'mi·čihswi-1',
                 'language_id' => 1,
@@ -189,6 +215,28 @@ class MorphemeSeeder extends Seeder
                 'gloss' => 'eat',
                 'allomorphy_notes' => '<p>-wi- becomes -o- before w. (at least in Independent, not in Conjunct 3p)</p>',
                 'historical_notes' => '<p>Reflected in Cheyenne, Arapaho, Cree, Menominee (Goddard 2000:91).</p>',
+                'private_notes' => null
+            ],
+            [
+                'id' => 11,
+                'shape' => 'ne-',
+                'slug' => 'ne-1',
+                'language_id' => 1,
+                'slot_abv' => 'PFX',
+                'gloss' => '1',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 12,
+                'shape' => 'a-',
+                'slug' => 'a-1',
+                'language_id' => 1,
+                'slot_abv' => 'PER',
+                'gloss' => 'an.sg',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
                 'private_notes' => null
             ]
         ]);
