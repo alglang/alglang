@@ -167,8 +167,8 @@ class ViewMorphemeTest extends TestCase
         $response->assertDontSee('Sources');
     }
 
-    /** @TODO */
-    public function the_morpheme_comes_with_its_form_count()
+    /** @test */
+    public function the_morpheme_comes_with_its_verb_form_count()
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
@@ -185,6 +185,27 @@ class ViewMorphemeTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('morpheme', $morpheme);
-        $this->assertEquals(2, $response['morpheme']->forms_count);
+        $this->assertEquals(1, $response['morpheme']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_morpheme_comes_with_its_nominal_form_count()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $verbForm = factory(VerbForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+
+        $response = $this->get($morpheme->url);
+
+        $response->assertOk();
+        $response->assertViewHas('morpheme', $morpheme);
+        $this->assertEquals(1, $response['morpheme']->nominal_forms_count);
     }
 }

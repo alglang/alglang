@@ -6,6 +6,7 @@ use Adoxography\Disambiguatable\Disambiguatable;
 use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
@@ -24,9 +25,34 @@ class Morpheme extends Model
     protected $appends = ['url'];
 
     /**
+     * @var int
+     */
+    public $verb_forms_count;
+
+    /**
+     * @var int
+     */
+    public $nominal_forms_count;
+
+    /**
      * @var Collection
      */
     protected $glosses_;
+
+    /**
+     * @var Collection
+     */
+    protected $forms_;
+
+    /**
+     * @var Collection
+     */
+    protected $verbForms_;
+
+    /**
+     * @var Collection
+     */
+    protected $nominalForms_;
 
     /**
      * @var bool
@@ -115,6 +141,77 @@ class Morpheme extends Model
     public function slot(): Relation
     {
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
+    }
+
+    public function getFormsAttribute(): Collection
+    {
+        if (isset($this->forms_)) {
+            return $this->forms_;
+        }
+
+        $this->forms_ = $this->forms()->get();
+
+        return $this->forms_;
+    }
+
+    public function getVerbFormsAttribute(): Collection
+    {
+        if (isset($this->verbForms_)) {
+            return $this->verbForms_;
+        }
+
+        $this->verbForms_ = $this->verbForms()->get();
+
+        return $this->verbForms_;
+    }
+
+    public function getNominalFormsAttribute(): Collection
+    {
+        if (isset($this->nominalForms_)) {
+            return $this->nominalForms_;
+        }
+
+        $this->nominalForms_ = $this->nominalForms()->get();
+
+        return $this->nominalForms_;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function forms(): Builder
+    {
+        return Form::where('language_id', $this->language_id)
+            ->where(function (Builder $query) {
+                $query->where('morpheme_structure', "$this->id")
+                      ->orWhere('morpheme_structure', 'LIKE', "{$this->id}-%")
+                      ->orWhere('morpheme_structure', 'LIKE', "%-{$this->id}")
+                      ->orWhere('morpheme_structure', 'LIKE', "%-{$this->id}-%");
+            });
+    }
+
+    public function verbForms(): Builder
+    {
+        return $this->forms()->where('structure_type', VerbStructure::class);
+    }
+
+    public function nominalForms(): Builder
+    {
+        return $this->forms()->where('structure_type', NominalStructure::class);
+    }
+
+    public function loadVerbFormsCount(): void
+    {
+        $this->verb_forms_count = $this->verbForms()->count();
+    }
+
+    public function loadNominalFormsCount(): void
+    {
+        $this->nominal_forms_count = $this->nominalForms()->count();
     }
 
     public function isStem(): bool

@@ -64,5 +64,13 @@
                 @endif
             </div>
         </alglang-detail-page>
+
+        <alglang-detail-page title="Verb forms" :count="{{ $morpheme->verb_forms_count }}">
+            <alglang-language-verb-forms url="/api/verb-forms?with_morphemes[]={{ $morpheme->id }}" />
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Nominal forms" :count="{{ $morpheme->nominal_forms_count }}">
+            <alglang-nominal-forms url="/api/nominal-forms?with_morphemes[]={{ $morpheme->id }}" />
+        </alglang-detail-page>
     </alglang-details>
 @endsection

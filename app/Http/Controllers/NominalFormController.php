@@ -15,7 +15,7 @@ class NominalFormController extends Controller
     {
         $query = NominalForm::query();
 
-        if (!request()->language_id && !request()->source_id) {
+        if (!request()->language_id && !request()->source_id && !request()->with_morphemes) {
             abort(400);
         }
 
@@ -29,6 +29,17 @@ class NominalFormController extends Controller
             $query->whereHas('sources', function (Builder $query) {
                 return $query->where('sources.id', request()->source_id);
             });
+        }
+
+        if (request()->with_morphemes) {
+            foreach (request()->with_morphemes as $morpheme) {
+                $query->where(function (Builder $query) use ($morpheme) {
+                    $query->where('morpheme_structure', $morpheme)
+                          ->orWhere('morpheme_structure', 'LIKE', "$morpheme-%")
+                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme")
+                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme-%");
+                });
+            }
         }
 
         $paginator = $query->with(

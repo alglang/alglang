@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Language;
+use App\Morpheme;
 use App\NominalFeature;
 use App\NominalForm;
 use App\NominalParadigm;
@@ -46,6 +47,46 @@ class FetchNominalFormTest extends TestCase
                         'paradigm' => ['name' => 'Test Paradigm']
                     ]
                 ]
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_fetches_nominal_forms_by_morpheme()
+    {
+        $morpheme = factory(Morpheme::class)->create();
+        $nominalForm1 = factory(NominalForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $nominalForm2 = factory(NominalForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "{$morpheme->id}-foo"
+        ]);
+        $nominalForm3 = factory(NominalForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "foo-{$morpheme->id}"
+        ]);
+        $nominalForm4 = factory(NominalForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "foo-{$morpheme->id}-bar"
+        ]);
+
+        factory(NominalForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => 'foo-bar'
+        ]);
+
+        $response = $this->get("/api/nominal-forms?with_morphemes[]=$morpheme->id");
+
+        $response->assertOk();
+        $response->assertJsonCount(4, 'data');
+        $response->assertJson([
+            'data' => [
+                ['id' => $nominalForm1->id],
+                ['id' => $nominalForm2->id],
+                ['id' => $nominalForm3->id],
+                ['id' => $nominalForm4->id],
             ]
         ]);
     }

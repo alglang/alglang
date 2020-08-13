@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\Language;
+use App\Morpheme;
 use App\Source;
 use App\VerbFeature;
 use App\Form;
 use App\VerbClass;
+use App\VerbForm;
 use App\VerbMode;
 use App\VerbOrder;
 use App\VerbStructure;
@@ -55,6 +57,46 @@ class FetchVerbFormsTest extends TestCase
                         'class' => ['abv' => 'TA']
                     ]
                 ]
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function it_fetches_verb_forms_by_morpheme()
+    {
+        $morpheme = factory(Morpheme::class)->create();
+        $verbForm1 = factory(VerbForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $verbForm2 = factory(VerbForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "{$morpheme->id}-foo"
+        ]);
+        $verbForm3 = factory(VerbForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "foo-{$morpheme->id}"
+        ]);
+        $verbForm4 = factory(VerbForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => "foo-{$morpheme->id}-bar"
+        ]);
+
+        factory(VerbForm::class)->create([
+            'language_id' => $morpheme->language_id,
+            'morpheme_structure' => 'foo-bar'
+        ]);
+
+        $response = $this->get("/api/verb-forms?with_morphemes[]=$morpheme->id");
+
+        $response->assertOk();
+        $response->assertJsonCount(4, 'data');
+        $response->assertJson([
+            'data' => [
+                ['id' => $verbForm1->id],
+                ['id' => $verbForm2->id],
+                ['id' => $verbForm3->id],
+                ['id' => $verbForm4->id],
             ]
         ]);
     }
