@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Example;
+use App\Form;
 use App\Source;
-use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,7 +16,7 @@ class FetchExamplesTest extends TestCase
     /** @test */
     public function it_fetches_verb_form_examples()
     {
-        $form = factory(VerbForm::class)->create(['shape' => 'V-bar']);
+        $form = factory(Form::class)->create(['shape' => 'V-bar']);
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
             'form_id' => $form->id,
@@ -45,7 +45,7 @@ class FetchExamplesTest extends TestCase
         $source = factory(Source::class)->create();
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
-            'form_id' => factory(VerbForm::class)->create(['shape' => 'V-bar'])->id,
+            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])->id,
             'translation' => '<p>Lorem ipsum dolor</p>'
         ]);
         $example->addSource($source);
@@ -75,13 +75,13 @@ class FetchExamplesTest extends TestCase
     /** @test */
     public function examples_are_filtered_by_verb_form()
     {
-        $form1 = factory(VerbForm::class)->create(['shape' => 'V-bar']);
+        $form1 = factory(Form::class)->create(['shape' => 'V-bar']);
         $example1 = factory(Example::class)->create([
             'shape' => 'foobar',
             'form_id' => $form1->id,
             'translation' => '<p>Lorem ipsum dolor</p>'
         ]);
-        $form2 = factory(VerbForm::class)->create(['shape' => 'V-x']);
+        $form2 = factory(Form::class)->create(['shape' => 'V-x']);
         $example2 = factory(Example::class)->create([
             'shape' => 'foox',
             'form_id' => $form2->id,
@@ -127,8 +127,8 @@ class FetchExamplesTest extends TestCase
     /** @test */
     public function examples_are_filtered_by_source_and_form()
     {
-        $form1 = factory(VerbForm::class)->create();
-        $form2 = factory(VerbForm::class)->create();
+        $form1 = factory(Form::class)->create();
+        $form2 = factory(Form::class)->create();
         $source1 = factory(Source::class)->create();
         $source2 = factory(Source::class)->create();
         $example1 = factory(Example::class)->create([
@@ -161,7 +161,7 @@ class FetchExamplesTest extends TestCase
     /** @test */
     public function it_paginates_examples()
     {
-        $form = factory(VerbForm::class)->create();
+        $form = factory(Form::class)->create();
         factory(Example::class, 3)->create(['form_id' => $form->id]);
 
         $response = $this->get("/api/examples?form_id=$form->id&per_page=2");

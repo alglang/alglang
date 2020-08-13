@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Language;
 use App\Morpheme;
 use App\Source;
-use App\VerbForm;
+use App\Form;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -30,14 +30,14 @@ class LanguageTest extends TestCase
             'language_id' => $language->id
         ])->addSource($morphemeSource);
 
-        $verbFormSource = factory(Source::class)->create(['author' => 'Verbform Source']);
-        factory(VerbForm::class)->create([
+        $formSource = factory(Source::class)->create(['author' => 'Verbform Source']);
+        factory(Form::class)->create([
             'language_id' => $language->id
-        ])->addSource($verbFormSource);
+        ])->addSource($formSource);
 
         $this->assertCount(2, $language->sources);
         $this->assertTrue($language->sources->contains($morphemeSource));
-        $this->assertTrue($language->sources->contains($verbFormSource));
+        $this->assertTrue($language->sources->contains($formSource));
     }
 
     /** @test */

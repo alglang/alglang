@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Example;
+use App\Form;
 use App\Language;
 use App\Morpheme;
 use App\Source;
 use App\User;
-use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -22,7 +22,7 @@ class ViewExampleTest extends TestCase
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
             'translation' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'form_id' => factory(VerbForm::class)->create(['shape' => 'V-bar'])->id
+            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])->id
         ]);
 
         $response = $this->get($example->url);
@@ -43,7 +43,7 @@ class ViewExampleTest extends TestCase
             'language_id' => $language->id,
             'shape' => 'foo-'
         ]);
-        $form = factory(VerbForm::class)->create([
+        $form = factory(Form::class)->create([
             'language_id' => $language->id,
             'morpheme_structure' => "{$language->vStem->id}-bar"
         ]);

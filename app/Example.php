@@ -35,12 +35,12 @@ class Example extends Model
 
     public function language(): Relation
     {
-        return $this->hasOneThrough(Language::class, VerbForm::class, 'id', 'id', 'form_id', 'language_id');
+        return $this->hasOneThrough(Language::class, Form::class, 'id', 'id', 'form_id', 'language_id');
     }
 
     public function form(): Relation
     {
-        return $this->belongsTo(VerbForm::class);
+        return $this->belongsTo(Form::class);
     }
 
     public function stem(): Relation

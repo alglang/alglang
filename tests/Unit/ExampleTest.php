@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use App\Example;
+use App\Form;
 use App\Language;
 use App\Morpheme;
-use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +17,7 @@ class ExampleTest extends TestCase
     public function it_has_a_url_attribute()
     {
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
-        $form = factory(VerbForm::class)->create([
+        $form = factory(Form::class)->create([
             'language_id' => $language->id,
             'shape' => 'V-bar'
         ]);
@@ -35,7 +35,7 @@ class ExampleTest extends TestCase
     {
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
         $example = factory(Example::class)->create([
-            'form_id' => factory(VerbForm::class)->create(['language_id' => $language->id])->id
+            'form_id' => factory(Form::class)->create(['language_id' => $language->id])->id
         ]);
 
         $this->assertEquals($language->id, $example->language->id);
@@ -53,7 +53,7 @@ class ExampleTest extends TestCase
             'language_id' => $language->id,
             'shape' => '-bar'
         ]);
-        $form = factory(VerbForm::class)->create([
+        $form = factory(Form::class)->create([
             'language_id' => $language->id,
             'morpheme_structure' => "{$language->vStem->id}-{$suffix->id}"
         ]);

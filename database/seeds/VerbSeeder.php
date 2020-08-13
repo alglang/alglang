@@ -75,7 +75,7 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
-        DB::table('verb_forms')->insert([
+        DB::table('forms')->insert([
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',

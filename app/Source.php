@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Example;
-use App\Morpheme;
-use App\VerbForm;
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -68,7 +65,7 @@ class Source extends Model
 
     public function verbForms(): Relation
     {
-        return $this->morphedByMany(VerbForm::class, 'sourceable');
+        return $this->morphedByMany(Form::class, 'sourceable');
     }
 
     public function examples(): Relation

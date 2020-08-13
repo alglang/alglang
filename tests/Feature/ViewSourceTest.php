@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Example;
+use App\Form;
 use App\Morpheme;
 use App\Source;
-use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -75,7 +75,7 @@ class ViewSourceTest extends TestCase
     public function the_source_comes_with_its_verb_form_count()
     {
         $source = factory(Source::class)->create();
-        $verbForm = factory(VerbForm::class)->create();
+        $verbForm = factory(Form::class)->state('verb')->create();
         $verbForm->addSource($source);
 
         $response = $this->get($source->url);

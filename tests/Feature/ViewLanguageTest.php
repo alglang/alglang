@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Form;
 use App\Group;
 use App\Language;
 use App\Morpheme;
 use App\Source;
 use App\User;
-use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -61,8 +61,8 @@ class ViewLanguageTest extends TestCase
     public function the_language_comes_with_its_verb_form_count()
     {
         $language = factory(Language::class)->create();
-        factory(VerbForm::class)->create(['language_id' => $language->id]);
-        factory(VerbForm::class)->create(['language_id' => $language->id]);
+        factory(Form::class)->state('verb')->create(['language_id' => $language->id]);
+        factory(Form::class)->state('verb')->create(['language_id' => $language->id]);
 
         $response = $this->get($language->url);
 
