@@ -19,4 +19,9 @@ class VerbForm extends Form
     {
         return Form::class;
     }
+
+    public function getUrlAttribute(): string
+    {
+        return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
+    }
 }

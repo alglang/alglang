@@ -15,28 +15,6 @@ class FormTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_has_a_url()
-    {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
-        $form = factory(Form::class)->create([
-            'shape' => 'V-test',
-            'language_id' => $language->id
-        ]);
-        $this->assertEquals('/languages/pa/verb-forms/V-test', $form->url);
-    }
-
-    /** @test */
-    public function it_preserves_utf_8_in_its_url()
-    {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
-        $form = factory(Form::class)->create([
-            'shape' => 'V-(o)wa·či',
-            'language_id' => $language->id
-        ]);
-        $this->assertEquals('/languages/pa/verb-forms/V-(o)wa·či', $form->url);
-    }
-
-    /** @test */
     public function language_is_always_eager_loaded()
     {
         factory(Form::class)->create();

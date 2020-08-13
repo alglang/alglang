@@ -138,6 +138,11 @@ class Language extends Model
         return $this->hasMany(VerbForm::class);
     }
 
+    public function nominalForms(): Relation
+    {
+        return $this->hasMany(NominalForm::class);
+    }
+
     public function sources(): Builder
     {
         $query = Source::query();

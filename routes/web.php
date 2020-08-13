@@ -7,6 +7,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
+use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
@@ -40,6 +41,11 @@ Route::get(
     '/languages/{language:slug}/verb-forms/{verbForm:slug}',
     [VerbFormController::class, 'show']
 )->name('verb-forms.show');
+
+Route::get(
+    '/languages/{language:slug}/nominal-forms/{nominalForm:slug}',
+    [NominalFormController::class, 'show']
+);
 
 Route::get(
     '/languages/{language:slug}/verb-forms/{verbForm:slug}/examples/{example:slug}',

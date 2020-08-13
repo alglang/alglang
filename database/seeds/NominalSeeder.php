@@ -1,0 +1,53 @@
+<?php
+
+use App\NominalStructure;
+use Illuminate\Database\Seeder;
+
+class NominalSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('nominal_features')->insert([
+            [
+                'id' => 1,
+                'name' => '1s'
+            ],
+            [
+                'id' => 2,
+                'name' => '3s'
+            ]
+        ]);
+
+        DB::table('nominal_paradigms')->insert([
+            [
+                'id' => 1,
+                'name' => 'Posessed noun'
+            ]
+        ]);
+
+        DB::table('nominal_structures')->insert([
+            [
+                'pronominal_feature_id' => 1,  // 1s
+                'nominal_feature_id' => 2,     // 3s
+                'paradigm_id' => 1             // Posessed noun
+            ]
+        ]);
+
+        DB::table('forms')->insert([
+            [
+                'id' => 3,
+                'shape' => 'ne-N-a',
+                'morpheme_structure' => 'ne-N-a',
+                'language_id' => 1,  // Proto-Algonquian
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 1,
+                'slug' => 'ne-N-a'
+            ]
+        ]);
+    }
+}

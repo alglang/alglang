@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguageSeeder::class);
         $this->call(MorphemeSeeder::class);
         $this->call(VerbSeeder::class);
+        $this->call(NominalSeeder::class);
     }
 }

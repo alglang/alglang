@@ -41,7 +41,14 @@ class Form extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
+        switch ($this->structure_type) {
+            case VerbStructure::class:
+                return (new VerbForm($this->attributes))->url;
+            case NominalStructure::class:
+                return (new NominalForm($this->attributes))->url;
+            default:
+                throw new \Exception('Unknown verb form type');
+        };
     }
 
     public function getMorphemesAttribute(): Collection

@@ -7,7 +7,9 @@
                         <a
                             href="{{ $morpheme->url }}"
                             class="hover:filter-brightness-5/4"
+                            @if($morpheme->slot)
                             style="color: {{ $morpheme->slot->colour }};"
+                            @endif
                         >
                             {{ trim($morpheme->shape, '-') }}
                         </a>
@@ -17,7 +19,12 @@
 
             <tr>
                 @foreach($morphemes as $morpheme)
-                    <td class="px-3 first:pl-0" style="color: {{ $morpheme->slot->colour }};">
+                    <td
+                        class="px-3 first:pl-0"
+                        @if($morpheme->slot)
+                        style="color: {{ $morpheme->slot->colour }};"
+                        @endif
+                    >
                         <alglang-gloss-field :value="{{ $morpheme->glosses }}" />
                     </td>
                 @endforeach
