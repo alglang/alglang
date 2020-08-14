@@ -157,39 +157,19 @@ class FetchMorphemesTest extends TestCase
     }
 
     /** @test */
-    public function it_paginates_language_morphemes()
+    public function it_paginates_morphemes()
     {
         $language = factory(Language::class)->create();
-        factory(Morpheme::class, 15)->create(['language_id' => $language->id]);
+        factory(Morpheme::class, 2)->create(['language_id' => $language->id]);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language_id=$language->id&per_page=2");
 
         $response->assertOk();
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(2, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
-        $nextResponse->assertJsonCount(7, 'data');  // +2 for the placeholders
-    }
-
-    /** @test */
-    public function it_paginates_source_morphemes()
-    {
-        $source = factory(Source::class)->create();
-        $morphemes = factory(Morpheme::class, 11)->create();
-
-        foreach ($morphemes as $morpheme) {
-            $morpheme->addSource($source);
-        }
-
-        $response = $this->get("/api/morphemes?source_id=$source->id");
-
-        $response->assertOk();
-        $response->assertJsonCount(10, 'data');
-
-        $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
-        $nextResponse->assertOk();
-        $nextResponse->assertJsonCount(1, 'data');
+        $nextResponse->assertJsonCount(2, 'data');  // +2 for the placeholders
     }
 
     /** @test */

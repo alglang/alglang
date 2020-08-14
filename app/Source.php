@@ -2,16 +2,36 @@
 
 namespace App;
 
-use App\Morpheme;
-use App\VerbForm;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Adoxography\Disambiguatable\Disambiguatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Source extends Model
 {
-    use HasSlug;
+    use Disambiguatable;
+
+    /** @var array */
+    protected $disambiguatableFields = ['author', 'year'];
+
+    public static function booted()
+    {
+        self::created(function (self $model) {
+            $tokens = [
+                ...explode(' ', $model->author),
+                $model->year
+            ];
+
+            $slug = strtolower(implode('-', $tokens));
+
+            $model->slug = $slug;
+            $model->save();
+        });
+
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('author')->orderBy('year', 'desc');
+        });
+    }
 
     public function getUrlAttribute(): string
     {
@@ -20,7 +40,22 @@ class Source extends Model
 
     public function getShortCitationAttribute(): string
     {
-        return "$this->author $this->year";
+        $citation = "$this->author $this->year";
+
+        if ($this->disambiguation_letter) {
+            $citation .= $this->disambiguation_letter;
+        }
+
+        return $citation;
+    }
+
+    public function getDisambiguationLetterAttribute(): ?string
+    {
+        if (!$this->disambiguationIsSet()) {
+            return null;
+        }
+
+        return chr($this->disambiguator + ord('a'));
     }
 
     public function morphemes(): Relation
@@ -28,15 +63,36 @@ class Source extends Model
         return $this->morphedByMany(Morpheme::class, 'sourceable');
     }
 
+    public function forms(): Relation
+    {
+        return $this->morphedByMany(Form::class, 'sourceable');
+    }
+
     public function verbForms(): Relation
     {
         return $this->morphedByMany(VerbForm::class, 'sourceable');
     }
 
-    public function getSlugOptions(): SlugOptions
+    public function nominalForms(): Relation
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom(['author', 'year'])
-            ->saveSlugsTo('slug');
+        return $this->morphedByMany(NominalForm::class, 'sourceable');
+    }
+
+    public function examples(): Relation
+    {
+        return $this->morphedByMany(Example::class, 'sourceable');
+    }
+
+    public function afterDisambiguated(): void
+    {
+        $tokens = [
+            ...explode(' ', $this->author),
+            $this->year,
+            $this->disambiguation_letter
+        ];
+
+        $slug = strtolower(implode('-', $tokens));
+        $this->slug = $slug;
+        $this->save();
     }
 }

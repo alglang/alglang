@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Form;
 use App\Group;
 use App\Language;
 use App\Morpheme;
+use App\NominalForm;
 use App\Source;
 use App\User;
 use App\VerbForm;
@@ -63,12 +65,28 @@ class ViewLanguageTest extends TestCase
         $language = factory(Language::class)->create();
         factory(VerbForm::class)->create(['language_id' => $language->id]);
         factory(VerbForm::class)->create(['language_id' => $language->id]);
+        factory(NominalForm::class)->create(['language_id' => $language->id]);
 
         $response = $this->get($language->url);
 
         $response->assertOk();
         $response->assertViewHas('language', $language);
         $this->assertEquals(2, $response['language']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_nominal_form_count()
+    {
+        $language = factory(Language::class)->create();
+        factory(NominalForm::class)->create(['language_id' => $language->id]);
+        factory(NominalForm::class)->create(['language_id' => $language->id]);
+        factory(VerbForm::class)->create(['language_id' => $language->id]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(2, $response['language']->nominal_forms_count);
     }
 
     /** @test */

@@ -48,11 +48,12 @@
         "stylelint": "^13.6.1",
         "stylelint-config-standard": "^20.0.0",
         "tailwindcss": "^1.4",
+        "tailwindcss-filters": "^3.0.0",
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
         "axios": "^0.19",
-        "eslint-plugin-mocha": "^7.0.1",
+        "eslint-plugin-mocha": "^8.0",
         "lato-font": "^3.0.0",
         "leaflet": "^1.6.0",
         "leaflet-defaulticon-compatibility": "^0.1.1",

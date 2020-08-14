@@ -3,9 +3,12 @@
 namespace Tests\Unit;
 
 use \DB;
+use App\Form;
 use App\Gloss;
 use App\Language;
 use App\Morpheme;
+use App\NominalForm;
+use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -131,5 +134,98 @@ class MorphemeTest extends TestCase
         $this->assertSame(1, $morpheme2->fresh()->disambiguator);  // Duplicate of previous morpheme
         $this->assertSame(0, $morpheme3->fresh()->disambiguator);  // Different shape - no duplicate
         $this->assertSame(0, $morpheme4->fresh()->disambiguator);  // Different language - no duplicate
+    }
+
+    /** @test */
+    public function it_determines_if_it_is_a_stem()
+    {
+        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'STM']);
+        $this->assertTrue($morpheme->isStem());
+    }
+
+    /** @test */
+    public function it_determines_if_it_is_not_a_stem()
+    {
+        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'FOO']);
+        $this->assertFalse($morpheme->isStem());
+    }
+
+    /** @test */
+    public function it_retrieves_forms_that_contain_it()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $form1 = factory(Form::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $form2 = factory(Form::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "{$morpheme->id}-foo"
+        ]);
+        $form3 = factory(Form::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "foo-{$morpheme->id}"
+        ]);
+        $form4 = factory(Form::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "foo-{$morpheme->id}-bar"
+        ]);
+        $form5 = factory(Form::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "foo-{$morpheme->id}{$morpheme->id}-bar"
+        ]);
+        $form6 = factory(Form::class)->create([
+            'language_id' => factory(Language::class)->create()->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+
+        $forms = $morpheme->forms;
+
+        $this->assertCount(4, $forms);
+        $this->assertContains($form1->id, $forms->pluck('id')->toArray());
+        $this->assertContains($form2->id, $forms->pluck('id')->toArray());
+        $this->assertContains($form3->id, $forms->pluck('id')->toArray());
+        $this->assertContains($form4->id, $forms->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function it_retrieves_verb_forms_that_contain_it()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $verbForm = factory(VerbForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+
+        $verbForms = $morpheme->verbForms;
+
+        $this->assertCount(1, $verbForms);
+        $this->assertEquals($verbForm->id, $verbForms[0]->id);
+    }
+
+    /** @test */
+    public function it_retrieves_nominal_forms_that_contain_it()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $verbForm = factory(VerbForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+            'morpheme_structure' => "$morpheme->id"
+        ]);
+
+        $nominalForms = $morpheme->nominalForms;
+
+        $this->assertCount(1, $nominalForms);
+        $this->assertEquals($nominalForm->id, $nominalForms[0]->id);
     }
 }

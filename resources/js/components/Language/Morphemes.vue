@@ -3,13 +3,18 @@
     <div
       v-if="loading"
       aria-label="Loading"
+      class="flex justify-center"
     >
       <alglang-loader class="w-16 h-16" />
     </div>
-    <ul v-else-if="morphemes.length">
+    <ul
+      v-else-if="morphemes.length"
+      class="flex flex-wrap justify-center md:justify-start"
+    >
       <li
         v-for="morpheme of morphemes"
         :key="morpheme.shape"
+        class="mr-4"
       >
         <alglang-morpheme-card :morpheme="morpheme" />
       </li>

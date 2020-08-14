@@ -18,12 +18,18 @@
             <div>
                 <alglang-detail-row label="Description">
                     <p>
-                        <span>{{ $verbForm->argument_string }}</span>
-                        <span>{{ $verbForm->class->abv }}</span>
-                        <span>{{ $verbForm->order->name }}</span>
-                        <span>{{ $verbForm->mode->name }}</span>
+                        <span>{{ $verbForm->structure->argument_string }}</span>
+                        <span>{{ $verbForm->structure->class->abv }}</span>
+                        <span>{{ $verbForm->structure->order->name }}</span>
+                        <span>{{ $verbForm->structure->mode->name }}</span>
                     </p>
                 </alglang-detail-row>
+
+                @if($verbForm->morphemes->count() > 0)
+                    <alglang-detail-row label="Morphology">
+                        <x-morpheme-table :morphemes="$verbForm->morphemes" />
+                    </alglang-detail-row>
+                @endif
 
                 @if($verbForm->historical_notes)
                     <alglang-detail-row label="Historical notes">
@@ -52,19 +58,15 @@
                 @endcan
 
                 @if($verbForm->sources->count() > 0)
-                    <ul>
-                        <alglang-detail-row label="Sources">
-                            <ul>
-                                @foreach($verbForm->sources as $source)
-                                    <x-preview-link :model="$source">
-                                        {{ $source->short_citation }}
-                                    </x-preview-link>
-                                @endforeach
-                            </ul>
-                        </alglang-detail-row>
-                    </ul>
+                    <alglang-detail-row label="Sources">
+                        <x-source-list :sources="$verbForm->sources" />
+                    </alglang-detail-row>
                 @endif
             </div>
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Examples" :count="{{ $verbForm->examples_count }}">
+            <alglang-examples url="/api/examples?form_id={{ $verbForm->id }}"></alglang-examples>
         </alglang-detail-page>
     </alglang-details>
 @endsection

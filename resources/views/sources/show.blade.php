@@ -15,6 +15,14 @@
                         {!! $source->full_citation !!}
                     </div>
                 </alglang-detail-row>
+
+                @if($source->website)
+                    <alglang-detail-row label="Website">
+                        <a href="{{ $source->website }}">
+                            {{ $source->website }}
+                        </a>
+                    </alglang-detail-row>
+                @endif
             </div>
         </alglang-detail-page>
 
@@ -24,6 +32,14 @@
 
         <alglang-detail-page title="Verb forms" :count="{{ $source->verb_forms_count }}">
             <alglang-language-verb-forms url="/api/verb-forms?source_id={{ $source->id }}" />
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Nominal forms" :count="{{ $source->nominal_forms_count }}">
+            <alglang-nominal-forms url="/api/nominal-forms?source_id={{ $source->id }}" />
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Examples" :count="{{ $source->examples_count }}">
+            <alglang-examples url="/api/examples?source_id={{ $source->id }}" />
         </alglang-detail-page>
     </alglang-details>
 @endsection

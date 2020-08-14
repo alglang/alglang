@@ -18,7 +18,7 @@
         <alglang-detail-page title="Basic details">
             <div>
                 <alglang-detail-row label="Gloss">
-                    <p>{{ $morpheme->gloss }}</p>
+                    <p class="small-caps">{{ $morpheme->gloss }}</p>
                 </alglang-detail-row>
 
                 <alglang-detail-row label="Slot">
@@ -63,6 +63,14 @@
                     </alglang-detail-row>
                 @endif
             </div>
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Verb forms" :count="{{ $morpheme->verb_forms_count }}">
+            <alglang-language-verb-forms url="/api/verb-forms?with_morphemes[]={{ $morpheme->id }}" />
+        </alglang-detail-page>
+
+        <alglang-detail-page title="Nominal forms" :count="{{ $morpheme->nominal_forms_count }}">
+            <alglang-nominal-forms url="/api/nominal-forms?with_morphemes[]={{ $morpheme->id }}" />
         </alglang-detail-page>
     </alglang-details>
 @endsection

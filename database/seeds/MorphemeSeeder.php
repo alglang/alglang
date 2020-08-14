@@ -19,24 +19,44 @@ class MorphemeSeeder extends Seeder
                 'name' => 'verb stem'
             ],
             [
+                'abv' => 'N',
+                'name' => 'noun stem'
+            ],
+            [
                 'abv' => '1s',
                 'name' => 'first person singular'
             ],
             [
-                'abv' => 'AN',
+                'abv' => 'an',
                 'name' => 'animate'
             ],
             [
-                'abv' => 'OBV',
+                'abv' => 'obv',
                 'name' => 'obviative'
             ],
             [
-                'abv' => 'SG',
+                'abv' => 'sg',
                 'name' => 'singular'
             ],
             [
                 'abv' => 'pret',
                 'name' => 'preterit'
+            ],
+            [
+                'abv' => '3',
+                'name' => 'third person'
+            ],
+            [
+                'abv' => 'indic',
+                'name' => 'conjunct indicative'
+            ],
+            [
+                'abv' => '3p',
+                'name' => 'third person plural'
+            ],
+            [
+                'abv' => '1',
+                'name' => 'first person'
             ]
         ]);
 
@@ -62,8 +82,20 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => 'MOD',
                 'name' => 'mode sign',
-                'colour' => null,
+                'colour' => 'rgb(50, 205, 50)',
                 'description' => '<p>Currently being used for independent mode signs (which appear adjacent to the central suffix) and conjunct mode signs (which appear word-finally), as well as the medial -w element in the interrogative order.</p>'
+            ],
+            [
+                'abv' => 'CAUG',
+                'name' => 'central suffix argument',
+                'colour' => 'rgb(0, 127, 255)',
+                'description' => '<p>Obviative */-ri/, conjunct plural */-wa·(w)/, conjunct impersonal */-en/</p>'
+            ],
+            [
+                'abv' => 'PFX',
+                'name' => 'prefix',
+                'colour' => 'rgb(0, 0, 255)',
+                'description' => null
             ]
         ]);
 
@@ -77,10 +109,23 @@ class MorphemeSeeder extends Seeder
                 'gloss' => 'V',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
+                /* 'usage_notes' => null, */
                 'private_notes' => '<p>This is a test note.</p>'
             ],
             [
                 'id' => 2,
+                'shape' => 'N-',
+                'slug' => 'N-1',
+                'language_id' => 1,
+                'slot_abv' => 'STM',
+                'gloss' => 'N',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                /* 'usage_notes' => null, */
+                'private_notes' => null
+            ],
+            [
+                'id' => 3,
                 'shape' => '-a·n',
                 'slug' => 'a·n-1',
                 'language_id' => 1,
@@ -88,21 +133,23 @@ class MorphemeSeeder extends Seeder
                 'gloss' => '1s',
                 'allomorphy_notes' => '<p>Becomes -ya:n after a vowel.</p>',
                 'historical_notes' => null,
-                'private_notes' => null
-            ],
-            [
-                'id' => 3,
-                'shape' => '-ari',
-                'slug' => 'ari-1',
-                'language_id' => 1,
-                'slot_abv' => 'PER',
-                'gloss' => 'AN.OBV.SG',
-                'allomorphy_notes' => null,
-                'historical_notes' => '<p>This is a test historical note.</p>',
+                /* 'usage_notes' => null, */
                 'private_notes' => null
             ],
             [
                 'id' => 4,
+                'shape' => '-ari',
+                'slug' => 'ari-1',
+                'language_id' => 1,
+                'slot_abv' => 'PER',
+                'gloss' => 'an.obv.sg',
+                'allomorphy_notes' => null,
+                'historical_notes' => '<p>This is a test historical note.</p>',
+                /* 'usage_notes' => null, */
+                'private_notes' => null
+            ],
+            [
+                'id' => 5,
                 'shape' => 'wa·pam-',
                 'slug' => 'wa·pam-1',
                 'language_id' => 1,
@@ -110,16 +157,85 @@ class MorphemeSeeder extends Seeder
                 'gloss' => 'see',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
+                /* 'usage_notes' => null, */
                 'private_notes' => null
             ],
             [
-                'id' => 5,
+                'id' => 6,
                 'shape' => '-(e)pan',
                 'slug' => '(e)pan-1',
                 'language_id' => 1,
                 'slot_abv' => 'MOD',
-                'gloss' => 'PRET',
+                'gloss' => 'pret',
                 'allomorphy_notes' => '<p>Word-finally -(e)pa (Goddard 2007:249). Also, although Goddard represents it as *-(e)pan, he states (p. 250) that "*-pa(n-) did not originally take connective *e (Pentland 1979:381; Proulx 1990:106; Costa 2003:355-360)".</p>',
+                'historical_notes' => null,
+                /* 'usage_notes' => null, */
+                'private_notes' => null
+            ],
+            [
+                'id' => 7,
+                'shape' => '-wa·',
+                'slug' => 'wa·-1',
+                'language_id' => 1,
+                'slot_abv' => 'CAUG',
+                'gloss' => '3p',
+                'allomorphy_notes' => '<ul><li>When it precedes the central suffix /-t/, it does not trigger the postconsonantal /-k/, so it must be /-wa:-t/ rather than /-wa:w-t/ (which ought to become /-wa:w-k/ > /-wa:kw/)</li><li>Becomes /-owa:/ after a nasal (after AI n-stems and TI1 -am).</li></ul>',
+                'historical_notes' => null,
+                /* 'usage_notes' => '<p>Precedes and pluralizes the central suffix.</p>', */
+                'private_notes' => null
+            ],
+            [
+                'id' => 8,
+                'shape' => '-t',
+                'slug' => 't-1',
+                'language_id' => 1,
+                'slot_abv' => 'CCEN',
+                'gloss' => '3',
+                'allomorphy_notes' => '<p>Palatalizes to c before i. Becomes k after a consonant (which is usually either a nasal or theta).</p>',
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 9,
+                'shape' => '-i',
+                'slug' => 'i-1',
+                'language_id' => 1,
+                'slot_abv' => 'MOD',
+                'gloss' => 'indic',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 10,
+                'shape' => 'mi·čihswi-',
+                'slug' => 'mi·čihswi-1',
+                'language_id' => 1,
+                'slot_abv' => 'STM',
+                'gloss' => 'eat',
+                'allomorphy_notes' => '<p>-wi- becomes -o- before w. (at least in Independent, not in Conjunct 3p)</p>',
+                'historical_notes' => '<p>Reflected in Cheyenne, Arapaho, Cree, Menominee (Goddard 2000:91).</p>',
+                'private_notes' => null
+            ],
+            [
+                'id' => 11,
+                'shape' => 'ne-',
+                'slug' => 'ne-1',
+                'language_id' => 1,
+                'slot_abv' => 'PFX',
+                'gloss' => '1',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 12,
+                'shape' => 'a-',
+                'slug' => 'a-1',
+                'language_id' => 1,
+                'slot_abv' => 'PER',
+                'gloss' => 'an.sg',
+                'allomorphy_notes' => null,
                 'historical_notes' => null,
                 'private_notes' => null
             ]

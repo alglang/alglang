@@ -6,6 +6,6 @@
             Bibliography
         </h1>
 
-        <alglang-sources url="/api/sources" />
+        <alglang-sources url="/api/sources?per_page=200" />
     </section>
 @endsection

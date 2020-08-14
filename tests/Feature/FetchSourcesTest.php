@@ -88,14 +88,41 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_paginates_sources()
     {
-        factory(Source::class, 11)->create();
+        factory(Source::class, 3)->create();
 
-        $response = $this->get('/api/sources');
+        $response = $this->get('/api/sources?per_page=2');
         $response->assertOk();
-        $response->assertJsonCount(10, 'data');
+        $response->assertJsonCount(2, 'data');
 
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function it_sorts_sources_by_author_then_year()
+    {
+        $source1 = factory(Source::class)->create([
+            'author' => 'Beta',
+            'year' => 10
+        ]);
+        $source2 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 11
+        ]);
+        $source3 = factory(Source::class)->create([
+            'author' => 'Alpha',
+            'year' => 12
+        ]);
+
+        $response = $this->get('/api/sources');
+
+        $response->assertJson([
+            'data' => [
+                ['id' => $source3->id],
+                ['id' => $source2->id],
+                ['id' => $source1->id]
+            ]
+        ]);
     }
 }

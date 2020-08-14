@@ -13,7 +13,7 @@ class VerbFormController extends Controller
 {
     public function index(): VerbFormCollection
     {
-        if (!request()->language_id && !request()->source_id) {
+        if (!request()->language_id && !request()->source_id && !request()->with_morphemes) {
             abort(400);
         }
 
@@ -31,19 +31,44 @@ class VerbFormController extends Controller
             });
         }
 
-        $paginator = $query->with('subject', 'primaryObject', 'secondaryObject', 'mode', 'order', 'class')
-              ->paginate(10)
-              ->appends([
-                  'language_id' => request()->language_id,
-                  'source_id' => request()->source_id
-              ]);
+        if (request()->with_morphemes) {
+            foreach (request()->with_morphemes as $morpheme) {
+                $query->where(function (Builder $query) use ($morpheme) {
+                    $query->where('morpheme_structure', $morpheme)
+                          ->orWhere('morpheme_structure', 'LIKE', "$morpheme-%")
+                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme")
+                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme-%");
+                });
+            }
+        }
+
+        $paginator = $query->with(
+            'structure',
+            'structure.subject',
+            'structure.primaryObject',
+            'structure.secondaryObject',
+            'structure.mode',
+            'structure.order',
+            'structure.class'
+        )->paginate(request()->per_page ?? 10)
+         ->appends(request()->query());
 
         return new VerbFormCollection($paginator);
     }
 
     public function show(Language $language, VerbForm $verbForm): \Illuminate\View\View
     {
-        $verbForm->load('sources');
+        $verbForm->load(
+            'structure',
+            'structure.subject',
+            'structure.primaryObject',
+            'structure.secondaryObject',
+            'structure.mode',
+            'structure.order',
+            'structure.class',
+            'sources'
+        );
+        $verbForm->loadCount('examples');
         return view('verb-forms.show', ['verbForm' => $verbForm]);
     }
 }

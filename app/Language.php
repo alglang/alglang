@@ -24,7 +24,7 @@ class Language extends Model
     /** @var array */
     protected $sourcedRelations = [
         'morphemes',
-        'verbForms'
+        'forms'
     ];
 
     /** @var Collection */
@@ -75,6 +75,11 @@ class Language extends Model
 
         $this->_sources = $this->sources()->get();
         return $this->_sources;
+    }
+
+    public function getVStemAttribute(): Morpheme
+    {
+        return $this->morphemes()->where('shape', 'V-')->first();
     }
 
     /*
@@ -128,9 +133,19 @@ class Language extends Model
         return $this->hasMany(Morpheme::class);
     }
 
+    public function forms(): Relation
+    {
+        return $this->hasMany(Form::class);
+    }
+
     public function verbForms(): Relation
     {
         return $this->hasMany(VerbForm::class);
+    }
+
+    public function nominalForms(): Relation
+    {
+        return $this->hasMany(NominalForm::class);
     }
 
     public function sources(): Builder

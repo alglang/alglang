@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Example;
 use App\Morpheme;
+use App\NominalForm;
 use App\Source;
 use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,6 +34,31 @@ class ViewSourceTest extends TestCase
     }
 
     /** @test */
+    public function a_source_shows_its_website_if_it_has_one()
+    {
+        $source = factory(Source::class)->create([
+            'website' => 'https://google.ca'
+        ]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertSee('Website');
+        $response->assertSee('https://google.ca');
+    }
+
+    /** @test */
+    public function a_source_does_not_show_a_website_if_it_has_none()
+    {
+        $source = factory(Source::class)->create(['website' => null]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Website');
+    }
+
+    /** @test */
     public function the_source_comes_with_its_morpheme_count()
     {
         $source = factory(Source::class)->create();
@@ -57,5 +84,33 @@ class ViewSourceTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->verb_forms_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_nominal_form_count()
+    {
+        $source = factory(Source::class)->create();
+        $nominalForm = factory(NominalForm::class)->create();
+        $nominalForm->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->nominal_forms_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_example_count()
+    {
+        $source = factory(Source::class)->create();
+        $example = factory(Example::class)->create();
+        $example->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->examples_count);
     }
 }

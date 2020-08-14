@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVerbFormsTable extends Migration
+class CreateVerbStructuresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,14 @@ class CreateVerbFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('verb_forms', function (Blueprint $table) {
+        Schema::create('verb_structures', function (Blueprint $table) {
             $table->id();
-            $table->string('shape');
-
-            $table->unsignedInteger('language_id');
             $table->unsignedInteger('class_id');
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('mode_id');
             $table->unsignedInteger('subject_id');
             $table->unsignedInteger('primary_object_id')->nullable();
             $table->unsignedInteger('secondary_object_id')->nullable();
-
-            $table->text('historical_notes')->nullable();
-            $table->text('allomorphy_notes')->nullable();
-            $table->text('usage_notes')->nullable();
-            $table->text('private_notes')->nullable();
-
-            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -42,6 +32,6 @@ class CreateVerbFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verb_forms');
+        Schema::dropIfExists('verb_structures');
     }
 }

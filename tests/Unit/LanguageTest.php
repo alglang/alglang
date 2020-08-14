@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Language;
 use App\Morpheme;
+use App\NominalForm;
 use App\Source;
 use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,9 +36,15 @@ class LanguageTest extends TestCase
             'language_id' => $language->id
         ])->addSource($verbFormSource);
 
-        $this->assertCount(2, $language->sources);
+        $nominalFormSource = factory(Source::class)->create(['author' => 'Nominalform Source']);
+        factory(NominalForm::class)->create([
+            'language_id' => $language->id
+        ])->addSource($nominalFormSource);
+
+        $this->assertCount(3, $language->sources);
         $this->assertTrue($language->sources->contains($morphemeSource));
         $this->assertTrue($language->sources->contains($verbFormSource));
+        $this->assertTrue($language->sources->contains($nominalFormSource));
     }
 
     /** @test */
@@ -53,5 +60,12 @@ class LanguageTest extends TestCase
         $language->loadSourcesCount();
 
         $this->assertEquals(1, $language->sources_count);
+    }
+
+    /** @test */
+    public function it_retrieves_its_verb_stem()
+    {
+        $language = factory(Language::class)->create();
+        $this->assertEquals('V-', $language->vStem->shape);
     }
 }

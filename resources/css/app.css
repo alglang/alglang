@@ -55,3 +55,19 @@ a:hover {
 
   @apply pl-6;
 }
+
+.hyphenated * {
+  @apply relative;
+}
+
+.hyphenated *:not(:first-child)::before {
+  content: '-';
+  position: absolute;
+  left: -0.1rem;
+
+  @apply text-gray-900;
+}
+
+.small-caps {
+  font-variant: small-caps;
+}

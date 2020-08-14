@@ -19,6 +19,7 @@ class CreateSourcesTable extends Migration
             $table->smallInteger('year');
             $table->text('full_citation');
             $table->string('slug')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,8 @@
       <a
         v-if="gloss.url"
         :href="gloss.url"
-        class="inline-block"
+        class="inline-block small-caps hover:filter-brightness-5/4"
+        style="color: inherit;"
       >
         {{ gloss.abv }}
       </a>

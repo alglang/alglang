@@ -25,13 +25,14 @@ class SourceController extends Controller
             $query = Source::query();
         }
 
-        $sources = $query->paginate(10);
+        $sources = $query->paginate(request()->per_page ?? 10)
+                         ->appends(request()->query());
         return new SourceCollection($sources);
     }
     
     public function show(Source $source): View
     {
-        $source->loadCount('morphemes', 'verbForms');
+        $source->loadCount('examples', 'morphemes', 'verbForms', 'nominalForms');
         return view('sources.show', ['source' => $source]);
     }
 }

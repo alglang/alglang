@@ -32,11 +32,8 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
-                            ->paginate(10)
-                            ->appends([
-                                'language_id' => request()->language_id,
-                                'source_id' => request()->source_id
-                            ]);
+                           ->paginate(request()->per_page ?? 10)
+                           ->appends(request()->query());
 
         return new MorphemeCollection($paginator);
     }
@@ -44,6 +41,8 @@ class MorphemeController extends Controller
     public function show(Language $language, Morpheme $morpheme): \Illuminate\View\View
     {
         $morpheme->load('slot', 'sources');
+        $morpheme->loadVerbFormsCount();
+        $morpheme->loadNominalFormsCount();
         $morpheme->append('glosses', 'disambiguator');
         return view('morphemes.show', ['morpheme' => $morpheme]);
     }

@@ -83,6 +83,10 @@
             <alglang-language-verb-forms url="/api/verb-forms?language_id={{ $language->id }}" />
         </alglang-detail-page>
 
+        <alglang-detail-page title="Nominal forms" :count="{{ $language->nominal_forms_count }}">
+            <alglang-nominal-forms url="/api/nominal-forms?language_id={{ $language->id }}" />
+        </alglang-detail-page>
+
         @if($language->sources_count)
             <alglang-detail-page title="Sources" :count="{{ $language->sources_count }}">
                 <alglang-sources url="/api/sources?language_id={{ $language->id }}" />
