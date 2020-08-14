@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class FetchNominalFormTest extends TestCase
+class FetchNominalFormsTest extends TestCase
 {
     use RefreshDatabase;
 
