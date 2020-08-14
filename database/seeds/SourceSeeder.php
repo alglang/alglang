@@ -85,7 +85,5 @@ class SourceSeeder extends Seeder
                 'disambiguator' => 1
             ]
         ]);
-
-        factory(Source::class, 150)->create();
     }
 }
