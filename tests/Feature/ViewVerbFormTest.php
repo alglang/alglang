@@ -10,7 +10,7 @@ use App\User;
 use App\VerbClass;
 use App\VerbOrder;
 use App\VerbMode;
-use App\VerbFeature;
+use App\Feature;
 use App\VerbStructure;
 use App\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +28,7 @@ class ViewVerbFormTest extends TestCase
         $class = factory(VerbClass::class)->create(['abv' => 'TA']);
         $order = factory(VerbOrder::class)->create(['name' => 'Conjunct']);
         $mode = factory(VerbMode::class)->create(['name' => 'Indicative']);
-        $subject = factory(VerbFeature::class)->create(['name' => '3s']);
+        $subject = factory(Feature::class)->create(['name' => '3s']);
         $verbForm = factory(Form::class)->state('verb')->create([
             'shape' => 'V-test',
             'language_id' => $language->id,
@@ -88,7 +88,7 @@ class ViewVerbFormTest extends TestCase
     {
         $verbForm = factory(Form::class)->state('verb')->create([
             'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2s'])->id
+                'primary_object_id' => factory(Feature::class)->create(['name' => '2s'])->id
             ])->id
         ]);
 
@@ -103,7 +103,7 @@ class ViewVerbFormTest extends TestCase
     {
         $verbForm = factory(Form::class)->state('verb')->create([
             'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '1p'])->id
+                'secondary_object_id' => factory(Feature::class)->create(['name' => '1p'])->id
             ])->id
         ]);
 

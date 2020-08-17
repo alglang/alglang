@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Feature;
 use App\VerbClass;
-use App\VerbFeature;
 use App\VerbMode;
 use App\VerbOrder;
 use App\VerbStructure;
@@ -14,6 +14,6 @@ $factory->define(VerbStructure::class, function (Faker $faker) {
         'class_id' => factory(VerbClass::class),
         'order_id' => factory(VerbOrder::class),
         'mode_id' => factory(VerbMode::class),
-        'subject_id' => factory(VerbFeature::class)
+        'subject_id' => factory(Feature::class)
     ];
 });

@@ -49,17 +49,6 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
-        DB::table('verb_features')->insert([
-            [
-                'id' => 1,
-                'name' => '3p'
-            ],
-            [
-                'id' => 2,
-                'name' => '3s'
-            ]
-        ]);
-
         DB::table('verb_structures')->insert([
             [
                 'id' => 1,

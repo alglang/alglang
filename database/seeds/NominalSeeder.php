@@ -15,17 +15,6 @@ class NominalSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('nominal_features')->insert([
-            [
-                'id' => 1,
-                'name' => '1s'
-            ],
-            [
-                'id' => 2,
-                'name' => '3s'
-            ]
-        ]);
-
         DB::table('nominal_paradigms')->insert([
             [
                 'id' => 1,

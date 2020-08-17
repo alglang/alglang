@@ -24,17 +24,17 @@ class VerbStructure extends Model
 
     public function subject(): Relation
     {
-        return $this->belongsTo(VerbFeature::class);
+        return $this->belongsTo(Feature::class);
     }
 
     public function primaryObject(): Relation
     {
-        return $this->belongsTo(VerbFeature::class);
+        return $this->belongsTo(Feature::class);
     }
 
     public function secondaryObject(): Relation
     {
-        return $this->belongsTo(VerbFeature::class);
+        return $this->belongsTo(Feature::class);
     }
 
     public function class(): Relation

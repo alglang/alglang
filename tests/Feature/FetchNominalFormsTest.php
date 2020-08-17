@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Language;
 use App\Morpheme;
-use App\NominalFeature;
+use App\Feature;
 use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalStructure;
@@ -27,8 +27,8 @@ class FetchNominalFormsTest extends TestCase
             'shape' => 'N-a',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Nom Feat'])->id,
+                'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
+                'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
                 'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
             ])->id
         ]);
@@ -79,8 +79,8 @@ class FetchNominalFormsTest extends TestCase
             'shape' => 'N-a',
             'language_id' => factory(Language::class)->create(['algo_code' => 'TL']),
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Nom Feat'])->id,
+                'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
+                'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
                 'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
             ])->id
         ]);

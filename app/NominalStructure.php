@@ -9,12 +9,12 @@ class NominalStructure extends Model
 {
     public function pronominalFeature(): Relation
     {
-        return $this->belongsTo(NominalFeature::class);
+        return $this->belongsTo(Feature::class);
     }
 
     public function nominalFeature(): Relation
     {
-        return $this->belongsTo(NominalFeature::class);
+        return $this->belongsTo(Feature::class);
     }
 
     public function paradigm(): Relation

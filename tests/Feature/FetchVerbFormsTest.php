@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Feature;
+use App\Form;
 use App\Language;
 use App\Morpheme;
 use App\Source;
-use App\VerbFeature;
-use App\Form;
 use App\VerbClass;
 use App\VerbForm;
 use App\VerbMode;
@@ -29,9 +29,9 @@ class FetchVerbFormsTest extends TestCase
             'shape' => 'V-a',
             'language_id' => $language->id,
             'structure_id' => factory(VerbStructure::class)->create([
-                'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
-                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
-                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
+                'subject_id' => factory(Feature::class)->create(['name' => '1s'])->id,
+                'primary_object_id' => factory(Feature::class)->create(['name' => '2p'])->id,
+                'secondary_object_id' => factory(Feature::class)->create(['name' => '3d'])->id,
                 'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
                 'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
                 'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
@@ -90,9 +90,9 @@ class FetchVerbFormsTest extends TestCase
             'shape' => 'V-a',
             'language_id' => factory(Language::class)->create(['algo_code' => 'TL'])->id,
             'structure_id' => factory(VerbStructure::class)->create([
-                'subject_id' => factory(VerbFeature::class)->create(['name' => '1s'])->id,
-                'primary_object_id' => factory(VerbFeature::class)->create(['name' => '2p'])->id,
-                'secondary_object_id' => factory(VerbFeature::class)->create(['name' => '3d'])->id,
+                'subject_id' => factory(Feature::class)->create(['name' => '1s'])->id,
+                'primary_object_id' => factory(Feature::class)->create(['name' => '2p'])->id,
+                'secondary_object_id' => factory(Feature::class)->create(['name' => '3d'])->id,
                 'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
                 'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
                 'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])

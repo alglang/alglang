@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Example;
 use App\Language;
 use App\Morpheme;
-use App\NominalFeature;
+use App\Feature;
 use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalStructure;
@@ -28,8 +28,8 @@ class ViewNominalFormTest extends TestCase
             'shape' => 'N-test',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => '3s'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => '2p'])->id,
+                'pronominal_feature_id' => factory(Feature::class)->create(['name' => '3s'])->id,
+                'nominal_feature_id' => factory(Feature::class)->create(['name' => '2p'])->id,
                 'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test paradigm'])->id
             ])
         ]);
