@@ -24,7 +24,8 @@ class Language extends Model
     /** @var array */
     protected $sourcedRelations = [
         'morphemes',
-        'forms'
+        'forms',
+        'nominalParadigms'
     ];
 
     /** @var Collection */
@@ -146,6 +147,11 @@ class Language extends Model
     public function nominalForms(): Relation
     {
         return $this->hasMany(NominalForm::class);
+    }
+
+    public function nominalParadigms(): Relation
+    {
+        return $this->hasMany(NominalParadigm::class);
     }
 
     public function sources(): Builder

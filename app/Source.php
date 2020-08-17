@@ -78,6 +78,11 @@ class Source extends Model
         return $this->morphedByMany(NominalForm::class, 'sourceable');
     }
 
+    public function nominalParadigms(): Relation
+    {
+        return $this->morphedByMany(NominalParadigm::class, 'sourceable');
+    }
+
     public function examples(): Relation
     {
         return $this->morphedByMany(Example::class, 'sourceable');

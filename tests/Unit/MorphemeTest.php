@@ -8,6 +8,8 @@ use App\Gloss;
 use App\Language;
 use App\Morpheme;
 use App\NominalForm;
+use App\NominalParadigm;
+use App\NominalStructure;
 use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -191,7 +193,9 @@ class MorphemeTest extends TestCase
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
         $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
-        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+        ]);
         $verbForm->assignMorphemes([$morpheme]);
         $nominalForm->assignMorphemes([$morpheme]);
 
@@ -207,7 +211,9 @@ class MorphemeTest extends TestCase
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
         $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
-        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id,]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+        ]);
         $verbForm->assignMorphemes([$morpheme]);
         $nominalForm->assignMorphemes([$morpheme]);
 

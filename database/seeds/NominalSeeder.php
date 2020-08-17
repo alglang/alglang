@@ -15,10 +15,20 @@ class NominalSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('nominal_paradigm_types')->insert([
+            [
+                'id' => 1,
+                'name' => 'Possessed noun'
+            ]
+        ]);
+
         DB::table('nominal_paradigms')->insert([
             [
                 'id' => 1,
-                'name' => 'Posessed noun'
+                'name' => 'Possessed noun',
+                'slug' => 'possessed-noun',
+                'language_id' => 1,
+                'paradigm_type_id' => 1  // Possessed noun
             ]
         ]);
 

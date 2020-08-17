@@ -30,7 +30,10 @@ class ViewNominalFormTest extends TestCase
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_id' => factory(Feature::class)->create(['name' => '3s'])->id,
                 'nominal_feature_id' => factory(Feature::class)->create(['name' => '2p'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test paradigm'])->id
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test paradigm',
+                    'language_id' => $language->id
+                ])->id
             ])
         ]);
 

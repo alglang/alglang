@@ -20,7 +20,6 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_nominal_forms()
     {
-        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
 
         $nominalForm = factory(NominalForm::class)->create([
@@ -29,7 +28,10 @@ class FetchNominalFormsTest extends TestCase
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
                 'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test Paradigm',
+                    'language_id' => $language->id
+                ])->id
             ])->id
         ]);
 
@@ -74,14 +76,18 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_source_verb_forms()
     {
+        $language = factory(Language::class)->create(['algo_code' => 'TL']);
         $source = factory(Source::class)->create();
         $nominalForm = factory(NominalForm::class)->create([
             'shape' => 'N-a',
-            'language_id' => factory(Language::class)->create(['algo_code' => 'TL']),
+            'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
                 'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test Paradigm',
+                    'language_id' => $language->id
+                ])->id
             ])->id
         ]);
         $nominalForm->addSource($source);
