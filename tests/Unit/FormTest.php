@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Form;
 use App\Language;
 use App\Morpheme;
+use App\MorphemeConnection;
 use App\VerbFeature;
 use App\VerbStructure;
 use Tests\TestCase;
@@ -31,43 +32,63 @@ class FormTest extends TestCase
     */
 
     /** @test */
-    public function its_morphemes_are_empty_if_it_has_no_morpheme_structure()
+    public function it_can_assign_morphemes()
     {
-        $form = factory(Form::class)->create(['morpheme_structure' => null]);
-        $this->assertCount(0, $form->morphemes);
+        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+
+        $morphemes = [
+            factory(Morpheme::class)->create([
+                'language_id' => $form->language_id,
+                'shape' => 'foo-'
+            ]),
+            'bar'
+        ];
+
+        $form->assignMorphemes($morphemes);
+
+        $this->assertEquals(['foo-', 'bar'], $form->morphemes->pluck('shape')->toArray());
     }
 
     /** @test */
-    public function it_retreives_morphemes_based_on_its_morpheme_structure()
+    public function it_retrieves_its_morphemes_in_order()
     {
-        $language = factory(Language::class)->create();
+        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
-            'shape' => 'a-'
+            'language_id' => $form->language_id,
+            'shape' => '-bar'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
-            'shape' => 'b-'
-        ]);
-        $form = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme2->id}-{$morpheme1->id}"
+            'language_id' => $form->language_id,
+            'shape' => 'foo-'
         ]);
 
-        $morphemes = $form->morphemes;
+        $form->morphemeConnections()->create(['morpheme_id' => $morpheme1->id, 'position' => 1]);
+        $form->morphemeConnections()->create(['morpheme_id' => $morpheme2->id, 'position' => 0]);
 
-        $this->assertEquals(['b-', 'a-'], $morphemes->pluck('shape')->toArray());
+        $this->assertEquals(['foo-', '-bar'], $form->morphemes->pluck('shape')->toArray());
     }
 
     /** @test */
-    public function it_creates_dummy_morphemes_if_they_are_not_in_the_database()
+    public function it_replaces_old_morpheme_connections()
     {
-        $form = factory(Form::class)->create(['morpheme_structure' => 'foo']);
+        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $morpheme1 = factory(Morpheme::class)->create([
+            'language_id' => $form->language_id,
+            'shape' => 'foo-'
+        ]);
+        $morpheme2 = factory(Morpheme::class)->create([
+            'language_id' => $form->language_id,
+            'shape' => 'bar-'
+        ]);
 
-        $morphemes = $form->morphemes;
+        $preexistingConnections = MorphemeConnection::count();
 
-        $this->assertCount(1, $morphemes);
-        $this->assertEquals('foo', $morphemes[0]->shape);
-        $this->assertEquals($form->language_id, $morphemes[0]->language_id);
+        $form->assignMorphemes([$morpheme1]);
+        $this->assertEquals($preexistingConnections + 1, MorphemeConnection::count());
+        $this->assertEquals('foo-', $form->morphemes->first()->shape);
+
+        $form->assignMorphemes([$morpheme2]);
+        $this->assertEquals($preexistingConnections + 1, MorphemeConnection::count());
+        $this->assertEquals('bar-', $form->fresh()->morphemes->first()->shape);
     }
 }

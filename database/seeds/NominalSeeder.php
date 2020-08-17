@@ -1,5 +1,6 @@
 <?php
 
+use App\Morpheme;
 use App\NominalForm;
 use App\NominalStructure;
 use App\Source;
@@ -44,13 +45,14 @@ class NominalSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => 'ne-N-a',
-                'morpheme_structure' => '11-2-12',
                 'language_id' => 1,  // Proto-Algonquian
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 1,
                 'slug' => 'ne-N-a'
             ]
         ]);
+
+        NominalForm::find(3)->assignMorphemes(Morpheme::find([11, 2, 12]));
 
         NominalForm::find(3)->addSource(Source::find(7));  // Pentland 1999
     }

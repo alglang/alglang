@@ -14,9 +14,6 @@ class Form extends Model
     use HasSlug;
     use Sourceable;
 
-    /** @var Collection */
-    private $_morphemes;
-
     protected $guarded = [];
 
     protected $with = ['language'];
@@ -53,26 +50,7 @@ class Form extends Model
 
     public function getMorphemesAttribute(): Collection
     {
-        if (isset($this->_morphemes)) {
-            return $this->_morphemes;
-        }
-
-        $idents = collect(
-            $this->morpheme_structure ? explode('-', $this->morpheme_structure) : []
-        );
-
-        $morphemePool = Morpheme::find($idents);
-
-        $this->_morphemes = $idents->map(function ($ident) use ($morphemePool) {
-            $morpheme = $morphemePool->firstWhere('id', $ident) ?? new Morpheme([
-                'shape' => $ident,
-                'language_id' => $this->language_id
-            ]);
-
-            return $morpheme;
-        });
-
-        return $this->_morphemes;
+        return $this->morphemeConnections->pluck('morpheme');
     }
 
     /*
@@ -95,6 +73,31 @@ class Form extends Model
     public function examples(): Relation
     {
         return $this->hasMany(Example::class, 'form_id');
+    }
+
+    public function morphemeConnections(): Relation
+    {
+        return $this->hasMany(MorphemeConnection::class, 'form_id');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function assignMorphemes(Iterable $morphemes): void
+    {
+        $this->morphemeConnections()->delete();
+
+        foreach ($morphemes as $position => $morpheme) {
+            $this->morphemeConnections()->create([
+                'position' => $position,
+                'shape' => is_string($morpheme) ? trim($morpheme, '-') : null,
+                'morpheme_id' => is_string($morpheme) ? null : $morpheme->id
+            ]);
+        }
     }
 
     /*

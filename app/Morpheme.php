@@ -40,21 +40,6 @@ class Morpheme extends Model
     protected $glosses_;
 
     /**
-     * @var Collection
-     */
-    protected $forms_;
-
-    /**
-     * @var Collection
-     */
-    protected $verbForms_;
-
-    /**
-     * @var Collection
-     */
-    protected $nominalForms_;
-
-    /**
      * @var bool
      */
     protected $alwaysDisambiguate = true;
@@ -143,37 +128,26 @@ class Morpheme extends Model
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
 
-    public function getFormsAttribute(): Collection
+    public function forms(): Relation
     {
-        if (isset($this->forms_)) {
-            return $this->forms_;
-        }
-
-        $this->forms_ = $this->forms()->get();
-
-        return $this->forms_;
+        return $this->hasManyThrough(
+            Form::class,
+            MorphemeConnection::class,
+            'morpheme_id',
+            'id',
+            'id',
+            'form_id'
+        )->where('language_id', $this->language_id)->distinct();
     }
 
-    public function getVerbFormsAttribute(): Collection
+    public function verbForms(): Relation
     {
-        if (isset($this->verbForms_)) {
-            return $this->verbForms_;
-        }
-
-        $this->verbForms_ = $this->verbForms()->get();
-
-        return $this->verbForms_;
+        return $this->forms()->where('structure_type', VerbStructure::class);
     }
 
-    public function getNominalFormsAttribute(): Collection
+    public function nominalForms(): Relation
     {
-        if (isset($this->nominalForms_)) {
-            return $this->nominalForms_;
-        }
-
-        $this->nominalForms_ = $this->nominalForms()->get();
-
-        return $this->nominalForms_;
+        return $this->forms()->where('structure_type', NominalStructure::class);
     }
 
     /*
@@ -182,27 +156,6 @@ class Morpheme extends Model
     |--------------------------------------------------------------------------
     |
     */
-
-    public function forms(): Builder
-    {
-        return Form::where('language_id', $this->language_id)
-            ->where(function (Builder $query) {
-                $query->where('morpheme_structure', "$this->id")
-                      ->orWhere('morpheme_structure', 'LIKE', "{$this->id}-%")
-                      ->orWhere('morpheme_structure', 'LIKE', "%-{$this->id}")
-                      ->orWhere('morpheme_structure', 'LIKE', "%-{$this->id}-%");
-            });
-    }
-
-    public function verbForms(): Builder
-    {
-        return $this->forms()->where('structure_type', VerbStructure::class);
-    }
-
-    public function nominalForms(): Builder
-    {
-        return $this->forms()->where('structure_type', NominalStructure::class);
-    }
 
     public function loadVerbFormsCount(): void
     {

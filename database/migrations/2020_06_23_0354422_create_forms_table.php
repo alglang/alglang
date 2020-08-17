@@ -16,7 +16,6 @@ class CreateFormsTable extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('shape');
-            $table->string('morpheme_structure')->nullable();
 
             $table->unsignedInteger('language_id');
 

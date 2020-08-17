@@ -61,10 +61,8 @@ class ViewVerbFormTest extends TestCase
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $verbForm = factory(Form::class)->state('verb')->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme->id}"
-        ]);
+        $verbForm = factory(Form::class)->state('verb')->create(['language_id' => $language->id]);
+        $verbForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($verbForm->url);
 
@@ -77,8 +75,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function the_morphology_section_is_not_shown_if_the_verb_form_has_no_morphemes()
     {
-        $verbForm = factory(Form::class)->state('verb')
-                                        ->create(['morpheme_structure' => null]);
+        $verbForm = factory(Form::class)->state('verb')->create();
 
         $response = $this->get($verbForm->url);
 

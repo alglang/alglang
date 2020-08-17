@@ -33,11 +33,8 @@ class VerbFormController extends Controller
 
         if (request()->with_morphemes) {
             foreach (request()->with_morphemes as $morpheme) {
-                $query->where(function (Builder $query) use ($morpheme) {
-                    $query->where('morpheme_structure', $morpheme)
-                          ->orWhere('morpheme_structure', 'LIKE', "$morpheme-%")
-                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme")
-                          ->orWhere('morpheme_structure', 'LIKE', "%-$morpheme-%");
+                $query->whereHas('morphemeConnections', function (Builder $query) use ($morpheme) {
+                    return $query->where('morpheme_id', $morpheme);
                 });
             }
         }

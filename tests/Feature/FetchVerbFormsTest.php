@@ -64,39 +64,20 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_verb_forms_by_morpheme()
     {
+        $this->withoutExceptionHandling();
         $morpheme = factory(Morpheme::class)->create();
-        $verbForm1 = factory(VerbForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $verbForm2 = factory(VerbForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "{$morpheme->id}-foo"
-        ]);
-        $verbForm3 = factory(VerbForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}"
-        ]);
-        $verbForm4 = factory(VerbForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}-bar"
-        ]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $morpheme->language_id]);
+        $verbForm->assignMorphemes([$morpheme]);
 
-        factory(VerbForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => 'foo-bar'
-        ]);
+        factory(VerbForm::class)->create(['language_id' => $morpheme->language_id])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/verb-forms?with_morphemes[]=$morpheme->id");
 
         $response->assertOk();
-        $response->assertJsonCount(4, 'data');
+        $response->assertJsonCount(1, 'data');
         $response->assertJson([
             'data' => [
-                ['id' => $verbForm1->id],
-                ['id' => $verbForm2->id],
-                ['id' => $verbForm3->id],
-                ['id' => $verbForm4->id],
+                ['id' => $verbForm->id]
             ]
         ]);
     }

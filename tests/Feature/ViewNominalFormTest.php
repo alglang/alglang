@@ -55,10 +55,8 @@ class ViewNominalFormTest extends TestCase
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme->id}"
-        ]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($nominalForm->url);
 
@@ -71,7 +69,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_morphology_section_is_not_shown_if_the_nominal_form_has_no_morphemes()
     {
-        $nominalForm = factory(NominalForm::class)->create(['morpheme_structure' => null]);
+        $nominalForm = factory(NominalForm::class)->create();
 
         $response = $this->get($nominalForm->url);
 

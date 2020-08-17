@@ -2,6 +2,7 @@
 
 use App\Example;
 use App\Form;
+use App\Morpheme;
 use App\Source;
 use App\VerbStructure;
 use Illuminate\Database\Seeder;
@@ -80,7 +81,6 @@ class VerbSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',
-                'morpheme_structure' => '1-7-8-9',  // V-wa·-t-i
                 'language_id' => 1,  // Proto-Algonquian
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 1,  // 3p TA Conjunct Indicative
@@ -90,7 +90,6 @@ class VerbSeeder extends Seeder
             [
                 'id' => 2,
                 'shape' => 'V-pa',
-                'morpheme_structure' => null,
                 'language_id' => 1,  // Proto-Algonquian
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 2,  // 3s AI Independent Preterit
@@ -103,16 +102,19 @@ class VerbSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'mi·čihswiwa·či',
-                'stem_id' => 9,
+                'stem_id' => 10,
                 'form_id' => 1,
                 'translation' => 'they eat',
                 'slug' => 'mi·čihswiwa·či'
             ]
         ]);
 
+        Form::find(1)->assignMorphemes(Morpheme::find([1, 7, 8, 9]));  // V-wa·-t-i
+
         Form::find(1)->addSource(Source::find(3));
         Form::find(1)->addSource(Source::find(4));
         Form::find(2)->addSource(Source::find(3));
+
         Example::find(1)->addSource(Source::find(3));
     }
 }

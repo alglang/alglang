@@ -155,38 +155,34 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $form1 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $form2 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme->id}-foo"
-        ]);
-        $form3 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}"
-        ]);
-        $form4 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}-bar"
-        ]);
-        $form5 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}{$morpheme->id}-bar"
-        ]);
-        $form6 = factory(Form::class)->create([
-            'language_id' => factory(Language::class)->create()->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+
+        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form->assignMorphemes([$morpheme]);
 
         $forms = $morpheme->forms;
 
-        $this->assertCount(4, $forms);
-        $this->assertContains($form1->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form2->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form3->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form4->id, $forms->pluck('id')->toArray());
+        $this->assertCount(1, $forms);
+        $this->assertContains($form->id, $forms->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function it_does_not_include_forms_from_other_languages()
+    {
+        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form->assignMorphemes([$morpheme]);
+
+        $this->assertCount(0, $morpheme->forms);
+    }
+
+    /** @test */
+    public function it_only_counts_forms_with_duplicate_morphemes_once()
+    {
+        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_id' => $morpheme->language_id]);
+        $form->assignMorphemes([$morpheme, $morpheme]);
+
+        $this->assertCount(1, $morpheme->forms);
     }
 
     /** @test */
@@ -194,14 +190,10 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+        $verbForm->assignMorphemes([$morpheme]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $verbForms = $morpheme->verbForms;
 
@@ -214,14 +206,10 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id,]);
+        $verbForm->assignMorphemes([$morpheme]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $nominalForms = $morpheme->nominalForms;
 

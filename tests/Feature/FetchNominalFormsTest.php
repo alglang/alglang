@@ -20,6 +20,7 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_nominal_forms()
     {
+        $this->withoutExceptionHandling();
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
 
         $nominalForm = factory(NominalForm::class)->create([
@@ -55,38 +56,17 @@ class FetchNominalFormsTest extends TestCase
     public function it_fetches_nominal_forms_by_morpheme()
     {
         $morpheme = factory(Morpheme::class)->create();
-        $nominalForm1 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $nominalForm2 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "{$morpheme->id}-foo"
-        ]);
-        $nominalForm3 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}"
-        ]);
-        $nominalForm4 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}-bar"
-        ]);
-
-        factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => 'foo-bar'
-        ]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $morpheme->language_id]);
+        $nominalForm->assignMorphemes([$morpheme]);
+        factory(NominalForm::class)->create(['language_id' => $morpheme->language_id])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/nominal-forms?with_morphemes[]=$morpheme->id");
 
         $response->assertOk();
-        $response->assertJsonCount(4, 'data');
+        $response->assertJsonCount(1, 'data');
         $response->assertJson([
             'data' => [
-                ['id' => $nominalForm1->id],
-                ['id' => $nominalForm2->id],
-                ['id' => $nominalForm3->id],
-                ['id' => $nominalForm4->id],
+                ['id' => $nominalForm->id],
             ]
         ]);
     }
