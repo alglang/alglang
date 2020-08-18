@@ -1,13 +1,12 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\Language;
 use App\NominalForm;
 use App\NominalStructure;
 use App\NominalParadigm;
 use Faker\Generator as Faker;
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(NominalForm::class, function (Faker $faker) {
     return [
         'shape' => 'V-test',
