@@ -98,7 +98,12 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
-        Form::find(1)->assignMorphemes(Morpheme::find([1, 7, 8, 9]));  // V-wa·-t-i
+        Form::find(1)->assignMorphemes([
+            Morpheme::find(1),
+            Morpheme::find(7),
+            Morpheme::find(8),
+            Morpheme::find(9)
+        ]);  // V-wa·-t-i
 
         Form::find(1)->addSource(Source::find(3));
         Form::find(1)->addSource(Source::find(4));

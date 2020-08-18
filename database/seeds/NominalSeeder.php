@@ -64,8 +64,16 @@ class NominalSeeder extends Seeder
             ]
         ]);
 
-        NominalForm::find(3)->assignMorphemes(Morpheme::find([11, 2, 12]));
-        NominalForm::find(4)->assignMorphemes(Morpheme::find([11, 2, 13]));
+        NominalForm::find(3)->assignMorphemes([
+            Morpheme::find(11),
+            Morpheme::find(2),
+            Morpheme::find(12)
+        ]);
+        NominalForm::find(4)->assignMorphemes([
+            Morpheme::find(11),
+            Morpheme::find(2),
+            Morpheme::find(13)
+        ]);
 
         NominalForm::find(3)->addSource(Source::find(7));  // Pentland 1999
     }
