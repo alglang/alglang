@@ -18,7 +18,7 @@
             <div>
                 <alglang-detail-row label="Description">
                     <p>
-                        <span>{{ $verbForm->structure->argument_string }}</span>
+                        <span>{{ $verbForm->structure->feature_string }}</span>
                         <span>{{ $verbForm->structure->class->abv }}</span>
                         <span>{{ $verbForm->structure->order->name }}</span>
                         <span>{{ $verbForm->structure->mode->name }}</span>

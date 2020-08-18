@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbStructure extends Model
 {
-    public function getArgumentStringAttribute(): string
+    public function getFeatureStringAttribute(): string
     {
         $string = $this->subject->name;
 

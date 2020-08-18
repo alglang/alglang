@@ -48,7 +48,7 @@ class FetchVerbFormsTest extends TestCase
                     'url' => $verbForm->url,
                     'language' => ['algo_code' => 'TL'],
                     'structure' => [
-                        'argument_string' => '1s→2p+3d',
+                        'feature_string' => '1s→2p+3d',
                         'subject' => ['name' => '1s'],
                         'primary_object' => ['name' => '2p'],
                         'secondary_object' => ['name' => '3d'],
@@ -110,7 +110,7 @@ class FetchVerbFormsTest extends TestCase
                     'url' => $verbForm->url,
                     'language' => ['algo_code' => 'TL'],
                     'structure' => [
-                        'argument_string' => '1s→2p+3d',
+                        'feature_string' => '1s→2p+3d',
                         'subject' => ['name' => '1s'],
                         'primary_object' => ['name' => '2p'],
                         'secondary_object' => ['name' => '3d'],
