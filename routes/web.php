@@ -69,6 +69,7 @@ Route::get('/sources/{source:slug}', [SourceController::class, 'show']);
 Route::view('/about', 'about')->name('about');
 Route::view('/verb-forms', 'verb-forms.index')->name('verb-forms');
 Route::view('/nominal-forms', 'nominal-forms.index')->name('nominal-forms');
+Route::view('/phonology', 'phonemes.index')->name('phonology');
 
 Route::get('/resources', function () {
     abort(404);
@@ -77,10 +78,6 @@ Route::get('/resources', function () {
 Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
-
-Route::get('/phonology', function () {
-    abort(404);
-})->name('phonology');
 
 Route::get('/search/verbs/paradigm', function () {
     abort(404);
