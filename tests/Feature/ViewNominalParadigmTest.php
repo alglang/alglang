@@ -26,10 +26,10 @@ class ViewNominalParadigmTest extends TestCase
             'name' => 'Test Paradigm Name',
             'language_id' => factory(Language::class)->create([
                 'name' => 'Test Language'
-            ])->id,
+            ]),
             'paradigm_type_id' => factory(NominalParadigmType::class)->create([
                 'name' => 'Test Paradigm Type'
-            ])->id
+            ])
         ]);
 
         $response = $this->get($paradigm->url);
@@ -51,9 +51,9 @@ class ViewNominalParadigmTest extends TestCase
             'language_id' => $paradigm->language_id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
-                'pronominal_feature_id' => factory(Feature::class)->create(['name' => '2p'])->id,
-                'nominal_feature_id' => factory(Feature::class)->create(['name' => '3p'])->id
-            ])->id
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => '2p']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => '3p'])
+            ])
         ]);
 
         $response = $this->get($paradigm->url);
@@ -72,7 +72,7 @@ class ViewNominalParadigmTest extends TestCase
             'language_id' => $paradigm->language_id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id
-            ])->id
+            ])
         ]);
         $morpheme = factory(Morpheme::class)->create([
             'language_id' => $paradigm->language_id,
@@ -97,36 +97,36 @@ class ViewNominalParadigmTest extends TestCase
             'language_id' => $paradigm->language_id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
-                'pronominal_feature_id' => factory(Feature::class)->create([
+                'pronominal_feature_name' => factory(Feature::class)->create([
                     'name' => '3p',
                     'person' => '3',
                     'number' => 3
-                ])->id
-            ])->id
+                ])
+            ])
         ]);
         factory(NominalForm::class)->create([
             'shape' => 'N-foo',
             'language_id' => $paradigm->language_id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
-                'pronominal_feature_id' => factory(Feature::class)->create([
+                'pronominal_feature_name' => factory(Feature::class)->create([
                     'name' => '0p',
                     'person' => '0',
                     'number' => 3
                 ])
-            ])->id
+            ])
         ]);
         factory(NominalForm::class)->create([
             'shape' => 'N-foo',
             'language_id' => $paradigm->language_id,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
-                'pronominal_feature_id' => factory(Feature::class)->create([
+                'pronominal_feature_name' => factory(Feature::class)->create([
                     'name' => '1p',
                     'person' => '1',
                     'number' => 3
                 ])
-            ])->id
+            ])
         ]);
 
         $response = $this->get($paradigm->url);

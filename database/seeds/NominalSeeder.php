@@ -34,14 +34,14 @@ class NominalSeeder extends Seeder
 
         DB::table('nominal_structures')->insert([
             [
-                'pronominal_feature_id' => 3,  // 1s
-                'nominal_feature_id' => 2,     // 3s
-                'paradigm_id' => 1             // Posessed noun
+                'pronominal_feature_name' => '1s',
+                'nominal_feature_name' => '3s',
+                'paradigm_id' => 1  // Posessed noun
             ],
             [
-                'pronominal_feature_id' => 3,  // 1s
-                'nominal_feature_id' => 1,     // 3p
-                'paradigm_id' => 1             // Posessed noun
+                'pronominal_feature_name' => '1s',
+                'nominal_feature_name' => '3p',
+                'paradigm_id' => 1  // Posessed noun
             ]
         ]);
 

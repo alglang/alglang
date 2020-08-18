@@ -17,59 +17,41 @@ class VerbSeeder extends Seeder
     public function run()
     {
         DB::table('verb_orders')->insert([
-            [
-                'id' => 1,
-                'name' => 'Conjunct'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Independent'
-            ]
+            ['name' => 'Conjunct'],
+            ['name' => 'Independent']
         ]);
 
         DB::table('verb_classes')->insert([
-            [
-                'id' => 1,
-                'abv' => 'TA'
-            ],
-            [
-                'id' => 2,
-                'abv' => 'AI'
-            ]
+            ['abv' => 'TA'],
+            ['abv' => 'AI']
         ]);
 
         DB::table('verb_modes')->insert([
-            [
-                'id' => 1,
-                'name' => 'Indicative'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Preterit'
-            ]
+            ['name' => 'Indicative'],
+            ['name' => 'Preterit']
         ]);
 
         DB::table('verb_structures')->insert([
             [
                 'id' => 1,
-                'subject_id' => 1,  // 3p
-                'class_id' => 1,    // TA
-                'order_id' => 1,    // Conjunct
-                'mode_id' => 1      // Indicative
+                'subject_name' => '3p',
+                'class_abv' => 'TA',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
             ],
             [
                 'id' => 2,
-                'subject_id' => 2,  // 3s
-                'class_id' => 2,    // AI
-                'order_id' => 2,    // Independent
-                'mode_id' => 2      // Preterit
+                'subject_name' => '3s',
+                'class_abv' => 'AI',
+                'order_name' => 'Independent',
+                'mode_name' => 'Preterit'
             ],
             [
                 'id' => 3,
-                'subject_id' => 2,  // 3s
-                'class_id' => 2,    // AI
-                'order_id' => 2,    // Independent
-                'mode_id' => 1      // Indicative
+                'subject_name' => '3s',
+                'class_abv' => 'AI',
+                'order_name' => 'Independent',
+                'mode_name' => 'Indicative'
             ]
         ]);
 

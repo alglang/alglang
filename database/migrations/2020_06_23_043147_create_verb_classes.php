@@ -14,7 +14,6 @@ class CreateVerbClasses extends Migration
     public function up()
     {
         Schema::create('verb_classes', function (Blueprint $table) {
-            $table->id();
             $table->string('abv');
             $table->timestamps();
         });

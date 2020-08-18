@@ -26,8 +26,8 @@ class FetchNominalFormsTest extends TestCase
             'shape' => 'N-a',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
                 'paradigm_id' => factory(NominalParadigm::class)->create([
                     'name' => 'Test Paradigm',
                     'language_id' => $language->id
@@ -82,8 +82,8 @@ class FetchNominalFormsTest extends TestCase
             'shape' => 'N-a',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(Feature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(Feature::class)->create(['name' => 'Nom Feat'])->id,
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
                 'paradigm_id' => factory(NominalParadigm::class)->create([
                     'name' => 'Test Paradigm',
                     'language_id' => $language->id

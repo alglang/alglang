@@ -25,20 +25,17 @@ class ViewVerbFormTest extends TestCase
     public function a_verb_form_can_be_viewed()
     {
         $language = factory(Language::class)->create(['name' => 'Test Language']);
-        $class = factory(VerbClass::class)->create(['abv' => 'TA']);
-        $order = factory(VerbOrder::class)->create(['name' => 'Conjunct']);
-        $mode = factory(VerbMode::class)->create(['name' => 'Indicative']);
         $subject = factory(Feature::class)->create(['name' => '3s']);
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-test',
             'language_id' => $language->id,
 
             'structure_id' => factory(VerbStructure::class)->create([
-                'class_id' => $class->id,
-                'order_id' => $order->id,
-                'mode_id' => $mode->id,
-                'subject_id' => $subject->id
-            ])->id
+                'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA']),
+                'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
+                'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
+                'subject_name' => factory(Feature::class)->create(['name' => '3s'])
+            ])
         ]);
 
         $response = $this->get($verbForm->url);
@@ -122,8 +119,8 @@ class ViewVerbFormTest extends TestCase
     {
         $verbForm = factory(VerbForm::class)->create([
             'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_id' => factory(Feature::class)->create(['name' => '2s'])->id
-            ])->id
+                'primary_object_name' => factory(Feature::class)->create(['name' => '2s'])
+            ])
         ]);
 
         $response = $this->get($verbForm->url);
@@ -137,8 +134,8 @@ class ViewVerbFormTest extends TestCase
     {
         $verbForm = factory(VerbForm::class)->create([
             'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_id' => factory(Feature::class)->create(['name' => '1p'])->id
-            ])->id
+                'secondary_object_name' => factory(Feature::class)->create(['name' => '1p'])
+            ])
         ]);
 
         $response = $this->get($verbForm->url);

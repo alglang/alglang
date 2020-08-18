@@ -16,8 +16,8 @@ class NominalStructureTest extends TestCase
     public function it_renders_its_pronominal_feature_as_its_feature_string_when_it_has_no_nominal_feature()
     {
         $structure = factory(NominalStructure::class)->create([
-            'pronominal_feature_id' => factory(Feature::class)->create(['name' => '21'])->id,
-            'nominal_feature_id' => null
+            'pronominal_feature_name' => factory(Feature::class)->create(['name' => '21']),
+            'nominal_feature_name' => null
         ]);
 
         $this->assertEquals('21', $structure->feature_string);
@@ -27,8 +27,8 @@ class NominalStructureTest extends TestCase
     public function it_renders_its_nominal_feature_as_its_feature_string_when_it_has_no_pronominal_feature()
     {
         $structure = factory(NominalStructure::class)->create([
-            'pronominal_feature_id' => null,
-            'nominal_feature_id' => factory(Feature::class)->create(['name' => '3s'])->id
+            'pronominal_feature_name' => null,
+            'nominal_feature_name' => factory(Feature::class)->create(['name' => '3s'])
         ]);
 
         $this->assertEquals('3s', $structure->feature_string);
@@ -38,8 +38,8 @@ class NominalStructureTest extends TestCase
     public function it_renders_its_features_with_an_arrow_in_between_if_it_has_both()
     {
         $structure = factory(NominalStructure::class)->create([
-            'pronominal_feature_id' => factory(Feature::class)->create(['name' => '21'])->id,
-            'nominal_feature_id' => factory(Feature::class)->create(['name' => '3s'])->id
+            'pronominal_feature_name' => factory(Feature::class)->create(['name' => '21']),
+            'nominal_feature_name' => factory(Feature::class)->create(['name' => '3s'])
         ]);
 
         $this->assertEquals('21→3s', $structure->feature_string);

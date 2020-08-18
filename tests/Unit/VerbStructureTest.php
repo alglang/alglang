@@ -15,7 +15,7 @@ class VerbStructureTest extends TestCase
     public function it_renders_its_subject_as_its_feature_string_when_there_are_no_other_features()
     {
         $structure = factory(VerbStructure::class)->create([
-            'subject_id' => factory(Feature::class)->create(['name' => '21'])->id
+            'subject_name' => factory(Feature::class)->create(['name' => '21'])
         ]);
 
         $this->assertEquals('21', $structure->feature_string);
@@ -25,8 +25,8 @@ class VerbStructureTest extends TestCase
     public function it_renders_its_primary_object_with_an_arrow_in_its_feature_string()
     {
         $structure = factory(VerbStructure::class)->create([
-            'subject_id' => factory(Feature::class)->create(['name' => '3s'])->id,
-            'primary_object_id' => factory(Feature::class)->create(['name' => '1p'])->id
+            'subject_name' => factory(Feature::class)->create(['name' => '3s']),
+            'primary_object_name' => factory(Feature::class)->create(['name' => '1p'])
         ]);
 
         $this->assertEquals('3s→1p', $structure->feature_string);
@@ -36,8 +36,8 @@ class VerbStructureTest extends TestCase
     public function it_renders_its_secondary_object_with_a_plus_in_its_feature_string()
     {
         $structure = factory(VerbStructure::class)->create([
-            'subject_id' => factory(Feature::class)->create(['name' => '3s'])->id,
-            'secondary_object_id' => factory(Feature::class)->create(['name' => '1p'])->id
+            'subject_name' => factory(Feature::class)->create(['name' => '3s']),
+            'secondary_object_name' => factory(Feature::class)->create(['name' => '1p'])
         ]);
 
         $this->assertEquals('3s+1p', $structure->feature_string);

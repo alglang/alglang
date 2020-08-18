@@ -29,13 +29,13 @@ class FetchVerbFormsTest extends TestCase
             'shape' => 'V-a',
             'language_id' => $language->id,
             'structure_id' => factory(VerbStructure::class)->create([
-                'subject_id' => factory(Feature::class)->create(['name' => '1s'])->id,
-                'primary_object_id' => factory(Feature::class)->create(['name' => '2p'])->id,
-                'secondary_object_id' => factory(Feature::class)->create(['name' => '3d'])->id,
-                'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
-                'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-                'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
-            ])->id
+                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
+                'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
+                'secondary_object_name' => factory(Feature::class)->create(['name' => '3d']),
+                'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
+                'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
+                'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            ])
         ]);
 
         $response = $this->get("/api/verb-forms?language_id=$language->id");
@@ -53,7 +53,7 @@ class FetchVerbFormsTest extends TestCase
                         'primary_object' => ['name' => '2p'],
                         'secondary_object' => ['name' => '3d'],
                         'mode' => ['name' => 'Indicative'],
-                        'order' =>['name' => 'Conjunct'],
+                        'order' => ['name' => 'Conjunct'],
                         'class' => ['abv' => 'TA']
                     ]
                 ]
@@ -88,14 +88,14 @@ class FetchVerbFormsTest extends TestCase
         $source = factory(Source::class)->create();
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-a',
-            'language_id' => factory(Language::class)->create(['algo_code' => 'TL'])->id,
+            'language_id' => factory(Language::class)->create(['algo_code' => 'TL']),
             'structure_id' => factory(VerbStructure::class)->create([
-                'subject_id' => factory(Feature::class)->create(['name' => '1s'])->id,
-                'primary_object_id' => factory(Feature::class)->create(['name' => '2p'])->id,
-                'secondary_object_id' => factory(Feature::class)->create(['name' => '3d'])->id,
-                'mode_id' => factory(VerbMode::class)->create(['name' => 'Indicative'])->id,
-                'order_id' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-                'class_id' => factory(VerbClass::class)->create(['abv' => 'TA'])
+                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
+                'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
+                'secondary_object_name' => factory(Feature::class)->create(['name' => '3d']),
+                'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
+                'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
+                'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA'])
             ])
         ]);
         $verbForm->addSource($source);

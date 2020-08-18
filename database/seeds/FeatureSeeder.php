@@ -13,16 +13,22 @@ class FeatureSeeder extends Seeder
     {
         DB::table('features')->insert([
             [
-                'id' => 1,
-                'name' => '3p'
+                'name' => '3p',
+                'person' => '3',
+                'number' => 3,
+                'obviative_code' => null
             ],
             [
-                'id' => 2,
-                'name' => '3s'
+                'name' => '3s',
+                'person' => '3',
+                'number' => 1,
+                'obviative_code' => null
             ],
             [
-                'id' => 3,
-                'name' => '1s'
+                'name' => '1s',
+                'person' => '1',
+                'number' => 1,
+                'obviative_code' => null
             ]
         ]);
     }

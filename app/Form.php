@@ -85,7 +85,7 @@ class Form extends Model
 
     protected function scopeOrderByFeature(Builder $query, string $column, string $table): Builder
     {
-        $query->leftJoin("features as $table", "$table.id", '=', $column);
+        $query->leftJoin("features as $table", "$table.name", '=', $column);
 
         $query->orderByRaw(<<<SQL
             CASE
