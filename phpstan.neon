@@ -5,7 +5,7 @@ parameters:
     paths:
         - app
 
-    autoload_files:
+    scanFiles:
         - app/helpers.php
 
     level: 7
