@@ -61,6 +61,10 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => '1',
                 'name' => 'first person'
+            ],
+            [
+                'abv' => 'dir',
+                'name' => 'direct or animate 3rd-person object'
             ]
         ]);
 
@@ -100,6 +104,12 @@ class MorphemeSeeder extends Seeder
                 'name' => 'prefix',
                 'colour' => 'rgb(0, 0, 255)',
                 'description' => null
+            ],
+            [
+                'abv' => 'TS',
+                'name' => 'theme sign',
+                'colour' => '#ff0000',
+                'description' => null
             ]
         ]);
 
@@ -109,6 +119,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'V-',
                 'slug' => 'V-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'STM',
                 'gloss' => 'V',
                 'allomorphy_notes' => null,
@@ -121,6 +132,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'N-',
                 'slug' => 'N-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'STM',
                 'gloss' => 'N',
                 'allomorphy_notes' => null,
@@ -133,6 +145,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-a·n',
                 'slug' => 'a·n-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'CCEN',
                 'gloss' => '1s',
                 'allomorphy_notes' => '<p>Becomes -ya:n after a vowel.</p>',
@@ -145,6 +158,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-ari',
                 'slug' => 'ari-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'PER',
                 'gloss' => 'an.obv.sg',
                 'allomorphy_notes' => null,
@@ -157,6 +171,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'wa·pam-',
                 'slug' => 'wa·pam-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'STM',
                 'gloss' => 'see',
                 'allomorphy_notes' => null,
@@ -169,6 +184,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-(e)pan',
                 'slug' => '(e)pan-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'MOD',
                 'gloss' => 'pret',
                 'allomorphy_notes' => '<p>Word-finally -(e)pa (Goddard 2007:249). Also, although Goddard represents it as *-(e)pan, he states (p. 250) that "*-pa(n-) did not originally take connective *e (Pentland 1979:381; Proulx 1990:106; Costa 2003:355-360)".</p>',
@@ -181,6 +197,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-wa·',
                 'slug' => 'wa·-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'CAUG',
                 'gloss' => '3p',
                 'allomorphy_notes' => '<ul><li>When it precedes the central suffix /-t/, it does not trigger the postconsonantal /-k/, so it must be /-wa:-t/ rather than /-wa:w-t/ (which ought to become /-wa:w-k/ > /-wa:kw/)</li><li>Becomes /-owa:/ after a nasal (after AI n-stems and TI1 -am).</li></ul>',
@@ -193,6 +210,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-t',
                 'slug' => 't-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'CCEN',
                 'gloss' => '3',
                 'allomorphy_notes' => '<p>Palatalizes to c before i. Becomes k after a consonant (which is usually either a nasal or theta).</p>',
@@ -204,6 +222,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => '-i',
                 'slug' => 'i-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'MOD',
                 'gloss' => 'indic',
                 'allomorphy_notes' => null,
@@ -215,6 +234,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'mi·čihswi-',
                 'slug' => 'mi·čihswi-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'STM',
                 'gloss' => 'eat',
                 'allomorphy_notes' => '<p>-wi- becomes -o- before w. (at least in Independent, not in Conjunct 3p)</p>',
@@ -226,6 +246,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'ne-',
                 'slug' => 'ne-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'PFX',
                 'gloss' => '1',
                 'allomorphy_notes' => null,
@@ -237,6 +258,7 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'a-',
                 'slug' => 'a-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'PER',
                 'gloss' => 'an.sg',
                 'allomorphy_notes' => null,
@@ -248,8 +270,33 @@ class MorphemeSeeder extends Seeder
                 'shape' => 'aki-',
                 'slug' => 'aki-1',
                 'language_id' => 1,
+                'parent_id' => null,
                 'slot_abv' => 'PER',
                 'gloss' => 'an.pl',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 14,
+                'shape' => 'a-',
+                'slug' => 'a-2',
+                'language_id' => 1,
+                'parent_id' => null,
+                'slot_abv' => 'TS',
+                'gloss' => 'dir',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 15,
+                'shape' => 'a-',
+                'slug' => 'a-1',
+                'language_id' => 3,  // Southwestern Ojibwe
+                'parent_id' => 14,
+                'slot_abv' => 'TS',
+                'gloss' => 'dir',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
                 'private_notes' => null
@@ -257,5 +304,18 @@ class MorphemeSeeder extends Seeder
         ]);
 
         Morpheme::find(5)->addSource(Source::find(2)); // Goddard 2007
+
+        DB::table('disambiguations')->insert([
+            [
+                'disambiguatable_type' => Morpheme::class,
+                'disambiguatable_id' => 14,
+                'disambiguator' => 0
+            ],
+            [
+                'disambiguatable_type' => Morpheme::class,
+                'disambiguatable_id' => 15,
+                'disambiguator' => 1
+            ]
+        ]);
     }
 }

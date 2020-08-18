@@ -29,6 +29,26 @@
                     </p>
                 </alglang-detail-row>
 
+                @if ($morpheme->parent)
+                    <alglang-detail-row label="Parent">
+                        <x-preview-link :model="$morpheme->parent">
+                            {{ $morpheme->parent->shape }}
+                        </x-preview-link>
+                        @if($morpheme->parent->gloss)
+                            <span class="small-caps">
+                                ({{ $morpheme->parent->gloss }})
+                            </span>
+                        @endif
+                        <span class="inline-flex">
+                            (
+                            <x-preview-link :model="$morpheme->parent->language">
+                                {{ $morpheme->parent->language->name }}
+                            </x-preview-link>
+                            )
+                        </span>
+                    </alglang-detail-row>
+                @endif
+
                 @if ($morpheme->historical_notes)
                     <alglang-detail-row label="Historical notes">
                         {!! $morpheme->historical_notes !!}

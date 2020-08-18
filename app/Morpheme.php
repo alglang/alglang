@@ -3,6 +3,7 @@
 namespace App;
 
 use Adoxography\Disambiguatable\Disambiguatable;
+use App\Traits\HasParent;
 use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 class Morpheme extends Model
 {
     use Disambiguatable;
+    use HasParent;
     use HasSlug;
     use Sourceable;
 

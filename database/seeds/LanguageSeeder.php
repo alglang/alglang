@@ -33,6 +33,17 @@ class LanguageSeeder extends Seeder
                 'slug' => 'c',
                 'position' => null,
                 'group_id' => 1
+            ],
+            [
+                'id' => 3,
+                'name' => 'Southwestern Ojibwe',
+                'parent_id' => 1,
+                'algo_code' => 'SwO',
+                'iso' => 'ciw',
+                'reconstructed' => false,
+                'slug' => 'swo',
+                'position' => '{"lat":46.271362,"lng":-93.392167}',
+                'group_id' => 1
             ]
         ]);
     }
