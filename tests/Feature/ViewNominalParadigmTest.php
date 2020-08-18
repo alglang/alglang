@@ -9,6 +9,7 @@ use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalParadigmType;
 use App\NominalStructure;
+use App\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -132,5 +133,30 @@ class ViewNominalParadigmTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeInOrder(['1p', '3p', '0p']);
+    }
+
+    /** @test */
+    public function sources_appear_if_the_paradigm_has_sources()
+    {
+        $paradigm = factory(NominalParadigm::class)->create();
+        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $paradigm->addSource($source);
+
+        $response = $this->get($paradigm->url);
+        $response->assertOk();
+
+        $response->assertSee('Sources');
+        $response->assertSee('Foo Bar');
+    }
+
+    /** @test */
+    public function sources_do_not_appear_if_the_paradigm_has_no_sources()
+    {
+        $paradigm = factory(NominalParadigm::class)->create();
+
+        $response = $this->get($paradigm->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Sources');
     }
 }

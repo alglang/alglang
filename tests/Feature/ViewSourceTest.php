@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Example;
 use App\Morpheme;
 use App\NominalForm;
+use App\NominalParadigm;
 use App\Source;
 use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -98,6 +99,19 @@ class ViewSourceTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->nominal_forms_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_nominal_paradigm_count()
+    {
+        $source = factory(Source::class)->create();
+        $paradigm = factory(NominalParadigm::class)->create()->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->nominal_paradigms_count);
     }
 
     /** @test */

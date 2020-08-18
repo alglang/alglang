@@ -46,6 +46,12 @@
                     </tbody>
                 </table>
             </alglang-detail-row>
+
+            @if($paradigm->sources->count() > 0)
+                <alglang-detail-row label="Sources">
+                    <x-source-list :sources="$paradigm->sources" />
+                </alglang-detail-row>
+            @endif
         </alglang-detail-page>
     </alglang-details>
 @endsection
