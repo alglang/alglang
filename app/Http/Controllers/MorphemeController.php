@@ -32,7 +32,7 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
-                           ->paginate(request()->per_page ?? 10)
+                           ->paginate(request()->per_page ?? 50)
                            ->appends(request()->query());
 
         return new MorphemeCollection($paginator);
