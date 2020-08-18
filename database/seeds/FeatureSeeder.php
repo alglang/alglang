@@ -19,6 +19,10 @@ class FeatureSeeder extends Seeder
             [
                 'id' => 2,
                 'name' => '3s'
+            ],
+            [
+                'id' => 3,
+                'name' => '1s'
             ]
         ]);
     }

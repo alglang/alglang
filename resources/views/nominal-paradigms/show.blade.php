@@ -21,7 +21,7 @@
 
             <alglang-detail-row label="Paradigm">
                 <table>
-                    <thead class="bg-gray-800 text-gray-100 uppercase font-medium tracking-wider text-xs">
+                    <thead class="bg-gray-800 text-gray-300 uppercase font-medium tracking-wider text-xs">
                         <tr>
                             <th class="px-4 py-2">Features</th>
                             <th class="px-4 py-2">Form</th>
@@ -29,12 +29,17 @@
                     </thead>
                     <tbody>
                         @foreach($paradigm->forms as $form)
-                            <tr>
+                            <tr class="odd:bg-gray-100 even:bg-gray-200">
                                 <td class="px-4 py-2">
-                                    {{ $form->structure->pronominalFeature->name }}->{{ $form->structure->nominalFeature->name }}
+                                    {{ $form->structure->feature_string }}
                                 </td>
                                 <td class="px-4 py-2">
-                                    {{ $form->shape }}
+                                    <div class="mb-4">
+                                        <x-preview-link :model="$form">
+                                            {{ $form->shape }}
+                                        </x-preview-link>
+                                    </div>
+                                    <x-morpheme-table :morphemes="$form->morphemes" />
                                 </td>
                             </tr>
                         @endforeach

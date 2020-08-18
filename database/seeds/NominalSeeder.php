@@ -34,8 +34,13 @@ class NominalSeeder extends Seeder
 
         DB::table('nominal_structures')->insert([
             [
-                'pronominal_feature_id' => 1,  // 1s
+                'pronominal_feature_id' => 3,  // 1s
                 'nominal_feature_id' => 2,     // 3s
+                'paradigm_id' => 1             // Posessed noun
+            ],
+            [
+                'pronominal_feature_id' => 3,  // 1s
+                'nominal_feature_id' => 1,     // 3p
                 'paradigm_id' => 1             // Posessed noun
             ]
         ]);
@@ -48,10 +53,19 @@ class NominalSeeder extends Seeder
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 1,
                 'slug' => 'ne-N-a'
+            ],
+            [
+                'id' => 4,
+                'shape' => 'ne-N-aki',
+                'language_id' => 1,
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 2,
+                'slug' => 'ne-N-aki'
             ]
         ]);
 
         NominalForm::find(3)->assignMorphemes(Morpheme::find([11, 2, 12]));
+        NominalForm::find(4)->assignMorphemes(Morpheme::find([11, 2, 13]));
 
         NominalForm::find(3)->addSource(Source::find(7));  // Pentland 1999
     }

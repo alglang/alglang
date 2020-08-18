@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Feature;
 use App\Language;
+use App\Morpheme;
 use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalParadigmType;
@@ -56,8 +57,32 @@ class ViewNominalParadigmTest extends TestCase
         $response = $this->get($paradigm->url);
 
         $response->assertOk();
-        $response->assertSee('2p');
-        $response->assertSee('3p');
+        $response->assertSee('2p→3p');
         $response->assertSee('N-foo');
+    }
+
+    /** @test */
+    public function it_shows_form_morphemes_and_glosses()
+    {
+        $paradigm = factory(NominalParadigm::class)->create();
+        $form = factory(NominalForm::class)->create([
+            'shape' => 'N-foo',
+            'language_id' => $paradigm->language_id,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => $paradigm->id
+            ])->id
+        ]);
+        $morpheme = factory(Morpheme::class)->create([
+            'language_id' => $paradigm->language_id,
+            'shape' => 'testmorph-',
+            'gloss' => 'testgloss'
+        ]);
+        $form->assignMorphemes([$morpheme]);
+
+        $response = $this->get($paradigm->url);
+
+        $response->assertOk();
+        $response->assertSee('testmorph');
+        $response->assertSee('testgloss');
     }
 }

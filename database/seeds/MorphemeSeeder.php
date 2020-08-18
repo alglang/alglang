@@ -39,6 +39,10 @@ class MorphemeSeeder extends Seeder
                 'name' => 'singular'
             ],
             [
+                'abv' => 'pl',
+                'name' => 'plural'
+            ],
+            [
                 'abv' => 'pret',
                 'name' => 'preterit'
             ],
@@ -235,6 +239,17 @@ class MorphemeSeeder extends Seeder
                 'language_id' => 1,
                 'slot_abv' => 'PER',
                 'gloss' => 'an.sg',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 13,
+                'shape' => 'aki-',
+                'slug' => 'aki-1',
+                'language_id' => 1,
+                'slot_abv' => 'PER',
+                'gloss' => 'an.pl',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
                 'private_notes' => null
