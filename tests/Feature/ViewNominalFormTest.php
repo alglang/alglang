@@ -81,6 +81,41 @@ class ViewNominalFormTest extends TestCase
     }
 
     /** @test */
+    public function the_nominal_form_parent_is_displayed_if_the_nominal_form_has_a_parent()
+    {
+        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
+        $childLanguage = factory(Language::class)->create(['parent_id' => $parentLanguage->id]);
+
+        $parentForm = factory(NominalForm::class)->create([
+            'language_id' => $parentLanguage->id,
+            'shape' => 'V-foo'
+        ]);
+        $childForm = factory(NominalForm::class)->create([
+            'language_id' => $childLanguage->id,
+            'parent_id' => $parentForm->id
+        ]);
+        
+        $response = $this->get($childForm->url);
+        $response->assertOk();
+        $response->assertSee('Parent');
+        $response->assertSee('V-foo');
+        $response->assertSee('Superlanguage');
+    }
+
+    /** @test */
+    public function the_nominal_form_parent_is_not_displayed_if_the_nominal_form_has_no_parent()
+    {
+        $this->withoutExceptionHandling();
+        $morpheme = factory(NominalForm::class)->create();
+
+        $response = $this->get($morpheme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Parent');
+    }
+
+
+    /** @test */
     public function a_nominal_form_shows_its_historical_notes_if_it_has_them()
     {
         $nominalForm = factory(NominalForm::class)->create([

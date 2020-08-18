@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasParent;
 use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Form extends Model
 {
+    use HasParent;
     use HasSlug;
     use Sourceable;
 

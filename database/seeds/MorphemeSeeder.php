@@ -65,6 +65,14 @@ class MorphemeSeeder extends Seeder
             [
                 'abv' => 'dir',
                 'name' => 'direct or animate 3rd-person object'
+            ],
+            [
+                'abv' => 'ftv',
+                'name' => 'formative'
+            ],
+            [
+                'abv' => 'm',
+                'name' => 'm-suffix'
             ]
         ]);
 
@@ -110,6 +118,18 @@ class MorphemeSeeder extends Seeder
                 'name' => 'theme sign',
                 'colour' => '#ff0000',
                 'description' => null
+            ],
+            [
+                'abv' => 'FTV',
+                'name' => 'central suffix formative',
+                'colour' => '#000080',
+                'description' => '<p>Combines with central suffix pluralizer to form an independent-order central suffix.</p>'
+            ],
+            [
+                'abv' => 'ICEN',
+                'name' => 'independent central suffix',
+                'colour' => '#0000ff',
+                'description' => '<p>In conservative independent forms, the central suffix is a composite of a formative element (FTV) plus a pluralizer (PLZ). The slot CEN is used only in instances where the formative and pluralizer portions of the central suffix can no longer be segmented.</p>'
             ]
         ]);
 
@@ -297,6 +317,42 @@ class MorphemeSeeder extends Seeder
                 'parent_id' => 14,
                 'slot_abv' => 'TS',
                 'gloss' => 'dir',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 16,
+                'shape' => '-w',
+                'slug' => 'w-1',
+                'language_id' => 1,
+                'parent_id' => null,
+                'slot_abv' => 'FTV',
+                'gloss' => 'ftv.m',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 17,
+                'shape' => '-w',
+                'slug' => 'w-1',
+                'language_id' => 3,
+                'parent_id' => null,
+                'slot_abv' => 'ICEN',
+                'gloss' => '3',
+                'allomorphy_notes' => null,
+                'historical_notes' => null,
+                'private_notes' => null
+            ],
+            [
+                'id' => 18,
+                'shape' => 'V-',
+                'slug' => 'V-1',
+                'language_id' => 3,
+                'parent_id' => null,
+                'slot_abv' => 'STM',
+                'gloss' => 'V',
                 'allomorphy_notes' => null,
                 'historical_notes' => null,
                 'private_notes' => null

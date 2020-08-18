@@ -31,6 +31,28 @@
                     </alglang-detail-row>
                 @endif
 
+                @if($verbForm->parent)
+                    <alglang-detail-row label="Parent">
+                        <div class="mb-2">
+                            <x-preview-link :model="$verbForm->parent">
+                                {{ $verbForm->parent->shape }}
+                            </x-preview-link>
+
+                            <span class="inline-flex">
+                                (
+                                <x-preview-link :model="$verbForm->parent->language">
+                                    {{ $verbForm->parent->language->name }}
+                                </x-preview-link>
+                                )
+                            </span>
+                        </div>
+
+                        @if($verbForm->parent->morphemes->count() > 0)
+                            <x-morpheme-table :morphemes="$verbForm->parent->morphemes" />
+                        @endif
+                    </alglang-detail-row>
+                @endif
+
                 @if($verbForm->historical_notes)
                     <alglang-detail-row label="Historical notes">
                         {!! $verbForm->historical_notes !!}
