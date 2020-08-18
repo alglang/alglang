@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasParent;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Group extends Model
 {
+    use HasParent;
     use HasSlug;
 
     protected $guarded = [];
@@ -38,16 +40,6 @@ class Group extends Model
     |--------------------------------------------------------------------------
     |
     */
-
-    public function parent(): Relation
-    {
-        return $this->belongsTo(self::class);
-    }
-
-    public function children(): Relation
-    {
-        return $this->hasMany(self::class, 'parent_id');
-    }
 
     public function languages(): Relation
     {
