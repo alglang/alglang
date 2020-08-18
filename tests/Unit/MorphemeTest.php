@@ -222,4 +222,23 @@ class MorphemeTest extends TestCase
         $this->assertCount(1, $nominalForms);
         $this->assertEquals($nominalForm->id, $nominalForms[0]->id);
     }
+
+    /** @test */
+    public function it_can_exclude_placeholders_from_queries()
+    {
+        $language = factory(Language::class)->create();
+        factory(Morpheme::class)->create(['shape' => 'foo-', 'language_id' => $language->id]);
+        $morphemes = Morpheme::all();
+
+        // Verify that placeholder morphemes were created
+        $this->assertCount(3, $morphemes);
+        $this->assertContains('N-', $morphemes->pluck('shape'));
+        $this->assertContains('V-', $morphemes->pluck('shape'));
+        $this->assertContains('foo-', $morphemes->pluck('shape'));
+
+        $filteredMorphemes = Morpheme::withoutPlaceholders()->get();
+
+        $this->assertCount(1, $filteredMorphemes);
+        $this->assertContains('foo-', $filteredMorphemes->pluck('shape'));
+    }
 }

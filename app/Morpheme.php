@@ -172,6 +172,11 @@ class Morpheme extends Model
         return $this->slot_abv === 'STM';
     }
 
+    public function scopeWithoutPlaceholders(Builder $query): Builder
+    {
+        return $query->whereNotIn('shape', ['V-', 'N-']);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HasSlug config

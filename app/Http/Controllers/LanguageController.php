@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Language;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class LanguageController extends Controller
@@ -27,7 +28,14 @@ class LanguageController extends Controller
     public function show(Language $language)
     {
         $language->load('group', 'children', 'parent');
-        $language->loadCount('morphemes', 'verbForms', 'nominalForms', 'nominalParadigms');
+        $language->loadCount([
+            'morphemes' => function (Builder $query) {
+                $query->withoutPlaceholders();
+            },
+            'verbForms',
+            'nominalForms',
+            'nominalParadigms'
+        ]);
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);
     }

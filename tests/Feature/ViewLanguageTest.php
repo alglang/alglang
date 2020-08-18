@@ -57,7 +57,7 @@ class ViewLanguageTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('language', $language);
-        $this->assertEquals(4, $response['language']->morphemes_count); // +2 for placeholder morphemes
+        $this->assertEquals(2, $response['language']->morphemes_count);
     }
 
     /** @test */

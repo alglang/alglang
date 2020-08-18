@@ -17,7 +17,7 @@ class MorphemeController extends Controller
             abort(400);
         }
 
-        $query = Morpheme::query();
+        $query = Morpheme::withoutPlaceholders();
 
         if (request()->language_id) {
             $query->whereHas('language', function (Builder $query) {
@@ -32,6 +32,7 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
+                           ->orderByRaw('trim(shape, \'-\')')
                            ->paginate(request()->per_page ?? 50)
                            ->appends(request()->query());
 
