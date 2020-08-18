@@ -28,7 +28,10 @@ class NominalForm extends Form
 
     public function scopeOrderByFeatures(Builder $query): Builder
     {
-        $query->join('nominal_structures', 'nominal_structures.id', '=', 'forms.structure_id');
+        if (!queryHasJoin($query, 'nominal_structures')) {
+            $query->join('nominal_structures', 'nominal_structures.id', '=', 'forms.structure_id');
+        }
+
         $query->orderByFeature('pronominal_feature_id', 'pronominal_features');
         $query->orderByFeature('nominal_feature_id', 'nominal_features');
 

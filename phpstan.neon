@@ -5,6 +5,9 @@ parameters:
     paths:
         - app
 
+    autoload_files:
+        - app/helpers.php
+
     level: 7
 
     checkMissingIterableValueType: false

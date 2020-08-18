@@ -11,7 +11,13 @@ class NominalParadigmController extends Controller
 {
     public function show(Language $language, NominalParadigm $nominalParadigm): View
     {
-        $nominalParadigm->load('language', 'type');
+        $nominalParadigm->load([
+            'language',
+            'type',
+            'forms' => function ($query) {
+                return $query->orderByFeatures();
+            }
+        ]);
         return view('nominal-paradigms.show', ['paradigm' => $nominalParadigm]);
     }
 }
