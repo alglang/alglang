@@ -7,6 +7,7 @@ use App\Group;
 use App\Language;
 use App\Morpheme;
 use App\NominalForm;
+use App\NominalParadigm;
 use App\Source;
 use App\User;
 use App\VerbForm;
@@ -87,6 +88,19 @@ class ViewLanguageTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('language', $language);
         $this->assertEquals(2, $response['language']->nominal_forms_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_nominal_paradigm_count()
+    {
+        $language = factory(Language::class)->create();
+        factory(NominalParadigm::class)->create(['language_id' => $language->id]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(1, $response['language']->nominal_paradigms_count);
     }
 
     /** @test */

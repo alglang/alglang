@@ -27,7 +27,7 @@ class LanguageController extends Controller
     public function show(Language $language)
     {
         $language->load('group', 'children', 'parent');
-        $language->loadCount('morphemes', 'verbForms', 'nominalForms');
+        $language->loadCount('morphemes', 'verbForms', 'nominalForms', 'nominalParadigms');
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);
     }
