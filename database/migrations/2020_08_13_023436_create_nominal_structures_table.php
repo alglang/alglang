@@ -15,8 +15,8 @@ class CreateNominalStructuresTable extends Migration
     {
         Schema::create('nominal_structures', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('pronominal_feature_id');
-            $table->unsignedInteger('nominal_feature_id');
+            $table->unsignedInteger('pronominal_feature_id')->nullable();
+            $table->unsignedInteger('nominal_feature_id')->nullable();
             $table->unsignedInteger('paradigm_id');
             $table->timestamps();
         });

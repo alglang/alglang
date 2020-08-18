@@ -16,6 +16,9 @@ class CreateFeaturesTable extends Migration
         Schema::create('features', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('person')->nullable();
+            $table->integer('obviative_code')->nullable();
+            $table->integer('number')->nullable();
             $table->timestamps();
         });
     }
