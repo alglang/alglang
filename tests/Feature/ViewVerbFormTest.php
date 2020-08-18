@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Example;
-use App\Form;
 use App\Language;
 use App\Morpheme;
 use App\User;
 use App\VerbClass;
+use App\VerbForm;
 use App\VerbOrder;
 use App\VerbMode;
 use App\Feature;
@@ -29,7 +29,7 @@ class ViewVerbFormTest extends TestCase
         $order = factory(VerbOrder::class)->create(['name' => 'Conjunct']);
         $mode = factory(VerbMode::class)->create(['name' => 'Indicative']);
         $subject = factory(Feature::class)->create(['name' => '3s']);
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-test',
             'language_id' => $language->id,
 
@@ -61,7 +61,7 @@ class ViewVerbFormTest extends TestCase
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $verbForm = factory(Form::class)->state('verb')->create(['language_id' => $language->id]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
         $verbForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($verbForm->url);
@@ -75,7 +75,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function the_morphology_section_is_not_shown_if_the_verb_form_has_no_morphemes()
     {
-        $verbForm = factory(Form::class)->state('verb')->create();
+        $verbForm = factory(VerbForm::class)->create();
 
         $response = $this->get($verbForm->url);
 
@@ -86,7 +86,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_shows_its_primary_object()
     {
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'structure_id' => factory(VerbStructure::class)->create([
                 'primary_object_id' => factory(Feature::class)->create(['name' => '2s'])->id
             ])->id
@@ -101,7 +101,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_shows_its_secondary_object()
     {
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'structure_id' => factory(VerbStructure::class)->create([
                 'secondary_object_id' => factory(Feature::class)->create(['name' => '1p'])->id
             ])->id
@@ -116,7 +116,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_shows_its_historical_notes_if_it_has_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'historical_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -130,7 +130,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_does_not_show_historical_notes_if_it_does_not_have_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create(['historical_notes' => null]);
+        $verbForm = factory(VerbForm::class)->create(['historical_notes' => null]);
 
         $response = $this->get($verbForm->url);
 
@@ -141,7 +141,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_shows_its_allomorphy_notes_if_it_has_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -155,7 +155,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_does_not_show_allomorphy_notes_if_it_does_not_have_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create(['allomorphy_notes' => null]);
+        $verbForm = factory(VerbForm::class)->create(['allomorphy_notes' => null]);
 
         $response = $this->get($verbForm->url);
 
@@ -166,7 +166,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_shows_its_usage_notes_if_it_has_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'usage_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -180,7 +180,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_does_not_show_usage_notes_if_it_does_not_have_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create(['usage_notes' => null]);
+        $verbForm = factory(VerbForm::class)->create(['usage_notes' => null]);
 
         $response = $this->get($verbForm->url);
 
@@ -196,7 +196,7 @@ class ViewVerbFormTest extends TestCase
         $user = factory(User::class)->create();
         $user->givePermissionTo('view private notes');
 
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -210,7 +210,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function a_verb_form_does_not_show_private_notes_if_it_does_not_have_them()
     {
-        $verbForm = factory(Form::class)->state('verb')->create(['private_notes' => null]);
+        $verbForm = factory(VerbForm::class)->create(['private_notes' => null]);
 
         $response = $this->get($verbForm->url);
 
@@ -223,7 +223,7 @@ class ViewVerbFormTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $verbForm = factory(Form::class)->state('verb')->create([
+        $verbForm = factory(VerbForm::class)->create([
             'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -237,7 +237,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function sources_appear_if_the_verb_form_has_sources()
     {
-        $verbForm = factory(Form::class)->state('verb')->create();
+        $verbForm = factory(VerbForm::class)->create();
         $source = factory(Source::class)->create(['author' => 'Foo Bar']);
         $verbForm->addSource($source);
 
@@ -251,7 +251,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function sources_do_not_appear_if_the_verb_form_has_no_sources()
     {
-        $verbForm = factory(Form::class)->state('verb')->create();
+        $verbForm = factory(VerbForm::class)->create();
 
         $response = $this->get($verbForm->url);
         $response->assertOk();
@@ -262,7 +262,7 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function the_form_comes_with_its_example_count()
     {
-        $form = factory(Form::class)->state('verb')->create();
+        $form = factory(VerbForm::class)->create();
         $example = factory(Example::class)->create(['form_id' => $form->id]);
 
         $response = $this->get($form->url);
