@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class VerbFormController extends Controller
 {
-    public function index(): VerbFormCollection
+    public function fetch(): VerbFormCollection
     {
         if (!request()->language_id && !request()->source_id && !request()->with_morphemes) {
             abort(400);

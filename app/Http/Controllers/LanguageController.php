@@ -9,11 +9,11 @@ class LanguageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show', 'index');
-        $this->middleware('permission:create languages')->except('show', 'index');
+        $this->middleware('auth')->except('show', 'fetch');
+        $this->middleware('permission:create languages')->except('show', 'fetch');
     }
 
-    public function index(): array
+    public function fetch(): array
     {
         return ['data' => Language::all()];
     }

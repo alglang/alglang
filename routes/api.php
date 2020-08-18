@@ -21,14 +21,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/groups', [GroupController::class, 'index']);
+Route::get('/groups', [GroupController::class, 'fetch']);
 
-Route::get('/languages', [LanguageController::class, 'index']);
+Route::get('/languages', [LanguageController::class, 'fetch']);
 Route::post('/languages', [LanguageController::class, 'store']);
 
 Route::get('/examples', [ExampleController::class, 'fetch']);
-Route::get('/verb-forms', [VerbFormController::class, 'index']);
-Route::get('/morphemes', [MorphemeController::class, 'index']);
+Route::get('/verb-forms', [VerbFormController::class, 'fetch']);
+Route::get('/morphemes', [MorphemeController::class, 'fetch']);
 Route::get('/nominal-forms', [NominalFormController::class, 'fetch']);
 Route::get('/sources', [SourceController::class, 'fetch']);
 

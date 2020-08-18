@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class MorphemeController extends Controller
 {
-    public function index(): MorphemeCollection
+    public function fetch(): MorphemeCollection
     {
         if (!request()->language_id && !request()->source_id) {
             abort(400);
