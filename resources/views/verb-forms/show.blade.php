@@ -22,6 +22,12 @@
                         <span>{{ $verbForm->structure->class->abv }}</span>
                         <span>{{ $verbForm->structure->order->name }}</span>
                         <span>{{ $verbForm->structure->mode->name }}</span>
+                        @if($verbForm->structure->is_negative)
+                            <span>(Negative)</span>
+                        @endif
+                        @if($verbForm->structure->is_diminutive)
+                            <span>(Diminutive)</span>
+                        @endif
                     </p>
                 </alglang-detail-row>
 

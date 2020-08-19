@@ -50,6 +50,66 @@ class ViewVerbFormTest extends TestCase
     }
 
     /** @test */
+    public function a_verb_form_shows_that_it_is_negative_if_it_is_negative()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_negative' => true
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Negative');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_that_it_is_negative_if_it_is_not_negative()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_negative' => false
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Negative');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_that_it_is_diminutive_if_it_is_diminutive()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_diminutive' => true
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Diminutive');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_that_it_is_diminutive_if_it_is_not_diminutive()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_diminutive' => false
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Diminutive');
+    }
+
+    /** @test */
     public function a_verb_form_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();

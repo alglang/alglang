@@ -21,6 +21,8 @@ class CreateVerbStructuresTable extends Migration
             $table->unsignedInteger('subject_name');
             $table->unsignedInteger('primary_object_name')->nullable();
             $table->unsignedInteger('secondary_object_name')->nullable();
+            $table->boolean('is_negative')->default(false);
+            $table->boolean('is_diminutive')->default(false);
             $table->timestamps();
         });
     }
