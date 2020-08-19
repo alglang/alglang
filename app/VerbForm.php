@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbForm extends Form
 {
@@ -23,5 +24,10 @@ class VerbForm extends Form
     public function getUrlAttribute(): string
     {
         return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
+    }
+
+    public function structure(): Relation
+    {
+        return $this->belongsTo(VerbStructure::class);
     }
 }

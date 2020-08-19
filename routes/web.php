@@ -12,6 +12,7 @@ use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
+use App\Http\Controllers\VerbSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,6 +83,8 @@ Route::get('/structural-survey', function () {
 Route::get('/search/verbs/paradigm', function () {
     abort(404);
 })->name('search.verbs.paradigm');
+
+Route::get('/search/verbs/forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');

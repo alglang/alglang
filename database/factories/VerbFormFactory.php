@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(VerbForm::class, function (Faker $faker) {
     return [
-        'shape' => 'V-test',
+        'shape' => 'V-factory',
         'language_id' => factory(Language::class),
         'structure_type' => VerbStructure::class,
         'structure_id' => factory(VerbStructure::class)
