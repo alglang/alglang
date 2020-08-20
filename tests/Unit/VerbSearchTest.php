@@ -1,37 +1,25 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Feature;
 use App\Language;
-use App\VerbForm;
 use App\VerbClass;
+use App\VerbForm;
 use App\VerbMode;
 use App\VerbOrder;
+use App\VerbSearch;
 use App\VerbStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SearchVerbFormTest extends TestCase
+class VerbSearchTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function it_returns_the_correct_view()
-    {
-        $language = factory(Language::class)->create();
-
-        $response = $this->get("/search/verbs/forms?languages[]=$language->id");
-
-        $response->assertOk();
-        $response->assertViewIs('search.verbs.forms');
-    }
-
-    /** @test */
     public function it_orders_forms_by_language()
     {
-        $this->withoutExceptionHandling();
         $language2 = factory(VerbForm::class)->create([
             'language_id' => factory(Language::class)->create(['name' => 'Test Language 2']),
             'shape' => 'V-foo'
@@ -41,11 +29,12 @@ class SearchVerbFormTest extends TestCase
             'shape' => 'V-bar'
         ]);
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language1->id&languages[]=$language2->id");
+        $forms = VerbSearch::search([
+            'languages' => [$language1->id, $language2->id]
+        ]);
 
-        $response->assertOk();
-        $response->assertSeeInOrder(['Test Language 1', 'Test Language 2']);
-        $response->assertSeeInOrder(['V-bar', 'V-foo']);
+        $this->assertEquals(['Test Language 1', 'Test Language 2'], $forms->pluck('language.name')->toArray());
+        $this->assertEquals(['V-bar', 'V-foo'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -61,11 +50,10 @@ class SearchVerbFormTest extends TestCase
             'shape' => 'V-bar'
         ]);
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language->id");
+        $forms = VerbSearch::search(['languages' => [$language->id]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -86,12 +74,12 @@ class SearchVerbFormTest extends TestCase
             'shape' => 'V-bar'
         ]);
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language1->id&languages[]=$language2->id");
+        $forms = VerbSearch::search([
+            'languages' => [$language1->id, $language2->id]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -111,11 +99,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?modes[]=$mode->name");
+        $forms = VerbSearch::search(['modes' => [$mode->name]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -142,12 +129,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?modes[]=$mode1->name&modes[]=$mode2->name");
+        $forms = VerbSearch::search([
+            'modes' => [$mode1->name, $mode2->name]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -167,11 +154,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?orders[]=$order->name");
+        $forms = VerbSearch::search(['orders' => [$order->name]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -198,12 +184,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?orders[]=$order1->name&orders[]=$order2->name");
+        $forms = VerbSearch::search([
+            'orders' => [$order1->name, $order2->name]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -223,11 +209,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?classes[]=$class->abv");
+        $forms = VerbSearch::search(['classes' => [$class->abv]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -254,12 +239,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?classes[]=$class1->abv&classes[]=$class2->abv");
+        $forms = VerbSearch::search(['classes' => [
+            $class1->abv, $class2->abv]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -278,11 +263,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get('/search/verbs/forms?negative=0');
+        $forms = VerbSearch::search(['negative' => false]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -301,11 +285,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get('/search/verbs/forms?diminutive=1');
+        $forms = VerbSearch::search(['diminutive' => true]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -327,11 +310,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person");
+        $forms = VerbSearch::search(['subject_persons' => [$feature->person]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -360,12 +342,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature1->person&subject_persons[]=$feature2->person");
+        $forms = VerbSearch::search([
+            'subject_persons' => [$feature1->person, $feature2->person]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -387,11 +369,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_numbers[]=$feature->number");
+        $forms = VerbSearch::search(['subject_numbers' => [$feature->number]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -420,12 +401,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_numbers[]=$feature1->number&subject_numbers[]=$feature2->number");
+        $forms = VerbSearch::search([
+            'subject_numbers' => [$feature1->number, $feature2->number]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -447,11 +428,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_obviative_codes[]=$feature->obviative_code");
+        $forms = VerbSearch::search(['subject_obviative_codes' => [$feature->obviative_code]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -480,12 +460,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_obviative_codes[]=$feature1->obviative_code&subject_obviative_codes[]=$feature2->obviative_code");
+        $forms = VerbSearch::search([
+            'subject_obviative_codes' => [$feature1->obviative_code, $feature2->obviative_code]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -506,11 +486,13 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person&primary_object=0");
+        $forms = VerbSearch::search([
+            'subject_persons' => [$feature->person],
+            'primary_object' => 0
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -532,11 +514,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_persons[]=$feature->person");
+        $forms = VerbSearch::search(['primary_object_persons' => [$feature->person]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -565,12 +546,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_persons[]=$feature1->person&primary_object_persons[]=$feature2->person");
+        $forms = VerbSearch::search([
+            'primary_object_persons' => [$feature1->person, $feature2->person]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -592,11 +573,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_numbers[]=$feature->number");
+        $forms = VerbSearch::search(['primary_object_numbers' => [$feature->number]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -625,12 +605,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_numbers[]=$feature1->number&primary_object_numbers[]=$feature2->number");
+        $forms = VerbSearch::search([
+            'primary_object_numbers' => [$feature1->number, $feature2->number]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -652,11 +632,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_obviative_codes[]=$feature->obviative_code");
+        $forms = VerbSearch::search(['primary_object_obviative_codes' => [$feature->obviative_code]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -685,12 +664,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_obviative_codes[]=$feature1->obviative_code&primary_object_obviative_codes[]=$feature2->obviative_code");
+        $forms = VerbSearch::search([
+            'primary_object_obviative_codes' => [$feature1->obviative_code, $feature2->obviative_code]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -711,11 +690,13 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person&secondary_object=0");
+        $forms = VerbSearch::search([
+            'subject_persons' => [$feature->person],
+            'secondary_object' => 0
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -737,11 +718,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_persons[]=$feature->person");
+        $forms = VerbSearch::search(['secondary_object_persons' => [$feature->person]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -770,12 +750,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_persons[]=$feature1->person&secondary_object_persons[]=$feature2->person");
+        $forms = VerbSearch::search([
+            'secondary_object_persons' => [$feature1->person, $feature2->person]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -797,11 +777,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_numbers[]=$feature->number");
+        $forms = VerbSearch::search(['secondary_object_numbers' => [$feature->number]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -830,12 +809,12 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_numbers[]=$feature1->number&secondary_object_numbers[]=$feature2->number");
+        $forms = VerbSearch::search([
+            'secondary_object_numbers' => [$feature1->number, $feature2->number]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -857,11 +836,10 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_obviative_codes[]=$feature->obviative_code");
+        $forms = VerbSearch::search(['secondary_object_obviative_codes' => [$feature->obviative_code]]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(1, $forms);
+        $this->assertEquals('V-foo', $forms[0]->shape);
     }
 
     /** @test */
@@ -890,11 +868,11 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_obviative_codes[]=$feature1->obviative_code&secondary_object_obviative_codes[]=$feature2->obviative_code");
+        $forms = VerbSearch::search([
+            'secondary_object_obviative_codes' => [$feature1->obviative_code, [$feature2->obviative_code]]
+        ]);
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $this->assertCount(2, $forms);
+        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
     }
 }
