@@ -17,31 +17,82 @@ class SearchVerbFormTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $mode;
+    private $order;
+    private $class;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mode = factory(VerbMode::class)->create(['name' => 'factory mode']);
+        $this->order = factory(VerbOrder::class)->create(['name' => 'factory order']);
+        $this->class = factory(VerbClass::class)->create(['abv' => 'fc']);
+    }
+
+    protected function generateStructure(array $fields = []): VerbStructure
+    {
+        return factory(VerbStructure::class)->create(array_merge([
+            'mode_name' => $this->mode,
+            'order_name' => $this->order,
+            'class_abv' => $this->class
+        ], $fields));
+    }
+
+    protected function generateQuery(array $fields = []): array
+    {
+        return array_merge([
+            'modes' => ['factory mode'],
+            'orders' => ['factory order'],
+            'classes' => ['fc']
+        ], $fields);
+    }
+
     /** @test */
     public function it_returns_the_correct_view()
     {
         $language = factory(Language::class)->create();
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language->id");
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [$this->generateQuery()]
+		]));
 
         $response->assertOk();
         $response->assertViewIs('search.verbs.forms');
     }
 
     /** @test */
-    public function it_orders_forms_by_language()
+    public function it_returns_a_302_if_it_has_no_structures()
     {
-        $this->withoutExceptionHandling();
-        $language2 = factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(['name' => 'Test Language 2']),
-            'shape' => 'V-foo'
-        ]);
-        $language1 = factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(['name' => 'Test Language 1']),
-            'shape' => 'V-bar'
+        $response = $this->get(route('search.verbs.forms'), [
+            'languages' => ['foo']
         ]);
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language1->id&languages[]=$language2->id");
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures');
+    }
+
+    /** @test */
+    public function it_orders_forms_by_language()
+    {
+        $language2 = factory(Language::class)->create(['name' => 'Test Language 2']);
+        $language1 = factory(Language::class)->create(['name' => 'Test Language 1']);
+
+        factory(VerbForm::class)->create([
+            'language_id' => $language2,
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure()
+        ]);
+        factory(VerbForm::class)->create([
+            'language_id' => $language1,
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure()
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'languages' => [$language2->id, $language1->id],
+            'structures' => [$this->generateQuery()]
+        ]));
 
         $response->assertOk();
         $response->assertSeeInOrder(['Test Language 1', 'Test Language 2']);
@@ -54,43 +105,22 @@ class SearchVerbFormTest extends TestCase
         $language = factory(Language::class)->create();
         factory(VerbForm::class)->create([
             'language_id' => $language,
-            'shape' => 'V-foo'
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure()
         ]);
         factory(VerbForm::class)->create([
             'language_id' => factory(Language::class)->create(),
-            'shape' => 'V-bar'
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure()
         ]);
 
-        $response = $this->get("/search/verbs/forms?languages[]=$language->id");
+        $response = $this->get(route('search.verbs.forms', [
+            'languages' => [$language->id],
+            'structures' => [$this->generateQuery()]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
-        $response->assertDontSee('V-bar');
-    }
-
-    /** @test */
-    public function it_filters_search_results_by_multiple_languages()
-    {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
-        factory(VerbForm::class)->create([
-            'language_id' => $language1,
-            'shape' => 'V-foo'
-        ]);
-        factory(VerbForm::class)->create([
-            'language_id' => $language2,
-            'shape' => 'V-baz'
-        ]);
-        factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(),
-            'shape' => 'V-bar'
-        ]);
-
-        $response = $this->get("/search/verbs/forms?languages[]=$language1->id&languages[]=$language2->id");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
         $response->assertDontSee('V-bar');
     }
 
@@ -100,18 +130,22 @@ class SearchVerbFormTest extends TestCase
         $mode = factory(VerbMode::class)->create();
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'mode_name' => $mode
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'mode_name' => factory(VerbMode::class)->create()
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?modes[]=$mode->name");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['modes' => [$mode->name]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -119,35 +153,29 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_modes()
+    public function only_one_mode_is_allowed_per_structure()
     {
-        $mode1 = factory(VerbMode::class)->create();
-        $mode2 = factory(VerbMode::class)->create();
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'mode_name' => $mode1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'mode_name' => $mode2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'mode_name' => factory(VerbMode::class)->create()
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['modes' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?modes[]=$mode1->name&modes[]=$mode2->name");
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.modes');
+    }
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+    /** @test */
+    public function mode_must_be_included()
+    {
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['modes' => null])
+            ]
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.modes');
     }
 
     /** @test */
@@ -156,18 +184,22 @@ class SearchVerbFormTest extends TestCase
         $order = factory(VerbOrder::class)->create();
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'order_name' => $order
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'order_name' => factory(VerbOrder::class)->create()
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?orders[]=$order->name");
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['orders' => [$order->name]])
+            ]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -175,35 +207,29 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_orders()
+    public function only_one_order_is_allowed_per_structure()
     {
-        $order1 = factory(VerbOrder::class)->create();
-        $order2 = factory(VerbOrder::class)->create();
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'order_name' => $order1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'order_name' => $order2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'order_name' => factory(VerbOrder::class)->create()
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['orders' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?orders[]=$order1->name&orders[]=$order2->name");
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.orders');
+    }
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+    /** @test */
+    public function order_must_be_included()
+    {
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['orders' => null])
+            ]
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.orders');
     }
 
     /** @test */
@@ -212,18 +238,22 @@ class SearchVerbFormTest extends TestCase
         $class = factory(VerbClass::class)->create();
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'class_abv' => $class
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'class_abv' => factory(VerbClass::class)->create()
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?classes[]=$class->abv");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['classes' => [$class->abv]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -231,35 +261,28 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_classes()
+    public function only_one_class_is_allowed_per_structure()
     {
-        $class1 = factory(VerbClass::class)->create();
-        $class2 = factory(VerbClass::class)->create();
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'class_abv' => $class1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'class_abv' => $class2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'class_abv' => factory(VerbClass::class)->create()
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['classes' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?classes[]=$class1->abv&classes[]=$class2->abv");
+        $response->assertStatus(302);
+    }
 
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+    /** @test */
+    public function class_must_be_included()
+    {
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['classes' => null])
+            ]
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.classes');
     }
 
     /** @test */
@@ -267,18 +290,22 @@ class SearchVerbFormTest extends TestCase
     {
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'is_negative' => false
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'is_negative' => true
             ])
         ]);
 
-        $response = $this->get('/search/verbs/forms?negative=0');
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['negative' => false])
+            ]
+        ]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -290,18 +317,22 @@ class SearchVerbFormTest extends TestCase
     {
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'is_diminutive' => true
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'is_diminutive' => false
             ])
         ]);
 
-        $response = $this->get('/search/verbs/forms?diminutive=1');
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['diminutive' => true])
+            ]
+        ]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -314,20 +345,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['person' => '1']);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => factory(Feature::class)->create([
                     'person' => '2'
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['subject_persons' => [$feature->person]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -335,37 +370,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_subject_persons()
+    public function only_one_subject_person_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['person' => '1']);
-        $feature2 = factory(Feature::class)->create(['person' => '3']);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create([
-                    'person' => '2'
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['subject_persons' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature1->person&subject_persons[]=$feature2->person");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -374,20 +387,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['number' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => factory(Feature::class)->create([
                     'number' => 2
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_numbers[]=$feature->number");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['subject_numbers' => [$feature->number]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -395,37 +412,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_subject_numbers()
+    public function only_one_subject_number_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['number' => 1]);
-        $feature2 = factory(Feature::class)->create(['number' => 3]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create([
-                    'number' => 2
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['subject_numbers' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?subject_numbers[]=$feature1->number&subject_numbers[]=$feature2->number");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -434,20 +429,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['obviative_code' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => factory(Feature::class)->create([
                     'obviative_code' => null
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_obviative_codes[]=$feature->obviative_code");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['subject_obviative_codes' => [$feature->obviative_code]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -455,37 +454,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_subject_obviative_codes()
+    public function only_one_subject_obviative_code_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['obviative_code' => 1]);
-        $feature2 = factory(Feature::class)->create(['obviative_code' => 2]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create([
-                    'obviative_code' => null
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['subject_obviative_codes' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?subject_obviative_codes[]=$feature1->obviative_code&subject_obviative_codes[]=$feature2->obviative_code");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -494,19 +471,26 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['person' => '1']);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature,
                 'primary_object_name' => $feature
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person&primary_object=0");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => [$feature->person],
+                    'primary_object' => false
+                ])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -519,20 +503,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['person' => '1']);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => factory(Feature::class)->create([
                     'person' => '2'
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_persons[]=$feature->person");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['primary_object_persons' => [$feature->person]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -540,37 +528,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_primary_object_persons()
+    public function only_one_primary_object_person_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['person' => '1']);
-        $feature2 = factory(Feature::class)->create(['person' => '3']);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => factory(Feature::class)->create([
-                    'person' => '2'
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['primary_object_persons' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?primary_object_persons[]=$feature1->person&primary_object_persons[]=$feature2->person");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -579,20 +545,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['number' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => factory(Feature::class)->create([
                     'number' => 2
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_numbers[]=$feature->number");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['primary_object_numbers' => [$feature->number]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -600,37 +570,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_primary_object_numbers()
+    public function only_one_primary_object_number_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['number' => 1]);
-        $feature2 = factory(Feature::class)->create(['number' => 3]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => factory(Feature::class)->create([
-                    'number' => 2
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['primary_object_numbers' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?primary_object_numbers[]=$feature1->number&primary_object_numbers[]=$feature2->number");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -639,20 +587,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['obviative_code' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'primary_object_name' => factory(Feature::class)->create([
                     'obviative_code' => null
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?primary_object_obviative_codes[]=$feature->obviative_code");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['primary_object_obviative_codes' => [$feature->obviative_code]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -660,37 +612,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_primary_object_obviative_codes()
+    public function only_one_primary_object_obviative_code_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['obviative_code' => 1]);
-        $feature2 = factory(Feature::class)->create(['obviative_code' => 2]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'primary_object_name' => factory(Feature::class)->create([
-                    'obviative_code' => null
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['primary_object_obviative_codes' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?primary_object_obviative_codes[]=$feature1->obviative_code&primary_object_obviative_codes[]=$feature2->obviative_code");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -699,19 +629,26 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['person' => '1']);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'subject_name' => $feature,
                 'secondary_object_name' => $feature
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?subject_persons[]=$feature->person&secondary_object=0");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => [$feature->person],
+                    'secondary_object' => false
+                ])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -724,20 +661,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['person' => '1']);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => factory(Feature::class)->create([
                     'person' => '2'
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_persons[]=$feature->person");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['secondary_object_persons' => [$feature->person]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -745,37 +686,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_secondary_object_persons()
+    public function only_one_secondary_object_person_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['person' => '1']);
-        $feature2 = factory(Feature::class)->create(['person' => '3']);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => factory(Feature::class)->create([
-                    'person' => '2'
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['secondary_object_persons' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?secondary_object_persons[]=$feature1->person&secondary_object_persons[]=$feature2->person");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -784,20 +703,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['number' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => factory(Feature::class)->create([
                     'number' => 2
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_numbers[]=$feature->number");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['secondary_object_numbers' => [$feature->number]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -805,37 +728,15 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_secondary_object_numbers()
+    public function only_one_secondary_object_number_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['number' => 1]);
-        $feature2 = factory(Feature::class)->create(['number' => 3]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => factory(Feature::class)->create([
-                    'number' => 2
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['secondary_object_numbers' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?secondary_object_numbers[]=$feature1->number&secondary_object_numbers[]=$feature2->number");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 
     /** @test */
@@ -844,20 +745,24 @@ class SearchVerbFormTest extends TestCase
         $feature = factory(Feature::class)->create(['obviative_code' => 1]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => $this->generateStructure([
                 'secondary_object_name' => factory(Feature::class)->create([
                     'obviative_code' => null
                 ])
             ])
         ]);
 
-        $response = $this->get("/search/verbs/forms?secondary_object_obviative_codes[]=$feature->obviative_code");
+        $response = $this->get(route('search.verbs.forms', [
+			'structures' => [
+				$this->generateQuery(['secondary_object_obviative_codes' => [$feature->obviative_code]])
+			]
+		]));
 
         $response->assertOk();
         $response->assertSee('V-foo');
@@ -865,36 +770,14 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
-    public function it_filters_search_results_by_multiple_secondary_object_obviative_codes()
+    public function only_one_secondary_object_obviative_code_is_allowed_per_structure()
     {
-        $feature1 = factory(Feature::class)->create(['obviative_code' => 1]);
-        $feature2 = factory(Feature::class)->create(['obviative_code' => 2]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-foo',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature1
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-baz',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => $feature2
-            ])
-        ]);
-        factory(VerbForm::class)->create([
-            'shape' => 'V-bar',
-            'structure_id' => factory(VerbStructure::class)->create([
-                'secondary_object_name' => factory(Feature::class)->create([
-                    'obviative_code' => null
-                ])
-            ])
-        ]);
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['secondary_object_obviative_codes' => ['foo', 'bar']])
+            ]
+        ]));
 
-        $response = $this->get("/search/verbs/forms?secondary_object_obviative_codes[]=$feature1->obviative_code&secondary_object_obviative_codes[]=$feature2->obviative_code");
-
-        $response->assertOk();
-        $response->assertSee('V-foo');
-        $response->assertSee('V-baz');
-        $response->assertDontSee('V-bar');
+        $response->assertStatus(302);
     }
 }
