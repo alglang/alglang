@@ -97,6 +97,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function it_orders_forms_by_language()
     {
+        $this->withoutExceptionHandling();
         $language2 = factory(Language::class)->create(['name' => 'Test Language 2']);
         $language1 = factory(Language::class)->create(['name' => 'Test Language 1']);
 
@@ -822,5 +823,156 @@ class SearchVerbFormTest extends TestCase
         ]));
 
         $response->assertStatus(302);
+    }
+
+    /** @test */
+    public function it_shows_forms_feature_strings_if_the_subject_differs_from_the_query()
+    {
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'subject_name' => factory(Feature::class)->create([
+                    'name' => 'bar',
+                    'person' => '1',
+                    'number' => 1
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => ['1'],
+                    'subject_numbers' => null,
+                    'primary_object' => false,
+                    'secondary_object' => false,
+                ])
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['V-foo', '(bar)']);
+    }
+
+    /** @test */
+    public function it_shows_forms_feature_strings_if_the_primary_object_differs_from_the_query()
+    {
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'subject_name' => $this->subject,
+                'primary_object_name' => factory(Feature::class)->create([
+                    'name' => 'baz',
+                    'person' => '2',
+                    'number' => 2
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => [$this->subject->person],
+                    'subject_numbers' => [$this->subject->number],
+                    'primary_object_persons' => ['2'],
+                    'primary_object_numbers' => null,
+                    'secondary_object' => false,
+                ])
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['V-foo', "({$this->subject->name}→baz)"]);
+    }
+
+    /** @test */
+    public function it_shows_forms_feature_strings_if_the_secondary_object_differs_from_the_query()
+    {
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'subject_name' => $this->subject,
+                'secondary_object_name' => factory(Feature::class)->create([
+                    'name' => 'baz',
+                    'person' => '2',
+                    'number' => 2
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => [$this->subject->person],
+                    'subject_numbers' => [$this->subject->number],
+                    'primary_object' => false,
+                    'secondary_object_persons' => ['2'],
+                    'secondary_object_numbers' => null,
+                ])
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['V-foo', "({$this->subject->name}+baz)"]);
+    }
+
+    /** @test */
+    public function it_does_not_show_forms_feature_strings_if_they_only_differ_from_the_query_by_primary_object_wildcard()
+    {
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'subject_name' => factory(Feature::class)->create([
+                    'name' => '1s',
+                    'person' => '1',
+                    'number' => 1
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => ['1'],
+                    'subject_numbers' => [1],
+                    'primary_object' => null,
+                    'secondary_object' => false
+                ])
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-foo');
+        $response->assertDontSee('(1s)');
+    }
+
+    /** @test */
+    public function it_does_not_show_forms_feature_strings_if_they_only_differ_from_the_query_by_secondary_object_wildcard()
+    {
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'subject_name' => factory(Feature::class)->create([
+                    'name' => '1s',
+                    'person' => '1',
+                    'number' => 1
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery([
+                    'subject_persons' => ['1'],
+                    'subject_numbers' => [1],
+                    'primary_object' => false,
+                    'secondary_object' => null
+                ])
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-foo');
+        $response->assertDontSee('(1s)');
     }
 }

@@ -44,6 +44,39 @@ class VerbStructure extends Model
         return $structure;
     }
 
+    public function matchesStructure(self $other): bool
+    {
+        $properties = [
+            'class_abv',
+            'order_name',
+            'mode_name',
+            'subject_name',
+            'primary_object_name',
+            'secondary_object_name'
+        ];
+
+        $booleanProperties = [
+            'is_negative',
+            'is_diminutive'
+        ];
+
+        foreach ($properties as $property) {
+            $ownValue = $this->$property;
+            if ($ownValue !== '?' && $ownValue !== $other->$property) {
+                return false;
+            }
+        }
+
+        foreach ($booleanProperties as $property) {
+            $ownValue = $this->$property;
+            if ($ownValue !== null && $ownValue !== $other->$property) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getFeatureStringAttribute(): string
     {
         $string = (string)$this->subject_name;

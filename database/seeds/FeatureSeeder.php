@@ -29,6 +29,12 @@ class FeatureSeeder extends Seeder
                 'person' => '1',
                 'number' => 1,
                 'obviative_code' => null
+            ],
+            [
+                'name' => '1p',
+                'person' => '1',
+                'number' => 3,
+                'obviative_code' => null
             ]
         ]);
     }

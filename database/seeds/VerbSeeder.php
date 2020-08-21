@@ -52,6 +52,20 @@ class VerbSeeder extends Seeder
                 'class_abv' => 'AI',
                 'order_name' => 'Independent',
                 'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 4,
+                'subject_name' => '1s',
+                'class_abv' => 'AI',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 5,
+                'subject_name' => '1p',
+                'class_abv' => 'AI',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
             ]
         ]);
 
@@ -95,6 +109,26 @@ class VerbSeeder extends Seeder
                 'structure_id' => 3,  // 3s AI Independent Indicative
                 'slug' => 'V',
                 'allomorphy_notes' => null
+            ],
+            [
+                'id' => 7,
+                'shape' => 'V-(y)a·ni',
+                'language_id' => 1,
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 4,  // 1s AI Conjunct Indicative
+                'slug' => 'V-(y)a·ni',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
+            ],
+            [
+                'id' => 8,
+                'shape' => 'V-(y)a·nke',
+                'language_id' => 1,
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 5,  // 1p AI Conjunct Indicative
+                'slug' => 'V-(y)a·nke',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
             ]
         ]);
 
@@ -131,6 +165,9 @@ class VerbSeeder extends Seeder
         Form::find(1)->addSource(Source::find(3));
         Form::find(1)->addSource(Source::find(4));
         Form::find(2)->addSource(Source::find(3));
+        Form::find(7)->addSource(Source::find(3));
+        Form::find(8)->addSource(Source::find(3));
+        Form::find(8)->addSource(Source::find(4));
 
         Example::find(1)->addSource(Source::find(3));
     }

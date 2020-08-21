@@ -33,6 +33,12 @@
                                             <x-preview-link :model="$result" class="text-gray-800">
                                                 {{ $result->shape }}
                                             </x-preview-link>
+
+                                            @if(!$column['query']->matchesStructure($result->structure))
+                                                <span class="ml-2 bg-yellow-200">
+                                                    ({{ $result->structure->feature_string }})
+                                                </span>
+                                            @endif
                                         </li>
                                     @endforeach
                                 </ul>

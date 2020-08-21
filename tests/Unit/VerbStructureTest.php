@@ -43,6 +43,143 @@ class VerbStructureTest extends TestCase
         $this->assertEquals('3s+1p', $structure->feature_string);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | matchesStructure
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected function generateStructure(array $params = []): VerbStructure
+    {
+        return factory(VerbStructure::class)->make(array_merge([
+            'class_abv' => 'CLS',
+            'order_name' => 'ORDER',
+            'mode_name' => 'MODE',
+            'subject_name' => 'SUBJECT',
+            'primary_object_name' => 'PRIMARYOBJECT',
+            'secondary_object_name' => 'PRIMARYOBJECT',
+            'is_negative' => false,
+            'is_diminutive' => false
+        ], $params));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_classes_differ()
+    {
+        $structure1 = $this->generateStructure(['class_abv' => 'FOO']);
+        $structure2 = $this->generateStructure(['class_abv' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_orders_differ()
+    {
+        $structure1 = $this->generateStructure(['order_name' => 'FOO']);
+        $structure2 = $this->generateStructure(['order_name' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_modes_differ()
+    {
+        $structure1 = $this->generateStructure(['mode_name' => 'FOO']);
+        $structure2 = $this->generateStructure(['mode_name' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_negativity_differs()
+    {
+        $structure1 = $this->generateStructure(['is_negative' => true]);
+        $structure2 = $this->generateStructure(['is_negative' => false]);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_diminutivity_differs()
+    {
+        $structure1 = $this->generateStructure(['is_diminutive' => true]);
+        $structure2 = $this->generateStructure(['is_diminutive' => false]);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_subject_differs()
+    {
+        $structure1 = $this->generateStructure(['subject_name' => 'FOO']);
+        $structure2 = $this->generateStructure(['subject_name' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_primary_object_differs()
+    {
+        $structure1 = $this->generateStructure(['primary_object_name' => 'FOO']);
+        $structure2 = $this->generateStructure(['primary_object_name' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_do_not_match_if_secondary_object_differs()
+    {
+        $structure1 = $this->generateStructure(['secondary_object_name' => 'FOO']);
+        $structure2 = $this->generateStructure(['secondary_object_name' => 'BAR']);
+
+        $this->assertFalse($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_match_if_subject_is_a_wildcard()
+    {
+        $structure1 = $this->generateStructure(['subject_name' => '?']);
+        $structure2 = $this->generateStructure(['subject_name' => 'BAR']);
+
+        $this->assertTrue($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_match_if_primary_object_is_a_wildcard()
+    {
+        $structure1 = $this->generateStructure(['primary_object_name' => '?']);
+        $structure2 = $this->generateStructure(['primary_object_name' => 'BAR']);
+
+        $this->assertTrue($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_match_if_secondary_object_is_a_wildcard()
+    {
+        $structure1 = $this->generateStructure(['secondary_object_name' => '?']);
+        $structure2 = $this->generateStructure(['secondary_object_name' => 'BAR']);
+
+        $this->assertTrue($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_match_if_is_negative_is_null()
+    {
+        $structure1 = $this->generateStructure(['is_negative' => null]);
+        $structure2 = $this->generateStructure(['is_negative' => 1]);
+
+        $this->assertTrue($structure1->matchesStructure($structure2));
+    }
+
+    /** @test */
+    public function structures_match_if_is_diminutive_is_null()
+    {
+        $structure1 = $this->generateStructure(['is_diminutive' => null]);
+        $structure2 = $this->generateStructure(['is_diminutive' => 0]);
+
+        $this->assertTrue($structure1->matchesStructure($structure2));
+    }
 
     /*
     |--------------------------------------------------------------------------
