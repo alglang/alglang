@@ -17,22 +17,15 @@ class Feature extends Model
             return $value;
         }
 
+        // First person exclusive doesn't need any more information
         if ($this->person === '21') {
             return $this->person;
         }
 
-        $tokens = [
+        return implode('', [
             $this->person,
-        ];
-
-        if ($this->number) {
-            $tokens[] = ['', 's', 'd', 'p'][$this->number];
-        }
-
-        if ($this->obviative_code) {
-            $tokens[] = ['', '\'', '"'][$this->obviative_code];
-        }
-
-        return implode('', $tokens);
+            ['', 's', 'd', 'p'][$this->number ?? 0],
+            ['', '\'', '"'][$this->obviative_code ?? 0]
+        ]);
     }
 }
