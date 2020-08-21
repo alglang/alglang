@@ -29,18 +29,24 @@ class VerbSearchController extends Controller
             'structures.*.secondary_object_obviative_codes' => 'nullable|size:1',
         ]);
 
-        $params = [];
+        $structureResults = [];
 
-        if (isset($validated['structures'])) {
-            $params = array_merge_recursive(...$validated['structures']);
+        foreach ($validated['structures'] as $structure) {
+            if (isset($validated['languages'])) {
+                $structure['languages'] = $validated['languages'];
+            }
+
+            $structureResults[] = VerbSearch::search($structure);
         }
 
-        if (isset($validated['languages'])) {
-            $params['languages'] = $validated['languages'];
-        }
+        $languages = collect($structureResults)
+            ->flatten(1)
+            ->pluck('language')
+            ->unique('id');
 
-        $results = VerbSearch::search($params);
-
-        return view('search.verbs.forms', ['results' => $results]);
+        return view('search.verbs.forms', [
+            'structureResults' => $structureResults,
+            'languages' => $languages
+        ]);
     }
 }
