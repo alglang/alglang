@@ -19,15 +19,17 @@
                 <alglang-detail-row label="Description">
                     <p>
                         <span>{{ $verbForm->structure->feature_string }}</span>
-                        <span>{{ $verbForm->structure->class->abv }}</span>
-                        <span>{{ $verbForm->structure->order->name }}</span>
-                        <span>{{ $verbForm->structure->mode->name }}</span>
-                        @if($verbForm->structure->is_negative)
-                            <span>(Negative)</span>
-                        @endif
-                        @if($verbForm->structure->is_diminutive)
-                            <span>(Diminutive)</span>
-                        @endif
+                        <a href="{{ $verbForm->paradigm->url }}">
+                            <span>{{ $verbForm->structure->class->abv }}</span>
+                            <span>{{ $verbForm->structure->order->name }}</span>
+                            <span>{{ $verbForm->structure->mode->name }}</span>
+                            @if($verbForm->structure->is_negative)
+                                <span>(Negative)</span>
+                            @endif
+                            @if($verbForm->structure->is_diminutive)
+                                <span>(Diminutive)</span>
+                            @endif
+                        </a>
                     </p>
                 </alglang-detail-row>
 

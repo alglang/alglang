@@ -18,7 +18,7 @@ class VerbSearch
 
     protected function __construct()
     {
-        $this->query = VerbForm::query();
+        $this->query = VerbForm::orderByFeatures();
 
         $this->filters = [
             'languages' => fn($val) => $this->whereIn('language_id', $val),
@@ -27,6 +27,7 @@ class VerbSearch
             'classes' => fn($val) => $this->whereInRelation('structure', 'class_abv', $val),
             'negative' => fn($val) => $this->whereRelation('structure', 'is_negative', $val),
             'diminutive' => fn($val) => $this->whereRelation('structure', 'is_diminutive', $val),
+            'subject' => fn($val) => $val ?: $this->whereNoRelation('structure.subject'),
             'primary_object' => fn($val) => $val ?: $this->whereNoRelation('structure.primaryObject'),
             'secondary_object' => fn($val) => $val ?: $this->whereNoRelation('structure.secondaryObject'),
             'subject_persons' => fn($val) => $this->whereInRelation('structure.subject', 'person', $val),

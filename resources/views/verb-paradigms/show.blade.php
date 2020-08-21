@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <alglang-details title="Nominal paradigm details">
+    <alglang-details title="Verb paradigm details">
         <template v-slot:header>
             <h1 class="text-3xl font-light">
                 {{ $paradigm->name }}
@@ -15,19 +15,9 @@
         </template>
 
         <alglang-detail-page title="Basic details">
-            <alglang-detail-row label="Type">
-                <p>{{ $paradigm->type->name }}</p>
-            </alglang-detail-row>
-
             <alglang-detail-row label="Paradigm">
                 <x-paradigm-table :forms="$paradigm->forms" />
             </alglang-detail-row>
-
-            @if($paradigm->sources->count() > 0)
-                <alglang-detail-row label="Sources">
-                    <x-source-list :sources="$paradigm->sources" />
-                </alglang-detail-row>
-            @endif
         </alglang-detail-page>
     </alglang-details>
 @endsection

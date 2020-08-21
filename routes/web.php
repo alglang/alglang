@@ -12,6 +12,7 @@ use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
+use App\Http\Controllers\VerbParadigmController;
 use App\Http\Controllers\VerbSearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,11 @@ Route::get(
     '/languages/{language:slug}/nominal-forms/{nominalForm:slug}',
     [NominalFormController::class, 'show']
 );
+
+Route::get(
+    '/languages/{language:slug}/verb-paradigms',
+    [VerbParadigmController::class, 'show']
+)->name('verbParadigms.show');
 
 Route::get(
     '/languages/{language:slug}/nominal-paradigms/{nominalParadigm:slug}',

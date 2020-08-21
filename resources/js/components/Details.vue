@@ -88,7 +88,7 @@ export default {
 
     const hash = window.location.hash.substring(1);
     if (!this.pages.some(page => page.hash === hash)) {
-      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}#${this.pages[0].hash}`);
+      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}${window.location.search}#${this.pages[0].hash}`);
     }
 
     this.visit(window.location.hash.substring(1));
