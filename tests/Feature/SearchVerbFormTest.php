@@ -20,6 +20,7 @@ class SearchVerbFormTest extends TestCase
     private $mode;
     private $order;
     private $class;
+    private $subject;
 
     public function setUp(): void
     {
@@ -28,6 +29,7 @@ class SearchVerbFormTest extends TestCase
         $this->mode = factory(VerbMode::class)->create(['name' => 'factory mode']);
         $this->order = factory(VerbOrder::class)->create(['name' => 'factory order']);
         $this->class = factory(VerbClass::class)->create(['abv' => 'fc']);
+        $this->subject = factory(Feature::class)->create(['name' => 'X', 'person' => 'X']);
     }
 
     protected function generateStructure(array $fields = []): VerbStructure
@@ -35,7 +37,8 @@ class SearchVerbFormTest extends TestCase
         return factory(VerbStructure::class)->create(array_merge([
             'mode_name' => $this->mode,
             'order_name' => $this->order,
-            'class_abv' => $this->class
+            'class_abv' => $this->class,
+            'subject_name' => $this->subject
         ], $fields));
     }
 
@@ -44,7 +47,8 @@ class SearchVerbFormTest extends TestCase
         return array_merge([
             'modes' => ['factory mode'],
             'orders' => ['factory order'],
-            'classes' => ['fc']
+            'classes' => ['fc'],
+            'subject_persons' => ['X']
         ], $fields);
     }
 
@@ -59,6 +63,24 @@ class SearchVerbFormTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('search.verbs.forms');
+    }
+
+    /** @test */
+    public function it_shows_the_structure_queries()
+    {
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                [
+                    'subject_persons' => ['X'],
+                    'classes' => ['TA'],
+                    'orders' => ['Conjunct'],
+                    'modes' => ['Indicative']
+                ]
+            ]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['X', 'TA', 'Conjunct', 'Indicative']);
     }
 
     /** @test */
@@ -382,9 +404,25 @@ class SearchVerbFormTest extends TestCase
     }
 
     /** @test */
+    public function subject_person_must_be_included()
+    {
+        $response = $this->get(route('search.verbs.forms', [
+            'structures' => [
+                $this->generateQuery(['subject_persons' => null])
+            ]
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('structures.*.subject_persons');
+    }
+
+    /** @test */
     public function it_filters_search_results_by_subject_number()
     {
-        $feature = factory(Feature::class)->create(['number' => 1]);
+        $feature = factory(Feature::class)->create([
+            'person' => $this->subject->person,
+            'number' => 1
+        ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
@@ -395,6 +433,7 @@ class SearchVerbFormTest extends TestCase
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'subject_name' => factory(Feature::class)->create([
+                    'person' => $this->subject->person,
                     'number' => 2
                 ])
             ])
@@ -426,7 +465,10 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_subject_obviative_code()
     {
-        $feature = factory(Feature::class)->create(['obviative_code' => 1]);
+        $feature = factory(Feature::class)->create([
+            'person' => $this->subject->person,
+            'obviative_code' => 1
+        ]);
         factory(VerbForm::class)->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
@@ -437,6 +479,7 @@ class SearchVerbFormTest extends TestCase
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'subject_name' => factory(Feature::class)->create([
+                    'person' => $this->subject->person,
                     'obviative_code' => null
                 ])
             ])

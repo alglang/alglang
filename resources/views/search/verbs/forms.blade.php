@@ -4,13 +4,18 @@
     <section class="bg-white p-6 w-fit m-auto">
 
         <table>
-            <thead class="bg-gray-700 text-gray-300 uppercase text-xs">
+            <thead class="bg-gray-700 text-gray-300 text-sm tracking-wide">
                 <tr>
-                    <th class="px-3 py-2 font-semibold tracking-wide">
+                    <th class="px-3 py-2 font-medium">
                         Language
                     </th>
-                    @foreach($structureResults as $results)
-                        <td></td>
+                    @foreach($columns as $column)
+                        <th class="px-3 py-2 font-medium">
+                            {{ $column['query']->feature_string }}
+                            {{ $column['query']->class_abv }}
+                            {{ $column['query']->order_name }}
+                            {{ $column['query']->mode_name }}
+                        </th>
                     @endforeach
                 </tr>
             </thead>
@@ -20,10 +25,10 @@
                         <td class="px-3 py-2 {{ $loop->even ? 'bg-gray-400' : 'bg-gray-300' }} text-gray-700 text-sm tracking-wide uppercase font-semibold">
                             {{ $language->name }}
                         </td>
-                        @foreach($structureResults as $results)
+                        @foreach($columns as $column)
                             <td class="px-3 py-2">
                                 <ul>
-                                    @foreach($results->where('language_id', $language->id) as $result)
+                                    @foreach($column['results']->where('language_id', $language->id) as $result)
                                         <li>
                                             <x-preview-link :model="$result" class="text-gray-800">
                                                 {{ $result->shape }}

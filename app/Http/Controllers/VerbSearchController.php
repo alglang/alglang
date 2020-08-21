@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\VerbSearch;
+use App\VerbStructure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -15,37 +16,40 @@ class VerbSearchController extends Controller
         $validated = request()->validate([
             'languages' => 'array',
             'structures' => 'required',
-            'structures.*.modes' => 'required|size:1',
-            'structures.*.classes' => 'required|size:1',
-            'structures.*.orders' => 'required|size:1',
-            'structures.*.subject_persons' => 'nullable|size:1',
-            'structures.*.subject_numbers' => 'nullable|size:1',
-            'structures.*.subject_obviative_codes' => 'nullable|size:1',
-            'structures.*.primary_object_persons' => 'nullable|size:1',
-            'structures.*.primary_object_numbers' => 'nullable|size:1',
-            'structures.*.primary_object_obviative_codes' => 'nullable|size:1',
-            'structures.*.secondary_object_persons' => 'nullable|size:1',
-            'structures.*.secondary_object_numbers' => 'nullable|size:1',
-            'structures.*.secondary_object_obviative_codes' => 'nullable|size:1',
+            'structures.*.modes' => 'required|array|size:1',
+            'structures.*.classes' => 'required|array|size:1',
+            'structures.*.orders' => 'required|array|size:1',
+            'structures.*.subject_persons' => 'required|array|size:1',
+            'structures.*.subject_numbers' => 'nullable|array|size:1',
+            'structures.*.subject_obviative_codes' => 'nullable|array|size:1',
+            'structures.*.primary_object_persons' => 'nullable|array|size:1',
+            'structures.*.primary_object_numbers' => 'nullable|array|size:1',
+            'structures.*.primary_object_obviative_codes' => 'nullable|array|size:1',
+            'structures.*.secondary_object_persons' => 'nullable|array|size:1',
+            'structures.*.secondary_object_numbers' => 'nullable|array|size:1',
+            'structures.*.secondary_object_obviative_codes' => 'nullable|array|size:1',
         ]);
 
-        $structureResults = [];
+        $columns = [];
 
         foreach ($validated['structures'] as $structure) {
             if (isset($validated['languages'])) {
                 $structure['languages'] = $validated['languages'];
             }
 
-            $structureResults[] = VerbSearch::search($structure);
+            $columns[] = [
+                'query' => VerbStructure::fromSearchQuery($structure),
+                'results' => VerbSearch::search($structure)
+            ];
         }
 
-        $languages = collect($structureResults)
+        $languages = collect(array_map(fn($column) => $column['results'], $columns))
             ->flatten(1)
             ->pluck('language')
             ->unique('id');
 
         return view('search.verbs.forms', [
-            'structureResults' => $structureResults,
+            'columns' => $columns,
             'languages' => $languages
         ]);
     }
