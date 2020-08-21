@@ -11,64 +11,32 @@ class VerbStructure extends Model
 
     public static function fromSearchQuery(array $query): self
     {
-        $params = [];
+        $params = [
+            'class_abv'  => isset($query['classes']) ? $query['classes'][0] : null,
+            'order_name' => isset($query['orders'])  ? $query['orders'][0]  : null,
+            'mode_name'  => isset($query['modes'])   ? $query['modes'][0]   : null
+        ];
 
-        if (isset($query['classes'])) {
-            $params['class_abv'] = $query['classes'][0];
-        }
+        foreach (['subject', 'primary_object', 'secondary_object'] as $feature) {
+            if (isset($query[$feature]) && !$query[$feature]) {
+                continue;
+            }
 
-        if (isset($query['orders'])) {
-            $params['order_name'] = $query['orders'][0];
-        }
+            if (!(isset($query["{$feature}_persons"])
+                || isset($query["{$feature}_numbers"])
+                || isset($query["{$feature}_obviative_codes"])
+            )) {
+                $params["{$feature}_name"] = '?';
+                continue;
+            }
 
-        if (isset($query['modes'])) {
-            $params['mode_name'] = $query['modes'][0];
-        }
-
-        if (isset($query['subject_persons'])
-            || isset($query['subject_numbers'])
-            || isset($query['subject_obviative_codes'])
-        ) {
-            $subject = new Feature([
-                'person' => isset($query['subject_persons']) ? $query['subject_persons'][0] : null,
-                'number' => isset($query['subject_numbers']) ? $query['subject_numbers'][0] : null,
-                'obviative_code' => isset($query['subject_obviative_codes']) ? $query['subject_obviative_codes'][0] : null
+            $featureModel = new Feature([
+                'person' =>         isset($query["{$feature}_persons"])         ? $query["{$feature}_persons"][0]         : null,
+                'number' =>         isset($query["{$feature}_numbers"])         ? $query["{$feature}_numbers"][0]         : null,
+                'obviative_code' => isset($query["{$feature}_obviative_codes"]) ? $query["{$feature}_obviative_codes"][0] : null
             ]);
-            $params['subject_name'] = $subject->name;
-        } else {
-            $params['subject_name'] = '?';
-        }
 
-        if (isset($query['primary_object']) && !$query['primary_object']) {
-            $params['primary_object'] = null;
-        } elseif (isset($query['primary_object_persons'])
-            || isset($query['primary_object_numbers'])
-            || isset($query['primary_object_obviative_codes'])
-        ) {
-            $primaryObject = new Feature([
-                'person' => isset($query['primary_object_persons']) ? $query['primary_object_persons'][0] : null,
-                'number' => isset($query['primary_object_numbers']) ? $query['primary_object_numbers'][0] : null,
-                'obviative_code' => isset($query['primary_object_obviative_codes']) ? $query['primary_object_obviative_codes'][0] : null
-            ]);
-            $params['primary_object_name'] = $primaryObject->name;
-        } else {
-            $params['primary_object_name'] = '?';
-        }
-
-        if (isset($query['secondary_object']) && !$query['secondary_object']) {
-            $params['secondary_object'] = null;
-        } elseif (isset($query['secondary_object_persons'])
-            || isset($query['secondary_object_numbers'])
-            || isset($query['secondary_object_obviative_codes'])
-        ) {
-            $secondaryObject = new Feature([
-                'person' => isset($query['secondary_object_persons']) ? $query['secondary_object_persons'][0] : null,
-                'number' => isset($query['secondary_object_numbers']) ? $query['secondary_object_numbers'][0] : null,
-                'obviative_code' => isset($query['secondary_object_obviative_codes']) ? $query['secondary_object_obviative_codes'][0] : null
-            ]);
-            $params['secondary_object_name'] = $secondaryObject->name;
-        } else {
-            $params['secondary_object_name'] = '?';
+            $params["{$feature}_name"] = $featureModel->name;
         }
 
         $structure = new self($params);
