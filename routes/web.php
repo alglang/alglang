@@ -27,56 +27,85 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| Static routes
+|--------------------------------------------------------------------------
+|
+*/
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
-
-Route::get('/groups/{group:slug}', [GroupController::class, 'show'])->name('groups.show');
-Route::post('/groups', [GroupController::class, 'create']);
-
-Route::get('/languages/create', [LanguageController::class, 'create'])->name('languages.create');
-Route::get('/languages/{language:slug}', [LanguageController::class, 'show'])->name('languages.show');
-
-Route::get(
-    '/languages/{language:slug}/morphemes/{morpheme:slug}',
-    [MorphemeController::class, 'show']
-)->name('morphemes.show');
-
-Route::get(
-    '/languages/{language:slug}/verb-forms/{verbForm:slug}',
-    [VerbFormController::class, 'show']
-)->name('verb-forms.show');
-
-Route::get(
-    '/languages/{language:slug}/nominal-forms/{nominalForm:slug}',
-    [NominalFormController::class, 'show']
-);
-
-Route::get(
-    '/languages/{language:slug}/verb-paradigms',
-    [VerbParadigmController::class, 'show']
-)->name('verbParadigms.show');
-
-Route::get(
-    '/languages/{language:slug}/nominal-paradigms/{nominalParadigm:slug}',
-    [NominalParadigmController::class, 'show']
-);
-
-Route::get(
-    '/languages/{language:slug}/verb-forms/{verbForm:slug}/examples/{example:slug}',
-    [ExampleController::class, 'show']
-);
-
-Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.show');
-
-Route::get('/slots/{slot}', [SlotController::class, 'show'])->name('slots.show');
-
-Route::get('/sources', [SourceController::class, 'index']);
-Route::get('/bibliography', [SourceController::class, 'index'])->name('bibliography');
-Route::get('/sources/{source:slug}', [SourceController::class, 'show']);
-
 Route::view('/about', 'about')->name('about');
 Route::view('/verb-forms', 'verb-forms.index')->name('verb-forms');
 Route::view('/nominal-forms', 'nominal-forms.index')->name('nominal-forms');
 Route::view('/phonology', 'phonemes.index')->name('phonology');
+
+/*
+|--------------------------------------------------------------------------
+| Model routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::prefix('groups')->group(function () {
+    Route::get('{group:slug}', [GroupController::class, 'show'])->name('groups.show');
+    Route::post('', [GroupController::class, 'create']);
+});
+
+Route::prefix('languages')->group(function () {
+    Route::get('create', [LanguageController::class, 'create'])->name('languages.create');
+
+    Route::prefix('{language:slug}')->group(function () {
+        Route::get('', [LanguageController::class, 'show'])->name('languages.show');
+        Route::get('nominal-forms/{nominalForm:slug}', [NominalFormController::class, 'show']);
+        Route::get('nominal-paradigms/{nominalParadigm:slug}', [NominalParadigmController::class, 'show']);
+        Route::get('morphemes/{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
+        Route::get('verb-forms/{verbForm:slug}', [VerbFormController::class, 'show'])->name('verb-forms.show');
+        Route::get('verb-forms/{verbForm:slug}/examples/{example:slug}', [ExampleController::class, 'show']);
+        Route::get('verb-paradigms', [VerbParadigmController::class, 'show'])->name('verbParadigms.show');
+    });
+});
+
+Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.show');
+Route::get('/slots/{slot}', [SlotController::class, 'show'])->name('slots.show');
+
+Route::get('/bibliography', [SourceController::class, 'index'])->name('bibliography');
+Route::prefix('sources')->group(function () {
+    Route::get('', [SourceController::class, 'index']);
+    Route::get('{source:slug}', [SourceController::class, 'show']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Search routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::prefix('search')->group(function () {
+    Route::prefix('verbs')->group(function () {
+        Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
+        Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
+    });
+});
+/*
+|--------------------------------------------------------------------------
+| Auth routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');
+Route::get('/auth/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| Dead routes
+|--------------------------------------------------------------------------
+|
+*/
 
 Route::get('/resources', function () {
     abort(404);
@@ -90,19 +119,12 @@ Route::get('/search/verbs/paradigm', function () {
     abort(404);
 })->name('search.verbs.paradigm');
 
-Route::get(
-    '/search/verbs/forms/results',
-    [VerbSearchController::class, 'formResults']
-)->name('search.verbs.form-results');
-Route::get(
-    '/search/verbs/forms',
-    [VerbSearchController::class, 'forms']
-)->name('search.verbs.forms');
-
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');
-Route::get('/auth/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+/*
+|--------------------------------------------------------------------------
+| Testing routes
+|--------------------------------------------------------------------------
+|
+*/
 
 if (app('env') === 'testing') {
     Route::get('/500', function () {
