@@ -21,13 +21,12 @@ class ViewNominalParadigmTest extends TestCase
     /** @test */
     public function it_shows_a_nominal_paradigm()
     {
-        $this->withoutExceptionHandling();
         $paradigm = factory(NominalParadigm::class)->create([
             'name' => 'Test Paradigm Name',
             'language_id' => factory(Language::class)->create([
                 'name' => 'Test Language'
             ]),
-            'paradigm_type_id' => factory(NominalParadigmType::class)->create([
+            'paradigm_type_name' => factory(NominalParadigmType::class)->create([
                 'name' => 'Test Paradigm Type'
             ])
         ]);

@@ -53,7 +53,7 @@ class NominalParadigm extends Model
 
     public function type(): Relation
     {
-        return $this->belongsTo(NominalParadigmType::class, 'paradigm_type_id');
+        return $this->belongsTo(NominalParadigmType::class, 'paradigm_type_name');
     }
 
     public function forms(): Relation
