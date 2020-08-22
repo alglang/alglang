@@ -29,7 +29,7 @@
                             <td class="px-3 py-2">
                                 <ul>
                                     @foreach($column['results']->where('language_id', $language->id) as $result)
-                                        <li>
+                                        <li class="my-2">
                                             <x-preview-link :model="$result" class="text-gray-800">
                                                 {{ $result->shape }}
                                             </x-preview-link>
