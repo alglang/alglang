@@ -17,7 +17,7 @@ class CreateVerbStructuresTable extends Migration
             $table->id();
             $table->string('class_abv');
             $table->string('order_name');
-            $table->unsignedInteger('mode_name');
+            $table->string('mode_name');
             $table->string('subject_name');
             $table->string('primary_object_name')->nullable();
             $table->string('secondary_object_name')->nullable();
