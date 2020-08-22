@@ -44,7 +44,10 @@ class NominalForm extends Form
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/nominal-forms/{$this->slug}";
+        return route('nominalForms.show', [
+            'language' => $this->language->slug,
+            'nominalForm' => $this->slug
+        ], false);
     }
 
     /*

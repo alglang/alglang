@@ -36,7 +36,10 @@ class NominalParadigm extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/nominal-paradigms/{$this->slug}";
+        return route('nominalParadigms.show', [
+            'language' => $this->language->slug,
+            'nominalParadigm' => $this->slug
+        ], false);
     }
 
     /*

@@ -63,7 +63,7 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('nominal-forms')->group(function () {
-            Route::get('{nominalForm:slug}', [NominalFormController::class, 'show']);
+            Route::get('{nominalForm:slug}', [NominalFormController::class, 'show'])->name('nominalForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
@@ -71,11 +71,14 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('nominal-paradigms')->group(function () {
-            Route::get('{nominalParadigm:slug}', [NominalParadigmController::class, 'show']);
+            Route::get(
+                '{nominalParadigm:slug}',
+                [NominalParadigmController::class, 'show']
+            )->name('nominalParadigms.show');
         });
 
         Route::prefix('verb-forms')->group(function () {
-            Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verb-forms.show');
+            Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verbForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
@@ -97,7 +100,7 @@ Route::prefix('slots')->group(function () {
 Route::get('/bibliography', [SourceController::class, 'index'])->name('bibliography');
 Route::prefix('sources')->group(function () {
     Route::get('', [SourceController::class, 'index']);
-    Route::get('{source:slug}', [SourceController::class, 'show']);
+    Route::get('{source:slug}', [SourceController::class, 'show'])->name('sources.show');
 });
 
 /*

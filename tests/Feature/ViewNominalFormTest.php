@@ -20,6 +20,15 @@ class ViewNominalFormTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function the_correct_view_is_loaded()
+    {
+        $form = factory(NominalForm::class)->create();
+        $response = $this->get($form->url);
+        $response->assertOk();
+        $response->assertViewIs('nominal-forms.show');
+    }
+
+    /** @test */
     public function a_nominal_form_can_be_viewed()
     {
         $language = factory(Language::class)->create(['name' => 'Test Language']);
@@ -39,8 +48,6 @@ class ViewNominalFormTest extends TestCase
 
         $response = $this->get($nominalForm->url);
 
-        $response->assertOk();
-        $response->assertViewIs('nominal-forms.show');
         $response->assertViewHas('form', $nominalForm);
         $response->assertSee('N-test');
         $response->assertSee('Test Language');

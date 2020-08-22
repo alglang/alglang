@@ -44,7 +44,10 @@ class VerbForm extends Form
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/verb-forms/{$this->slug}";
+        return route('verbForms.show', [
+            'language' => $this->language->slug,
+            'verbForm' => $this->slug
+        ], false);
     }
 
     public function getParadigmAttribute(): VerbParadigm
