@@ -13,6 +13,12 @@ class FeatureSeeder extends Seeder
     {
         DB::table('features')->insert([
             [
+                'name' => '3',
+                'person' => '3',
+                'number' => null,
+                'obviative_code' => null
+            ],
+            [
                 'name' => '3p',
                 'person' => '3',
                 'number' => 3,
@@ -22,6 +28,12 @@ class FeatureSeeder extends Seeder
                 'name' => '3s',
                 'person' => '3',
                 'number' => 1,
+                'obviative_code' => null
+            ],
+            [
+                'name' => '1',
+                'person' => '1',
+                'number' => null,
                 'obviative_code' => null
             ],
             [

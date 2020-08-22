@@ -90,22 +90,14 @@ Route::get('/search/verbs/paradigm', function () {
     abort(404);
 })->name('search.verbs.paradigm');
 
-Route::get('/search/verbs/forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
-Route::get('/sandbox', function () {
-    $forms = \App\VerbForm::with('language', 'structure', 'structure.subject')->get();
-    $structures = $forms->unique('structure_id')->map(fn($form) => [
-        'orders' => [$form->structure->order_name],
-        'modes' => [$form->structure->mode_name],
-        'classes' => [$form->structure->class_abv],
-        'subject_persons' => [$form->structure->subject->person],
-        'subject_numbers' => [$form->structure->subject->number],
-        'secondary_object' => false
-    ]);
-    return redirect(route('search.verbs.forms', [
-        'languages' => $forms->pluck('language_id')->toArray(),
-        'structures' => $structures->toArray()
-    ]));
-});
+Route::get(
+    '/search/verbs/forms/results',
+    [VerbSearchController::class, 'formResults']
+)->name('search.verbs.form-results');
+Route::get(
+    '/search/verbs/forms',
+    [VerbSearchController::class, 'forms']
+)->name('search.verbs.forms');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');

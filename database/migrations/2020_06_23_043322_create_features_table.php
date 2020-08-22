@@ -14,7 +14,6 @@ class CreateFeaturesTable extends Migration
     public function up()
     {
         Schema::create('features', function (Blueprint $table) {
-            $table->id();
             $table->string('name');
             $table->string('person')->nullable();
             $table->integer('obviative_code')->nullable();

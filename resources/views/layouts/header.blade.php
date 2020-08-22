@@ -62,7 +62,7 @@
             </ul>
         </div>
 
-        <a href="#" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">
+        <a href="{{ route('search.verbs.forms') }}" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">
             <span>Search</span>
         </a>
 

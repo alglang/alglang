@@ -57,18 +57,18 @@ class SearchVerbFormTest extends TestCase
     {
         $language = factory(Language::class)->create();
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [$this->generateQuery()]
 		]));
 
         $response->assertOk();
-        $response->assertViewIs('search.verbs.forms');
+        $response->assertViewIs('search.verbs.form-results');
     }
 
     /** @test */
     public function it_shows_the_structure_queries()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 [
                     'subject_persons' => ['X'],
@@ -86,7 +86,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function it_returns_a_302_if_it_has_no_structures()
     {
-        $response = $this->get(route('search.verbs.forms'), [
+        $response = $this->get(route('search.verbs.form-results'), [
             'languages' => ['foo']
         ]);
 
@@ -112,7 +112,7 @@ class SearchVerbFormTest extends TestCase
             'structure_id' => $this->generateStructure()
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'languages' => [$language2->id, $language1->id],
             'structures' => [$this->generateQuery()]
         ]));
@@ -137,7 +137,7 @@ class SearchVerbFormTest extends TestCase
             'structure_id' => $this->generateStructure()
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'languages' => [$language->id],
             'structures' => [$this->generateQuery()]
 		]));
@@ -164,7 +164,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['modes' => [$mode->name]])
 			]
@@ -178,7 +178,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_mode_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['modes' => ['foo', 'bar']])
             ]
@@ -191,7 +191,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function mode_must_be_included()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['modes' => null])
             ]
@@ -218,7 +218,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['orders' => [$order->name]])
             ]
@@ -232,7 +232,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_order_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['orders' => ['foo', 'bar']])
             ]
@@ -245,7 +245,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function order_must_be_included()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['orders' => null])
             ]
@@ -272,7 +272,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['classes' => [$class->abv]])
 			]
@@ -286,7 +286,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_class_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['classes' => ['foo', 'bar']])
             ]
@@ -298,7 +298,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function class_must_be_included()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['classes' => null])
             ]
@@ -324,7 +324,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['negative' => false])
             ]
@@ -351,7 +351,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['diminutive' => true])
             ]
@@ -381,7 +381,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['subject_persons' => [$feature->person]])
 			]
@@ -395,7 +395,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_subject_person_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['subject_persons' => ['foo', 'bar']])
             ]
@@ -407,7 +407,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function subject_person_must_be_included()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['subject_persons' => null])
             ]
@@ -440,7 +440,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['subject_numbers' => [$feature->number]])
 			]
@@ -454,7 +454,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_subject_number_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['subject_numbers' => ['foo', 'bar']])
             ]
@@ -486,7 +486,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['subject_obviative_codes' => [$feature->obviative_code]])
 			]
@@ -500,7 +500,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_subject_obviative_code_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['subject_obviative_codes' => ['foo', 'bar']])
             ]
@@ -527,7 +527,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
                 $this->generateQuery([
                     'subject_persons' => [$feature->person],
@@ -560,7 +560,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['primary_object_persons' => [$feature->person]])
 			]
@@ -574,7 +574,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_primary_object_person_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['primary_object_persons' => ['foo', 'bar']])
             ]
@@ -602,7 +602,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['primary_object_numbers' => [$feature->number]])
 			]
@@ -616,7 +616,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_primary_object_number_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['primary_object_numbers' => ['foo', 'bar']])
             ]
@@ -644,7 +644,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['primary_object_obviative_codes' => [$feature->obviative_code]])
 			]
@@ -658,7 +658,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_primary_object_obviative_code_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['primary_object_obviative_codes' => ['foo', 'bar']])
             ]
@@ -685,7 +685,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
                 $this->generateQuery([
                     'subject_persons' => [$feature->person],
@@ -718,7 +718,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['secondary_object_persons' => [$feature->person]])
 			]
@@ -732,7 +732,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_secondary_object_person_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['secondary_object_persons' => ['foo', 'bar']])
             ]
@@ -760,7 +760,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['secondary_object_numbers' => [$feature->number]])
 			]
@@ -774,7 +774,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_secondary_object_number_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['secondary_object_numbers' => ['foo', 'bar']])
             ]
@@ -802,7 +802,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
 			'structures' => [
 				$this->generateQuery(['secondary_object_obviative_codes' => [$feature->obviative_code]])
 			]
@@ -816,7 +816,7 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function only_one_secondary_object_obviative_code_is_allowed_per_structure()
     {
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery(['secondary_object_obviative_codes' => ['foo', 'bar']])
             ]
@@ -839,7 +839,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery([
                     'subject_persons' => ['1'],
@@ -869,7 +869,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery([
                     'subject_persons' => [$this->subject->person],
@@ -900,7 +900,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery([
                     'subject_persons' => [$this->subject->person],
@@ -930,7 +930,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery([
                     'subject_persons' => ['1'],
@@ -960,7 +960,7 @@ class SearchVerbFormTest extends TestCase
             ])
         ]);
 
-        $response = $this->get(route('search.verbs.forms', [
+        $response = $this->get(route('search.verbs.form-results', [
             'structures' => [
                 $this->generateQuery([
                     'subject_persons' => ['1'],

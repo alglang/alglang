@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Feature;
+use App\Language;
+use App\VerbClass;
+use App\VerbMode;
+use App\VerbOrder;
 use App\VerbSearch;
 use App\VerbStructure;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +17,23 @@ use Illuminate\View\View;
 class VerbSearchController extends Controller
 {
     public function forms(): View
+    {
+        $languages = Language::all();
+        $classes = VerbClass::all();
+        $modes = VerbMode::all();
+        $orders = VerbOrder::all();
+        $features = Feature::all();
+
+        return view('search.verbs.forms', [
+            'languages' => $languages,
+            'classes' => $classes,
+            'modes' => $modes,
+            'orders' => $orders,
+            'features' => $features
+        ]);
+    }
+
+    public function formResults(): View
     {
         $validated = request()->validate([
             'languages' => 'array',
@@ -48,7 +70,7 @@ class VerbSearchController extends Controller
             ->pluck('language')
             ->unique('id');
 
-        return view('search.verbs.forms', [
+        return view('search.verbs.form-results', [
             'columns' => $columns,
             'languages' => $languages
         ]);

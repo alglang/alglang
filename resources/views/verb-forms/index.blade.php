@@ -25,7 +25,7 @@
             </li>
 
             <li class="mb-4">
-                If you're looking for a <b>particular verb form</b> in one or more languages, <a href="#">search for a verb form</a>.
+                If you're looking for a <b>particular verb form</b> in one or more languages, <a href="{{ route('search.verbs.forms') }}">search for a verb form</a>.
 
                 <aside class="bg-yellow-200 mt-2 p-3 w-fit" aria-labelledby="particular-verb-form-example">
                     <h2 class="font-semibold inline" id="particular-verb-form-example">
