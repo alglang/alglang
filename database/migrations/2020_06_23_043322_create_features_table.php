@@ -18,7 +18,6 @@ class CreateFeaturesTable extends Migration
             $table->string('person')->nullable();
             $table->integer('obviative_code')->nullable();
             $table->integer('number')->nullable();
-            $table->timestamps();
         });
     }
 

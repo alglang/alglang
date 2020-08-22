@@ -18,4 +18,6 @@ class NominalParadigmType extends Model
     protected $keyType = 'str';
 
     public $incrementing = false;
+
+    public $timestamps = false;
 }

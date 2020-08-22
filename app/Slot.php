@@ -21,6 +21,8 @@ class Slot extends Model
 
     protected $appends = ['url'];
 
+    public $timestamps = false;
+
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors

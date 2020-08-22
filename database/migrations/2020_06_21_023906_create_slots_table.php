@@ -19,7 +19,6 @@ class CreateSlotsTable extends Migration
             $table->string('name');
             $table->string('colour')->nullable();
             $table->text('description')->nullable();
-            $table->timestamps();
         });
     }
 

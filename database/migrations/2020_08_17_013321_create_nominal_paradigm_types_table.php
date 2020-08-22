@@ -15,7 +15,6 @@ class CreateNominalParadigmTypesTable extends Migration
     {
         Schema::create('nominal_paradigm_types', function (Blueprint $table) {
             $table->string('name');
-            $table->timestamps();
         });
     }
 

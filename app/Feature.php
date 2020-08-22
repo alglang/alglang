@@ -21,6 +21,8 @@ class Feature extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors
