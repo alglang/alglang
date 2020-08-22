@@ -5,6 +5,8 @@ namespace App;
 use Adoxography\Disambiguatable\Disambiguatable;
 use App\Traits\HasParent;
 use App\Traits\Sourceable;
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,8 +15,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class Morpheme extends Model
+class Morpheme extends Model implements CachableAttributes
 {
+    use CachesAttributes;
     use Disambiguatable;
     use HasParent;
     use HasSlug;
@@ -26,6 +29,11 @@ class Morpheme extends Model
 
     protected $appends = ['url'];
 
+    /** @var array */
+    protected $cachableAttributes = [
+        'glosses'
+    ];
+
     /**
      * @var int
      */
@@ -35,11 +43,6 @@ class Morpheme extends Model
      * @var int
      */
     public $nominal_forms_count;
-
-    /**
-     * @var Collection
-     */
-    protected $glosses_;
 
     /**
      * @var bool
@@ -99,18 +102,14 @@ class Morpheme extends Model
 
     public function getGlossesAttribute(): Collection
     {
-        if (isset($this->glosses_)) {
-            return $this->glosses_;
-        }
+        return $this->remember('glosses', 0, function () {
+            $abvs = collect(explode('.', $this->gloss));
+            $existing = Gloss::find($abvs);
 
-        $abvs = collect(explode('.', $this->gloss));
-        $existing = Gloss::find($abvs);
-
-        $this->glosses_ = $abvs->map(function ($abv) use ($existing) {
-            return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
+            return $abvs->map(function ($abv) use ($existing) {
+                return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
+            });
         });
-
-        return $this->glosses_;
     }
 
     /*

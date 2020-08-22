@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e936f05fdc2c2d6a4063c511816e5a3a",
+    "content-hash": "b0d90f12b0d4cc1f00b4147aa8dd258a",
     "packages": [
         {
             "name": "adoxography/disambiguatable",
@@ -117,6 +117,80 @@
                 "stack"
             ],
             "time": "2020-05-31T07:17:05+00:00"
+        },
+        {
+            "name": "astrotomic/laravel-cachable-attributes",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Astrotomic/laravel-cachable-attributes.git",
+                "reference": "7082cf7d9c194fd3467ad1ac1e1883293a07ca2a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Astrotomic/laravel-cachable-attributes/zipball/7082cf7d9c194fd3467ad1ac1e1883293a07ca2a",
+                "reference": "7082cf7d9c194fd3467ad1ac1e1883293a07ca2a",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/cache": "5.8.* || ^6.0 || ^7.0",
+                "illuminate/contracts": "5.8.* || ^6.0 || ^7.0",
+                "illuminate/database": "5.8.* || ^6.0 || ^7.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "illuminate/support": "5.8.* || ^6.0 || ^7.0",
+                "orchestra/testbench": "3.8.* || ^4.0 || ^5.0",
+                "phpunit/phpunit": "^8.3 || ^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Astrotomic\\CachableAttributes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tom Witkowski",
+                    "email": "gummibeer@astrotomic.info",
+                    "homepage": "https://gummibeer.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Allows to cache attribute accessor values in an easy way.",
+            "homepage": "https://astrotomic.info",
+            "keywords": [
+                "accessor",
+                "attribute",
+                "cache",
+                "eloquent",
+                "getter",
+                "laravel",
+                "model"
+            ],
+            "funding": [
+                {
+                    "url": "https://offset.earth/treeware",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Gummibeer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://issuehunt.io/r/astrotomic",
+                    "type": "issuehunt"
+                },
+                {
+                    "url": "https://opencollective.com/astrotomic",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2020-05-28T14:33:44+00:00"
         },
         {
             "name": "brick/math",

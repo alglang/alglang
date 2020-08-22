@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,16 +16,18 @@ use Illuminate\Support\Collection;
  * @property string $primary_object_name
  * @property string $secondary_object_name
  */
-class VerbParadigm extends VerbStructure
+class VerbParadigm extends VerbStructure implements CachableAttributes
 {
+    use CachesAttributes;
+
+    /** @var array */
+    protected $cachableAttributes = [
+        'forms',
+        'language'
+    ];
+
     /** @var int */
     public $language_id;
-
-    /** @var Collection */
-    private $_forms;
-
-    /** @var Language */
-    private $_language;
 
     public function __construct(array $attributes = [])
     {
@@ -79,33 +83,27 @@ class VerbParadigm extends VerbStructure
 
     public function getLanguageAttribute(): Language
     {
-        if (isset($this->_language)) {
-            return $this->_language;
-        }
-
-        $this->_language = Language::find($this->language_id);
-        return $this->_language;
+        return $this->remember('language', 0, function () {
+            return Language::find($this->language_id);
+        });
     }
 
     public function getFormsAttribute(): Collection
     {
-        if (isset($this->_forms)) {
-            return $this->_forms;
-        }
+        return $this->remember('forms', 0, function () {
+            $query = [
+                'languages' => [$this->language_id],
+                'modes' => [$this->mode_name],
+                'orders' => [$this->order_name],
+                'classes' => [$this->class_abv],
+                'negative' => (bool)$this->is_negative,
+                'diminutive' => (bool)$this->is_diminutive,
+                'subject' => $this->subject_name === '?',
+                'primary_object' => $this->primary_object_name === '?',
+                'secondary_object' => $this->secondary_object_name === '?',
+            ];
 
-        $query = [
-            'languages' => [$this->language_id],
-            'modes' => [$this->mode_name],
-            'orders' => [$this->order_name],
-            'classes' => [$this->class_abv],
-            'negative' => (bool)$this->is_negative,
-            'diminutive' => (bool)$this->is_diminutive,
-            'subject' => $this->subject_name === '?',
-            'primary_object' => $this->primary_object_name === '?',
-            'secondary_object' => $this->secondary_object_name === '?',
-        ];
-
-        $this->_forms = VerbSearch::search($query);
-        return $this->_forms;
+            return VerbSearch::search($query);
+        });
     }
 }

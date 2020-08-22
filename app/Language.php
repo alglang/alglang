@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Traits\HasParent;
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -10,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class Language extends Model
+class Language extends Model implements CachableAttributes
 {
+    use CachesAttributes;
     use HasParent;
     use HasSlug;
 
@@ -24,14 +27,16 @@ class Language extends Model
     ];
 
     /** @var array */
+    protected $cachableAttributes = [
+        'sources'
+    ];
+
+    /** @var array */
     protected $sourcedRelations = [
         'morphemes',
         'forms',
         'nominalParadigms'
     ];
-
-    /** @var Collection */
-    private $_sources;
 
     /** @var int */
     public $sources_count;
@@ -72,12 +77,9 @@ class Language extends Model
 
     public function getSourcesAttribute(): Collection
     {
-        if (isset($this->_sources)) {
-            return $this->_sources;
-        }
-
-        $this->_sources = $this->sources()->get();
-        return $this->_sources;
+        return $this->remember('sources', 0, function () {
+            return $this->sources()->get();
+        });
     }
 
     public function getVStemAttribute(): Morpheme

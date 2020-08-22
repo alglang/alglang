@@ -10,6 +10,7 @@ use App\VerbMode;
 use App\VerbOrder;
 use App\VerbParadigm;
 use App\VerbStructure;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -255,5 +256,41 @@ class VerbParadigmTest extends TestCase
 
         $this->assertCount(1, $paradigm->forms);
         $this->assertEquals($form1->id, $paradigm->forms[0]->id);
+    }
+
+    /** @test */
+    public function it_caches_the_forms_attribute()
+    {
+        $paradigm = new VerbParadigm([
+            'language_id' => factory(Language::class)->create()->id
+        ]);
+
+        DB::connection()->enableQueryLog();
+
+        $paradigm->forms;
+        $queryCount = count(DB::getQueryLog());
+
+        $paradigm->forms;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
+    }
+
+    /** @test */
+    public function it_caches_the_language_attribute()
+    {
+        $paradigm = new VerbParadigm([
+            'language_id' => factory(Language::class)->create()->id
+        ]);
+
+        DB::connection()->enableQueryLog();
+
+        $paradigm->language;
+        $queryCount = count(DB::getQueryLog());
+
+        $paradigm->language;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
     }
 }

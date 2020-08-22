@@ -9,6 +9,7 @@ use App\NominalParadigm;
 use App\NominalStructure;
 use App\Source;
 use App\VerbForm;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -75,5 +76,21 @@ class LanguageTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $this->assertEquals('V-', $language->vStem->shape);
+    }
+
+    /** @test */
+    public function it_caches_the_sources_attribute()
+    {
+        $language = factory(Language::class)->create();
+
+        DB::connection()->enableQueryLog();
+
+        $language->sources;
+        $queryCount = count(DB::getQueryLog());
+
+        $language->sources;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
     }
 }
