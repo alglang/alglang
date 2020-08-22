@@ -17,7 +17,10 @@
         "lint-css": "stylelint \"resources/**/*.(css|vue)\"",
         "lint": "yarn lint-js && yarn lint-css",
         "serve": "php artisan serve",
-        "start": "concurrently --kill-others \"yarn serve --quiet >/dev/null 2>&1\" \"yarn development-quiet --watch >/dev/null 2>&1\""
+        "start": "concurrently --kill-others \"yarn serve --quiet >/dev/null 2>&1\" \"yarn development-quiet --watch >/dev/null 2>&1\"",
+        "favicon-generate": "real-favicon generate faviconDescription.json faviconData.json public/images/favicon",
+        "favicon-inject": "real-favicon inject faviconData.json public/images/favicon resources/views/layouts/favicon.blade.php",
+        "favicon-update": "real-favicon check-for-update --fail-on-update faviconData.json"
     },
     "devDependencies": {
         "@tailwindcss/custom-forms": "^0.2",
@@ -27,6 +30,7 @@
         "babel-plugin-istanbul": "^6.0.0",
         "chai": "^4.2.0",
         "chai-dom": "^1.8.2",
+        "cli-real-favicon": "^0.0.8",
         "concurrently": "^5.2.0",
         "cross-env": "^7.0",
         "eslint": "^7.3.1",
