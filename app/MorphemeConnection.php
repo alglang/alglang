@@ -8,9 +8,23 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class MorphemeConnection extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $guarded = [];
 
     protected $with = ['morpheme'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -18,6 +32,13 @@ class MorphemeConnection extends Model
             $query->orderBy('position');
         });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function morpheme(): Relation
     {

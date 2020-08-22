@@ -18,6 +18,16 @@ class Language extends Model implements CachableAttributes
     use HasParent;
     use HasSlug;
 
+    /** @var int */
+    public $sources_count;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $guarded = [];
 
     protected $appends = ['url'];
@@ -38,8 +48,19 @@ class Language extends Model implements CachableAttributes
         'nominalParadigms'
     ];
 
-    /** @var int */
-    public $sources_count;
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('algo_code')
+            ->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -159,19 +180,5 @@ class Language extends Model implements CachableAttributes
         }
 
         return $query;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('algo_code')
-            ->saveSlugsTo('slug');
     }
 }

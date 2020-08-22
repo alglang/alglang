@@ -6,10 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feature extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $primaryKey = 'name';
+
     protected $keyType = 'str';
+
     public $incrementing = false;
+
     protected $guarded = [];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getNameAttribute(?string $value): string
     {

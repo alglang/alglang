@@ -17,11 +17,32 @@ class Form extends Model
     use HasSlug;
     use Sourceable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $guarded = [];
 
     protected $with = ['language'];
 
     protected $appends = ['morphemes', 'url'];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('shape')
+            ->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function boot()
     {
@@ -56,32 +77,33 @@ class Form extends Model
         return $this->morphemeConnections->pluck('morpheme');
     }
 
+
     /*
     |--------------------------------------------------------------------------
-    | Relations
+    | Methods
     |--------------------------------------------------------------------------
     |
     */
 
-    public function language(): Relation
+    public function assignMorphemes(Iterable $morphemes): void
     {
-        return $this->belongsTo(Language::class);
+        $this->morphemeConnections()->delete();
+
+        foreach ($morphemes as $position => $morpheme) {
+            $this->morphemeConnections()->create([
+                'position' => $position,
+                'shape' => is_string($morpheme) ? trim($morpheme, '-') : null,
+                'morpheme_id' => is_string($morpheme) ? null : $morpheme->id
+            ]);
+        }
     }
 
-    public function structure(): Relation
-    {
-        return $this->morphTo();
-    }
-
-    public function examples(): Relation
-    {
-        return $this->hasMany(Example::class, 'form_id');
-    }
-
-    public function morphemeConnections(): Relation
-    {
-        return $this->hasMany(MorphemeConnection::class, 'form_id');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Query scopes
+    |--------------------------------------------------------------------------
+    |
+    */
 
     protected function scopeOrderByFeature(Builder $query, string $column, string $table): Builder
     {
@@ -113,30 +135,23 @@ class Form extends Model
     |
     */
 
-    public function assignMorphemes(Iterable $morphemes): void
+    public function language(): Relation
     {
-        $this->morphemeConnections()->delete();
-
-        foreach ($morphemes as $position => $morpheme) {
-            $this->morphemeConnections()->create([
-                'position' => $position,
-                'shape' => is_string($morpheme) ? trim($morpheme, '-') : null,
-                'morpheme_id' => is_string($morpheme) ? null : $morpheme->id
-            ]);
-        }
+        return $this->belongsTo(Language::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
+    public function structure(): Relation
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('shape')
-            ->saveSlugsTo('slug');
+        return $this->morphTo();
+    }
+
+    public function examples(): Relation
+    {
+        return $this->hasMany(Example::class, 'form_id');
+    }
+
+    public function morphemeConnections(): Relation
+    {
+        return $this->hasMany(MorphemeConnection::class, 'form_id');
     }
 }

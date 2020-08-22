@@ -20,14 +20,28 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
 {
     use CachesAttributes;
 
+    /** @var int */
+    public $language_id;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     /** @var array */
     protected $cachableAttributes = [
         'forms',
         'language'
     ];
 
-    /** @var int */
-    public $language_id;
+    /*
+    |--------------------------------------------------------------------------
+    | Constructors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function __construct(array $attributes = [])
     {
@@ -42,24 +56,37 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
         }
     }
 
-    public static function generate(Language $language, VerbStructure $structure): self
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getFormsAttribute(): Collection
     {
-        return new VerbParadigm(array_merge(['language_id' => $language->id], $structure->toArray()));
+        return $this->remember('forms', 0, function () {
+            $query = [
+                'languages' => [$this->language_id],
+                'modes' => [$this->mode_name],
+                'orders' => [$this->order_name],
+                'classes' => [$this->class_abv],
+                'negative' => (bool)$this->is_negative,
+                'diminutive' => (bool)$this->is_diminutive,
+                'subject' => $this->subject_name === '?',
+                'primary_object' => $this->primary_object_name === '?',
+                'secondary_object' => $this->secondary_object_name === '?',
+            ];
+
+            return VerbSearch::search($query);
+        });
     }
 
-    public function getUrlAttribute(): string
+    public function getLanguageAttribute(): Language
     {
-        return route('verbParadigms.show', [
-            'language' => $this->language->slug,
-            'class' => $this->class_abv,
-            'order' => $this->order_name,
-            'mode' => $this->mode_name,
-            'negative' => $this->is_negative,
-            'diminutive' => $this->is_diminutive,
-            'subject' => $this->subject_name,
-            'primary_object' => $this->primary_object_name,
-            'secondary_object' => $this->secondary_object_name,
-        ], false);
+        return $this->remember('language', 0, function () {
+            return Language::find($this->language_id);
+        });
     }
 
     public function getNameAttribute(): string
@@ -81,29 +108,30 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
         return implode(' ', $tokens);
     }
 
-    public function getLanguageAttribute(): Language
+    public function getUrlAttribute(): string
     {
-        return $this->remember('language', 0, function () {
-            return Language::find($this->language_id);
-        });
+        return route('verbParadigms.show', [
+            'language' => $this->language->slug,
+            'class' => $this->class_abv,
+            'order' => $this->order_name,
+            'mode' => $this->mode_name,
+            'negative' => $this->is_negative,
+            'diminutive' => $this->is_diminutive,
+            'subject' => $this->subject_name,
+            'primary_object' => $this->primary_object_name,
+            'secondary_object' => $this->secondary_object_name,
+        ], false);
     }
 
-    public function getFormsAttribute(): Collection
-    {
-        return $this->remember('forms', 0, function () {
-            $query = [
-                'languages' => [$this->language_id],
-                'modes' => [$this->mode_name],
-                'orders' => [$this->order_name],
-                'classes' => [$this->class_abv],
-                'negative' => (bool)$this->is_negative,
-                'diminutive' => (bool)$this->is_diminutive,
-                'subject' => $this->subject_name === '?',
-                'primary_object' => $this->primary_object_name === '?',
-                'secondary_object' => $this->secondary_object_name === '?',
-            ];
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
 
-            return VerbSearch::search($query);
-        });
+    public static function generate(Language $language, VerbStructure $structure): self
+    {
+        return new VerbParadigm(array_merge(['language_id' => $language->id], $structure->toArray()));
     }
 }

@@ -7,7 +7,26 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbForm extends Form
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public $table = 'forms';
+
+    public function getMorphClass()
+    {
+        return Form::class;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -16,10 +35,12 @@ class VerbForm extends Form
         });
     }
 
-    public function getMorphClass()
-    {
-        return Form::class;
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getUrlAttribute(): string
     {
@@ -31,10 +52,12 @@ class VerbForm extends Form
         return VerbParadigm::generate($this->language, $this->structure);
     }
 
-    public function structure(): Relation
-    {
-        return $this->belongsTo(VerbStructure::class);
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Query scopes
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function scopeOrderByFeatures(Builder $query): Builder
     {
@@ -47,5 +70,17 @@ class VerbForm extends Form
         $query->orderByFeature('secondary_object_name', 'secondary_object_features');
 
         return $query->select('forms.*');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function structure(): Relation
+    {
+        return $this->belongsTo(VerbStructure::class);
     }
 }

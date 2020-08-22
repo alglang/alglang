@@ -14,10 +14,43 @@ class Example extends Model
     use HasSlug;
     use Sourceable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public static function booted()
     {
         static::creating(function (self $model) {
             $model->slug = $model->shape;
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getMorphemesAttribute(): Collection
+    {
+        return $this->form->morphemes->map(function ($morpheme) {
+            return $morpheme->isStem() ? $this->stem : $morpheme;
         });
     }
 
@@ -26,12 +59,12 @@ class Example extends Model
         return "/languages/{$this->form->language->slug}/verb-forms/{$this->form->slug}/examples/{$this->slug}";
     }
 
-    public function getMorphemesAttribute(): Collection
-    {
-        return $this->form->morphemes->map(function ($morpheme) {
-            return $morpheme->isStem() ? $this->stem : $morpheme;
-        });
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function language(): Relation
     {
@@ -46,10 +79,5 @@ class Example extends Model
     public function stem(): Relation
     {
         return $this->belongsTo(Morpheme::class);
-    }
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()->saveSlugsTo('slug');
     }
 }

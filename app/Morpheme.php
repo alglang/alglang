@@ -23,6 +23,23 @@ class Morpheme extends Model implements CachableAttributes
     use HasSlug;
     use Sourceable;
 
+    /**
+     * @var int
+     */
+    public $verb_forms_count;
+
+    /**
+     * @var int
+     */
+    public $nominal_forms_count;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $guarded = [];
 
     protected $with = ['language'];
@@ -35,16 +52,6 @@ class Morpheme extends Model implements CachableAttributes
     ];
 
     /**
-     * @var int
-     */
-    public $verb_forms_count;
-
-    /**
-     * @var int
-     */
-    public $nominal_forms_count;
-
-    /**
      * @var bool
      */
     protected $alwaysDisambiguate = true;
@@ -53,6 +60,36 @@ class Morpheme extends Model implements CachableAttributes
      * @var array
      */
     protected $disambiguatableFields = ['language_id', 'shape'];
+
+    protected function updateSlugBasedOnDisambiguator(): void
+    {
+        $pieces = collect(explode('-', $this->slug));
+        $disambiguator = $this->disambiguator + 1;
+
+        if ($pieces->last() !== strval($disambiguator)) {
+            if (is_numeric($pieces->last())) {
+                $pieces->pop();
+            }
+
+            $pieces->push($disambiguator);
+            $this->slug = $pieces->join('-');
+            $this->save();
+        }
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('shape')
+            ->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     protected static function booted()
     {
@@ -70,22 +107,6 @@ class Morpheme extends Model implements CachableAttributes
                       $morpheme->updateSlugBasedOnDisambiguator();
                   });
         });
-    }
-
-    protected function updateSlugBasedOnDisambiguator(): void
-    {
-        $pieces = collect(explode('-', $this->slug));
-        $disambiguator = $this->disambiguator + 1;
-
-        if ($pieces->last() !== strval($disambiguator)) {
-            if (is_numeric($pieces->last())) {
-                $pieces->pop();
-            }
-
-            $pieces->push($disambiguator);
-            $this->slug = $pieces->join('-');
-            $this->save();
-        }
     }
 
     /*
@@ -110,6 +131,33 @@ class Morpheme extends Model implements CachableAttributes
                 return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
             });
         });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function loadVerbFormsCount(): void
+    {
+        $this->verb_forms_count = $this->verbForms()->count();
+    }
+
+    public function loadNominalFormsCount(): void
+    {
+        $this->nominal_forms_count = $this->nominalForms()->count();
+    }
+
+    public function isStem(): bool
+    {
+        return $this->slot_abv === 'STM';
+    }
+
+    public function scopeWithoutPlaceholders(Builder $query): Builder
+    {
+        return $query->whereNotIn('shape', ['V-', 'N-']);
     }
 
     /*
@@ -149,46 +197,5 @@ class Morpheme extends Model implements CachableAttributes
     public function nominalForms(): Relation
     {
         return $this->forms()->where('structure_type', NominalStructure::class);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function loadVerbFormsCount(): void
-    {
-        $this->verb_forms_count = $this->verbForms()->count();
-    }
-
-    public function loadNominalFormsCount(): void
-    {
-        $this->nominal_forms_count = $this->nominalForms()->count();
-    }
-
-    public function isStem(): bool
-    {
-        return $this->slot_abv === 'STM';
-    }
-
-    public function scopeWithoutPlaceholders(Builder $query): Builder
-    {
-        return $query->whereNotIn('shape', ['V-', 'N-']);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('shape')
-            ->saveSlugsTo('slug');
     }
 }

@@ -7,12 +7,26 @@ use Illuminate\Database\Eloquent\Builder;
 
 class NominalForm extends Form
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public $table = 'forms';
 
     public function getMorphClass()
     {
         return Form::class;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -21,10 +35,24 @@ class NominalForm extends Form
         });
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getUrlAttribute(): string
     {
         return "/languages/{$this->language->slug}/nominal-forms/{$this->slug}";
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Query scopes
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function scopeOrderByFeatures(Builder $query): Builder
     {

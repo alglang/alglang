@@ -8,6 +8,7 @@ use App\Morpheme;
 use App\MorphemeConnection;
 use App\VerbFeature;
 use App\VerbStructure;
+use DB;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -90,5 +91,21 @@ class FormTest extends TestCase
         $form->assignMorphemes([$morpheme2]);
         $this->assertEquals($preexistingConnections + 1, MorphemeConnection::count());
         $this->assertEquals('bar-', $form->fresh()->morphemes->first()->shape);
+    }
+
+    /** @test */
+    public function it_caches_the_morphemes_attribute()
+    {
+        $form = factory(Form::class)->create();
+
+        DB::connection()->enableQueryLog();
+
+        $form->morphemes;
+        $queryCount = count(DB::getQueryLog());
+
+        $form->morphemes;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
     }
 }

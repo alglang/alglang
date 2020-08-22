@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class NominalStructure extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getFeatureStringAttribute(): string
     {
         $features = [];
@@ -21,6 +28,13 @@ class NominalStructure extends Model
 
         return implode('→', $features);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function pronominalFeature(): Relation
     {

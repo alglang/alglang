@@ -13,9 +13,23 @@ class Group extends Model
     use HasParent;
     use HasSlug;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $guarded = [];
 
     protected $appends = ['url'];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -44,19 +58,5 @@ class Group extends Model
     public function languages(): Relation
     {
         return $this->hasMany(Language::class);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
     }
 }

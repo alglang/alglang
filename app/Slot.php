@@ -6,11 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Slot extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     protected $primaryKey = 'abv';
+
     protected $keyType = 'str';
+
     public $incrementing = false;
 
     protected $appends = ['url'];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getUrlAttribute(): string
     {
