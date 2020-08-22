@@ -6,6 +6,8 @@ use App\Example;
 use App\Form;
 use App\Language;
 use App\Morpheme;
+use App\NominalForm;
+use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,10 +16,10 @@ class ExampleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_has_a_url_attribute()
+    public function it_has_a_url_attribute_when_it_has_a_verb_form()
     {
         $language = factory(Language::class)->create(['algo_code' => 'TL']);
-        $form = factory(Form::class)->create([
+        $form = factory(VerbForm::class)->create([
             'language_id' => $language->id,
             'shape' => 'V-bar'
         ]);
@@ -27,6 +29,23 @@ class ExampleTest extends TestCase
         ]);
 
         $expected = "/languages/$language->slug/verb-forms/$form->slug/examples/foo";
+        $this->assertEquals($expected, $example->url);
+    }
+
+    /** @test */
+    public function it_has_a_url_attribute_when_it_has_a_nominal_form()
+    {
+        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $form = factory(NominalForm::class)->create([
+            'language_id' => $language->id,
+            'shape' => 'V-bar'
+        ]);
+        $example = factory(Example::class)->create([
+            'form_id' => $form->id,
+            'shape' => 'foo'
+        ]);
+
+        $expected = "/languages/$language->slug/nominal-forms/$form->slug/examples/foo";
         $this->assertEquals($expected, $example->url);
     }
 

@@ -3,6 +3,8 @@
 use App\Example;
 use App\Form;
 use App\Morpheme;
+use App\NominalForm;
+use App\VerbForm;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
@@ -12,5 +14,17 @@ $factory->define(Example::class, function (Faker $faker) {
         'stem_id' => factory(Morpheme::class),
         'form_id' => factory(Form::class),
         'translation' => '<p>factory translation</p>'
+    ];
+});
+
+$factory->state(Example::class, 'verb', function (Faker $faker) {
+    return [
+        'form_id' => factory(VerbForm::class)
+    ];
+});
+
+$factory->state(Example::class, 'nominal', function (Faker $faker) {
+    return [
+        'form_id' => factory(NominalForm::class)
     ];
 });

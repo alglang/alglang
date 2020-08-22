@@ -57,17 +57,42 @@ Route::prefix('languages')->group(function () {
 
     Route::prefix('{language:slug}')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
-        Route::get('nominal-forms/{nominalForm:slug}', [NominalFormController::class, 'show']);
-        Route::get('nominal-paradigms/{nominalParadigm:slug}', [NominalParadigmController::class, 'show']);
-        Route::get('morphemes/{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
-        Route::get('verb-forms/{verbForm:slug}', [VerbFormController::class, 'show'])->name('verb-forms.show');
-        Route::get('verb-forms/{verbForm:slug}/examples/{example:slug}', [ExampleController::class, 'show']);
+
+        Route::prefix('morphemes')->group(function () {
+            Route::get('{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
+        });
+
+        Route::prefix('nominal-forms')->group(function () {
+            Route::get('{nominalForm:slug}', [NominalFormController::class, 'show']);
+            Route::get(
+                '{form:slug}/examples/{example:slug}',
+                [ExampleController::class, 'show']
+            )->name('nominalForms.examples.show');
+        });
+
+        Route::prefix('nominal-paradigms')->group(function () {
+            Route::get('{nominalParadigm:slug}', [NominalParadigmController::class, 'show']);
+        });
+
+        Route::prefix('verb-forms')->group(function () {
+            Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verb-forms.show');
+            Route::get(
+                '{form:slug}/examples/{example:slug}',
+                [ExampleController::class, 'show']
+            )->name('verbForms.examples.show');
+        });
+
         Route::get('verb-paradigms', [VerbParadigmController::class, 'show'])->name('verbParadigms.show');
     });
 });
 
-Route::get('/glosses/{gloss}', [GlossController::class, 'show'])->name('glosses.show');
-Route::get('/slots/{slot}', [SlotController::class, 'show'])->name('slots.show');
+Route::prefix('glosses')->group(function () {
+    Route::get('{gloss}', [GlossController::class, 'show'])->name('glosses.show');
+});
+
+Route::prefix('slots')->group(function () {
+    Route::get('{slot}', [SlotController::class, 'show'])->name('slots.show');
+});
 
 Route::get('/bibliography', [SourceController::class, 'index'])->name('bibliography');
 Route::prefix('sources')->group(function () {

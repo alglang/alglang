@@ -12,9 +12,28 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ViewExampleTest extends TestCase
+class ViewVerbExampleTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function it_loads_the_correct_view_for_a_verb_form()
+    {
+        $example = factory(Example::class)->state('verb')->create();
+        $response = $this->get($example->url);
+        $response->assertOk();
+        $response->assertViewIs('examples.show');
+    }
+
+    /** @test */
+    public function it_loads_the_correct_view()
+    {
+        $this->withoutExceptionHandling();
+        $example = factory(Example::class)->state('nominal')->create();
+        $response = $this->get($example->url);
+        $response->assertOk();
+        $response->assertViewIs('examples.show');
+    }
 
     /** @test */
     public function an_example_can_be_viewed()
@@ -28,7 +47,6 @@ class ViewExampleTest extends TestCase
         $response = $this->get($example->url);
 
         $response->assertOk();
-        $response->assertViewIs('examples.show');
         $response->assertViewHas('example', $example);
         $response->assertSee('foobar');
         $response->assertSee('V-bar');
