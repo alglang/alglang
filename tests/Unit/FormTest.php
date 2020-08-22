@@ -25,6 +25,16 @@ class FormTest extends TestCase
         $this->assertTrue($form->relationLoaded('language'));
     }
 
+    /** @test */
+    public function it_does_not_generate_a_url_without_an_acceptable_structure()
+    {
+        $form = factory(Form::class)->create(['structure_type' => 'foo']);
+
+        $this->expectException(\UnexpectedValueException::class);
+
+        $form->url;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Morpheme connections

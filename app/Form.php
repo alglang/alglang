@@ -68,7 +68,7 @@ class Form extends Model
             case NominalStructure::class:
                 return (new NominalForm($this->attributes))->url;
             default:
-                throw new \Exception('Unknown verb form type');
+                throw new \UnexpectedValueException("Unknown verb form type '$this->structure_type'");
         };
     }
 
