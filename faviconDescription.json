@@ -1,6 +1,6 @@
 {
   "masterPicture": "resources/favicon/logo.svg",
-  "iconsPath": "/",
+  "iconsPath": "/images/favicon",
   "design": {
     "ios": {
       "pictureAspect": "noChange",
