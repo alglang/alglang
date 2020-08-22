@@ -135,6 +135,10 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 |
 */
 
+Route::get('/languages', function () {
+    abort(404);
+})->name('languages.index');
+
 Route::get('/resources', function () {
     abort(404);
 })->name('resources');
@@ -143,9 +147,21 @@ Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
 
-Route::get('/search/verbs/paradigm', function () {
+Route::get('/search/nominals/paradigms', function () {
     abort(404);
-})->name('search.verbs.paradigm');
+})->name('search.nominals.paradigms');
+
+Route::get('/search/nominals/paradigm-results', function () {
+    abort(404);
+})->name('search.nominals.paradigm-results');
+
+Route::get('/search/verbs/paradigms', function () {
+    abort(404);
+})->name('search.verbs.paradigms');
+
+Route::get('/search/verbs/paradigm-results', function () {
+    abort(404);
+})->name('search.verbs.paradigm-results');
 
 /*
 |--------------------------------------------------------------------------

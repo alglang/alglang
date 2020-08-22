@@ -12,27 +12,30 @@
 
         <ul class="list-square ml-8 list-inner">
             <li class="mb-4">
-                You can <a href="#">navigate to a particular language</a> and then browse a list of its nominal paradigms and nominal forms.
+                You can <a href="{{ route('languages.index') }}">navigate to a particular language</a> and then browse a list of its nominal paradigms and nominal forms.
 
                 <aside class="bg-yellow-200 mt-2 p-3 w-fit" aria-labelledby="particular-language-example">
                     <h2 class="font-semibold inline" id="particular-language-example">
                         Example:
                     </h2>
                     <p class="inline">
-                        the <a href="#">nominal paradigms</a> and <a href="#">nominal forms</a> of Proto-Algonquian.
+                        the <a href="{{ route('languages.show', ['language' => 'PA']) }}#nominal-paradigms">nominal paradigms</a> and <a href="{{ route('languages.show', ['language' => 'PA']) }}#nominal-forms">nominal forms</a> of Proto-Algonquian.
                     </p>
                 </aside>
             </li>
 
             <li class="mb-4">
-                You can <a href="#">search for a particular nominal paradigm</a> in one or more languages.
+                You can <a href="{{ route('search.nominals.paradigms') }}">search for a particular nominal paradigm</a> in one or more languages.
 
                 <aside class="bg-yellow-200 mt-2 p-3 w-fit" aria-labelledby="particular-language-example">
                     <h2 class="font-semibold inline" id="particular-language-example">
                         Example:
                     </h2>
                     <p class="inline">
-                        the <a href="#">personal pronouns</a> of Shawnee, Atikamekw, and Munsee.
+                        the <a href="{{ route('search.nominals.paradigm-results', [
+                            'languages' => ['Sh', 'At', 'Mun'],
+                            'paradigm_types' => ['Personal pronoun']
+                        ]) }}">personal pronouns</a> of Shawnee, Atikamekw, and Munsee.
                     </p>
                 </aside>
             </li>
