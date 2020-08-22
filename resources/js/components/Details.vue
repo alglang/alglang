@@ -20,12 +20,15 @@
         <li
           v-for="(page, i) in pages"
           :key="i"
-          class="bg-gray-200 flex-1 md:flex-none"
+          class="flex-1 md:flex-none"
         >
-          <a
+          <component
+            :is="page.count === 0 ? 'p' : 'a'"
             :aria-selected="page.isActive"
-            class="flex justify-between items-center p-2 whitespace-no-wrap text-gray-700
-                   hover:bg-gray-300 hover:text-gray-700"
+            class="flex justify-between items-center p-2 whitespace-no-wrap bg-gray-200"
+            :class="page.count === 0
+              ? 'cursor-not-allowed text-gray-500'
+              : 'text-gray-700 hover:bg-gray-300 hover:text-gray-700'"
             :href="page.isActive ? '' : '#' + page.hash"
             role="tab"
             @click.prevent="visit(page.hash)"
@@ -40,7 +43,7 @@
             >
               {{ page.count }}
             </div>
-          </a>
+          </component>
         </li>
 
         <li
@@ -85,7 +88,7 @@ export default {
 
     const hash = window.location.hash.substring(1);
     if (!this.pages.some(page => page.hash === hash)) {
-      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}#${this.pages[0].hash}`);
+      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}${window.location.search}#${this.pages[0].hash}`);
     }
 
     this.visit(window.location.hash.substring(1));

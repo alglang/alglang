@@ -79,6 +79,18 @@
             <alglang-language-morphemes url="/api/morphemes?language_id={{ $language->id }}" />
         </alglang-detail-page>
 
+        <alglang-detail-page title="Nominal paradigms" :count="{{ $language->nominal_paradigms_count }}">
+            <ul>
+                @foreach ($language->nominalParadigms as $paradigm)
+                    <li>
+                        <x-preview-link :model="$paradigm">
+                            {{ $paradigm->name }}
+                        </x-preview-link>
+                    </li>
+                @endforeach
+            </ul>
+        </alglang-detail-page>
+
         <alglang-detail-page title="Verb forms" :count="{{ $language->verb_forms_count }}">
             <alglang-language-verb-forms url="/api/verb-forms?language_id={{ $language->id }}" />
         </alglang-detail-page>

@@ -39,6 +39,28 @@
                         <x-morpheme-table :morphemes="$form->morphemes" />
                     </alglang-detail-row>
                 @endif
+
+                @if($form->parent)
+                    <alglang-detail-row label="Parent">
+                        <div class="mb-2">
+                            <x-preview-link :model="$form->parent">
+                                {{ $form->parent->shape }}
+                            </x-preview-link>
+
+                            <span class="inline-flex">
+                                (
+                                <x-preview-link :model="$form->parent->language">
+                                    {{ $form->parent->language->name }}
+                                </x-preview-link>
+                                )
+                            </span>
+                        </div>
+
+                        @if($form->parent->morphemes->count() > 0)
+                            <x-morpheme-table :morphemes="$form->parent->morphemes" />
+                        @endif
+                    </alglang-detail-row>
+                @endif
                 
                 @if($form->historical_notes)
                     <alglang-detail-row label="Historical notes">

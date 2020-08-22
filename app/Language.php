@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\HasParent;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Language extends Model
 {
+    use HasParent;
     use HasSlug;
 
     protected $guarded = [];
@@ -24,7 +26,8 @@ class Language extends Model
     /** @var array */
     protected $sourcedRelations = [
         'morphemes',
-        'forms'
+        'forms',
+        'nominalParadigms'
     ];
 
     /** @var Collection */
@@ -113,19 +116,9 @@ class Language extends Model
     |
     */
 
-    public function parent(): Relation
-    {
-        return $this->belongsTo(Language::class);
-    }
-
     public function group(): Relation
     {
         return $this->belongsTo(Group::class);
-    }
-
-    public function children(): Relation
-    {
-        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function morphemes(): Relation
@@ -146,6 +139,11 @@ class Language extends Model
     public function nominalForms(): Relation
     {
         return $this->hasMany(NominalForm::class);
+    }
+
+    public function nominalParadigms(): Relation
+    {
+        return $this->hasMany(NominalParadigm::class);
     }
 
     public function sources(): Builder

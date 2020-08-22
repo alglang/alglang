@@ -14,7 +14,6 @@ class CreateVerbOrdersTable extends Migration
     public function up()
     {
         Schema::create('verb_orders', function (Blueprint $table) {
-            $table->id();
             $table->string('name');
             $table->timestamps();
         });

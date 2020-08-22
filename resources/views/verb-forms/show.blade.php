@@ -18,16 +18,46 @@
             <div>
                 <alglang-detail-row label="Description">
                     <p>
-                        <span>{{ $verbForm->structure->argument_string }}</span>
-                        <span>{{ $verbForm->structure->class->abv }}</span>
-                        <span>{{ $verbForm->structure->order->name }}</span>
-                        <span>{{ $verbForm->structure->mode->name }}</span>
+                        <span>{{ $verbForm->structure->feature_string }}</span>
+                        <a href="{{ $verbForm->paradigm->url }}">
+                            <span>{{ $verbForm->structure->class->abv }}</span>
+                            <span>{{ $verbForm->structure->order->name }}</span>
+                            <span>{{ $verbForm->structure->mode->name }}</span>
+                            @if($verbForm->structure->is_negative)
+                                <span>(Negative)</span>
+                            @endif
+                            @if($verbForm->structure->is_diminutive)
+                                <span>(Diminutive)</span>
+                            @endif
+                        </a>
                     </p>
                 </alglang-detail-row>
 
                 @if($verbForm->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">
                         <x-morpheme-table :morphemes="$verbForm->morphemes" />
+                    </alglang-detail-row>
+                @endif
+
+                @if($verbForm->parent)
+                    <alglang-detail-row label="Parent">
+                        <div class="mb-2">
+                            <x-preview-link :model="$verbForm->parent">
+                                {{ $verbForm->parent->shape }}
+                            </x-preview-link>
+
+                            <span class="inline-flex">
+                                (
+                                <x-preview-link :model="$verbForm->parent->language">
+                                    {{ $verbForm->parent->language->name }}
+                                </x-preview-link>
+                                )
+                            </span>
+                        </div>
+
+                        @if($verbForm->parent->morphemes->count() > 0)
+                            <x-morpheme-table :morphemes="$verbForm->parent->morphemes" />
+                        @endif
                     </alglang-detail-row>
                 @endif
 

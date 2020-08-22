@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Language;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('show', 'index');
-        $this->middleware('permission:create languages')->except('show', 'index');
+        $this->middleware('auth')->except('show', 'fetch');
+        $this->middleware('permission:create languages')->except('show', 'fetch');
     }
 
-    public function index(): array
+    public function fetch(): array
     {
         return ['data' => Language::all()];
     }
@@ -27,7 +28,14 @@ class LanguageController extends Controller
     public function show(Language $language)
     {
         $language->load('group', 'children', 'parent');
-        $language->loadCount('morphemes', 'verbForms', 'nominalForms');
+        $language->loadCount([
+            'morphemes' => function (Builder $query) {
+                $query->withoutPlaceholders();
+            },
+            'verbForms',
+            'nominalForms',
+            'nominalParadigms'
+        ]);
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);
     }

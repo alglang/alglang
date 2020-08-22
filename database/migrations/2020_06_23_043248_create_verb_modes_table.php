@@ -14,7 +14,6 @@ class CreateVerbModesTable extends Migration
     public function up()
     {
         Schema::create('verb_modes', function (Blueprint $table) {
-            $table->id();
             $table->string('name');
             $table->timestamps();
         });

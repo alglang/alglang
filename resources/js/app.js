@@ -26,6 +26,8 @@ Vue.component('alglang-language-morphemes', require('./components/Language/Morph
 Vue.component('alglang-language-verb-forms', require('./components/Language/VerbForms.vue').default);
 Vue.component('alglang-nominal-forms', require('./components/NominalForms.vue').default);
 
+Vue.component('alglang-verb-form-search', require('./components/VerbFormSearch.vue').default);
+
 document.addEventListener('turbolinks:load', () => {
   new Vue({ // eslint-disable-line no-new
     el: '#app'

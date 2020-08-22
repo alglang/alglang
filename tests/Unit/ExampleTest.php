@@ -53,10 +53,9 @@ class ExampleTest extends TestCase
             'language_id' => $language->id,
             'shape' => '-bar'
         ]);
-        $form = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$language->vStem->id}-{$suffix->id}"
-        ]);
+        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form->assignMorphemes([$language->vStem, $suffix]);
+
         $example = factory(Example::class)->create([
             'form_id' => $form->id,
             'stem_id' => $stem->id

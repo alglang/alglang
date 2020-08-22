@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Language;
 use App\Morpheme;
-use App\NominalFeature;
+use App\Feature;
 use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalStructure;
@@ -26,9 +26,12 @@ class FetchNominalFormsTest extends TestCase
             'shape' => 'N-a',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Nom Feat'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test Paradigm',
+                    'language_id' => $language->id
+                ])->id
             ])->id
         ]);
 
@@ -55,38 +58,17 @@ class FetchNominalFormsTest extends TestCase
     public function it_fetches_nominal_forms_by_morpheme()
     {
         $morpheme = factory(Morpheme::class)->create();
-        $nominalForm1 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $nominalForm2 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "{$morpheme->id}-foo"
-        ]);
-        $nominalForm3 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}"
-        ]);
-        $nominalForm4 = factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => "foo-{$morpheme->id}-bar"
-        ]);
-
-        factory(NominalForm::class)->create([
-            'language_id' => $morpheme->language_id,
-            'morpheme_structure' => 'foo-bar'
-        ]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $morpheme->language_id]);
+        $nominalForm->assignMorphemes([$morpheme]);
+        factory(NominalForm::class)->create(['language_id' => $morpheme->language_id])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/nominal-forms?with_morphemes[]=$morpheme->id");
 
         $response->assertOk();
-        $response->assertJsonCount(4, 'data');
+        $response->assertJsonCount(1, 'data');
         $response->assertJson([
             'data' => [
-                ['id' => $nominalForm1->id],
-                ['id' => $nominalForm2->id],
-                ['id' => $nominalForm3->id],
-                ['id' => $nominalForm4->id],
+                ['id' => $nominalForm->id],
             ]
         ]);
     }
@@ -94,14 +76,18 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_source_verb_forms()
     {
+        $language = factory(Language::class)->create(['algo_code' => 'TL']);
         $source = factory(Source::class)->create();
         $nominalForm = factory(NominalForm::class)->create([
             'shape' => 'N-a',
-            'language_id' => factory(Language::class)->create(['algo_code' => 'TL']),
+            'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Pronom Feat'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => 'Nom Feat'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test Paradigm'])->id
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test Paradigm',
+                    'language_id' => $language->id
+                ])->id
             ])->id
         ]);
         $nominalForm->addSource($source);

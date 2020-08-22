@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 200 200">
+  <g stroke="#000" stroke-width="0">
+    <path d="M100 0h100 v100 h-100 Z" fill="#EDF2F7" />
+    <path d="M100 100 h100 v100 h-100 Z" fill="#ECC94B" />
+    <path d="M0 100 h100 v100 h-100 Z" fill="#C53030" />
+    <path d="M0 0 h100 v100 h-100 Z" fill="#2D3748" />
+  </g>
+</svg>

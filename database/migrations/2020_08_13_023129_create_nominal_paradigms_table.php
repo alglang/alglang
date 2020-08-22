@@ -16,6 +16,9 @@ class CreateNominalParadigmsTable extends Migration
         Schema::create('nominal_paradigms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
+            $table->unsignedInteger('language_id');
+            $table->unsignedInteger('paradigm_type_id');
             $table->timestamps();
         });
     }

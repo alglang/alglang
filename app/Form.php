@@ -2,20 +2,20 @@
 
 namespace App;
 
+use App\Traits\HasParent;
 use App\Traits\Sourceable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Form extends Model
 {
+    use HasParent;
     use HasSlug;
     use Sourceable;
-
-    /** @var Collection */
-    private $_morphemes;
 
     protected $guarded = [];
 
@@ -53,26 +53,7 @@ class Form extends Model
 
     public function getMorphemesAttribute(): Collection
     {
-        if (isset($this->_morphemes)) {
-            return $this->_morphemes;
-        }
-
-        $idents = collect(
-            $this->morpheme_structure ? explode('-', $this->morpheme_structure) : []
-        );
-
-        $morphemePool = Morpheme::find($idents);
-
-        $this->_morphemes = $idents->map(function ($ident) use ($morphemePool) {
-            $morpheme = $morphemePool->firstWhere('id', $ident) ?? new Morpheme([
-                'shape' => $ident,
-                'language_id' => $this->language_id
-            ]);
-
-            return $morpheme;
-        });
-
-        return $this->_morphemes;
+        return $this->morphemeConnections->pluck('morpheme');
     }
 
     /*
@@ -95,6 +76,54 @@ class Form extends Model
     public function examples(): Relation
     {
         return $this->hasMany(Example::class, 'form_id');
+    }
+
+    public function morphemeConnections(): Relation
+    {
+        return $this->hasMany(MorphemeConnection::class, 'form_id');
+    }
+
+    protected function scopeOrderByFeature(Builder $query, string $column, string $table): Builder
+    {
+        $query->leftJoin("features as $table", "$table.name", '=', $column);
+
+        $query->orderByRaw(<<<SQL
+            CASE
+                WHEN $table.person in ('1', '2', '21') THEN $table.number
+                WHEN $table.person = '3' THEN 10
+                WHEN $table.person = '0' THEN 11
+                ELSE 12
+            END,
+            CASE $table.person
+                WHEN '1' THEN 10
+                WHEN '21' THEN 11
+                WHEN '2' THEN 12
+                ELSE $table.number
+            END,
+            $table.obviative_code
+        SQL);
+
+        return $query;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function assignMorphemes(Iterable $morphemes): void
+    {
+        $this->morphemeConnections()->delete();
+
+        foreach ($morphemes as $position => $morpheme) {
+            $this->morphemeConnections()->create([
+                'position' => $position,
+                'shape' => is_string($morpheme) ? trim($morpheme, '-') : null,
+                'morpheme_id' => is_string($morpheme) ? null : $morpheme->id
+            ]);
+        }
     }
 
     /*

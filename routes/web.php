@@ -8,9 +8,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\NominalFormController;
+use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
+use App\Http\Controllers\VerbParadigmController;
+use App\Http\Controllers\VerbSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +51,16 @@ Route::get(
 );
 
 Route::get(
+    '/languages/{language:slug}/verb-paradigms',
+    [VerbParadigmController::class, 'show']
+)->name('verbParadigms.show');
+
+Route::get(
+    '/languages/{language:slug}/nominal-paradigms/{nominalParadigm:slug}',
+    [NominalParadigmController::class, 'show']
+);
+
+Route::get(
     '/languages/{language:slug}/verb-forms/{verbForm:slug}/examples/{example:slug}',
     [ExampleController::class, 'show']
 );
@@ -62,6 +75,8 @@ Route::get('/sources/{source:slug}', [SourceController::class, 'show']);
 
 Route::view('/about', 'about')->name('about');
 Route::view('/verb-forms', 'verb-forms.index')->name('verb-forms');
+Route::view('/nominal-forms', 'nominal-forms.index')->name('nominal-forms');
+Route::view('/phonology', 'phonemes.index')->name('phonology');
 
 Route::get('/resources', function () {
     abort(404);
@@ -71,17 +86,18 @@ Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
 
-Route::get('/nominal-forms', function () {
-    abort(404);
-})->name('nominal-forms');
-
-Route::get('/phonology', function () {
-    abort(404);
-})->name('phonology');
-
 Route::get('/search/verbs/paradigm', function () {
     abort(404);
 })->name('search.verbs.paradigm');
+
+Route::get(
+    '/search/verbs/forms/results',
+    [VerbSearchController::class, 'formResults']
+)->name('search.verbs.form-results');
+Route::get(
+    '/search/verbs/forms',
+    [VerbSearchController::class, 'forms']
+)->name('search.verbs.forms');
 
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');

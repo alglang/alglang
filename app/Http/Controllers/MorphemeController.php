@@ -11,13 +11,13 @@ use Illuminate\Http\Request;
 
 class MorphemeController extends Controller
 {
-    public function index(): MorphemeCollection
+    public function fetch(): MorphemeCollection
     {
         if (!request()->language_id && !request()->source_id) {
             abort(400);
         }
 
-        $query = Morpheme::query();
+        $query = Morpheme::withoutPlaceholders();
 
         if (request()->language_id) {
             $query->whereHas('language', function (Builder $query) {
@@ -32,7 +32,8 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
-                           ->paginate(request()->per_page ?? 10)
+                           ->orderByRaw('trim(shape, \'-\')')
+                           ->paginate(request()->per_page ?? 50)
                            ->appends(request()->query());
 
         return new MorphemeCollection($paginator);

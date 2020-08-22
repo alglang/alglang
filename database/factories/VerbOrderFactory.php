@@ -1,12 +1,11 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 use App\VerbOrder;
 use Faker\Generator as Faker;
 
+/** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(VerbOrder::class, function (Faker $faker) {
     return [
-        'name' => 'Conjunct'
+        'name' => $faker->unique()->word
     ];
 });

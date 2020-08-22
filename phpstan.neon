@@ -5,6 +5,9 @@ parameters:
     paths:
         - app
 
+    scanFiles:
+        - app/helpers.php
+
     level: 7
 
     checkMissingIterableValueType: false

@@ -8,6 +8,8 @@ use App\Gloss;
 use App\Language;
 use App\Morpheme;
 use App\NominalForm;
+use App\NominalParadigm;
+use App\NominalStructure;
 use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -155,38 +157,34 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $form1 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
-        $form2 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme->id}-foo"
-        ]);
-        $form3 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}"
-        ]);
-        $form4 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}-bar"
-        ]);
-        $form5 = factory(Form::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "foo-{$morpheme->id}{$morpheme->id}-bar"
-        ]);
-        $form6 = factory(Form::class)->create([
-            'language_id' => factory(Language::class)->create()->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+
+        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form->assignMorphemes([$morpheme]);
 
         $forms = $morpheme->forms;
 
-        $this->assertCount(4, $forms);
-        $this->assertContains($form1->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form2->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form3->id, $forms->pluck('id')->toArray());
-        $this->assertContains($form4->id, $forms->pluck('id')->toArray());
+        $this->assertCount(1, $forms);
+        $this->assertContains($form->id, $forms->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function it_does_not_include_forms_from_other_languages()
+    {
+        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form->assignMorphemes([$morpheme]);
+
+        $this->assertCount(0, $morpheme->forms);
+    }
+
+    /** @test */
+    public function it_only_counts_forms_with_duplicate_morphemes_once()
+    {
+        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_id' => $morpheme->language_id]);
+        $form->assignMorphemes([$morpheme, $morpheme]);
+
+        $this->assertCount(1, $morpheme->forms);
     }
 
     /** @test */
@@ -194,14 +192,12 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
         $nominalForm = factory(NominalForm::class)->create([
             'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
         ]);
+        $verbForm->assignMorphemes([$morpheme]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $verbForms = $morpheme->verbForms;
 
@@ -214,18 +210,35 @@ class MorphemeTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
-        ]);
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
         $nominalForm = factory(NominalForm::class)->create([
             'language_id' => $language->id,
-            'morpheme_structure' => "$morpheme->id"
         ]);
+        $verbForm->assignMorphemes([$morpheme]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $nominalForms = $morpheme->nominalForms;
 
         $this->assertCount(1, $nominalForms);
         $this->assertEquals($nominalForm->id, $nominalForms[0]->id);
+    }
+
+    /** @test */
+    public function it_can_exclude_placeholders_from_queries()
+    {
+        $language = factory(Language::class)->create();
+        factory(Morpheme::class)->create(['shape' => 'foo-', 'language_id' => $language->id]);
+        $morphemes = Morpheme::all();
+
+        // Verify that placeholder morphemes were created
+        $this->assertCount(3, $morphemes);
+        $this->assertContains('N-', $morphemes->pluck('shape'));
+        $this->assertContains('V-', $morphemes->pluck('shape'));
+        $this->assertContains('foo-', $morphemes->pluck('shape'));
+
+        $filteredMorphemes = Morpheme::withoutPlaceholders()->get();
+
+        $this->assertCount(1, $filteredMorphemes);
+        $this->assertContains('foo-', $filteredMorphemes->pluck('shape'));
     }
 }

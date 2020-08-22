@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\Language;
 use App\Morpheme;
 use App\NominalForm;
+use App\NominalParadigm;
+use App\NominalStructure;
 use App\Source;
 use App\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,14 +38,20 @@ class LanguageTest extends TestCase
             'language_id' => $language->id
         ])->addSource($verbFormSource);
 
+        $nominalParadigmSource = factory(Source::class)->create(['author' => 'NominalParadigm Source']);
+        $nominalParadigm = factory(NominalParadigm::class)->create([
+            'language_id' => $language->id
+        ])->addSource($nominalParadigmSource);
+
         $nominalFormSource = factory(Source::class)->create(['author' => 'Nominalform Source']);
         factory(NominalForm::class)->create([
-            'language_id' => $language->id
+            'language_id' => $language->id,
         ])->addSource($nominalFormSource);
 
-        $this->assertCount(3, $language->sources);
+        $this->assertCount(4, $language->sources);
         $this->assertTrue($language->sources->contains($morphemeSource));
         $this->assertTrue($language->sources->contains($verbFormSource));
+        $this->assertTrue($language->sources->contains($nominalParadigmSource));
         $this->assertTrue($language->sources->contains($nominalFormSource));
     }
 

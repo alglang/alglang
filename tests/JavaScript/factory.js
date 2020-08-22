@@ -31,6 +31,22 @@ export const verbFormFactory = props => ({
   ...props
 });
 
+export const verbClassFactory = props => ({
+  ...props
+});
+
+export const verbOrderFactory = props => ({
+  ...props
+});
+
+export const verbModeFactory = props => ({
+  ...props
+});
+
+export const featureFactory = props => ({
+  ...props
+});
+
 export const nominalFormFactory = props => ({
   ...props
 });

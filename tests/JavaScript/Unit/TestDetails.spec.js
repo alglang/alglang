@@ -205,4 +205,19 @@ describe('Details.vue', function () {
     expect(tabs[1]).to.not.have.attribute('aria-selected');
     expect(window.location.hash).to.equal('#baz');
   });
+
+  it('disables a tab if its count is exactly 0', async function () {
+    const slots = {
+      default: [
+        '<detail-page title="Main">Hello</detail-page>',
+        '<detail-page title="Foo" :count="0" />'
+      ]
+    };
+
+    const { queryByText, getAllByRole } = await renderDetailsAndWait({ slots });
+    expect(queryByText('Hello')).to.exist;
+
+    const tabs = getAllByRole('tab');
+    expect(tabs[1]).to.have.tagName('p');
+  });
 });

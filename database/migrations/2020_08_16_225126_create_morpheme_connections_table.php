@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNominalFeaturesTable extends Migration
+class CreateMorphemeConnectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateNominalFeaturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('nominal_features', function (Blueprint $table) {
+        Schema::create('morpheme_connections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedInteger('form_id');
+            $table->unsignedInteger('morpheme_id')->nullable();
+            $table->integer('position');
+            $table->string('shape')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateNominalFeaturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nominal_features');
+        Schema::dropIfExists('morpheme_connections');
     }
 }

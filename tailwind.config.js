@@ -28,6 +28,7 @@ module.exports = {
     }
   },
   variants: {
+    backgroundColor: ['responsive', 'even', 'odd', 'hover', 'focus'],
     padding: ['responsive', 'first'],
     display: ['responsive', 'group-hover'],
     filter: ['responsive', 'hover', 'focus'],

@@ -14,6 +14,8 @@
     
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
+    @include('layouts.favicon')
 </head>
 <body class="min-h-screen bg-gray-300 text-gray-900 antialiased font-body leading-none">
     <div id="app" class="flex flex-col min-h-screen">

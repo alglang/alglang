@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Example;
 use App\Language;
 use App\Morpheme;
-use App\NominalFeature;
+use App\Feature;
 use App\NominalForm;
 use App\NominalParadigm;
 use App\NominalStructure;
@@ -28,9 +28,12 @@ class ViewNominalFormTest extends TestCase
             'shape' => 'N-test',
             'language_id' => $language->id,
             'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_id' => factory(NominalFeature::class)->create(['name' => '3s'])->id,
-                'nominal_feature_id' => factory(NominalFeature::class)->create(['name' => '2p'])->id,
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'Test paradigm'])->id
+                'pronominal_feature_name' => factory(Feature::class)->create(['name' => '3s']),
+                'nominal_feature_name' => factory(Feature::class)->create(['name' => '2p']),
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'Test paradigm',
+                    'language_id' => $language->id
+                ])
             ])
         ]);
 
@@ -55,10 +58,8 @@ class ViewNominalFormTest extends TestCase
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
-            'morpheme_structure' => "{$morpheme->id}"
-        ]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+        $nominalForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($nominalForm->url);
 
@@ -71,13 +72,48 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_morphology_section_is_not_shown_if_the_nominal_form_has_no_morphemes()
     {
-        $nominalForm = factory(NominalForm::class)->create(['morpheme_structure' => null]);
+        $nominalForm = factory(NominalForm::class)->create();
 
         $response = $this->get($nominalForm->url);
 
         $response->assertOk();
         $response->assertDontSee('Morphology');
     }
+
+    /** @test */
+    public function the_nominal_form_parent_is_displayed_if_the_nominal_form_has_a_parent()
+    {
+        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
+        $childLanguage = factory(Language::class)->create(['parent_id' => $parentLanguage->id]);
+
+        $parentForm = factory(NominalForm::class)->create([
+            'language_id' => $parentLanguage->id,
+            'shape' => 'V-foo'
+        ]);
+        $childForm = factory(NominalForm::class)->create([
+            'language_id' => $childLanguage->id,
+            'parent_id' => $parentForm->id
+        ]);
+        
+        $response = $this->get($childForm->url);
+        $response->assertOk();
+        $response->assertSee('Parent');
+        $response->assertSee('V-foo');
+        $response->assertSee('Superlanguage');
+    }
+
+    /** @test */
+    public function the_nominal_form_parent_is_not_displayed_if_the_nominal_form_has_no_parent()
+    {
+        $this->withoutExceptionHandling();
+        $morpheme = factory(NominalForm::class)->create();
+
+        $response = $this->get($morpheme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Parent');
+    }
+
 
     /** @test */
     public function a_nominal_form_shows_its_historical_notes_if_it_has_them()
