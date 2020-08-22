@@ -38,5 +38,8 @@ module.exports = {
   plugins: [
     customForms,
     filters
-  ]
+  ],
+  future: {
+    removeDeprecatedGapUtilities: true
+  }
 };
