@@ -32,7 +32,7 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
-                           ->orderByRaw('trim(shape, \'-\')')
+                           /* ->orderByRaw('trim(shape, \'-\')') */
                            ->paginate(request()->per_page ?? 50)
                            ->appends(request()->query());
 
