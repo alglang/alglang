@@ -93,4 +93,15 @@ class LanguageTest extends TestCase
 
         DB::connection()->disableQueryLog();
     }
+
+    /** @test */
+    public function its_forms_are_its_nominal_and_verb_forms_combined()
+    {
+        $language = factory(Language::class)->create();
+        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+
+        $this->assertCount(2, $language->forms);
+        $this->assertEquals([$verbForm->id, $nominalForm->id], $language->forms->pluck('id')->toArray());
+    }
 }
