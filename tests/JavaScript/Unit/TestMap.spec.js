@@ -7,21 +7,20 @@ import Map from '../../../resources/js/components/Map';
 
 const renderMap = async props => {
   const wrapper = render(Map, { props });
-  await waitFor(() => expect(wrapper.container.querySelector('.leaflet-layer')).to.exist);
-  return {
-    getMarkers: () => wrapper.container.getElementsByClassName('leaflet-marker-icon'),
-    ...wrapper
-  };
+  await waitFor(() => expect(wrapper.queryByTestId('alglang-map')).to.exist);
+  return wrapper;
 };
+
+const rightClick = async el => fireEvent(el, new MouseEvent('contextmenu'));
 
 describe('Map.vue', function () {
   it('renders no locations by default', async function () {
-    const { getMarkers } = await renderMap();
-    expect(getMarkers()).to.have.lengthOf(0);
+    const { queryAllByTestId } = await renderMap();
+    expect(queryAllByTestId('alglang-map-marker')).to.have.lengthOf(0);
   });
 
   it('renders locations', async function () {
-    const { getMarkers } = await renderMap({
+    const { getAllByTestId } = await renderMap({
       locations: [
         {
           position: { lat: 45, lng: 34 }
@@ -32,29 +31,29 @@ describe('Map.vue', function () {
       ]
     });
 
-    expect(getMarkers()).to.have.lengthOf(2);
+    expect(getAllByTestId('alglang-map-marker')).to.have.lengthOf(2);
   });
 
   describe('when it has a value', function () {
     describe('when the value has a position', function () {
       it('renders the value', async function () {
-        const { getMarkers } = await renderMap({
+        const { queryByTestId } = await renderMap({
           value: {
             position: { lat: 45, lng: 34 }
           }
         });
 
-        expect(getMarkers()).to.have.lengthOf(1);
+        expect(queryByTestId('alglang-map-value-marker')).to.exist;
       });
     });
 
     describe('when the value has no position', function () {
       it('does not render the value', async function () {
-        const { getMarkers } = await renderMap({
+        const { queryByTestId } = await renderMap({
           value: { position: null }
         });
 
-        expect(getMarkers).to.have.lengthOf(0);
+        expect(queryByTestId('alglang-map-value-marker')).to.not.exist;
       });
     });
   });
@@ -63,7 +62,7 @@ describe('Map.vue', function () {
     it('emits an input event when right clicked', async function () {
       const { container, emitted } = await renderMap();
 
-      await fireEvent(container.firstChild, new MouseEvent('contextmenu'));
+      await rightClick(container.firstChild);
 
       expect(emitted().input).to.exist;
       expect(emitted().input[0][0]).to.have.keys('position');
@@ -89,8 +88,8 @@ describe('Map.vue', function () {
 </div>`
       });
 
-      const { container, getByTestId } = render(component);
-      await waitFor(() => expect(container.querySelector('.leaflet-layer')).to.exist);
+      const { queryByTestId, getByTestId } = render(component);
+      await waitFor(() => expect(queryByTestId('alglang-map')).to.exist);
 
       expect(getByTestId('lat')).to.have.text('0');
       expect(getByTestId('lng')).to.have.text('0');

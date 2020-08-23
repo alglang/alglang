@@ -7,6 +7,7 @@
     :max-bounds-viscosity="1.0"
     @click.right="handleRightClick"
   >
+    <span data-testid="alglang-map" />
     <l-tile-layer
       url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
       attribution="Tiles &copy; Esri &mdash; Source: Esri"
@@ -29,13 +30,16 @@
     <l-marker
       v-if="value && value.position"
       :lat-lng="value.position"
-    />
+    >
+      <span data-testid="alglang-map-value-marker" />
+    </l-marker>
 
     <l-marker
       v-for="(location, i) of locations"
       :key="i"
       :lat-lng="location.position"
     >
+      <span data-testid="alglang-map-marker" />
       <l-popup>
         <a :href="location.url">
           {{ location.name }}
