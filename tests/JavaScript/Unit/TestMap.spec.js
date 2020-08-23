@@ -102,5 +102,23 @@ describe('Map.vue', function () {
       expect(getByTestId('lng')).to.have.text('-87.626953125');
       expect(getByTestId('foo')).to.have.text('foo'); // Shouldn't modify other properties
     });
+
+    it('can show political boundaries', async function () {
+      const { queryByTestId, getByLabelText } = await renderMap();
+      expect(queryByTestId('political-boundaries')).to.not.exist;
+
+      await fireEvent.click(getByLabelText('Political boundary toggle'));
+
+      expect(queryByTestId('political-boundaries')).to.exist;
+    });
+
+    it('can hide political boundaries', async function () {
+      const { queryByTestId, getByLabelText } = await renderMap();
+      await fireEvent.click(getByLabelText('Political boundary toggle'));
+      expect(queryByTestId('political-boundaries')).to.exist;
+
+      await fireEvent.click(getByLabelText('Political boundary toggle'));
+      expect(queryByTestId('political-boundaries')).to.not.exist;
+    });
   });
 });
