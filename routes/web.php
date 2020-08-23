@@ -9,6 +9,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\NominalParadigmController;
+use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
@@ -111,6 +112,13 @@ Route::prefix('sources')->group(function () {
 */
 
 Route::prefix('search')->group(function () {
+    Route::prefix('nominals')->group(function () {
+        Route::get(
+            'paradigms/results',
+            [NominalSearchController::class, 'paradigmResults']
+        )->name('search.nominals.paradigm-results');
+    });
+
     Route::prefix('verbs')->group(function () {
         Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
         Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
@@ -150,10 +158,6 @@ Route::get('/structural-survey', function () {
 Route::get('/search/nominals/paradigms', function () {
     abort(404);
 })->name('search.nominals.paradigms');
-
-Route::get('/search/nominals/paradigm-results', function () {
-    abort(404);
-})->name('search.nominals.paradigm-results');
 
 Route::get('/search/verbs/paradigms', function () {
     abort(404);

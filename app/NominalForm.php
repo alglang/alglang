@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class NominalForm extends Form
 {
@@ -67,5 +68,17 @@ class NominalForm extends Form
         $query->orderByFeature('nominal_feature_name', 'nominal_features');
 
         return $query->select('forms.*');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function structure(): Relation
+    {
+        return $this->belongsTo(NominalStructure::class);
     }
 }

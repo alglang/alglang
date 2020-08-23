@@ -8,19 +8,13 @@ use Illuminate\Support\Collection;
 /**
  * Dedicated class for running complex queries on verb forms
  */
-class VerbSearch
+class VerbSearch extends ModelSearch
 {
-    /** @var Builder */
-    protected $query;
-
-    /** @var array */
-    protected $filters;
-
     protected function __construct()
     {
-        $this->query = VerbForm::orderByFeatures();
+        $query = VerbForm::orderByFeatures();
 
-        $this->filters = [
+        $filters = [
             'languages' => fn($val) => $this->whereIn('language_code', $val),
             'modes' => fn($val) => $this->whereInRelation('structure', 'mode_name', $val),
             'orders' => fn($val) => $this->whereInRelation('structure', 'order_name', $val),
@@ -40,6 +34,8 @@ class VerbSearch
             'primary_object_obviative_codes' => fn($val) => $this->whereInRelation('structure.primaryObject', 'obviative_code', $val),
             'secondary_object_obviative_codes' => fn($val) => $this->whereInRelation('structure.secondaryObject', 'obviative_code', $val)
         ];
+
+        parent::__construct($query, $filters);
     }
 
     /**
@@ -52,36 +48,7 @@ class VerbSearch
      */
     public static function search(array $params): Collection
     {
-        return (new VerbSearch)->constrain(collect($params))->get();
-    }
-
-    /**
-     * Constrains the underlying query based on provided parameters
-     *
-     * @param Collection $params The names and values for the constraints to
-     *                           apply to the query
-     * @return self
-     */
-    public function constrain(Collection $params): self
-    {
-        $this->order();
-
-        $params->each(function ($value, $key) {
-            $filter = $this->filters[$key];
-            $filter($value);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Executes the query against the database and returns the results
-     *
-     * @return Collection
-     */
-    public function get(): Collection
-    {
-        return $this->query->get();
+        return (new self)->constrain(collect($params))->get();
     }
 
     /**
@@ -89,71 +56,11 @@ class VerbSearch
      *
      * @return self
      */
-    private function order(): self
+    protected function order(): self
     {
         $this->query->join('languages', 'forms.language_code', '=', 'languages.code')
                     ->orderBy('languages.name')
                     ->select('forms.*');
-        return $this;
-    }
-
-    /**
-     * Adds a clause to the query that $column should be one of the provided
-     * $options
-     *
-     * @param string $column  The column to constrain
-     * @param array  $options The options for values of the column
-     * @return self
-     */
-    private function whereIn(string $column, array $options): self
-    {
-        $this->query->whereIn($column, $options);
-        return $this;
-    }
-
-    /**
-     * Adds a clause to the query that a given relation should have a column
-     * that equals a given value
-     *
-     * @param string $relation  The relation the constraint should apply to
-     * @param string $column    The column on the related model to constrain
-     * @param mixed  $value     The value the column should have
-     * @return self
-     */
-    private function whereRelation(string $relation, string $column, $value): self
-    {
-        $this->query->whereHas($relation, function ($query) use ($column, $value) {
-            $query->where($column, $value);
-        });
-        return $this;
-    }
-
-    /**
-     * Adds a clause to the query that a given relation should have a column
-     * that contains one of a list of options
-     *
-     * @param string $relation  The relation the constraint should apply to
-     * @param string $column    The column on the related model to constrain
-     * @param array  $options   The options for values of the column
-     * @return self
-     */
-    private function whereInRelation(string $relation, string $column, array $options): self
-    {
-        $this->query->whereHas($relation, function ($query) use ($column, $options) {
-            $query->whereIn($column, $options);
-        });
-        return $this;
-    }
-
-    /**
-     * Adds a clause to the query that the model should not have a relation
-     *
-     * @param string $relation  The relation the model should not have
-     * @return self
-     */
-    private function whereNoRelation(string $relation): self
-    {
-        $this->query->whereDoesntHave($relation);
         return $this;
     }
 }

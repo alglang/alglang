@@ -16,7 +16,21 @@ class NominalSeeder extends Seeder
     public function run()
     {
         DB::table('nominal_paradigm_types')->insert([
-            ['name' => 'Possessed noun']
+            [
+                'name' => 'Possessed noun',
+                'has_pronominal_feature' => true,
+                'has_nominal_feature' => false
+            ],
+            [
+                'name' => 'Common noun',
+                'has_pronominal_feature' => false,
+                'has_nominal_feature' => true
+            ],
+            [
+                'name' => 'Demonstrative',
+                'has_pronominal_feature' => false,
+                'has_nominal_feature' => true
+            ]
         ]);
 
         DB::table('nominal_paradigms')->insert([
@@ -26,19 +40,53 @@ class NominalSeeder extends Seeder
                 'slug' => 'possessed-noun',
                 'language_code' => 'PA',
                 'paradigm_type_name' => 'Possessed noun'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Common noun',
+                'slug' => 'common-noun',
+                'language_code' => 'PA',
+                'paradigm_type_name' => 'Common noun'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Proximal demonstrative',
+                'slug' => 'proximal-demonstrative',
+                'language_code' => 'PA',
+                'paradigm_type_name' => 'Demonstrative'
             ]
         ]);
 
         DB::table('nominal_structures')->insert([
             [
+                'id' => 1,
                 'pronominal_feature_name' => '1s',
                 'nominal_feature_name' => '3s',
                 'paradigm_id' => 1  // Posessed noun
             ],
             [
+                'id' => 2,
                 'pronominal_feature_name' => '1s',
                 'nominal_feature_name' => '3p',
                 'paradigm_id' => 1  // Posessed noun
+            ],
+            [
+                'id' => 3,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3s',
+                'paradigm_id' => 2  // Common noun
+            ],
+            [
+                'id' => 4,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3p',
+                'paradigm_id' => 2  // Common noun
+            ],
+            [
+                'id' => 5,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3s',
+                'paradigm_id' => 3  // Proximal demonstrative
             ]
         ]);
 
@@ -58,6 +106,30 @@ class NominalSeeder extends Seeder
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 2,
                 'slug' => 'ne-N-aki'
+            ],
+            [
+                'id' => 9,
+                'shape' => 'N-a',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 3,
+                'slug' => 'N-a'
+            ],
+            [
+                'id' => 10,
+                'shape' => 'N-aki',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 4,
+                'slug' => 'N-aki'
+            ],
+            [
+                'id' => 11,
+                'shape' => 'ewa',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 5,
+                'slug' => 'ewa'
             ]
         ]);
 

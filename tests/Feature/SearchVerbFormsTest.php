@@ -13,13 +13,17 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SearchVerbFormTest extends TestCase
+class SearchVerbFormsTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @var VerbMode */
     private $mode;
+    /** @var VerbOrder */
     private $order;
+    /** @var VerbClass */
     private $class;
+    /** @var Feature */
     private $subject;
 
     public function setUp(): void
@@ -55,8 +59,6 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function it_returns_the_correct_view()
     {
-        $language = factory(Language::class)->create();
-
         $response = $this->get(route('search.verbs.form-results', [
             'structures' => [$this->generateQuery()]
 		]));
