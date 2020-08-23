@@ -50,7 +50,7 @@ class LanguageController extends Controller
         $languageData = request()->validate([
             'name' => 'required|string|unique:App\Language',
             'code' => 'required|string|max:5',
-            'group_id' => 'required|exists:App\Group,id',
+            'group_name' => 'required|exists:App\Group,name',
             'parent_code' => 'required|exists:App\Language,code',
             'reconstructed' => 'boolean',
             'position' => 'json',

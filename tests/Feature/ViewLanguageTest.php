@@ -29,12 +29,11 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create(['name' => 'Test Group']);
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
             'code' => 'PA',
-            'group_id' => $group->id
+            'group_name' => $group->name
         ]);
 
         $response = $this->get($language->url);

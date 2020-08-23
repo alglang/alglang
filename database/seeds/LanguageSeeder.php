@@ -19,7 +19,7 @@ class LanguageSeeder extends Seeder
                 'iso' => 'alg',
                 'reconstructed' => true,
                 'position' => '{"lat":46.0,"lng":-87.659916}',
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ],
             [
                 'name' => 'Common Cree',
@@ -28,7 +28,7 @@ class LanguageSeeder extends Seeder
                 'iso' => null,
                 'reconstructed' => false,
                 'position' => null,
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ],
             [
                 'name' => 'Southwestern Ojibwe',
@@ -37,7 +37,7 @@ class LanguageSeeder extends Seeder
                 'iso' => 'ciw',
                 'reconstructed' => false,
                 'position' => '{"lat":46.271362,"lng":-93.392167}',
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ]
         ]);
     }

@@ -20,6 +20,12 @@ class Group extends Model
     |
     */
 
+    protected $primaryKey = 'name';
+
+    protected $keyType = 'str';
+
+    public $incrementing = false;
+
     protected $guarded = [];
 
     protected $appends = ['url'];
@@ -29,6 +35,11 @@ class Group extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    public function getParentColumn(): string
+    {
+        return 'parent_name';
     }
 
     /*

@@ -13,17 +13,15 @@ class GroupSeeder extends Seeder
     {
         DB::table('groups')->insert([
             [
-                'id' => 1,
-                'parent_id' => null,
                 'name' => 'Algonquian',
+                'parent_name' => null,
                 'slug' => 'algonquian',
                 'description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
             ],
 
             [
-                'id' => 2,
-                'parent_id' => 1,  // Algonquian
                 'name' => 'Central',
+                'parent_name' => 'Algonquian',
                 'slug' => 'central',
                 'description' => null
             ]

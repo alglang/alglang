@@ -6,6 +6,6 @@ use Faker\Generator as Faker;
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(Group::class, function (Faker $faker) {
     return [
-        'name' => 'Test Group'
+        'name' => $faker->unique()->word
     ];
 });

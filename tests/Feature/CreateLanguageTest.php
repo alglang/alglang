@@ -36,7 +36,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code,
                             'reconstructed' => true,
                             'position' => '{"lat":52,"lng":46}',
@@ -49,7 +49,7 @@ class CreateLanguageTest extends TestCase
 
         $this->assertEquals('Test Language', $language->name);
         $this->assertEquals('TL', $language->code);
-        $this->assertEquals($this->group->id, $language->group_id);
+        $this->assertEquals($this->group->name, $language->group_name);
         $this->assertEquals($this->parent->code, $language->parent_code);
         $this->assertTrue($language->reconstructed);
         $this->assertEquals((object) ['lat' => 52, 'lng' => 46], $language->position);
@@ -68,7 +68,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $group->id,
+                            'group_name' => $group->name,
                             'parent_code' => $parent->code,
                             'reconstructed' => true,
                             'position' => '{"lat":52,"lng":46}',
@@ -79,7 +79,7 @@ class CreateLanguageTest extends TestCase
         $response->assertJson([
             'name' => 'Test Language',
             'code' => 'TL',
-            'group_id' => $group->id,
+            'group_name' => $group->name,
             'group' => ['name' => 'Test Group'],
             'parent_code' => $parent->code,
             'parent' => ['name' => 'Test Parent'],
@@ -97,7 +97,7 @@ class CreateLanguageTest extends TestCase
         $response = $this->postJson('/api/languages', [
             'name' => 'Test Language',
             'code' => 'TL',
-            'group_id' => $this->group->id,
+            'group_name' => $this->group->name,
             'parent_code' => $this->parent->code
         ]);
 
@@ -114,7 +114,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -129,7 +129,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -151,7 +151,7 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -182,7 +182,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -196,7 +196,7 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -211,7 +211,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 4,
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -226,7 +226,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'ABCDEF',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code
                         ]);
 
@@ -235,7 +235,7 @@ class CreateLanguageTest extends TestCase
     }
 
     /** @test */
-    public function group_id_must_be_included_in_the_request()
+    public function group_name_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
@@ -245,32 +245,32 @@ class CreateLanguageTest extends TestCase
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('group_id');
+        $response->assertJsonValidationErrors('group_name');
     }
 
     /** @test */
-    public function group_id_must_exist()
+    public function group_name()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => 440,
+                            'group_name' => 440,
                             'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('group_id');
+        $response->assertJsonValidationErrors('group_name');
     }
 
     /** @test */
-    public function parent_id_must_be_included_in_the_request()
+    public function parent_code_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id
+                            'group_name' => $this->group->name
                         ]);
 
         $response->assertStatus(422);
@@ -284,7 +284,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => 'X'
                         ]);
 
@@ -299,7 +299,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code,
                             'reconstructed' => 'foo'
                         ]);
@@ -315,7 +315,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code,
                             'position' => 'foo'
                         ]);
@@ -331,7 +331,7 @@ class CreateLanguageTest extends TestCase
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'code' => 'TL',
-                            'group_id' => $this->group->id,
+                            'group_name' => $this->group->name,
                             'parent_code' => $this->parent->code,
                             'notes' => 12
                         ]);

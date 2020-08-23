@@ -15,7 +15,6 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function a_group_can_be_viewed()
     {
-        $this->withoutExceptionHandling();
         $group = factory(Group::class)->create(['name' => 'Test Group']);
 
         $response = $this->get($group->url);
@@ -44,7 +43,7 @@ class ViewGroupTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $parent = factory(Group::class)->create(['name' => 'Supergroup']);
-        $child = factory(Group::class)->create(['parent_id' => $parent->id]);
+        $child = factory(Group::class)->create(['parent_name' => $parent->name]);
 
         $response = $this->get($child->url);
         $response->assertOk();
@@ -59,11 +58,11 @@ class ViewGroupTest extends TestCase
         $parent = factory(Group::class)->create();
         $child1 = factory(Group::class)->create([
             'name' => 'Child 1',
-            'parent_id' => $parent->id
+            'parent_name' => $parent->name
         ]);
         $child2 = factory(Group::class)->create([
             'name' => 'Child 2',
-            'parent_id' => $parent->id
+            'parent_name' => $parent->name
         ]);
 
         $response = $this->get($parent->url);
@@ -104,12 +103,12 @@ class ViewGroupTest extends TestCase
         factory(Language::class)->create([
             'name' => 'Test Language 1',
             'position' => '{"lat":46.1,"lng":-87.1}',
-            'group_id' => $group->id
+            'group_name' => $group->name
         ]);
         factory(Language::class)->create([
             'name' => 'Test Language 2',
             'position' => '{"lat":47.1,"lng":-86.1}',
-            'group_id' => $group->id
+            'group_name' => $group->name
         ]);
 
         $response = $this->get($group->url);
@@ -128,7 +127,7 @@ class ViewGroupTest extends TestCase
 
         factory(Language::class)->create([
             'name' => 'Test Language',
-            'group_id' => $group->id,
+            'group_name' => $group->name,
             'position' => null
         ]);
 
