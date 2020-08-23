@@ -55,7 +55,7 @@ Route::prefix('groups')->group(function () {
 Route::prefix('languages')->group(function () {
     Route::get('create', [LanguageController::class, 'create'])->name('languages.create');
 
-    Route::prefix('{language:slug}')->group(function () {
+    Route::prefix('{language:code}')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
 
         Route::prefix('morphemes')->group(function () {

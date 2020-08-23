@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 $factory->define(Morpheme::class, function (Faker $faker) {
     return [
         'shape' => '-ak',
-        'language_id' => factory(Language::class),
+        'language_code' => factory(Language::class),
         'slot_abv' => factory(Slot::class)
     ];
 });

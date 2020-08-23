@@ -97,23 +97,22 @@ class SearchVerbFormTest extends TestCase
     /** @test */
     public function it_orders_forms_by_language()
     {
-        $this->withoutExceptionHandling();
         $language2 = factory(Language::class)->create(['name' => 'Test Language 2']);
         $language1 = factory(Language::class)->create(['name' => 'Test Language 1']);
 
         factory(VerbForm::class)->create([
-            'language_id' => $language2,
+            'language_code' => $language2,
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure()
         ]);
         factory(VerbForm::class)->create([
-            'language_id' => $language1,
+            'language_code' => $language1,
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure()
         ]);
 
         $response = $this->get(route('search.verbs.form-results', [
-            'languages' => [$language2->id, $language1->id],
+            'languages' => [$language2->code, $language1->code],
             'structures' => [$this->generateQuery()]
         ]));
 
@@ -127,18 +126,18 @@ class SearchVerbFormTest extends TestCase
     {
         $language = factory(Language::class)->create();
         factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure()
         ]);
         factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(),
+            'language_code' => factory(Language::class)->create(),
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure()
         ]);
 
         $response = $this->get(route('search.verbs.form-results', [
-            'languages' => [$language->id],
+            'languages' => [$language->code],
             'structures' => [$this->generateQuery()]
 		]));
 

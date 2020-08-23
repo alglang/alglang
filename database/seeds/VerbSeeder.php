@@ -73,7 +73,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 1,
                 'shape' => 'V-(o)wa·či',
-                'language_id' => 1,  // Proto-Algonquian
+                'language_code' => 'PA',
                 'parent_id' => null,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 1,  // 3p TA Conjunct Indicative
@@ -83,7 +83,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 2,
                 'shape' => 'V-pa',
-                'language_id' => 1,  // Proto-Algonquian
+                'language_code' => 'PA',
                 'parent_id' => null,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 2,  // 3s AI Independent Preterit
@@ -93,7 +93,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 5,
                 'shape' => 'V-wa',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'parent_id' => null,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 3,  // 3s AI Independent Indicative
@@ -103,7 +103,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 6,
                 'shape' => 'V',
-                'language_id' => 3,  // Southwestern Ojibwe
+                'language_code' => 'SwO',
                 'parent_id' => 5,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 3,  // 3s AI Independent Indicative
@@ -113,7 +113,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 7,
                 'shape' => 'V-(y)a·ni',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'parent_id' => null,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 4,  // 1s AI Conjunct Indicative
@@ -123,7 +123,7 @@ class VerbSeeder extends Seeder
             [
                 'id' => 8,
                 'shape' => 'V-(y)a·nke',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'parent_id' => null,
                 'structure_type' => VerbStructure::class,
                 'structure_id' => 5,  // 1p AI Conjunct Indicative

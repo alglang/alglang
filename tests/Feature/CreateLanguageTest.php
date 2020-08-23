@@ -13,6 +13,10 @@ class CreateLanguageTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $group;
+    private $parent;
+    private $contributor;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -31,9 +35,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id,
+                            'parent_code' => $this->parent->code,
                             'reconstructed' => true,
                             'position' => '{"lat":52,"lng":46}',
                             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
@@ -41,12 +45,12 @@ class CreateLanguageTest extends TestCase
 
         $response->assertSuccessful();
 
-        $language = Language::where(['algo_code' => 'TL'])->first();
+        $language = Language::where(['code' => 'TL'])->first();
 
         $this->assertEquals('Test Language', $language->name);
-        $this->assertEquals('TL', $language->algo_code);
+        $this->assertEquals('TL', $language->code);
         $this->assertEquals($this->group->id, $language->group_id);
-        $this->assertEquals($this->parent->id, $language->parent_id);
+        $this->assertEquals($this->parent->code, $language->parent_code);
         $this->assertTrue($language->reconstructed);
         $this->assertEquals((object) ['lat' => 52, 'lng' => 46], $language->position);
         $this->assertEquals(
@@ -63,9 +67,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $group->id,
-                            'parent_id' => $parent->id,
+                            'parent_code' => $parent->code,
                             'reconstructed' => true,
                             'position' => '{"lat":52,"lng":46}',
                             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod'
@@ -74,10 +78,10 @@ class CreateLanguageTest extends TestCase
         $response->assertCreated();
         $response->assertJson([
             'name' => 'Test Language',
-            'algo_code' => 'TL',
+            'code' => 'TL',
             'group_id' => $group->id,
             'group' => ['name' => 'Test Group'],
-            'parent_id' => $parent->id,
+            'parent_code' => $parent->code,
             'parent' => ['name' => 'Test Parent'],
             'reconstructed' => true,
             'position' => ['lat' => 52, 'lng' => 46],
@@ -92,13 +96,13 @@ class CreateLanguageTest extends TestCase
 
         $response = $this->postJson('/api/languages', [
             'name' => 'Test Language',
-            'algo_code' => 'TL',
+            'code' => 'TL',
             'group_id' => $this->group->id,
-            'parent_id' => $this->parent->id
+            'parent_code' => $this->parent->code
         ]);
 
         $response->assertUnauthorized();
-        $this->assertNull(Language::where(['algo_code' => 'TL'])->first());
+        $this->assertNull(Language::where(['code' => 'TL'])->first());
     }
 
     /** @test */
@@ -109,13 +113,13 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($user)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertForbidden();
-        $this->assertNull(Language::where(['algo_code' => 'TL'])->first());
+        $this->assertNull(Language::where(['code' => 'TL'])->first());
     }
 
     /** @test */
@@ -124,12 +128,12 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
-        $language = Language::where(['algo_code' => 'TL'])->first();
+        $language = Language::where(['code' => 'TL'])->first();
         $this->assertCount(2, $language->morphemes);
 
         $this->assertEquals('V-', $language->morphemes[0]->shape);
@@ -146,9 +150,9 @@ class CreateLanguageTest extends TestCase
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
@@ -160,9 +164,9 @@ class CreateLanguageTest extends TestCase
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
@@ -172,14 +176,14 @@ class CreateLanguageTest extends TestCase
     /** @test */
     public function the_language_name_must_be_unique()
     {
-        factory(Language::class)->create(['name' => 'Test Language', 'algo_code' => 'XX']);
+        factory(Language::class)->create(['name' => 'Test Language', 'code' => 'XX']);
 
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
@@ -187,47 +191,47 @@ class CreateLanguageTest extends TestCase
     }
 
     /** @test */
-    public function algo_code_must_be_included_in_the_request()
+    public function code_must_be_included_in_the_request()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('algo_code');
+        $response->assertJsonValidationErrors('code');
     }
 
     /** @test */
-    public function algo_code_must_be_a_string()
+    public function code_must_be_a_string()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 4,
+                            'code' => 4,
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('algo_code');
+        $response->assertJsonValidationErrors('code');
     }
 
     /** @test */
-    public function algo_code_must_have_fewer_than_6_characters()
+    public function code_must_have_fewer_than_6_characters()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'ABCDEF',
+                            'code' => 'ABCDEF',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('algo_code');
+        $response->assertJsonValidationErrors('code');
     }
 
     /** @test */
@@ -236,8 +240,8 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
-                            'parent_id' => $this->parent->id
+                            'code' => 'TL',
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
@@ -250,9 +254,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => 440,
-                            'parent_id' => $this->parent->id
+                            'parent_code' => $this->parent->code
                         ]);
 
         $response->assertStatus(422);
@@ -265,27 +269,27 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('parent_id');
+        $response->assertJsonValidationErrors('parent_code');
     }
 
     /** @test */
-    public function parent_id_must_exist()
+    public function parent_code_must_exist()
     {
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => 440
+                            'parent_code' => 'X'
                         ]);
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('parent_id');
+        $response->assertJsonValidationErrors('parent_code');
     }
 
     /** @test */
@@ -294,9 +298,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id,
+                            'parent_code' => $this->parent->code,
                             'reconstructed' => 'foo'
                         ]);
 
@@ -310,9 +314,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id,
+                            'parent_code' => $this->parent->code,
                             'position' => 'foo'
                         ]);
 
@@ -326,9 +330,9 @@ class CreateLanguageTest extends TestCase
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
-                            'algo_code' => 'TL',
+                            'code' => 'TL',
                             'group_id' => $this->group->id,
-                            'parent_id' => $this->parent->id,
+                            'parent_code' => $this->parent->code,
                             'notes' => 12
                         ]);
 

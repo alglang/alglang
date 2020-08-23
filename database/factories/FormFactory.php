@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 $factory->define(Form::class, function (Faker $faker) {
     return [
         'shape' => 'V-test',
-        'language_id' => factory(Language::class),
+        'language_code' => factory(Language::class),
         'structure_type' => VerbStructure::class,
         'structure_id' => factory(VerbStructure::class)
     ];

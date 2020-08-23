@@ -15,11 +15,11 @@ class NominalFormTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $form = factory(NominalForm::class)->create([
             'shape' => 'N-test',
-            'language_id' => $language->id
+            'language_code' => $language->code
         ]);
-        $this->assertEquals('/languages/pa/nominal-forms/N-test', $form->url);
+        $this->assertEquals('/languages/PA/nominal-forms/N-test', $form->url);
     }
 }

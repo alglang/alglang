@@ -59,7 +59,7 @@ class Morpheme extends Model implements CachableAttributes
     /**
      * @var array
      */
-    protected $disambiguatableFields = ['language_id', 'shape'];
+    protected $disambiguatableFields = ['language_code', 'shape'];
 
     protected function updateSlugBasedOnDisambiguator(): void
     {
@@ -118,7 +118,7 @@ class Morpheme extends Model implements CachableAttributes
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/morphemes/{$this->slug}";
+        return "/languages/{$this->language->slug}/morphemes/$this->slug";
     }
 
     public function getGlossesAttribute(): Collection
@@ -169,7 +169,7 @@ class Morpheme extends Model implements CachableAttributes
 
     public function language(): Relation
     {
-        return $this->belongsTo(Language::class);
+        return $this->belongsTo(Language::class, 'language_code');
     }
 
     public function slot(): Relation
@@ -186,7 +186,7 @@ class Morpheme extends Model implements CachableAttributes
             'id',
             'id',
             'form_id'
-        )->where('language_id', $this->language_id)->distinct();
+        )->where('language_code', $this->language_code)->distinct();
     }
 
     public function verbForms(): Relation

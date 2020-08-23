@@ -20,12 +20,12 @@ class FetchMorphemesTest extends TestCase
     {
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-ak',
             'slot_abv' => factory(Slot::class)->create(['abv' => 'bar'])->abv
         ]);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
@@ -46,7 +46,7 @@ class FetchMorphemesTest extends TestCase
     {
         $source = factory(Source::class)->create();
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => factory(Language::class)->create(['name' => 'Test Language'])->id,
+            'language_code' => factory(Language::class)->create(['name' => 'Test Language'])->code,
             'shape' => '-ak',
             'slot_abv' => factory(Slot::class)->create(['abv' => 'bar'])->abv
         ]);
@@ -73,7 +73,7 @@ class FetchMorphemesTest extends TestCase
         $language = factory(Language::class)->create();
         $this->assertDatabaseCount('morphemes', 2);  // Verify that the placeholder morphemes were generated
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
         $response->assertOk();
         $response->assertJsonCount(0, 'data');
     }
@@ -93,11 +93,11 @@ class FetchMorphemesTest extends TestCase
 
         $morpheme1 = factory(Morpheme::class)->create([
             'shape' => '-ak',
-            'language_id' => $language1->id
+            'language_code' => $language1->code
         ]);
-        factory(Morpheme::class, 5)->create(['language_id' => $language2->id]);
+        factory(Morpheme::class, 5)->create(['language_code' => $language2->code]);
 
-        $response = $this->get("/api/morphemes?language_id=$language1->id");
+        $response = $this->get("/api/morphemes?language=$language1->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
@@ -137,22 +137,22 @@ class FetchMorphemesTest extends TestCase
         $source1 = factory(Source::class)->create();
         $source2 = factory(Source::class)->create();
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => '-foo'
         ]);
         $morpheme3 = factory(Morpheme::class)->create([
-            'language_id' => $language2->id,
+            'language_code' => $language2->code,
             'shape' => '-bar'
         ]);
         $morpheme1->addSource($source1);
         $morpheme2->addSource($source2);
         $morpheme3->addSource($source1);
 
-        $response = $this->get("/api/morphemes?source_id=$source1->id&language_id=$language1->id");
+        $response = $this->get("/api/morphemes?source_id=$source1->id&language=$language1->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
@@ -167,9 +167,9 @@ class FetchMorphemesTest extends TestCase
     public function it_paginates_morphemes()
     {
         $language = factory(Language::class)->create();
-        factory(Morpheme::class, 3)->create(['language_id' => $language->id]);
+        factory(Morpheme::class, 3)->create(['language_code' => $language->code]);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id&per_page=2");
+        $response = $this->get("/api/morphemes?language=$language->code&per_page=2");
 
         $response->assertOk();
         $response->assertJsonCount(2, 'data');
@@ -185,11 +185,11 @@ class FetchMorphemesTest extends TestCase
         $gloss = factory(Gloss::class)->create(['abv' => 'G1']);
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'gloss' => 'G1.G2',
         ]);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
 
         $response->assertOk();
         $response->assertJson([
@@ -214,9 +214,9 @@ class FetchMorphemesTest extends TestCase
     public function it_include_morpheme_disambiguators()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
 
         $response->assertOk();
         $response->assertJson([
@@ -232,11 +232,11 @@ class FetchMorphemesTest extends TestCase
     public function morphemes_are_sorted_alphabetically_by_shape()
     {
         $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['language_id' => $language->id, 'shape' => 'c-']);
-        factory(Morpheme::class)->create(['language_id' => $language->id, 'shape' => 'a-']);
-        factory(Morpheme::class)->create(['language_id' => $language->id, 'shape' => 'b-']);
+        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'c-']);
+        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'a-']);
+        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'b-']);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
 
         $response->assertOk();
         $response->assertJson([
@@ -252,10 +252,10 @@ class FetchMorphemesTest extends TestCase
     public function morphemes_are_sorted_ignoring_hyphens()
     {
         $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['language_id' => $language->id, 'shape' => 'a-']);
-        factory(Morpheme::class)->create(['language_id' => $language->id, 'shape' => '-b']);
+        factory(Morpheme::class)->create(['language_code' => $language->code, 'shape' => 'a-']);
+        factory(Morpheme::class)->create(['language_code' => $language->code, 'shape' => '-b']);
 
-        $response = $this->get("/api/morphemes?language_id=$language->id");
+        $response = $this->get("/api/morphemes?language=$language->code");
 
         $response->assertOk();
         $response->assertJson([

@@ -18,7 +18,7 @@ class FetchLanguagesTest extends TestCase
 
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
-            'algo_code' => 'TL',
+            'code' => 'TL',
             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
             'position' => json_encode(['lat' => 53, 'lng' => 34])
         ]);
@@ -31,7 +31,7 @@ class FetchLanguagesTest extends TestCase
                 [
                     'name' => 'Test Language',
                     'url' => $language->url,
-                    'algo_code' => 'TL',
+                    'code' => 'TL',
                     'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
                     'position' => ['lat' => 53, 'lng' => 34]
                 ]

@@ -5,8 +5,6 @@ namespace App;
 use App\Traits\HasParent;
 use Astrotomic\CachableAttributes\CachableAttributes;
 use Astrotomic\CachableAttributes\CachesAttributes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as Builder;
@@ -16,7 +14,6 @@ class Language extends Model implements CachableAttributes
 {
     use CachesAttributes;
     use HasParent;
-    use HasSlug;
 
     /** @var int */
     public $sources_count;
@@ -27,6 +24,12 @@ class Language extends Model implements CachableAttributes
     |--------------------------------------------------------------------------
     |
     */
+
+    protected $primaryKey = 'code';
+
+    protected $keyType = 'str';
+
+    public $incrementing = false;
 
     protected $guarded = [];
 
@@ -48,11 +51,9 @@ class Language extends Model implements CachableAttributes
         'nominalParadigms'
     ];
 
-    public function getSlugOptions(): SlugOptions
+    protected function getParentColumn(): string
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('algo_code')
-            ->saveSlugsTo('slug');
+        return 'parent_code';
     }
 
     /*
@@ -85,6 +86,11 @@ class Language extends Model implements CachableAttributes
     |--------------------------------------------------------------------------
     |
     */
+
+    public function getSlugAttribute(): string
+    {
+        return $this->code;
+    }
 
     public function getPositionAttribute(?string $value): ?object
     {
@@ -175,7 +181,7 @@ class Language extends Model implements CachableAttributes
 
         foreach ($this->sourcedRelations as $relation) {
             $query = $query->orWhereHas($relation, function ($query) {
-                return $query->where('language_id', $this->id);
+                return $query->where('language_code', $this->code);
             });
         }
 

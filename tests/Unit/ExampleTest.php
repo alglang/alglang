@@ -18,9 +18,9 @@ class ExampleTest extends TestCase
     /** @test */
     public function it_has_a_url_attribute_when_it_has_a_verb_form()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language = factory(Language::class)->create(['code' => 'TL']);
         $form = factory(VerbForm::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'V-bar'
         ]);
         $example = factory(Example::class)->create([
@@ -35,9 +35,9 @@ class ExampleTest extends TestCase
     /** @test */
     public function it_has_a_url_attribute_when_it_has_a_nominal_form()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language = factory(Language::class)->create(['code' => 'TL']);
         $form = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'V-bar'
         ]);
         $example = factory(Example::class)->create([
@@ -52,12 +52,12 @@ class ExampleTest extends TestCase
     /** @test */
     public function its_language_is_the_same_as_its_form()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language = factory(Language::class)->create(['code' => 'TL']);
         $example = factory(Example::class)->create([
-            'form_id' => factory(Form::class)->create(['language_id' => $language->id])->id
+            'form_id' => factory(Form::class)->create(['language_code' => $language->code])
         ]);
 
-        $this->assertEquals($language->id, $example->language->id);
+        $this->assertEquals($language->code, $example->language->code);
     }
 
     /** @test */
@@ -65,14 +65,14 @@ class ExampleTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $stem = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
         $suffix = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-bar'
         ]);
-        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, $suffix]);
 
         $example = factory(Example::class)->create([

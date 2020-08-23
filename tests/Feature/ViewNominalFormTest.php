@@ -35,13 +35,13 @@ class ViewNominalFormTest extends TestCase
 
         $nominalForm = factory(NominalForm::class)->create([
             'shape' => 'N-test',
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_name' => factory(Feature::class)->create(['name' => '3s']),
                 'nominal_feature_name' => factory(Feature::class)->create(['name' => '2p']),
                 'paradigm_id' => factory(NominalParadigm::class)->create([
                     'name' => 'Test paradigm',
-                    'language_id' => $language->id
+                    'language_code' => $language->code
                 ])
             ])
         ]);
@@ -61,11 +61,11 @@ class ViewNominalFormTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
+        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($nominalForm->url);
@@ -91,14 +91,14 @@ class ViewNominalFormTest extends TestCase
     public function the_nominal_form_parent_is_displayed_if_the_nominal_form_has_a_parent()
     {
         $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_id' => $parentLanguage->id]);
+        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
 
         $parentForm = factory(NominalForm::class)->create([
-            'language_id' => $parentLanguage->id,
+            'language_code' => $parentLanguage->code,
             'shape' => 'V-foo'
         ]);
         $childForm = factory(NominalForm::class)->create([
-            'language_id' => $childLanguage->id,
+            'language_code' => $childLanguage->code,
             'parent_id' => $parentForm->id
         ]);
         

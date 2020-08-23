@@ -39,12 +39,12 @@ class FetchSourcesTest extends TestCase
         $source2 = factory(Source::class)->create(['author' => 'John Doe']);
         $language1 = factory(Language::class)->create();
         $language2 = factory(Language::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create(['language_id' => $language1->id]);
-        $morpheme2 = factory(Morpheme::class)->create(['language_id' => $language2->id]);
+        $morpheme1 = factory(Morpheme::class)->create(['language_code' => $language1->code]);
+        $morpheme2 = factory(Morpheme::class)->create(['language_code' => $language2->code]);
         $morpheme1->addSource($source1);
         $morpheme2->addSource($source2);
 
-        $response = $this->get("/api/sources?language_id=$language1->id");
+        $response = $this->get("/api/sources?language=$language1->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');

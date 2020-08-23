@@ -61,7 +61,7 @@ class Example extends Model
             : 'nominalForms.examples.show';
 
         return route($routeName, [
-            'language' => $this->form->language->slug,
+            'language' => $this->form->language_code,
             'form' => $this->form->slug,
             'example' => $this->slug
         ], false);
@@ -76,7 +76,14 @@ class Example extends Model
 
     public function language(): Relation
     {
-        return $this->hasOneThrough(Language::class, Form::class, 'id', 'id', 'form_id', 'language_id');
+        return $this->hasOneThrough(
+            Language::class,
+            Form::class,
+            'id',
+            'code',
+            'form_id',
+            'language_code'
+        );
     }
 
     public function form(): Relation

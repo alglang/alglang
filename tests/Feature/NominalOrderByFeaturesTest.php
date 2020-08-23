@@ -233,14 +233,14 @@ class NominalOrderByFeaturesTest extends TestCase
     {
         foreach ($featureSets as $featureGroup) {
             factory(NominalForm::class)->create([
-                'language_id' => $this->language->id,
+                'language_code' => $this->language->code,
                 'structure_id' => factory(NominalStructure::class)->create([
                     'pronominal_feature_name' => isset($featureGroup['pronominal']) ? factory(Feature::class)->create($featureGroup['pronominal']) : null,
                     'nominal_feature_name' => isset($featureGroup['nominal']) ? factory(Feature::class)->create($featureGroup['nominal']) : null,
                     'paradigm_id' => factory(NominalParadigm::class)->create([
-                        'language_id' => $this->language->id
-                    ])->id
-                ])->id
+                        'language_code' => $this->language->code
+                    ])
+                ])
             ]);
         }
     }

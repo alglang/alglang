@@ -45,11 +45,11 @@ class FormTest extends TestCase
     /** @test */
     public function it_can_assign_morphemes()
     {
-        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
 
         $morphemes = [
             factory(Morpheme::class)->create([
-                'language_id' => $form->language_id,
+                'language_code' => $form->language_code,
                 'shape' => 'foo-'
             ]),
             'bar'
@@ -63,13 +63,13 @@ class FormTest extends TestCase
     /** @test */
     public function it_retrieves_its_morphemes_in_order()
     {
-        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $form->language_id,
+            'language_code' => $form->language_code,
             'shape' => '-bar'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $form->language_id,
+            'language_code' => $form->language_code,
             'shape' => 'foo-'
         ]);
 
@@ -82,13 +82,13 @@ class FormTest extends TestCase
     /** @test */
     public function it_replaces_old_morpheme_connections()
     {
-        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $form->language_id,
+            'language_code' => $form->language_code,
             'shape' => 'foo-'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $form->language_id,
+            'language_code' => $form->language_code,
             'shape' => 'bar-'
         ]);
 

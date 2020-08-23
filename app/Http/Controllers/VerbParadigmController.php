@@ -12,7 +12,7 @@ class VerbParadigmController extends Controller
     public function show(Language $language): View
     {
         $paradigm = new VerbParadigm([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'mode_name' => request()->mode,
             'class_abv' => request()->class,
             'order_name' => request()->order,

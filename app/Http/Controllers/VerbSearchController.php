@@ -68,7 +68,7 @@ class VerbSearchController extends Controller
         $languages = collect(array_map(fn($column) => $column['results'], $columns))
             ->flatten(1)
             ->pluck('language')
-            ->unique('id');
+            ->unique('code');
 
         return view('search.verbs.form-results', [
             'columns' => $columns,

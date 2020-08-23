@@ -21,7 +21,7 @@ class VerbSearch
         $this->query = VerbForm::orderByFeatures();
 
         $this->filters = [
-            'languages' => fn($val) => $this->whereIn('language_id', $val),
+            'languages' => fn($val) => $this->whereIn('language_code', $val),
             'modes' => fn($val) => $this->whereInRelation('structure', 'mode_name', $val),
             'orders' => fn($val) => $this->whereInRelation('structure', 'order_name', $val),
             'classes' => fn($val) => $this->whereInRelation('structure', 'class_abv', $val),
@@ -91,7 +91,7 @@ class VerbSearch
      */
     private function order(): self
     {
-        $this->query->join('languages', 'forms.language_id', '=', 'languages.id')
+        $this->query->join('languages', 'forms.language_code', '=', 'languages.code')
                     ->orderBy('languages.name')
                     ->select('forms.*');
         return $this;

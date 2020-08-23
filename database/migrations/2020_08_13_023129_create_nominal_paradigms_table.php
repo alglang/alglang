@@ -17,7 +17,7 @@ class CreateNominalParadigmsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->unsignedInteger('language_id');
+            $table->string('language_code');
             $table->unsignedInteger('paradigm_type_name');
             $table->timestamps();
         });

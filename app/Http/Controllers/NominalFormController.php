@@ -15,13 +15,13 @@ class NominalFormController extends Controller
     {
         $query = NominalForm::query();
 
-        if (!request()->language_id && !request()->source_id && !request()->with_morphemes) {
+        if (!request()->language && !request()->source_id && !request()->with_morphemes) {
             abort(400);
         }
 
-        if (request()->language_id) {
+        if (request()->language) {
             $query->whereHas('language', function (Builder $query) {
-                return $query->where('id', request()->language_id);
+                return $query->where('code', request()->language);
             });
         }
 

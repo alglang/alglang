@@ -10,6 +10,6 @@ $factory->define(NominalParadigm::class, function (Faker $faker) {
     return [
         'name' => 'Factory paradigm',
         'paradigm_type_name' => factory(NominalParadigmType::class),
-        'language_id' => factory(Language::class)
+        'language_code' => factory(Language::class)
     ];
 });

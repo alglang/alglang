@@ -24,7 +24,7 @@ class NominalSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Possessed noun',
                 'slug' => 'possessed-noun',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'paradigm_type_name' => 'Possessed noun'
             ]
         ]);
@@ -46,7 +46,7 @@ class NominalSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => 'ne-N-a',
-                'language_id' => 1,  // Proto-Algonquian
+                'language_code' => 'PA',
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 1,
                 'slug' => 'ne-N-a'
@@ -54,7 +54,7 @@ class NominalSeeder extends Seeder
             [
                 'id' => 4,
                 'shape' => 'ne-N-aki',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 2,
                 'slug' => 'ne-N-aki'

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ViewVerbExampleTest extends TestCase
+class ViewExampleTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -41,7 +41,7 @@ class ViewVerbExampleTest extends TestCase
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
             'translation' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])->id
+            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])
         ]);
 
         $response = $this->get($example->url);
@@ -58,10 +58,10 @@ class ViewVerbExampleTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $stem = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
-        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, 'bar']);
 
         $example = factory(Example::class)->create([

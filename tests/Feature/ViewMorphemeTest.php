@@ -28,7 +28,7 @@ class ViewMorphemeTest extends TestCase
 
         $morpheme = factory(Morpheme::class)->create([
             'shape' => '-ak',
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'slot_abv' => $slot->abv,
             'historical_notes' => 'The quick brown fox jumps over the lazy brown dog',
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet',
@@ -171,14 +171,14 @@ class ViewMorphemeTest extends TestCase
     public function the_morpheme_parent_is_displayed_if_the_morpheme_has_a_parent()
     {
         $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_id' => $parentLanguage->id]);
+        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
 
         $parentMorpheme = factory(Morpheme::class)->create([
-            'language_id' => $parentLanguage->id,
+            'language_code' => $parentLanguage->code,
             'shape' => 'parentmorph-'
         ]);
         $childMorpheme = factory(Morpheme::class)->create([
-            'language_id' => $childLanguage->id,
+            'language_code' => $childLanguage->code,
             'parent_id' => $parentMorpheme->id
         ]);
         
@@ -204,9 +204,9 @@ class ViewMorphemeTest extends TestCase
     public function the_morpheme_comes_with_its_verb_form_count()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
         $verbForm->assignMorphemes([$morpheme]);
 
@@ -221,9 +221,9 @@ class ViewMorphemeTest extends TestCase
     public function the_morpheme_comes_with_its_nominal_form_count()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $nominalForm = factory(NominalForm::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
         $verbForm->assignMorphemes([$morpheme]);
 

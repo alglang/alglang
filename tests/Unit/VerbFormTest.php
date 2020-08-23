@@ -15,21 +15,21 @@ class VerbFormTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $form = factory(VerbForm::class)->create([
             'shape' => 'V-test',
-            'language_id' => $language->id
+            'language_code' => $language->code
         ]);
-        $this->assertEquals('/languages/pa/verb-forms/V-test', $form->url);
+        $this->assertEquals('/languages/PA/verb-forms/V-test', $form->url);
     }
 
     /** @test */
     public function it_has_a_paradigm()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $form = factory(VerbForm::class)->make([
             'shape' => 'V-test',
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => factory(VerbStructure::class)->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
@@ -41,7 +41,7 @@ class VerbFormTest extends TestCase
 
         $paradigm = $form->paradigm;
 
-        $this->assertEquals($language->id, $paradigm->language_id);
+        $this->assertEquals($language->code, $paradigm->language_code);
         $this->assertEquals('CLASS', $paradigm->class_abv);
         $this->assertEquals('MODE', $paradigm->mode_name);
         $this->assertEquals('ORDER', $paradigm->order_name);

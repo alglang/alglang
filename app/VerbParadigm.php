@@ -21,7 +21,7 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
     use CachesAttributes;
 
     /** @var int */
-    public $language_id;
+    public $language_code;
 
     /*
     |--------------------------------------------------------------------------
@@ -45,15 +45,17 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
 
     public function __construct(array $attributes = [])
     {
+        if (!isset($attributes['language_code'])) {
+            throw new \InvalidArgumentException("'language_code' cannot be null");
+        }
+
         parent::__construct(array_merge($attributes, [
             'subject_name' => isset($attributes['subject_name']) ? '?' : null,
             'primary_object_name' => isset($attributes['primary_object_name']) ? '?' : null,
             'secondary_object_name' => isset($attributes['secondary_object_name']) ? '?' : null
         ]));
 
-        if (isset($attributes['language_id'])) {
-            $this->language_id = $attributes['language_id'];
-        }
+        $this->language_code = $attributes['language_code'];
     }
 
     /*
@@ -67,7 +69,7 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
     {
         return $this->remember('forms', 0, function () {
             $query = [
-                'languages' => [$this->language_id],
+                'languages' => [$this->language_code],
                 'modes' => [$this->mode_name],
                 'orders' => [$this->order_name],
                 'classes' => [$this->class_abv],
@@ -85,7 +87,7 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
     public function getLanguageAttribute(): Language
     {
         return $this->remember('language', 0, function () {
-            return Language::find($this->language_id);
+            return Language::find($this->language_code);
         });
     }
 
@@ -132,6 +134,6 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
 
     public static function generate(Language $language, VerbStructure $structure): self
     {
-        return new VerbParadigm(array_merge(['language_id' => $language->id], $structure->toArray()));
+        return new VerbParadigm(array_merge(['language_code' => $language->code], $structure->toArray()));
     }
 }
