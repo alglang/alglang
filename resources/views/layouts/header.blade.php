@@ -51,7 +51,7 @@
                 <span>Languages</span>
             </a>
             
-            <ul class="absolute py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+            <ul class="absolute right-0 py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
                 @foreach(App\Language::all() as $language)
                 <li>
                     <a href="{{ $language->url }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
@@ -62,9 +62,29 @@
             </ul>
         </div>
 
-        <a href="{{ route('search.verbs.forms') }}" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">
-            <span>Search</span>
-        </a>
+        <div class="relative group h-full">
+            <div class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900 cursor-pointer">
+                <span>Search</span>
+            </div>
+
+            <ul class="absolute right-0 py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
+                <li>
+                    <a href="{{ route('search.verbs.paradigms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                        Nominal paradigms
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('search.verbs.paradigms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                        Verb paradigms
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('search.verbs.forms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                        Verb forms
+                    </a>
+                </li>
+            </ul>
+        </div>
 
         @guest
         <div class="relative group h-full">
