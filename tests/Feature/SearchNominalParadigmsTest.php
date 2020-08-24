@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Feature;
 use App\Language;
 use App\NominalForm;
 use App\NominalParadigm;
@@ -80,5 +81,131 @@ class SearchNominalParadigmsTest extends TestCase
         $response->assertOk();
         $response->assertSee('N-foo');
         $response->assertDontSee('N-bar');
+    }
+
+    /** @test */
+    public function it_orders_by_paradigm_type()
+    {
+        $this->withoutExceptionHandling();
+        $language = factory(Language::class)->create();
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-foo',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'paradigm_type_name' => factory(NominalParadigmType::class)->create([
+                        'has_pronominal_feature' => false,
+                        'has_nominal_feature' => true
+                    ])
+                ])
+            ])
+        ]);
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-bar',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'paradigm_type_name' => factory(NominalParadigmType::class)->create([
+                        'has_pronominal_feature' => true,
+                        'has_nominal_feature' => true
+                    ])
+                ])
+            ])
+        ]);
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-baz',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'paradigm_type_name' => factory(NominalParadigmType::class)->create([
+                        'has_pronominal_feature' => true,
+                        'has_nominal_feature' => false
+                    ])
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.nominals.paradigm-results', [
+            'languages' => [$language->code]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['N-baz', 'N-foo', 'N-bar']);
+    }
+
+    /** @test */
+    public function it_orders_by_paradigm_name()
+    {
+        $language = factory(Language::class)->create();
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-foo',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'B'
+                ])
+            ])
+        ]);
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-bar',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => factory(NominalParadigm::class)->create([
+                    'name' => 'A'
+                ])
+            ])
+        ]);
+
+        $response = $this->get(route('search.nominals.paradigm-results', [
+            'languages' => [$language->code]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['N-bar', 'N-foo']);
+    }
+
+    /** @test */
+    public function it_orders_by_features()
+    {
+        $language = factory(Language::class)->create();
+        $paradigm = factory(NominalParadigm::class)->create();
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-foo',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => $paradigm,
+                'pronominal_feature_name' => factory(Feature::class)->create([
+                    'person' => '3',
+                    'number' => 3
+                ]),
+                'nominal_feature_name' => null
+            ])
+        ]);
+
+        factory(NominalForm::class)->create([
+            'shape' => 'N-bar',
+            'language_code' => $language,
+            'structure_id' => factory(NominalStructure::class)->create([
+                'paradigm_id' => $paradigm,
+                'pronominal_feature_name' => factory(Feature::class)->create([
+                    'person' => '3',
+                    'number' => 1
+                ]),
+                'nominal_feature_name' => null
+            ])
+        ]);
+
+        $response = $this->get(route('search.nominals.paradigm-results', [
+            'languages' => [$language->code]
+        ]));
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['N-bar', 'N-foo']);
     }
 }

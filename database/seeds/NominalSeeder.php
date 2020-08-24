@@ -19,7 +19,7 @@ class NominalSeeder extends Seeder
             [
                 'name' => 'Possessed noun',
                 'has_pronominal_feature' => true,
-                'has_nominal_feature' => false
+                'has_nominal_feature' => true
             ],
             [
                 'name' => 'Common noun',
