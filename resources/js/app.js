@@ -70,3 +70,32 @@ document.addEventListener('turbolinks:before-visit', event => {
     window.location.href = event.data.url;
   }
 });
+
+/**
+ * Force the page to reload when navigating with history
+ *
+ * From https://github.com/turbolinks/turbolinks/issues/413#issuecomment-419518885
+ */
+(function () {
+  const reloadWithTurbolinks = (function () {
+    let scrollPosition;
+
+    function reload() {
+      scrollPosition = [window.scrollX, window.scrollY];
+      Turbolinks.visit(window.location.toString(), { action: 'replace' });
+    }
+
+    window.addEventListener('turbolinks:load', function () {
+      if (scrollPosition) {
+        window.scrollTo(window, scrollPosition);
+        scrollPosition = null;
+      }
+    });
+
+    return reload;
+  }());
+
+  window.addEventListener('popstate', function () {
+    requestAnimationFrame(reloadWithTurbolinks);
+  });
+}());
