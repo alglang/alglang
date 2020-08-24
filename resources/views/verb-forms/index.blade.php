@@ -33,15 +33,19 @@
                     </h2>
                     <p class="inline">
                         the <a href="{{ route('search.verbs.form-results', [
-                            'subject_persons' => '1',
-                            'subject_numbers' => 3,
-                            'classes' => ['AI'],
-                            'orders' => ['Conjunct'],
-                            'modes' => ['Indicative'],
-                            'primary_object' => false,
-                            'secondary_object' => false,
-                            'negative' => false,
-                            'diminutive' => false
+                            'structures' => [
+                                [
+                                    'subject_persons' => ['1'],
+                                    'subject_numbers' => [3],
+                                    'classes' => ['AI'],
+                                    'orders' => ['Conjunct'],
+                                    'modes' => ['Indicative'],
+                                    'primary_object' => false,
+                                    'secondary_object' => false,
+                                    'negative' => false,
+                                    'diminutive' => false
+                                ]
+                            ]
                         ]) }}">1p AI Conjunct Indicative form</a> in all available languages.
                     </p>
                 </aside>
