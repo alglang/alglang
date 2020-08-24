@@ -1,11 +1,11 @@
 <template>
   <form
-    class="flex"
+    class="flex flex-wrap"
     method="GET"
     action="/search/verbs/forms/results"
     target="_blank"
   >
-    <div class="mr-8">
+    <div class="mr-8 mb-4">
       <p
         id="language-select-label"
         class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
@@ -53,12 +53,14 @@
       <div class="flex justify-end">
         <button
           type="button"
-          class="bg-gray-600 hover:bg-blue-400 shadow mr-3 focus:outline-none focus:shadow-outline"
+          class="bg-gray-300 text-gray-700 hover:bg-blue-200 mr-3
+                 focus:outline-none focus:shadow-outline"
+          :disabled="numStructureQueries <= 1"
           aria-label="Remove structure query"
           @click="removeStructureQuery"
         >
           <svg
-            class="w-8 text-gray-300"
+            class="w-8"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -72,12 +74,13 @@
         </button>
         <button
           type="button"
-          class="bg-gray-600 hover:bg-blue-400 shadow mr-3 focus:outline-none focus:shadow-outline"
+          class="bg-gray-300 text-gray-700 hover:bg-blue-200 mr-3
+                 focus:outline-none focus:shadow-outline"
           aria-label="Add structure query"
           @click="addStructureQuery"
         >
           <svg
-            class="w-8 text-gray-300"
+            class="w-8"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
