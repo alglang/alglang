@@ -140,11 +140,6 @@ class Form extends Model
         return $this->belongsTo(Language::class);
     }
 
-    public function structure(): Relation
-    {
-        return $this->morphTo();
-    }
-
     public function examples(): Relation
     {
         return $this->hasMany(Example::class, 'form_id');
