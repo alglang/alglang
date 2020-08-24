@@ -31,23 +31,11 @@ class ModelSearch
      */
     public function constrain(Collection $params): self
     {
-        $this->order();
-
         $params->each(function ($value, $key) {
             $filter = $this->filters[$key];
             $filter($value);
         });
 
-        return $this;
-    }
-
-    /**
-     * Adds ordering clauses to the query
-     *
-     * @return self
-     */
-    protected function order(): self
-    {
         return $this;
     }
 

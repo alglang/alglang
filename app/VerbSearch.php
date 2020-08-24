@@ -48,7 +48,7 @@ class VerbSearch extends ModelSearch
      */
     public static function search(array $params): Collection
     {
-        return (new self)->constrain(collect($params))->get();
+        return (new self)->order()->constrain(collect($params))->get();
     }
 
     /**

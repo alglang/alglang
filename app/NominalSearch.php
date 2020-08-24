@@ -21,9 +21,14 @@ class NominalSearch extends ModelSearch
 
     public static function search(array $params): Collection
     {
-        return (new self)->constrain(collect($params))->get();
+        return (new self)->order()->constrain(collect($params))->get();
     }
 
+    /**
+     * Adds ordering clauses to the query
+     *
+     * @return self
+     */
     public function order(): self
     {
         if (!queryHasJoin($this->query, 'nominal_structures')) {
