@@ -37,10 +37,8 @@ class Group extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function getParentColumn(): string
-    {
-        return 'parent_name';
-    }
+    /** @var string */
+    public $parentColumn = 'parent_name';
 
     /*
     |--------------------------------------------------------------------------

@@ -51,10 +51,8 @@ class Language extends Model implements CachableAttributes
         'nominalParadigms'
     ];
 
-    protected function getParentColumn(): string
-    {
-        return 'parent_code';
-    }
+    /** @var string */
+    protected $parentColumn = 'parent_code';
 
     /*
     |--------------------------------------------------------------------------
