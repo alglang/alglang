@@ -69,7 +69,7 @@
         </search-field>
 
         <search-field
-          label="Primary Object"
+          label="Primary object"
           for-id="primary-object-select"
         >
           <select
