@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\ServiceProvider;
-use \Laravel\Telescope\TelescopeServiceProvider;
+use Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

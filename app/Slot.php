@@ -13,15 +13,15 @@ class Slot extends Model
     |
     */
 
+    public $incrementing = false;
+
+    public $timestamps = false;
+
     protected $primaryKey = 'abv';
 
     protected $keyType = 'str';
 
-    public $incrementing = false;
-
     protected $appends = ['url'];
-
-    public $timestamps = false;
 
     /*
     |--------------------------------------------------------------------------

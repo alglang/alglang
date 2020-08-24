@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SourceCollection;
 use App\Language;
 use App\Source;
-use App\Http\Resources\SourceCollection;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SourceController extends Controller
@@ -18,7 +17,7 @@ class SourceController extends Controller
     public function fetch(): SourceCollection
     {
         if (request()->language) {
-            /** @var Language */
+            /** @var Language $language */
             $language = Language::find(request()->language);
             $query = $language->sources();
         } else {
@@ -26,10 +25,10 @@ class SourceController extends Controller
         }
 
         $sources = $query->paginate(request()->per_page ?? 10)
-                         ->appends(request()->query());
+            ->appends(request()->query());
         return new SourceCollection($sources);
     }
-    
+
     public function show(Source $source): View
     {
         $source->loadCount(

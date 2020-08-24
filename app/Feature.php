@@ -13,15 +13,15 @@ class Feature extends Model
     |
     */
 
+    public $incrementing = false;
+
+    public $timestamps = false;
+
     protected $primaryKey = 'name';
 
     protected $keyType = 'str';
 
-    public $incrementing = false;
-
     protected $guarded = [];
-
-    public $timestamps = false;
 
     /*
     |--------------------------------------------------------------------------

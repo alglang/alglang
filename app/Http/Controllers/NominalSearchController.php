@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchNominalParadigm;
 use App\Language;
-use App\NominalSearch;
 use App\NominalParadigmType;
-use Illuminate\Http\Request;
+use App\NominalSearch;
 use Illuminate\View\View;
 
 class NominalSearchController extends Controller

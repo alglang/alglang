@@ -27,6 +27,7 @@ class ModelSearch
      *
      * @param Collection $params The names and values for the constraints to
      *                           apply to the query
+     *
      * @return self
      */
     public function constrain(Collection $params): self
@@ -55,6 +56,7 @@ class ModelSearch
      *
      * @param string $column  The column to constrain
      * @param array  $options The options for values of the column
+     *
      * @return self
      */
     protected function whereIn(string $column, array $options): self
@@ -70,6 +72,7 @@ class ModelSearch
      * @param string $relation  The relation the constraint should apply to
      * @param string $column    The column on the related model to constrain
      * @param mixed  $value     The value the column should have
+     *
      * @return self
      */
     protected function whereRelation(string $relation, string $column, $value): self
@@ -87,6 +90,7 @@ class ModelSearch
      * @param string $relation  The relation the constraint should apply to
      * @param string $column    The column on the related model to constrain
      * @param array  $options   The options for values of the column
+     *
      * @return self
      */
     protected function whereInRelation(string $relation, string $column, array $options): self
@@ -101,6 +105,7 @@ class ModelSearch
      * Adds a clause to the query that the model should not have a relation
      *
      * @param string $relation  The relation the model should not have
+     *
      * @return self
      */
     protected function whereNoRelation(string $relation): self

@@ -26,9 +26,9 @@ class VerbStructure extends Model
     public static function fromSearchQuery(array $query): self
     {
         $params = [
-            'class_abv'  => isset($query['classes']) ? $query['classes'][0] : null,
-            'order_name' => isset($query['orders'])  ? $query['orders'][0]  : null,
-            'mode_name'  => isset($query['modes'])   ? $query['modes'][0]   : null
+            'class_abv' => isset($query['classes']) ? $query['classes'][0] : null,
+            'order_name' => isset($query['orders']) ? $query['orders'][0] : null,
+            'mode_name' => isset($query['modes']) ? $query['modes'][0] : null
         ];
 
         foreach (['subject', 'primary_object', 'secondary_object'] as $feature) {
@@ -45,17 +45,15 @@ class VerbStructure extends Model
             }
 
             $featureModel = new Feature([
-                'person' =>         isset($query["{$feature}_persons"])         ? $query["{$feature}_persons"][0]         : null,
-                'number' =>         isset($query["{$feature}_numbers"])         ? $query["{$feature}_numbers"][0]         : null,
+                'person' => isset($query["{$feature}_persons"]) ? $query["{$feature}_persons"][0] : null,
+                'number' => isset($query["{$feature}_numbers"]) ? $query["{$feature}_numbers"][0] : null,
                 'obviative_code' => isset($query["{$feature}_obviative_codes"]) ? $query["{$feature}_obviative_codes"][0] : null
             ]);
 
             $params["{$feature}_name"] = $featureModel->name;
         }
 
-        $structure = new self($params);
-
-        return $structure;
+        return new self($params);
     }
 
     /*
@@ -67,7 +65,7 @@ class VerbStructure extends Model
 
     public function getFeatureStringAttribute(): string
     {
-        $string = (string)$this->subject_name;
+        $string = (string) $this->subject_name;
 
         if ($this->primary_object_name) {
             $string .= "→{$this->primary_object_name}";

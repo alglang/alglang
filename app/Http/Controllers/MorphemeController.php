@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Morpheme;
-use App\Language;
-use App\Source;
 use App\Http\Resources\MorphemeCollection;
+use App\Language;
+use App\Morpheme;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class MorphemeController extends Controller
 {
@@ -32,9 +30,9 @@ class MorphemeController extends Controller
         }
 
         $paginator = $query->with('slot')
-                           /* ->orderByRaw('trim(shape, \'-\')') */
-                           ->paginate(request()->per_page ?? 50)
-                           ->appends(request()->query());
+            /* ->orderByRaw('trim(shape, \'-\')') */
+            ->paginate(request()->per_page ?? 50)
+            ->appends(request()->query());
 
         return new MorphemeCollection($paginator);
     }

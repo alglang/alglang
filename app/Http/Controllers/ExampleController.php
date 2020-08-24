@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Example;
 use App\Form;
-use App\Language;
-use App\Source;
 use App\Http\Resources\ExampleCollection;
+use App\Language;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ExampleController extends Controller
@@ -33,7 +31,7 @@ class ExampleController extends Controller
                 return $query->where('id', request()->form_id);
             });
         }
-       
+
         if (request()->source_id) {
             $query->whereHas('sources', function (Builder $query) {
                 return $query->where('sources.id', request()->source_id);
@@ -41,8 +39,8 @@ class ExampleController extends Controller
         }
 
         $paginator = $query->with('form')
-                          ->paginate(request()->per_page ?? 10)
-                          ->appends(request()->query());
+            ->paginate(request()->per_page ?? 10)
+            ->appends(request()->query());
 
         return new ExampleCollection($paginator);
     }

@@ -9,9 +9,6 @@ use App\VerbMode;
 use App\VerbOrder;
 use App\VerbSearch;
 use App\VerbStructure;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class VerbSearchController extends Controller
@@ -65,7 +62,7 @@ class VerbSearchController extends Controller
             ];
         }
 
-        $languages = collect(array_map(fn($column) => $column['results'], $columns))
+        $languages = collect(array_map(fn ($column) => $column['results'], $columns))
             ->flatten(1)
             ->pluck('language')
             ->unique('code');

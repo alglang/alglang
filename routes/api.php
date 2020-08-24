@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\NominalFormController;
-use App\Http\Controllers\VerbFormController;
 use App\Http\Controllers\SourceController;
+use App\Http\Controllers\VerbFormController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

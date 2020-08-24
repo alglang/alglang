@@ -42,7 +42,7 @@ class Source extends Model
 
     public function getShortCitationAttribute(): string
     {
-        $citation = "$this->author $this->year";
+        $citation = "{$this->author} {$this->year}";
 
         if ($this->disambiguation_letter) {
             $citation .= $this->disambiguation_letter;

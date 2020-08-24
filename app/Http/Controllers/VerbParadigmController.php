@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Language;
 use App\VerbParadigm;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class VerbParadigmController extends Controller

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class NominalSearch extends ModelSearch
@@ -12,8 +11,8 @@ class NominalSearch extends ModelSearch
         $query = NominalForm::query();
 
         $filters = [
-            'languages' => fn($val) => $this->whereIn('forms.language_code', $val),
-            'paradigm_types' => fn($val) => $this->whereInRelation('structure.paradigm', 'paradigm_type_name', $val)
+            'languages' => fn ($val) => $this->whereIn('forms.language_code', $val),
+            'paradigm_types' => fn ($val) => $this->whereInRelation('structure.paradigm', 'paradigm_type_name', $val)
         ];
 
         parent::__construct($query, $filters);
@@ -21,7 +20,7 @@ class NominalSearch extends ModelSearch
 
     public static function search(array $params): Collection
     {
-        return (new self)->order()->constrain(collect($params))->get();
+        return (new self())->order()->constrain(collect($params))->get();
     }
 
     /**

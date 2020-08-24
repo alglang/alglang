@@ -3,11 +3,11 @@
 namespace App;
 
 use App\Traits\Sourceable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class Example extends Model
 {

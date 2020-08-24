@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Language;
-use App\Source;
-use App\VerbForm;
 use App\Http\Resources\VerbFormCollection;
+use App\Language;
+use App\VerbForm;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class VerbFormController extends Controller
 {
@@ -48,7 +46,7 @@ class VerbFormController extends Controller
             'structure.order',
             'structure.class'
         )->paginate(request()->per_page ?? 10)
-         ->appends(request()->query());
+            ->appends(request()->query());
 
         return new VerbFormCollection($paginator);
     }

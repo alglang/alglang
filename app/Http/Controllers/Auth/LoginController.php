@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Laravel\Socialite\Facades\Socialite;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -31,7 +30,7 @@ class LoginController extends Controller
     {
         try {
             return Socialite::driver($provider)->redirect();
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $error) {
             abort(404);
         }
     }
@@ -40,9 +39,9 @@ class LoginController extends Controller
     {
         try {
             $user = Socialite::driver($provider)->user();
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $error) {
             abort(404);
-        } catch (\Exception $e) {
+        } catch (\Exception $error) {
             return redirect()->route('auth', ['provider' => $provider]);
         }
 
