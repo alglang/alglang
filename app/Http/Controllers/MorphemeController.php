@@ -13,15 +13,15 @@ class MorphemeController extends Controller
 {
     public function fetch(): MorphemeCollection
     {
-        if (!request()->language_id && !request()->source_id) {
+        if (!request()->language && !request()->source_id) {
             abort(400);
         }
 
         $query = Morpheme::withoutPlaceholders();
 
-        if (request()->language_id) {
+        if (request()->language) {
             $query->whereHas('language', function (Builder $query) {
-                $query->where('id', request()->language_id);
+                $query->where('code', request()->language);
             });
         }
 

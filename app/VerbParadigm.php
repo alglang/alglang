@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,48 +16,79 @@ use Illuminate\Support\Collection;
  * @property string $primary_object_name
  * @property string $secondary_object_name
  */
-class VerbParadigm extends VerbStructure
+class VerbParadigm extends VerbStructure implements CachableAttributes
 {
+    use CachesAttributes;
+
     /** @var int */
-    public $language_id;
+    public $language_code;
 
-    /** @var Collection */
-    private $_forms;
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
 
-    /** @var Language */
-    private $_language;
+    /** @var array */
+    protected $cachableAttributes = [
+        'forms',
+        'language'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Constructors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function __construct(array $attributes = [])
     {
+        if (!isset($attributes['language_code'])) {
+            throw new \InvalidArgumentException("'language_code' cannot be null");
+        }
+
         parent::__construct(array_merge($attributes, [
             'subject_name' => isset($attributes['subject_name']) ? '?' : null,
             'primary_object_name' => isset($attributes['primary_object_name']) ? '?' : null,
             'secondary_object_name' => isset($attributes['secondary_object_name']) ? '?' : null
         ]));
 
-        if (isset($attributes['language_id'])) {
-            $this->language_id = $attributes['language_id'];
-        }
+        $this->language_code = $attributes['language_code'];
     }
 
-    public static function generate(Language $language, VerbStructure $structure): self
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getFormsAttribute(): Collection
     {
-        return new VerbParadigm(array_merge(['language_id' => $language->id], $structure->toArray()));
+        return $this->remember('forms', 0, function () {
+            $query = [
+                'languages' => [$this->language_code],
+                'modes' => [$this->mode_name],
+                'orders' => [$this->order_name],
+                'classes' => [$this->class_abv],
+                'negative' => (bool)$this->is_negative,
+                'diminutive' => (bool)$this->is_diminutive,
+                'subject' => $this->subject_name === '?',
+                'primary_object' => $this->primary_object_name === '?',
+                'secondary_object' => $this->secondary_object_name === '?',
+            ];
+
+            return VerbSearch::search($query);
+        });
     }
 
-    public function getUrlAttribute(): string
+    public function getLanguageAttribute(): Language
     {
-        return route('verbParadigms.show', [
-            'language' => $this->language->slug,
-            'class' => $this->class_abv,
-            'order' => $this->order_name,
-            'mode' => $this->mode_name,
-            'negative' => $this->is_negative,
-            'diminutive' => $this->is_diminutive,
-            'subject' => $this->subject_name,
-            'primary_object' => $this->primary_object_name,
-            'secondary_object' => $this->secondary_object_name,
-        ], false);
+        return $this->remember('language', 0, function () {
+            return Language::find($this->language_code);
+        });
     }
 
     public function getNameAttribute(): string
@@ -77,35 +110,30 @@ class VerbParadigm extends VerbStructure
         return implode(' ', $tokens);
     }
 
-    public function getLanguageAttribute(): Language
+    public function getUrlAttribute(): string
     {
-        if (isset($this->_language)) {
-            return $this->_language;
-        }
-
-        $this->_language = Language::find($this->language_id);
-        return $this->_language;
+        return route('verbParadigms.show', [
+            'language' => $this->language->slug,
+            'class' => $this->class_abv,
+            'order' => $this->order_name,
+            'mode' => $this->mode_name,
+            'negative' => $this->is_negative,
+            'diminutive' => $this->is_diminutive,
+            'subject' => $this->subject_name,
+            'primary_object' => $this->primary_object_name,
+            'secondary_object' => $this->secondary_object_name,
+        ], false);
     }
 
-    public function getFormsAttribute(): Collection
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public static function generate(Language $language, VerbStructure $structure): self
     {
-        if (isset($this->_forms)) {
-            return $this->_forms;
-        }
-
-        $query = [
-            'languages' => [$this->language_id],
-            'modes' => [$this->mode_name],
-            'orders' => [$this->order_name],
-            'classes' => [$this->class_abv],
-            'negative' => (bool)$this->is_negative,
-            'diminutive' => (bool)$this->is_diminutive,
-            'subject' => $this->subject_name === '?',
-            'primary_object' => $this->primary_object_name === '?',
-            'secondary_object' => $this->secondary_object_name === '?',
-        ];
-
-        $this->_forms = VerbSearch::search($query);
-        return $this->_forms;
+        return new VerbParadigm(array_merge(['language_code' => $language->code], $structure->toArray()));
     }
 }

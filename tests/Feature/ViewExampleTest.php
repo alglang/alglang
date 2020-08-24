@@ -17,18 +17,36 @@ class ViewExampleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_loads_the_correct_view_for_a_verb_form()
+    {
+        $example = factory(Example::class)->state('verb')->create();
+        $response = $this->get($example->url);
+        $response->assertOk();
+        $response->assertViewIs('examples.show');
+    }
+
+    /** @test */
+    public function it_loads_the_correct_view()
+    {
+        $this->withoutExceptionHandling();
+        $example = factory(Example::class)->state('nominal')->create();
+        $response = $this->get($example->url);
+        $response->assertOk();
+        $response->assertViewIs('examples.show');
+    }
+
+    /** @test */
     public function an_example_can_be_viewed()
     {
         $example = factory(Example::class)->create([
             'shape' => 'foobar',
             'translation' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])->id
+            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])
         ]);
 
         $response = $this->get($example->url);
 
         $response->assertOk();
-        $response->assertViewIs('examples.show');
         $response->assertViewHas('example', $example);
         $response->assertSee('foobar');
         $response->assertSee('V-bar');
@@ -40,10 +58,10 @@ class ViewExampleTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $stem = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
-        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, 'bar']);
 
         $example = factory(Example::class)->create([

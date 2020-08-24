@@ -10,6 +10,7 @@ use App\VerbMode;
 use App\VerbOrder;
 use App\VerbParadigm;
 use App\VerbStructure;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,9 +19,17 @@ class VerbParadigmTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_requires_a_language_code()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new VerbParadigm();
+    }
+
+    /** @test */
     public function it_can_be_generated_from_a_language_and_verb_structure()
     {
-        $language = factory(Language::class)->make(['id' => 440]);
+        $language = factory(Language::class)->make(['code' => 'PA']);
         $structure = factory(VerbStructure::class)->make([
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
@@ -31,7 +40,7 @@ class VerbParadigmTest extends TestCase
 
         $paradigm = VerbParadigm::generate($language, $structure);
 
-        $this->assertEquals($language->id, $paradigm->language_id);
+        $this->assertEquals($language->code, $paradigm->language_code);
         $this->assertEquals('CLASS', $paradigm->class_abv);
         $this->assertEquals('MODE', $paradigm->mode_name);
         $this->assertEquals('ORDER', $paradigm->order_name);
@@ -43,7 +52,7 @@ class VerbParadigmTest extends TestCase
     public function it_infers_that_it_should_have_a_subject()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -61,7 +70,7 @@ class VerbParadigmTest extends TestCase
     public function it_infers_that_it_should_have_a_primary_object()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -79,7 +88,7 @@ class VerbParadigmTest extends TestCase
     public function it_infers_that_it_should_have_a_secondary_object()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -96,10 +105,10 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $language = factory(Language::class)->create(['id' => 440]);
+        $language = factory(Language::class)->create(['code' => 'PA']);
 
         $paradigm = new VerbParadigm([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -120,7 +129,7 @@ class VerbParadigmTest extends TestCase
     public function it_has_a_name()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -135,7 +144,7 @@ class VerbParadigmTest extends TestCase
     public function it_adds_negative_to_its_name_if_it_is_negative()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -150,7 +159,7 @@ class VerbParadigmTest extends TestCase
     public function it_adds_diminutive_to_its_name_if_it_is_diminutive()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -165,7 +174,7 @@ class VerbParadigmTest extends TestCase
     public function it_adds_negative_and_diminutive_to_its_name_if_it_is_negative_and_diminutive()
     {
         $paradigm = new VerbParadigm([
-            'language_id' => 440,
+            'language_code' => 'PA',
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',
@@ -184,7 +193,7 @@ class VerbParadigmTest extends TestCase
         $structure = factory(VerbStructure::class)->create();
 
         $form = factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure
         ]);
 
@@ -203,12 +212,12 @@ class VerbParadigmTest extends TestCase
         $structure = factory(VerbStructure::class)->create();
 
         $form1 = factory(VerbForm::class)->create([
-            'language_id' => $language1,
+            'language_code' => $language1,
             'structure_id' => $structure
         ]);
 
         $form2 = factory(VerbForm::class)->create([
-            'language_id' => $language2,
+            'language_code' => $language2,
             'structure_id' => $structure
         ]);
 
@@ -242,12 +251,12 @@ class VerbParadigmTest extends TestCase
         ]);
 
         $form1 = factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure1
         ]);
 
         $form2 = factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure2
         ]);
 
@@ -255,5 +264,41 @@ class VerbParadigmTest extends TestCase
 
         $this->assertCount(1, $paradigm->forms);
         $this->assertEquals($form1->id, $paradigm->forms[0]->id);
+    }
+
+    /** @test */
+    public function it_caches_the_forms_attribute()
+    {
+        $paradigm = new VerbParadigm([
+            'language_code' => factory(Language::class)->create()
+        ]);
+
+        DB::connection()->enableQueryLog();
+
+        $paradigm->forms;
+        $queryCount = count(DB::getQueryLog());
+
+        $paradigm->forms;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
+    }
+
+    /** @test */
+    public function it_caches_the_language_attribute()
+    {
+        $paradigm = new VerbParadigm([
+            'language_code' => factory(Language::class)->create()->code
+        ]);
+
+        DB::connection()->enableQueryLog();
+
+        $paradigm->language;
+        $queryCount = count(DB::getQueryLog());
+
+        $paradigm->language;
+        $this->assertCount($queryCount, DB::getQueryLog());
+
+        DB::connection()->disableQueryLog();
     }
 }

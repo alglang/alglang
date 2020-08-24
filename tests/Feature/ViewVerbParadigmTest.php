@@ -33,7 +33,7 @@ class ViewVerbParadigmTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $verbForm = factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => factory(VerbStructure::class)->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
@@ -47,7 +47,7 @@ class ViewVerbParadigmTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('paradigm');
-        $this->assertEquals($language->id, $response['paradigm']->language_id);
+        $this->assertEquals($language->code, $response['paradigm']->language_code);
         $this->assertEquals('MODE', $response['paradigm']->mode_name);
         $this->assertEquals('CLASS', $response['paradigm']->class_abv);
         $this->assertEquals('ORDER', $response['paradigm']->order_name);
@@ -59,7 +59,7 @@ class ViewVerbParadigmTest extends TestCase
     public function it_shows_its_name()
     {
         $verbForm = factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(),
+            'language_code' => factory(Language::class)->create(),
             'structure_id' => factory(VerbStructure::class)->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
@@ -102,12 +102,12 @@ class ViewVerbParadigmTest extends TestCase
 
         $form1 = factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure1
         ]);
         $form2 = factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure2
         ]);
 
@@ -153,12 +153,12 @@ class ViewVerbParadigmTest extends TestCase
 
         $form1 = factory(VerbForm::class)->create([
             'shape' => 'V-foo',
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure1
         ]);
         $form2 = factory(VerbForm::class)->create([
             'shape' => 'V-bar',
-            'language_id' => $language,
+            'language_code' => $language,
             'structure_id' => $structure2
         ]);
 

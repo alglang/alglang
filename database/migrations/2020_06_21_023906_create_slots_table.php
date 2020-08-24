@@ -14,12 +14,10 @@ class CreateSlotsTable extends Migration
     public function up()
     {
         Schema::create('slots', function (Blueprint $table) {
-            $table->id();
             $table->string('abv');
             $table->string('name');
             $table->string('colour')->nullable();
             $table->text('description')->nullable();
-            $table->timestamps();
         });
     }
 

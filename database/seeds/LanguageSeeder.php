@@ -13,37 +13,31 @@ class LanguageSeeder extends Seeder
     {
         DB::table('languages')->insert([
             [
-                'id' => 1,
                 'name' => 'Proto-Algonquian',
-                'parent_id' => null,
-                'algo_code' => 'PA',
+                'parent_code' => null,
+                'code' => 'PA',
                 'iso' => 'alg',
                 'reconstructed' => true,
-                'slug' => 'pa',
                 'position' => '{"lat":46.0,"lng":-87.659916}',
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ],
             [
-                'id' => 2,
                 'name' => 'Common Cree',
-                'parent_id' => 1,
-                'algo_code' => 'C',
+                'parent_code' =>'PA',
+                'code' => 'C',
                 'iso' => null,
                 'reconstructed' => false,
-                'slug' => 'c',
                 'position' => null,
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ],
             [
-                'id' => 3,
                 'name' => 'Southwestern Ojibwe',
-                'parent_id' => 1,
-                'algo_code' => 'SwO',
+                'parent_code' => 'PA',
+                'code' => 'SwO',
                 'iso' => 'ciw',
                 'reconstructed' => false,
-                'slug' => 'swo',
                 'position' => '{"lat":46.271362,"lng":-93.392167}',
-                'group_id' => 1
+                'group_name' => 'Algonquian'
             ]
         ]);
     }

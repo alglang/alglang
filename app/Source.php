@@ -35,7 +35,9 @@ class Source extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/sources/{$this->slug}";
+        return route('sources.show', [
+            'source' => $this->slug
+        ], false);
     }
 
     public function getShortCitationAttribute(): string

@@ -24,7 +24,7 @@
         </ul>
 
         <p class="mb-8 text-lg">
-            To start using the database, click on any of the links above, or try doing a <a href="{{ route('search.verbs.paradigm') }}">verb paradigm search</a>, or click a language on the map below.</p>
+            To start using the database, click on any of the links above, or try doing a <a href="{{ route('search.verbs.paradigms') }}">verb paradigm search</a>, or click a language on the map below.</p>
         </p>
 
         <alglang-map

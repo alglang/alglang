@@ -4,15 +4,30 @@ namespace App;
 
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class NominalForm extends Form
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public $table = 'forms';
 
     public function getMorphClass()
     {
         return Form::class;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -21,10 +36,27 @@ class NominalForm extends Form
         });
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/nominal-forms/{$this->slug}";
+        return route('nominalForms.show', [
+            'language' => $this->language->slug,
+            'nominalForm' => $this->slug
+        ], false);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Query scopes
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function scopeOrderByFeatures(Builder $query): Builder
     {
@@ -36,5 +68,17 @@ class NominalForm extends Form
         $query->orderByFeature('nominal_feature_name', 'nominal_features');
 
         return $query->select('forms.*');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function structure(): Relation
+    {
+        return $this->belongsTo(NominalStructure::class);
     }
 }

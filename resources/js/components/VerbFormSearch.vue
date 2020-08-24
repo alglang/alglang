@@ -17,13 +17,13 @@
       >
         <label
           v-for="language in languages"
-          :key="language.id"
+          :key="language.code"
           class="flex items-center mb-2 last:mb-0"
         >
           <input
             type="checkbox"
             name="languages[]"
-            :value="language.id"
+            :value="language.code"
             class="form-checkbox rounded-none text-blue-400"
           />
           <span class="ml-1">

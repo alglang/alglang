@@ -7,7 +7,21 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbStructure extends Model
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public $guarded = [];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Constructors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function fromSearchQuery(array $query): self
     {
@@ -44,6 +58,35 @@ class VerbStructure extends Model
         return $structure;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getFeatureStringAttribute(): string
+    {
+        $string = (string)$this->subject_name;
+
+        if ($this->primary_object_name) {
+            $string .= "→{$this->primary_object_name}";
+        }
+
+        if ($this->secondary_object_name) {
+            $string .= "+{$this->secondary_object_name}";
+        }
+
+        return $string;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function matchesStructure(self $other): bool
     {
         $properties = [
@@ -77,20 +120,12 @@ class VerbStructure extends Model
         return true;
     }
 
-    public function getFeatureStringAttribute(): string
-    {
-        $string = (string)$this->subject_name;
-
-        if ($this->primary_object_name) {
-            $string .= "→{$this->primary_object_name}";
-        }
-
-        if ($this->secondary_object_name) {
-            $string .= "+{$this->secondary_object_name}";
-        }
-
-        return $string;
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function subject(): Relation
     {

@@ -23,11 +23,11 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_verb_forms()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language = factory(Language::class)->create(['code' => 'TL']);
 
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-a',
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'structure_id' => factory(VerbStructure::class)->create([
                 'subject_name' => factory(Feature::class)->create(['name' => '1s']),
                 'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
@@ -38,7 +38,7 @@ class FetchVerbFormsTest extends TestCase
             ])
         ]);
 
-        $response = $this->get("/api/verb-forms?language_id=$language->id");
+        $response = $this->get("/api/verb-forms?language=$language->code");
 
         $response->assertOk();
         $response->assertJson([
@@ -46,7 +46,7 @@ class FetchVerbFormsTest extends TestCase
                 [
                     'shape' => 'V-a',
                     'url' => $verbForm->url,
-                    'language' => ['algo_code' => 'TL'],
+                    'language' => ['code' => 'TL'],
                     'structure' => [
                         'feature_string' => '1s→2p+3d',
                         'subject' => ['name' => '1s'],
@@ -66,10 +66,10 @@ class FetchVerbFormsTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $morpheme = factory(Morpheme::class)->create();
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $morpheme->language_id]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $morpheme->language_code]);
         $verbForm->assignMorphemes([$morpheme]);
 
-        factory(VerbForm::class)->create(['language_id' => $morpheme->language_id])->assignMorphemes(['foo', 'bar']);
+        factory(VerbForm::class)->create(['language_code' => $morpheme->language_code])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/verb-forms?with_morphemes[]=$morpheme->id");
 
@@ -88,7 +88,7 @@ class FetchVerbFormsTest extends TestCase
         $source = factory(Source::class)->create();
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-a',
-            'language_id' => factory(Language::class)->create(['algo_code' => 'TL']),
+            'language_code' => factory(Language::class)->create(['code' => 'TL']),
             'structure_id' => factory(VerbStructure::class)->create([
                 'subject_name' => factory(Feature::class)->create(['name' => '1s']),
                 'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
@@ -108,7 +108,7 @@ class FetchVerbFormsTest extends TestCase
                 [
                     'shape' => 'V-a',
                     'url' => $verbForm->url,
-                    'language' => ['algo_code' => 'TL'],
+                    'language' => ['code' => 'TL'],
                     'structure' => [
                         'feature_string' => '1s→2p+3d',
                         'subject' => ['name' => '1s'],
@@ -127,10 +127,10 @@ class FetchVerbFormsTest extends TestCase
     public function it_does_not_include_other_kinds_of_verb_forms()
     {
         $language = factory(Language::class)->create();
-        factory(VerbForm::class, 2)->create(['language_id' => $language->id]);
-        factory(NominalForm::class, 2)->create(['language_id' => $language->id]);
+        factory(VerbForm::class, 2)->create(['language_code' => $language->code]);
+        factory(NominalForm::class, 2)->create(['language_code' => $language->code]);
 
-        $response = $this->get("/api/verb-forms?language_id=$language->id");
+        $response = $this->get("/api/verb-forms?language=$language->code");
 
         $response->assertOk();
         $response->assertJsonCount(2, 'data');
@@ -146,18 +146,18 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function verb_forms_are_filtered_by_language()
     {
-        $language1 = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language1 = factory(Language::class)->create(['code' => 'TL']);
         $language2 = factory(Language::class)->create();
         $verbForm1 = factory(VerbForm::class)->create([
             'shape' => 'V-a',
-            'language_id' => $language1->id
+            'language_code' => $language1->code
         ]);
         $verbForm2 = factory(VerbForm::class)->create([
             'shape' => 'V-b',
-            'language_id' => $language2->id
+            'language_code' => $language2->code
         ]);
 
-        $response = $this->get("/api/verb-forms?language_id=$language1->id");
+        $response = $this->get("/api/verb-forms?language=$language1->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
@@ -197,22 +197,22 @@ class FetchVerbFormsTest extends TestCase
         $source1 = factory(Source::class)->create();
         $source2 = factory(Source::class)->create();
         $verbForm1 = factory(VerbForm::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => 'V-a'
         ]);
         $verbForm2 = factory(VerbForm::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => 'V-b'
         ]);
         $verbForm3 = factory(VerbForm::class)->create([
-            'language_id' => $language2->id,
+            'language_code' => $language2->code,
             'shape' => 'V-c'
         ]);
         $verbForm1->addSource($source1);
         $verbForm2->addSource($source2);
         $verbForm3->addSource($source1);
 
-        $response = $this->get("/api/verb-forms?source_id=$source1->id&language_id=$language1->id");
+        $response = $this->get("/api/verb-forms?source_id=$source1->id&language=$language1->code");
 
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
@@ -227,9 +227,9 @@ class FetchVerbFormsTest extends TestCase
     public function it_paginates_verb_forms()
     {
         $language = factory(Language::class)->create();
-        factory(VerbForm::class, 3)->create(['language_id' => $language->id]);
+        factory(VerbForm::class, 3)->create(['language_code' => $language->code]);
 
-        $response = $this->get("/api/verb-forms?language_id=$language->id&per_page=2");
+        $response = $this->get("/api/verb-forms?language=$language->code&per_page=2");
 
         $response->assertOk();
         $response->assertJsonCount(2, 'data');

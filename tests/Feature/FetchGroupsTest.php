@@ -14,8 +14,6 @@ class FetchGroupsTest extends TestCase
     /** @test */
     public function it_retrieves_groups_from_the_database()
     {
-        $this->withoutExceptionHandling();
-
         $group = factory(Group::class)->create([
             'name' => 'Test Group',
             'description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'

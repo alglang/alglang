@@ -17,9 +17,9 @@ class SourceController extends Controller
 
     public function fetch(): SourceCollection
     {
-        if (request()->language_id) {
+        if (request()->language) {
             /** @var Language */
-            $language = Language::find(request()->language_id);
+            $language = Language::find(request()->language);
             $query = $language->sources();
         } else {
             $query = Source::query();

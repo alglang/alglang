@@ -20,21 +20,21 @@ class VerbSearchTest extends TestCase
     /** @test */
     public function it_orders_forms_by_language()
     {
-        $language2 = factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(['name' => 'Test Language 2']),
+        $form2 = factory(VerbForm::class)->create([
+            'language_code' => factory(Language::class)->create(['name' => 'Test Language 2']),
             'shape' => 'V-foo'
         ]);
-        $language1 = factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(['name' => 'Test Language 1']),
+        $form1 = factory(VerbForm::class)->create([
+            'language_code' => factory(Language::class)->create(['name' => 'Test Language 1']),
             'shape' => 'V-bar'
         ]);
 
-        $forms = VerbSearch::search([
-            'languages' => [$language1->id, $language2->id]
+        $results = VerbSearch::search([
+            'languages' => [$form1->language_code, $form2->language_code]
         ]);
 
-        $this->assertEquals(['Test Language 1', 'Test Language 2'], $forms->pluck('language.name')->toArray());
-        $this->assertEquals(['V-bar', 'V-foo'], $forms->pluck('shape')->toArray());
+        $this->assertEquals(['Test Language 1', 'Test Language 2'], $results->pluck('language.name')->toArray());
+        $this->assertEquals(['V-bar', 'V-foo'], $results->pluck('shape')->toArray());
     }
 
     /** @test */
@@ -42,15 +42,15 @@ class VerbSearchTest extends TestCase
     {
         $language = factory(Language::class)->create();
         factory(VerbForm::class)->create([
-            'language_id' => $language,
+            'language_code' => $language,
             'shape' => 'V-foo'
         ]);
         factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(),
+            'language_code' => factory(Language::class)->create(),
             'shape' => 'V-bar'
         ]);
 
-        $forms = VerbSearch::search(['languages' => [$language->id]]);
+        $forms = VerbSearch::search(['languages' => [$language->code]]);
 
         $this->assertCount(1, $forms);
         $this->assertEquals('V-foo', $forms[0]->shape);
@@ -62,20 +62,20 @@ class VerbSearchTest extends TestCase
         $language1 = factory(Language::class)->create();
         $language2 = factory(Language::class)->create();
         factory(VerbForm::class)->create([
-            'language_id' => $language1,
+            'language_code' => $language1,
             'shape' => 'V-foo'
         ]);
         factory(VerbForm::class)->create([
-            'language_id' => $language2,
+            'language_code' => $language2,
             'shape' => 'V-baz'
         ]);
         factory(VerbForm::class)->create([
-            'language_id' => factory(Language::class)->create(),
+            'language_code' => factory(Language::class)->create(),
             'shape' => 'V-bar'
         ]);
 
         $forms = VerbSearch::search([
-            'languages' => [$language1->id, $language2->id]
+            'languages' => [$language1->code, $language2->code]
         ]);
 
         $this->assertCount(2, $forms);

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Example;
-use App\VerbForm;
+use App\Form;
 use App\Language;
 use App\Source;
 use App\Http\Resources\ExampleCollection;
@@ -13,7 +13,7 @@ use Illuminate\View\View;
 
 class ExampleController extends Controller
 {
-    public function show(Language $language, VerbForm $verbForm, Example $example): View
+    public function show(Language $language, Form $form, Example $example): View
     {
         $example->load('form');
         $example->with('morphemes');

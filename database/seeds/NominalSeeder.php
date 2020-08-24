@@ -17,8 +17,19 @@ class NominalSeeder extends Seeder
     {
         DB::table('nominal_paradigm_types')->insert([
             [
-                'id' => 1,
-                'name' => 'Possessed noun'
+                'name' => 'Possessed noun',
+                'has_pronominal_feature' => true,
+                'has_nominal_feature' => true
+            ],
+            [
+                'name' => 'Common noun',
+                'has_pronominal_feature' => false,
+                'has_nominal_feature' => true
+            ],
+            [
+                'name' => 'Demonstrative',
+                'has_pronominal_feature' => false,
+                'has_nominal_feature' => true
             ]
         ]);
 
@@ -27,21 +38,55 @@ class NominalSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Possessed noun',
                 'slug' => 'possessed-noun',
-                'language_id' => 1,
-                'paradigm_type_id' => 1  // Possessed noun
+                'language_code' => 'PA',
+                'paradigm_type_name' => 'Possessed noun'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Common noun',
+                'slug' => 'common-noun',
+                'language_code' => 'PA',
+                'paradigm_type_name' => 'Common noun'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Proximal demonstrative',
+                'slug' => 'proximal-demonstrative',
+                'language_code' => 'PA',
+                'paradigm_type_name' => 'Demonstrative'
             ]
         ]);
 
         DB::table('nominal_structures')->insert([
             [
+                'id' => 1,
                 'pronominal_feature_name' => '1s',
                 'nominal_feature_name' => '3s',
                 'paradigm_id' => 1  // Posessed noun
             ],
             [
+                'id' => 2,
                 'pronominal_feature_name' => '1s',
                 'nominal_feature_name' => '3p',
                 'paradigm_id' => 1  // Posessed noun
+            ],
+            [
+                'id' => 3,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3s',
+                'paradigm_id' => 2  // Common noun
+            ],
+            [
+                'id' => 4,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3p',
+                'paradigm_id' => 2  // Common noun
+            ],
+            [
+                'id' => 5,
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => '3s',
+                'paradigm_id' => 3  // Proximal demonstrative
             ]
         ]);
 
@@ -49,7 +94,7 @@ class NominalSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => 'ne-N-a',
-                'language_id' => 1,  // Proto-Algonquian
+                'language_code' => 'PA',
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 1,
                 'slug' => 'ne-N-a'
@@ -57,10 +102,34 @@ class NominalSeeder extends Seeder
             [
                 'id' => 4,
                 'shape' => 'ne-N-aki',
-                'language_id' => 1,
+                'language_code' => 'PA',
                 'structure_type' => NominalStructure::class,
                 'structure_id' => 2,
                 'slug' => 'ne-N-aki'
+            ],
+            [
+                'id' => 9,
+                'shape' => 'N-a',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 3,
+                'slug' => 'N-a'
+            ],
+            [
+                'id' => 10,
+                'shape' => 'N-aki',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 4,
+                'slug' => 'N-aki'
+            ],
+            [
+                'id' => 11,
+                'shape' => 'ewa',
+                'language_code' => 'PA',
+                'structure_type' => NominalStructure::class,
+                'structure_id' => 5,
+                'slug' => 'ewa'
             ]
         ]);
 

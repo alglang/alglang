@@ -15,9 +15,7 @@ class NominalParadigmTest extends TestCase
     public function it_has_a_url()
     {
         $paradigm = factory(NominalParadigm::class)->create([
-            'language_id' => factory(Language::class)->create([
-                'algo_code' => 'tl'
-            ])->id,
+            'language_code' => factory(Language::class)->create(['code' => 'tl']),
             'name' => 'Test Paradigm'
         ]);
 

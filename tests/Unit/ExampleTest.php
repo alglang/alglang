@@ -6,6 +6,8 @@ use App\Example;
 use App\Form;
 use App\Language;
 use App\Morpheme;
+use App\NominalForm;
+use App\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,11 +16,11 @@ class ExampleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_has_a_url_attribute()
+    public function it_has_a_url_attribute_when_it_has_a_verb_form()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
-        $form = factory(Form::class)->create([
-            'language_id' => $language->id,
+        $language = factory(Language::class)->create(['code' => 'TL']);
+        $form = factory(VerbForm::class)->create([
+            'language_code' => $language->code,
             'shape' => 'V-bar'
         ]);
         $example = factory(Example::class)->create([
@@ -31,14 +33,31 @@ class ExampleTest extends TestCase
     }
 
     /** @test */
-    public function its_language_is_the_same_as_its_form()
+    public function it_has_a_url_attribute_when_it_has_a_nominal_form()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'TL']);
+        $language = factory(Language::class)->create(['code' => 'TL']);
+        $form = factory(NominalForm::class)->create([
+            'language_code' => $language->code,
+            'shape' => 'V-bar'
+        ]);
         $example = factory(Example::class)->create([
-            'form_id' => factory(Form::class)->create(['language_id' => $language->id])->id
+            'form_id' => $form->id,
+            'shape' => 'foo'
         ]);
 
-        $this->assertEquals($language->id, $example->language->id);
+        $expected = "/languages/$language->slug/nominal-forms/$form->slug/examples/foo";
+        $this->assertEquals($expected, $example->url);
+    }
+
+    /** @test */
+    public function its_language_is_the_same_as_its_form()
+    {
+        $language = factory(Language::class)->create(['code' => 'TL']);
+        $example = factory(Example::class)->create([
+            'form_id' => factory(Form::class)->create(['language_code' => $language->code])
+        ]);
+
+        $this->assertEquals($language->code, $example->language->code);
     }
 
     /** @test */
@@ -46,14 +65,14 @@ class ExampleTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $stem = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
         $suffix = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-bar'
         ]);
-        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, $suffix]);
 
         $example = factory(Example::class)->create([

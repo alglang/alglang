@@ -13,6 +13,6 @@ trait HasParent
 
     public function children(): Relation
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, isset($this->parentColumn) ? $this->parentColumn : 'parent_id');
     }
 }

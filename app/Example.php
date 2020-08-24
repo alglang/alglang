@@ -14,6 +14,25 @@ class Example extends Model
     use HasSlug;
     use Sourceable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public static function booted()
     {
         static::creating(function (self $model) {
@@ -21,10 +40,12 @@ class Example extends Model
         });
     }
 
-    public function getUrlAttribute(): string
-    {
-        return "/languages/{$this->form->language->slug}/verb-forms/{$this->form->slug}/examples/{$this->slug}";
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getMorphemesAttribute(): Collection
     {
@@ -33,9 +54,36 @@ class Example extends Model
         });
     }
 
+    public function getUrlAttribute(): string
+    {
+        $routeName = $this->form->structure_type === VerbStructure::class
+            ? 'verbForms.examples.show'
+            : 'nominalForms.examples.show';
+
+        return route($routeName, [
+            'language' => $this->form->language_code,
+            'form' => $this->form->slug,
+            'example' => $this->slug
+        ], false);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function language(): Relation
     {
-        return $this->hasOneThrough(Language::class, Form::class, 'id', 'id', 'form_id', 'language_id');
+        return $this->hasOneThrough(
+            Language::class,
+            Form::class,
+            'id',
+            'code',
+            'form_id',
+            'language_code'
+        );
     }
 
     public function form(): Relation
@@ -46,10 +94,5 @@ class Example extends Model
     public function stem(): Relation
     {
         return $this->belongsTo(Morpheme::class);
-    }
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()->saveSlugsTo('slug');
     }
 }

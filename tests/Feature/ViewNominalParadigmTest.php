@@ -21,13 +21,12 @@ class ViewNominalParadigmTest extends TestCase
     /** @test */
     public function it_shows_a_nominal_paradigm()
     {
-        $this->withoutExceptionHandling();
         $paradigm = factory(NominalParadigm::class)->create([
             'name' => 'Test Paradigm Name',
-            'language_id' => factory(Language::class)->create([
+            'language_code' => factory(Language::class)->create([
                 'name' => 'Test Language'
             ]),
-            'paradigm_type_id' => factory(NominalParadigmType::class)->create([
+            'paradigm_type_name' => factory(NominalParadigmType::class)->create([
                 'name' => 'Test Paradigm Type'
             ])
         ]);
@@ -48,7 +47,7 @@ class ViewNominalParadigmTest extends TestCase
         $paradigm = factory(NominalParadigm::class)->create();
         $form = factory(NominalForm::class)->create([
             'shape' => 'N-foo',
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
                 'pronominal_feature_name' => factory(Feature::class)->create(['name' => '2p']),
@@ -69,13 +68,13 @@ class ViewNominalParadigmTest extends TestCase
         $paradigm = factory(NominalParadigm::class)->create();
         $form = factory(NominalForm::class)->create([
             'shape' => 'N-foo',
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id
             ])
         ]);
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'shape' => 'testmorph-',
             'gloss' => 'testgloss'
         ]);
@@ -94,7 +93,7 @@ class ViewNominalParadigmTest extends TestCase
         $paradigm = factory(NominalParadigm::class)->create();
         factory(NominalForm::class)->create([
             'shape' => 'N-foo',
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
                 'pronominal_feature_name' => factory(Feature::class)->create([
@@ -106,7 +105,7 @@ class ViewNominalParadigmTest extends TestCase
         ]);
         factory(NominalForm::class)->create([
             'shape' => 'N-foo',
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
                 'pronominal_feature_name' => factory(Feature::class)->create([
@@ -118,7 +117,7 @@ class ViewNominalParadigmTest extends TestCase
         ]);
         factory(NominalForm::class)->create([
             'shape' => 'N-foo',
-            'language_id' => $paradigm->language_id,
+            'language_code' => $paradigm->language_code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'paradigm_id' => $paradigm->id,
                 'pronominal_feature_name' => factory(Feature::class)->create([

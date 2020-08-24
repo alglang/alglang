@@ -28,7 +28,7 @@ class ViewVerbFormTest extends TestCase
         $subject = factory(Feature::class)->create(['name' => '3s']);
         $verbForm = factory(VerbForm::class)->create([
             'shape' => 'V-test',
-            'language_id' => $language->id,
+            'language_code' => $language->code,
 
             'structure_id' => factory(VerbStructure::class)->create([
                 'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA']),
@@ -114,11 +114,11 @@ class ViewVerbFormTest extends TestCase
     {
         $language = factory(Language::class)->create();
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
         $verbForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($verbForm->url);
@@ -144,14 +144,14 @@ class ViewVerbFormTest extends TestCase
     public function the_verb_form_parent_is_displayed_if_the_verb_form_has_a_parent()
     {
         $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_id' => $parentLanguage->id]);
+        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
 
         $parentForm = factory(VerbForm::class)->create([
-            'language_id' => $parentLanguage->id,
+            'language_code' => $parentLanguage->code,
             'shape' => 'V-foo'
         ]);
         $childForm = factory(VerbForm::class)->create([
-            'language_id' => $childLanguage->id,
+            'language_code' => $childLanguage->code,
             'parent_id' => $parentForm->id
         ]);
         

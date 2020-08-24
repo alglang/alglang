@@ -14,9 +14,9 @@ class CreateNominalParadigmTypesTable extends Migration
     public function up()
     {
         Schema::create('nominal_paradigm_types', function (Blueprint $table) {
-            $table->id();
             $table->string('name');
-            $table->timestamps();
+            $table->boolean('has_pronominal_feature');
+            $table->boolean('has_nominal_feature');
         });
     }
 

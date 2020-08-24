@@ -21,44 +21,44 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_has_a_url_property()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-ak'
         ]);
-        $this->assertEquals('/languages/pa/morphemes/ak-1', $morpheme->url);
+        $this->assertEquals('/languages/PA/morphemes/ak-1', $morpheme->url);
     }
 
     /** @test */
     public function it_preserves_utf_8_in_its_url()
     {
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $morpheme = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-a·'
         ]);
-        $this->assertEquals('/languages/pa/morphemes/a·-1', $morpheme->url);
+        $this->assertEquals('/languages/PA/morphemes/a·-1', $morpheme->url);
     }
 
     /** @test */
     public function it_updates_its_url_when_its_disambiguator_changes()
     {
         
-        $language = factory(Language::class)->create(['algo_code' => 'PA']);
+        $language = factory(Language::class)->create(['code' => 'PA']);
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-ak'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
             'shape' => '-ak'
         ]);
 
-        $this->assertEquals('/languages/pa/morphemes/ak-2', $morpheme2->url);
+        $this->assertEquals('/languages/PA/morphemes/ak-2', $morpheme2->url);
 
         $morpheme1->delete();
 
-        $this->assertEquals('/languages/pa/morphemes/ak-1', $morpheme2->fresh()->url);
+        $this->assertEquals('/languages/PA/morphemes/ak-1', $morpheme2->fresh()->url);
     }
 
     /** @test */
@@ -116,19 +116,19 @@ class MorphemeTest extends TestCase
         $language2 = factory(Language::class)->create();
 
         $morpheme1 = factory(Morpheme::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
         $morpheme2 = factory(Morpheme::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
         $morpheme3 = factory(Morpheme::class)->create([
-            'language_id' => $language1->id,
+            'language_code' => $language1->code,
             'shape' => 'foo-'
         ]);
         $morpheme4 = factory(Morpheme::class)->create([
-            'language_id' => $language2->id,
+            'language_code' => $language2->code,
             'shape' => '-ak'
         ]);
 
@@ -156,9 +156,9 @@ class MorphemeTest extends TestCase
     public function it_retrieves_forms_that_contain_it()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
 
-        $form = factory(Form::class)->create(['language_id' => $language->id]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
         $form->assignMorphemes([$morpheme]);
 
         $forms = $morpheme->forms;
@@ -170,8 +170,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_does_not_include_forms_from_other_languages()
     {
-        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
-        $form = factory(Form::class)->create(['language_id' => factory(Language::class)->create()->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => factory(Language::class)->create()->code]);
+        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
         $form->assignMorphemes([$morpheme]);
 
         $this->assertCount(0, $morpheme->forms);
@@ -180,8 +180,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_only_counts_forms_with_duplicate_morphemes_once()
     {
-        $morpheme = factory(Morpheme::class)->create(['language_id' => factory(Language::class)->create()->id]);
-        $form = factory(Form::class)->create(['language_id' => $morpheme->language_id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => factory(Language::class)->create()->code]);
+        $form = factory(Form::class)->create(['language_code' => $morpheme->language_code]);
         $form->assignMorphemes([$morpheme, $morpheme]);
 
         $this->assertCount(1, $morpheme->forms);
@@ -191,10 +191,10 @@ class MorphemeTest extends TestCase
     public function it_retrieves_verb_forms_that_contain_it()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
         $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
         ]);
         $verbForm->assignMorphemes([$morpheme]);
         $nominalForm->assignMorphemes([$morpheme]);
@@ -209,10 +209,10 @@ class MorphemeTest extends TestCase
     public function it_retrieves_nominal_forms_that_contain_it()
     {
         $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_id' => $language->id]);
-        $verbForm = factory(VerbForm::class)->create(['language_id' => $language->id]);
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
         $nominalForm = factory(NominalForm::class)->create([
-            'language_id' => $language->id,
+            'language_code' => $language->code,
         ]);
         $verbForm->assignMorphemes([$morpheme]);
         $nominalForm->assignMorphemes([$morpheme]);
@@ -227,7 +227,7 @@ class MorphemeTest extends TestCase
     public function it_can_exclude_placeholders_from_queries()
     {
         $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['shape' => 'foo-', 'language_id' => $language->id]);
+        factory(Morpheme::class)->create(['shape' => 'foo-', 'language_code' => $language->code]);
         $morphemes = Morpheme::all();
 
         // Verify that placeholder morphemes were created

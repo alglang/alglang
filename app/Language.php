@@ -3,17 +3,33 @@
 namespace App;
 
 use App\Traits\HasParent;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class Language extends Model
+class Language extends Model implements CachableAttributes
 {
+    use CachesAttributes;
     use HasParent;
-    use HasSlug;
+
+    /** @var int */
+    public $sources_count;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected $primaryKey = 'code';
+
+    protected $keyType = 'str';
+
+    public $incrementing = false;
 
     protected $guarded = [];
 
@@ -24,17 +40,26 @@ class Language extends Model
     ];
 
     /** @var array */
+    protected $cachableAttributes = [
+        'sources'
+    ];
+
+    /** @var array */
     protected $sourcedRelations = [
         'morphemes',
         'forms',
         'nominalParadigms'
     ];
 
-    /** @var Collection */
-    private $_sources;
+    /** @var string */
+    protected $parentColumn = 'parent_code';
 
-    /** @var int */
-    public $sources_count;
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public static function booted()
     {
@@ -60,6 +85,11 @@ class Language extends Model
     |
     */
 
+    public function getSlugAttribute(): string
+    {
+        return $this->code;
+    }
+
     public function getPositionAttribute(?string $value): ?object
     {
         return json_decode($value);
@@ -72,12 +102,9 @@ class Language extends Model
 
     public function getSourcesAttribute(): Collection
     {
-        if (isset($this->_sources)) {
-            return $this->_sources;
-        }
-
-        $this->_sources = $this->sources()->get();
-        return $this->_sources;
+        return $this->remember('sources', 0, function () {
+            return $this->sources()->get();
+        });
     }
 
     public function getVStemAttribute(): Morpheme
@@ -152,24 +179,10 @@ class Language extends Model
 
         foreach ($this->sourcedRelations as $relation) {
             $query = $query->orWhereHas($relation, function ($query) {
-                return $query->where('language_id', $this->id);
+                return $query->where('language_code', $this->code);
             });
         }
 
         return $query;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('algo_code')
-            ->saveSlugsTo('slug');
     }
 }

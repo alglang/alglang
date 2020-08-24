@@ -13,10 +13,41 @@ class NominalParadigm extends Model
     use HasSlug;
     use Sourceable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
+
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/nominal-paradigms/{$this->slug}";
+        return route('nominalParadigms.show', [
+            'language' => $this->language->slug,
+            'nominalParadigm' => $this->slug
+        ], false);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function language(): Relation
     {
@@ -25,7 +56,7 @@ class NominalParadigm extends Model
 
     public function type(): Relation
     {
-        return $this->belongsTo(NominalParadigmType::class, 'paradigm_type_id');
+        return $this->belongsTo(NominalParadigmType::class, 'paradigm_type_name');
     }
 
     public function forms(): Relation
@@ -36,19 +67,5 @@ class NominalParadigm extends Model
             'paradigm_id',
             'structure_id'
         );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | HasSlug config
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
     }
 }

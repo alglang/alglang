@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(Language::class, function (Faker $faker) {
     return [
         'name' => 'Factory Created Language',
-        'algo_code' => 'FCL',
-        'group_id' => factory(Group::class)
+        'code' => $faker->unique()->lexify('???'),
+        'group_name' => factory(Group::class)
     ];
 });

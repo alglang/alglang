@@ -51,6 +51,10 @@ export const nominalFormFactory = props => ({
   ...props
 });
 
+export const nominalParadigmTypeFactory = props => ({
+  ...props
+});
+
 export const sourceFactory = props => ({
   id: Math.floor(Math.random() * 10000),
   ...props

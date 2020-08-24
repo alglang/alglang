@@ -17,7 +17,7 @@ class CreateFormsTable extends Migration
             $table->id();
             $table->string('shape');
 
-            $table->unsignedInteger('language_id');
+            $table->string('language_code');
             $table->unsignedInteger('parent_id')->nullable();
 
             $table->morphs('structure');

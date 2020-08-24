@@ -5,6 +5,8 @@ namespace App;
 use Adoxography\Disambiguatable\Disambiguatable;
 use App\Traits\HasParent;
 use App\Traits\Sourceable;
+use Astrotomic\CachableAttributes\CachableAttributes;
+use Astrotomic\CachableAttributes\CachesAttributes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,18 +15,13 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-class Morpheme extends Model
+class Morpheme extends Model implements CachableAttributes
 {
+    use CachesAttributes;
     use Disambiguatable;
     use HasParent;
     use HasSlug;
     use Sourceable;
-
-    protected $guarded = [];
-
-    protected $with = ['language'];
-
-    protected $appends = ['url'];
 
     /**
      * @var int
@@ -36,10 +33,23 @@ class Morpheme extends Model
      */
     public $nominal_forms_count;
 
-    /**
-     * @var Collection
-     */
-    protected $glosses_;
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected $guarded = [];
+
+    protected $with = ['language'];
+
+    protected $appends = ['url'];
+
+    /** @var array */
+    protected $cachableAttributes = [
+        'glosses'
+    ];
 
     /**
      * @var bool
@@ -49,7 +59,37 @@ class Morpheme extends Model
     /**
      * @var array
      */
-    protected $disambiguatableFields = ['language_id', 'shape'];
+    protected $disambiguatableFields = ['language_code', 'shape'];
+
+    protected function updateSlugBasedOnDisambiguator(): void
+    {
+        $pieces = collect(explode('-', $this->slug));
+        $disambiguator = $this->disambiguator + 1;
+
+        if ($pieces->last() !== strval($disambiguator)) {
+            if (is_numeric($pieces->last())) {
+                $pieces->pop();
+            }
+
+            $pieces->push($disambiguator);
+            $this->slug = $pieces->join('-');
+            $this->save();
+        }
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('shape')
+            ->saveSlugsTo('slug');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hooks
+    |--------------------------------------------------------------------------
+    |
+    */
 
     protected static function booted()
     {
@@ -69,22 +109,6 @@ class Morpheme extends Model
         });
     }
 
-    protected function updateSlugBasedOnDisambiguator(): void
-    {
-        $pieces = collect(explode('-', $this->slug));
-        $disambiguator = $this->disambiguator + 1;
-
-        if ($pieces->last() !== strval($disambiguator)) {
-            if (is_numeric($pieces->last())) {
-                $pieces->pop();
-            }
-
-            $pieces->push($disambiguator);
-            $this->slug = $pieces->join('-');
-            $this->save();
-        }
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors
@@ -94,62 +118,19 @@ class Morpheme extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/morphemes/{$this->slug}";
+        return "/languages/{$this->language->slug}/morphemes/$this->slug";
     }
 
     public function getGlossesAttribute(): Collection
     {
-        if (isset($this->glosses_)) {
-            return $this->glosses_;
-        }
+        return $this->remember('glosses', 0, function () {
+            $abvs = collect(explode('.', $this->gloss));
+            $existing = Gloss::find($abvs);
 
-        $abvs = collect(explode('.', $this->gloss));
-        $existing = Gloss::find($abvs);
-
-        $this->glosses_ = $abvs->map(function ($abv) use ($existing) {
-            return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
+            return $abvs->map(function ($abv) use ($existing) {
+                return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
+            });
         });
-
-        return $this->glosses_;
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function language(): Relation
-    {
-        return $this->belongsTo(Language::class);
-    }
-
-    public function slot(): Relation
-    {
-        return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
-    }
-
-    public function forms(): Relation
-    {
-        return $this->hasManyThrough(
-            Form::class,
-            MorphemeConnection::class,
-            'morpheme_id',
-            'id',
-            'id',
-            'form_id'
-        )->where('language_id', $this->language_id)->distinct();
-    }
-
-    public function verbForms(): Relation
-    {
-        return $this->forms()->where('structure_type', VerbStructure::class);
-    }
-
-    public function nominalForms(): Relation
-    {
-        return $this->forms()->where('structure_type', NominalStructure::class);
     }
 
     /*
@@ -181,15 +162,40 @@ class Morpheme extends Model
 
     /*
     |--------------------------------------------------------------------------
-    | HasSlug config
+    | Relations
     |--------------------------------------------------------------------------
     |
     */
 
-    public function getSlugOptions(): SlugOptions
+    public function language(): Relation
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('shape')
-            ->saveSlugsTo('slug');
+        return $this->belongsTo(Language::class, 'language_code');
+    }
+
+    public function slot(): Relation
+    {
+        return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
+    }
+
+    public function forms(): Relation
+    {
+        return $this->hasManyThrough(
+            Form::class,
+            MorphemeConnection::class,
+            'morpheme_id',
+            'id',
+            'id',
+            'form_id'
+        )->where('language_code', $this->language_code)->distinct();
+    }
+
+    public function verbForms(): Relation
+    {
+        return $this->forms()->where('structure_type', VerbStructure::class);
+    }
+
+    public function nominalForms(): Relation
+    {
+        return $this->forms()->where('structure_type', NominalStructure::class);
     }
 }
