@@ -17,7 +17,7 @@
         "lint-css": "stylelint \"resources/**/*.(css|vue)\"",
         "lint": "yarn lint-js && yarn lint-css",
         "serve": "php artisan serve",
-        "start": "concurrently --kill-others \"yarn serve --quiet >/dev/null 2>&1\" \"yarn development-quiet --watch >/dev/null 2>&1\"",
+        "start": "concurrently --kill-others \"yarn serve\" \"yarn watch\"",
         "favicon-generate": "real-favicon generate faviconDescription.json faviconData.json public/images/favicon",
         "favicon-inject": "real-favicon inject faviconData.json public/images/favicon resources/views/layouts/favicon.blade.php && mv public/images/favicon/favicon.blade.php resources/views/layouts",
         "favicon-update": "real-favicon check-for-update --fail-on-update faviconData.json"
