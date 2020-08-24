@@ -69,7 +69,7 @@
 
             <ul class="absolute right-0 py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap">
                 <li>
-                    <a href="{{ route('search.verbs.paradigms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
+                    <a href="{{ route('search.nominals.paradigms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
                         Nominal paradigms
                     </a>
                 </li>

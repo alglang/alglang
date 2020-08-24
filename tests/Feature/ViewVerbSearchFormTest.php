@@ -31,7 +31,7 @@ class ViewVerbSearchFormTest extends TestCase
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
         $response->assertViewHas('languages');
-        $this->assertEquals($languages->pluck('id'), $response['languages']->pluck('id'));
+        $this->assertEquals($languages->pluck('code'), $response['languages']->pluck('code'));
     }
 
     /** @test */

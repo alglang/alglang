@@ -113,6 +113,7 @@ Route::prefix('sources')->group(function () {
 
 Route::prefix('search')->group(function () {
     Route::prefix('nominals')->group(function () {
+        Route::get('paradigms', [NominalSearchController::class, 'paradigms'])->name('search.nominals.paradigms');
         Route::get(
             'paradigms/results',
             [NominalSearchController::class, 'paradigmResults']
@@ -154,10 +155,6 @@ Route::get('/resources', function () {
 Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
-
-Route::get('/search/nominals/paradigms', function () {
-    abort(404);
-})->name('search.nominals.paradigms');
 
 Route::get('/search/verbs/paradigms', function () {
     abort(404);

@@ -2,12 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Language;
 use App\NominalSearch;
+use App\NominalParadigmType;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class NominalSearchController extends Controller
 {
+    public function paradigms(): View
+    {
+        $languages = Language::all();
+        $paradigmTypes = NominalParadigmType::all();
+
+        return view('search.nominals.paradigms', [
+            'languages' => $languages,
+            'paradigmTypes' => $paradigmTypes
+        ]);
+    }
+
     public function paradigmResults(): View
     {
         $validated = request()->validate([

@@ -1,0 +1,92 @@
+<template>
+  <form
+    method="GET"
+    action="/search/nominals/paradigms/results"
+  >
+    <div class="flex">
+      <div class="mr-4">
+        <p
+          id="language-select-label"
+          class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
+        >
+          Languages
+        </p>
+        <fieldset
+          aria-labelledby="language-select-label"
+          class="overflow-auto p-2 border border-gray-300"
+        >
+          <label
+            v-for="language in languages"
+            :key="language.code"
+            class="flex items-center mb-2 last:mb-0"
+          >
+            <input
+              type="checkbox"
+              name="languages[]"
+              :value="language.code"
+              class="form-checkbox rounded-none text-blue-400"
+            />
+            <span class="ml-1">
+              {{ language.name }}
+            </span>
+          </label>
+        </fieldset>
+      </div>
+
+      <div>
+        <p
+          id="paradigm-select-label"
+          class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
+        >
+          Paradigms
+        </p>
+        <fieldset
+          aria-labelledby="paradigm-select-label"
+          class="overflow-auto p-2 border border-gray-300"
+        >
+          <label
+            v-for="paradigm in paradigmTypes"
+            :key="paradigm.name"
+            class="flex items-center mb-2 last:mb-0"
+          >
+            <input
+              type="checkbox"
+              name="paradigm_types[]"
+              :value="paradigm.name"
+              class="form-checkbox rounded-none text-blue-400"
+            />
+            <span class="ml-1">
+              {{ paradigm.name }}
+            </span>
+          </label>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button
+        aria-label="Search button"
+        class="px-3 py-2 shadow uppercase text-lg text-gray-700 bg-yellow-400 hover:bg-yellow-500
+        focus:outline-none focus:shadow-outline"
+      >
+        Search
+      </button>
+    </div>
+  </form>
+</template>
+
+<script>
+export default {
+  props: {
+    languages: {
+      type: Array,
+      required: true
+    },
+
+    paradigmTypes: {
+      type: Array,
+      required: true
+    }
+  }
+};
+</script>
