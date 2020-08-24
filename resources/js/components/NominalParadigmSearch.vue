@@ -2,9 +2,10 @@
   <form
     method="GET"
     action="/search/nominals/paradigms/results"
+    class="w-full md:w-fit"
   >
-    <div class="flex">
-      <div class="mr-4">
+    <div class="flex flex-col md:flex-row">
+      <div class="md:mr-4 mb-4 md:mb-0">
         <p
           id="language-select-label"
           class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
