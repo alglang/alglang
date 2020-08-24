@@ -3,6 +3,7 @@
     class="flex"
     method="GET"
     action="/search/verbs/forms/results"
+    target="_blank"
   >
     <div class="mr-8">
       <p

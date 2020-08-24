@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.search-results')
 
 @section('content')
     <section class="bg-white p-6 w-fit m-auto">

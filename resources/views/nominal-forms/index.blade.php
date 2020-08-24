@@ -35,7 +35,7 @@
                         the <a href="{{ route('search.nominals.paradigm-results', [
                             'languages' => ['Sh', 'At', 'Mun'],
                             'paradigm_types' => ['Personal pronoun']
-                        ]) }}">personal pronouns</a> of Shawnee, Atikamekw, and Munsee.
+                        ]) }}" target="_blank">personal pronouns</a> of Shawnee, Atikamekw, and Munsee.
                     </p>
                 </aside>
             </li>
