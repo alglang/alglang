@@ -1,8 +1,8 @@
 <template>
   <section class="bg-white p-6">
-    <header class="flex justify-between mb-4">
+    <header class="flex justify-between mb-6">
       <div class="leading-normal w-full md:w-auto text-center md:text-left">
-        <h2 class="block text-base md:text-lg uppercase text-gray-600">
+        <h2 class="block text-base uppercase text-gray-600">
           {{ title }}
         </h2>
         <div>

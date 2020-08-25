@@ -3,7 +3,7 @@
 @section('content')
     <alglang-details title="Morpheme details">
         <template v-slot:header>
-            <h1 class="text-3xl font-light">
+            <h1 class="text-2xl text-gray-800">
                 <span>{{ $morpheme->shape }}</span><!--
              --><span class="text-base align-top">{{ $morpheme->disambiguator + 1 }}</span>
             </h1>
