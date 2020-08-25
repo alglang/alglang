@@ -15,17 +15,18 @@
       <ul
         role="tablist"
         class="flex justify-center md:justify-start flex-wrap md:flex-col
-               mb-4 md:mr-4 uppercase font-semibold"
+               mb-4 md:mr-4 uppercase font-semibold w-full md:w-auto"
       >
         <li
           v-for="(page, i) in pages"
           :key="i"
-          class="flex-1 md:flex-none"
+          class="flex-1 md:flex-none w-1/2 md:w-auto"
         >
           <component
             :is="page.count === 0 ? 'p' : 'a'"
             :aria-selected="page.isActive"
-            class="flex justify-between items-center p-2 whitespace-no-wrap bg-gray-200"
+            class="flex justify-between items-center p-2 whitespace-no-wrap bg-gray-200
+                   text-xs md:text-base"
             :class="page.count === 0
               ? 'cursor-not-allowed text-gray-500'
               : 'text-gray-700 hover:bg-gray-300 hover:text-gray-700'"
@@ -38,7 +39,7 @@
             </div>
             <div
               v-if="page.count !== null"
-              class="ml-4 bg-white shadow-inner text-gray-600 px-1 rounded-full
+              class="ml-2 md:ml-4 bg-white shadow-inner text-gray-600 px-1 rounded-full
                      text-xs font-bold"
             >
               {{ page.count }}
