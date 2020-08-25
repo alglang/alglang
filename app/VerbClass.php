@@ -13,11 +13,11 @@ class VerbClass extends Model
     |
     */
 
-    protected $primaryKey = 'abv';
-
-    protected $keyType = 'str';
-
     public $incrementing = false;
 
     public $timestamps = false;
+
+    protected $primaryKey = 'abv';
+
+    protected $keyType = 'str';
 }

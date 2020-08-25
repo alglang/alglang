@@ -12,6 +12,15 @@ a:hover {
   @apply hidden;
 }
 
+/*
+|
+|====================================================
+| v-tooltip
+|====================================================
+|
+|
+*/
+
 .tooltip {
   z-index: 1000000;
 
@@ -46,6 +55,49 @@ a:hover {
 .tooltip.popover .popover-inner {
   @apply p-6 shadow-lg;
 }
+
+/*
+|
+|====================================================
+| leaflet
+|====================================================
+|
+|
+*/
+
+.vue2leaflet-map.leaflet-container {
+  @apply font-body;
+}
+
+.vue2leaflet-map .leaflet-popup-content-wrapper,
+.vue2leaflet-map .leaflet-popup-content-wrapper .leaflet-popup-tip {
+  background: #f7fafc;
+}
+
+.vue2leaflet-map .leaflet-popup-content-wrapper {
+  @apply rounded-none;
+}
+
+.vue2leaflet-map.leaflet-container a {
+  @apply text-blue-600;
+}
+
+.vue2leaflet-map .leaflet-bar a {
+  @apply text-black;
+}
+
+.vue2leaflet-map.leaflet-container .leaflet-popup-content-wrapper a:hover {
+  @apply text-red-600;
+}
+
+/*
+|
+|====================================================
+| Back to tailwind...
+|====================================================
+|
+|
+*/
 
 @tailwind components;
 @tailwind utilities;

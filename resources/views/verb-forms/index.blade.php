@@ -46,7 +46,7 @@
                                     'diminutive' => false
                                 ]
                             ]
-                        ]) }}">1p AI Conjunct Indicative form</a> in all available languages.
+                        ]) }}" target="_blank">1p AI Conjunct Indicative form</a> in all available languages.
                     </p>
                 </aside>
             </li>
@@ -64,7 +64,7 @@
                             'classes' => ['AI'],
                             'orders' => ['Conjunct'],
                             'modes' => ['Indicative'],
-                        ]) }}">AI Conjunct Indicative paradigm</a> in Shawnee and Meskwaki.
+                        ]) }}" target="_blank">AI Conjunct Indicative paradigm</a> in Shawnee and Meskwaki.
                     </p>
                 </aside>
             </li>

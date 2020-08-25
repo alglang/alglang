@@ -7,13 +7,12 @@ use App\Traits\HasParent;
 use App\Traits\Sourceable;
 use Astrotomic\CachableAttributes\CachableAttributes;
 use Astrotomic\CachableAttributes\CachesAttributes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Morpheme extends Model implements CachableAttributes
 {
@@ -61,52 +60,11 @@ class Morpheme extends Model implements CachableAttributes
      */
     protected $disambiguatableFields = ['language_code', 'shape'];
 
-    protected function updateSlugBasedOnDisambiguator(): void
-    {
-        $pieces = collect(explode('-', $this->slug));
-        $disambiguator = $this->disambiguator + 1;
-
-        if ($pieces->last() !== strval($disambiguator)) {
-            if (is_numeric($pieces->last())) {
-                $pieces->pop();
-            }
-
-            $pieces->push($disambiguator);
-            $this->slug = $pieces->join('-');
-            $this->save();
-        }
-    }
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('shape')
             ->saveSlugsTo('slug');
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Hooks
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    protected static function booted()
-    {
-        static::creating(function (Morpheme $model) {
-            $model->slug = trim($model->shape, '-');
-        });
-
-        static::saved(function (Morpheme $model) {
-            $model->updateSlugBasedOnDisambiguator();
-        });
-
-        static::deleted(function (Morpheme $model) {
-            $model->disambiguatableDuplicates()
-                  ->each(function (Morpheme $morpheme) {
-                      $morpheme->updateSlugBasedOnDisambiguator();
-                  });
-        });
     }
 
     /*
@@ -118,7 +76,7 @@ class Morpheme extends Model implements CachableAttributes
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language->slug}/morphemes/$this->slug";
+        return "/languages/{$this->language->slug}/morphemes/{$this->slug}";
     }
 
     public function getGlossesAttribute(): Collection
@@ -197,5 +155,46 @@ class Morpheme extends Model implements CachableAttributes
     public function nominalForms(): Relation
     {
         return $this->forms()->where('structure_type', NominalStructure::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Protected methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected static function booted()
+    {
+        static::creating(function (Morpheme $model) {
+            $model->slug = trim($model->shape, '-');
+        });
+
+        static::saved(function (Morpheme $model) {
+            $model->updateSlugBasedOnDisambiguator();
+        });
+
+        static::deleted(function (Morpheme $model) {
+            $model->disambiguatableDuplicates()
+                ->each(function (Morpheme $morpheme) {
+                    $morpheme->updateSlugBasedOnDisambiguator();
+                });
+        });
+    }
+
+    protected function updateSlugBasedOnDisambiguator(): void
+    {
+        $pieces = collect(explode('-', $this->slug));
+        $disambiguator = $this->disambiguator + 1;
+
+        if ($pieces->last() !== strval($disambiguator)) {
+            if (is_numeric($pieces->last())) {
+                $pieces->pop();
+            }
+
+            $pieces->push($disambiguator);
+            $this->slug = $pieces->join('-');
+            $this->save();
+        }
     }
 }

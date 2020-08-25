@@ -1,261 +1,263 @@
 <template>
-  <div class="flex p-3 mb-6 bg-gray-200">
-    <div>
-      <label
-        for="class-select"
-        class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
-      >
-        Class
-      </label>
-      <select
-        id="class-select"
-        :name="prefix + '[classes][]'"
-        class="form-select rounded-none border-none"
-      >
-        <option
-          v-for="verbClass in classes"
-          :key="verbClass.abv"
-        >
-          {{ verbClass.abv }}
-        </option>
-      </select>
-    </div>
+  <div class="border border-gray-300 max-w-sm lg:max-w-full mb-4">
+    <p class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2">
+      Structure
+    </p>
 
-    <div class="mx-3 flex">
-      <div class="flex flex-col">
-        <label
-          for="subject-select"
-          class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
+    <div class="lg:flex">
+      <div class="lg:flex lg:border-r border-gray-400">
+        <search-field
+          label="Class"
+          for-id="class-select"
         >
-          Subject
-        </label>
-        <select
-          id="subject-select"
-          class="form-select rounded-none border-none"
-          @change="updateSubject"
-        >
-          <option
-            v-for="feature in features"
-            :key="feature.name"
+          <select
+            id="class-select"
+            :name="prefix + '[classes][]'"
+            class="form-select rounded-none border-none w-full"
           >
-            {{ feature.name }}
-          </option>
-        </select>
-
-        <input
-          v-if="subject && subject.person"
-          v-model="subject.person"
-          data-testid="subject-person"
-          :name="prefix + '[subject_persons][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="subject && subject.number"
-          v-model="subject.number"
-          data-testid="subject-number"
-          :name="prefix + '[subject_numbers][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="subject && subject.obviative_code"
-          v-model="subject.obviative_code"
-          data-testid="subject-obviative-code"
-          :name="prefix + '[subject_obviative_code][]'"
-          type="hidden"
-        />
+            <option
+              v-for="verbClass in classes"
+              :key="verbClass.abv"
+            >
+              {{ verbClass.abv }}
+            </option>
+          </select>
+        </search-field>
       </div>
 
-      <div class="flex flex-col">
-        <label
-          for="primary-object-select"
-          class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
+      <div class="lg:flex lg:border-r border-gray-400">
+        <search-field
+          label="Subject"
+          for-id="subject-select"
         >
-          Primary object
-        </label>
-        <select
-          id="primary-object-select"
-          class="form-select rounded-none border-none"
-          @change="updatePrimaryObject"
-        >
-          <option>
-            None
-          </option>
-          <option
-            v-for="feature in features"
-            :key="feature.name"
+          <select
+            id="subject-select"
+            class="form-select rounded-none border-none w-full"
+            @change="updateSubject"
           >
-            {{ feature.name }}
-          </option>
-        </select>
+            <option
+              v-for="feature in features"
+              :key="feature.name"
+            >
+              {{ feature.name }}
+            </option>
+          </select>
 
-        <input
-          v-if="primaryObject === null"
-          data-testid="primary-object-disabled"
-          type="hidden"
-          :name="prefix + '[primary_object]'"
-          value="0"
-        />
-
-        <input
-          v-if="primaryObject && primaryObject.person"
-          v-model="primaryObject.person"
-          data-testid="primary-object-person"
-          :name="prefix + '[primary_object_persons][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="primaryObject && primaryObject.number"
-          v-model="primaryObject.number"
-          data-testid="primary-object-number"
-          :name="prefix + '[primary_object_numbers][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="primaryObject && primaryObject.obviative_code"
-          v-model="primaryObject.obviative_code"
-          data-testid="primary-object-obviative-code"
-          :name="prefix + '[primary_object_obviative_code][]'"
-          type="hidden"
-        />
-      </div>
-
-      <div class="flex flex-col">
-        <label
-          for="secondary-object-select"
-          class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
-        >
-          Secondary object
-        </label>
-        <select
-          id="secondary-object-select"
-          class="form-select rounded-none border-none"
-          @change="updateSecondaryObject"
-        >
-          <option>
-            None
-          </option>
-          <option
-            v-for="feature in features"
-            :key="feature.name"
-          >
-            {{ feature.name }}
-          </option>
-        </select>
-
-        <input
-          v-if="secondaryObject === null"
-          data-testid="secondary-object-disabled"
-          type="hidden"
-          :name="prefix + '[secondary_object]'"
-          value="0"
-        />
-
-        <input
-          v-if="secondaryObject && secondaryObject.person"
-          v-model="secondaryObject.person"
-          data-testid="secondary-object-person"
-          :name="prefix + '[secondary_object_persons][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="secondaryObject && secondaryObject.number"
-          v-model="secondaryObject.number"
-          data-testid="secondary-object-number"
-          :name="prefix + '[secondary_object_numbers][]'"
-          type="hidden"
-        />
-
-        <input
-          v-if="secondaryObject && secondaryObject.obviative_code"
-          v-model="secondaryObject.obviative_code"
-          data-testid="secondary-object-obviative-code"
-          :name="prefix + '[secondary_object_obviative_code][]'"
-          type="hidden"
-        />
-      </div>
-    </div>
-
-    <div class="flex">
-      <div>
-        <label
-          for="order-select"
-          class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
-        >
-          Order
-        </label>
-        <select
-          id="order-select"
-          :name="prefix + '[orders][]'"
-          class="form-select rounded-none border-none"
-        >
-          <option
-            v-for="order in orders"
-            :key="order.name"
-          >
-            {{ order.name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="mr-3">
-        <label
-          for="mode-select"
-          class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
-        >
-          Mode
-        </label>
-        <select
-          id="mode-select"
-          :name="prefix + '[modes][]'"
-          class="form-select rounded-none border-none"
-        >
-          <option
-            v-for="mode in modes"
-            :key="mode.name"
-          >
-            {{ mode.name }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <div class="flex">
-      <label>
-        <span class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2">
-          Negative
-        </span>
-        <div class="bg-white flex justify-center">
           <input
-            type="checkbox"
-            :name="prefix + '[negative]'"
-            class="form-checkbox h-6 w-6 my-2 rounded-none text-blue-400"
+            v-if="subject && subject.person"
+            v-model="subject.person"
+            data-testid="subject-person"
+            :name="prefix + '[subject_persons][]'"
+            type="hidden"
           />
-        </div>
-      </label>
 
-      <label>
-        <span class="block uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2">
-          Diminutive
-        </span>
-        <div class="bg-white flex justify-center">
           <input
-            type="checkbox"
-            :name="prefix + '[diminutive]'"
-            class="form-checkbox h-6 w-6 my-2 rounded-none text-blue-400"
+            v-if="subject && subject.number"
+            v-model="subject.number"
+            data-testid="subject-number"
+            :name="prefix + '[subject_numbers][]'"
+            type="hidden"
           />
-        </div>
-      </label>
+
+          <input
+            v-if="subject && subject.obviative_code"
+            v-model="subject.obviative_code"
+            data-testid="subject-obviative-code"
+            :name="prefix + '[subject_obviative_code][]'"
+            type="hidden"
+          />
+        </search-field>
+
+        <search-field
+          label="Primary object"
+          for-id="primary-object-select"
+        >
+          <select
+            id="primary-object-select"
+            class="form-select rounded-none border-none w-full"
+            @change="updatePrimaryObject"
+          >
+            <option>
+              None
+            </option>
+            <option
+              v-for="feature in features"
+              :key="feature.name"
+            >
+              {{ feature.name }}
+            </option>
+          </select>
+
+          <input
+            v-if="primaryObject === null"
+            data-testid="primary-object-disabled"
+            type="hidden"
+            :name="prefix + '[primary_object]'"
+            value="0"
+          />
+
+          <input
+            v-if="primaryObject && primaryObject.person"
+            v-model="primaryObject.person"
+            data-testid="primary-object-person"
+            :name="prefix + '[primary_object_persons][]'"
+            type="hidden"
+          />
+
+          <input
+            v-if="primaryObject && primaryObject.number"
+            v-model="primaryObject.number"
+            data-testid="primary-object-number"
+            :name="prefix + '[primary_object_numbers][]'"
+            type="hidden"
+          />
+
+          <input
+            v-if="primaryObject && primaryObject.obviative_code"
+            v-model="primaryObject.obviative_code"
+            data-testid="primary-object-obviative-code"
+            :name="prefix + '[primary_object_obviative_code][]'"
+            type="hidden"
+          />
+        </search-field>
+
+        <search-field
+          label="Secondary object"
+          for-id="secondary-object-select"
+        >
+          <select
+            id="secondary-object-select"
+            class="form-select rounded-none border-none w-full"
+            @change="updateSecondaryObject"
+          >
+            <option>
+              None
+            </option>
+            <option
+              v-for="feature in features"
+              :key="feature.name"
+            >
+              {{ feature.name }}
+            </option>
+          </select>
+
+          <input
+            v-if="secondaryObject === null"
+            data-testid="secondary-object-disabled"
+            type="hidden"
+            :name="prefix + '[secondary_object]'"
+            value="0"
+          />
+
+          <input
+            v-if="secondaryObject && secondaryObject.person"
+            v-model="secondaryObject.person"
+            data-testid="secondary-object-person"
+            :name="prefix + '[secondary_object_persons][]'"
+            type="hidden"
+          />
+
+          <input
+            v-if="secondaryObject && secondaryObject.number"
+            v-model="secondaryObject.number"
+            data-testid="secondary-object-number"
+            :name="prefix + '[secondary_object_numbers][]'"
+            type="hidden"
+          />
+
+          <input
+            v-if="secondaryObject && secondaryObject.obviative_code"
+            v-model="secondaryObject.obviative_code"
+            data-testid="secondary-object-obviative-code"
+            :name="prefix + '[secondary_object_obviative_code][]'"
+            type="hidden"
+          />
+        </search-field>
+      </div>
+
+      <div class="lg:flex lg:border-r border-gray-400">
+        <search-field
+          label="Order"
+          for-id="order-select"
+        >
+          <select
+            id="order-select"
+            :name="prefix + '[orders][]'"
+            class="form-select rounded-none border-none w-full"
+          >
+            <option
+              v-for="order in orders"
+              :key="order.name"
+            >
+              {{ order.name }}
+            </option>
+          </select>
+        </search-field>
+
+        <search-field
+          label="Mode"
+          for-id="mode-select"
+        >
+          <select
+            id="mode-select"
+            :name="prefix + '[modes][]'"
+            class="form-select rounded-none border-none w-full"
+          >
+            <option
+              v-for="mode in modes"
+              :key="mode.name"
+            >
+              {{ mode.name }}
+            </option>
+          </select>
+        </search-field>
+      </div>
+
+      <div class="lg:flex">
+        <search-field
+          label="Negative"
+          for-id="negative-checkbox"
+        >
+          <div
+            class="bg-white flex justify-center w-full"
+          >
+            <input
+              id="negative-checkbox"
+              type="checkbox"
+              :name="prefix + '[negative]'"
+              class="form-checkbox h-6 w-6 my-2 rounded-none text-blue-400"
+            />
+          </div>
+        </search-field>
+
+        <search-field
+          label="Diminutive"
+          for-id="diminutive-checkbox"
+        >
+          <div
+            class="bg-white flex justify-center w-full"
+          >
+            <input
+              id="diminutive-checkbox"
+              type="checkbox"
+              :name="prefix + '[diminutive]'"
+              class="form-checkbox h-6 w-6 my-2 rounded-none text-blue-400"
+            />
+          </div>
+        </search-field>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import VerbFormSearchStructureField from './VerbFormSearchStructureField';
+
 export default {
+  components: {
+    'search-field': VerbFormSearchStructureField
+  },
+
   props: {
     prefix: {
       type: String,

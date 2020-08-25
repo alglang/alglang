@@ -21,6 +21,8 @@
     <div id="app" class="flex flex-col min-h-screen">
         @include('layouts.header')
 
+        @include('layouts.partials.errors')
+
         <div class="m-2 md:m-4 lg:m-6 flex-grow">
             @yield('content')
         </div>

@@ -5,10 +5,10 @@ namespace App;
 use App\Traits\HasParent;
 use Astrotomic\CachableAttributes\CachableAttributes;
 use Astrotomic\CachableAttributes\CachesAttributes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Builder as Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 class Language extends Model implements CachableAttributes
 {
@@ -25,11 +25,11 @@ class Language extends Model implements CachableAttributes
     |
     */
 
+    public $incrementing = false;
+
     protected $primaryKey = 'code';
 
     protected $keyType = 'str';
-
-    public $incrementing = false;
 
     protected $guarded = [];
 

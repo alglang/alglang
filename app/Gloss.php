@@ -13,13 +13,13 @@ class Gloss extends Model
     |
     */
 
+    public $incrementing = false;
+
     protected $guarded = [];
 
     protected $primaryKey = 'abv';
 
     protected $keyType = 'str';
-
-    public $incrementing = false;
 
     protected $appends = ['url'];
 

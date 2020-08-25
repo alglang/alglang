@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ViewVerbSearchFormTest extends TestCase
+class ViewVerbFormSearchFormTest extends TestCase
 {
     use RefreshDatabase;
 

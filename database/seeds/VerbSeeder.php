@@ -66,6 +66,34 @@ class VerbSeeder extends Seeder
                 'class_abv' => 'AI',
                 'order_name' => 'Conjunct',
                 'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 6,
+                'subject_name' => '2s',
+                'class_abv' => 'AI',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 7,
+                'subject_name' => '21',
+                'class_abv' => 'AI',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 8,
+                'subject_name' => '2p',
+                'class_abv' => 'AI',
+                'order_name' => 'Conjunct',
+                'mode_name' => 'Indicative'
+            ],
+            [
+                'id' => 9,
+                'subject_name' => '1s',
+                'class_abv' => 'AI',
+                'order_name' => 'Independent',
+                'mode_name' => 'Indicative'
             ]
         ]);
 
@@ -129,7 +157,47 @@ class VerbSeeder extends Seeder
                 'structure_id' => 5,  // 1p AI Conjunct Indicative
                 'slug' => 'V-(y)a·nke',
                 'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
-            ]
+            ],
+            [
+                'id' => 12,
+                'shape' => 'V-(y)ani',
+                'language_code' => 'PA',
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 6,  // 2s AI Conjunct Indicative
+                'slug' => 'V-(y)ani',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
+            ],
+            [
+                'id' => 13,
+                'shape' => 'V-(y)ankwe',
+                'language_code' => 'PA',
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 7,  // 21 AI Conjunct Indicative
+                'slug' => 'V-(y)ani',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
+            ],
+            [
+                'id' => 14,
+                'shape' => 'V-(y)e·kwe',
+                'language_code' => 'PA',
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 8,  // 2p AI Conjunct Indicative
+                'slug' => 'V-(y)ani',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
+            ],
+            [
+                'id' => 15,
+                'shape' => 'ne-V-(e)',
+                'language_code' => 'PA',
+                'parent_id' => null,
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 9,  // 1s AI Independent Indicative Absolute
+                'slug' => 'V-(y)ani',
+                'allomorphy_notes' => '<p>Linking /y/ realized only after a vowel</p>'
+            ],
         ]);
 
         DB::table('examples')->insert([

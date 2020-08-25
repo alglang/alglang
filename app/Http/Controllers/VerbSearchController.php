@@ -9,9 +9,6 @@ use App\VerbMode;
 use App\VerbOrder;
 use App\VerbSearch;
 use App\VerbStructure;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class VerbSearchController extends Controller
@@ -30,6 +27,19 @@ class VerbSearchController extends Controller
             'modes' => $modes,
             'orders' => $orders,
             'features' => $features
+        ]);
+    }
+
+    public function paradigms(): View
+    {
+        $languages = Language::all();
+        $classes = VerbClass::all();
+        $orders = VerbOrder::all();
+
+        return view('search.verbs.paradigms', [
+            'languages' => $languages,
+            'classes' => $classes,
+            'orders' => $orders
         ]);
     }
 
@@ -65,7 +75,7 @@ class VerbSearchController extends Controller
             ];
         }
 
-        $languages = collect(array_map(fn($column) => $column['results'], $columns))
+        $languages = collect(array_map(fn ($column) => $column['results'], $columns))
             ->flatten(1)
             ->pluck('language')
             ->unique('code');
@@ -73,6 +83,21 @@ class VerbSearchController extends Controller
         return view('search.verbs.form-results', [
             'columns' => $columns,
             'languages' => $languages
+        ]);
+    }
+
+    public function paradigmResults(): View
+    {
+        $validated = request()->validate([
+            'languages' => 'array',
+            'orders' => 'array',
+            'classes' => 'array'
+        ]);
+
+        $results = VerbSearch::search($validated);
+
+        return view('search.verbs.paradigm-results', [
+            'results' => $results
         ]);
     }
 }

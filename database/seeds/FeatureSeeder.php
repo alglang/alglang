@@ -47,6 +47,30 @@ class FeatureSeeder extends Seeder
                 'person' => '1',
                 'number' => 3,
                 'obviative_code' => null
+            ],
+            [
+                'name' => '2',
+                'person' => '2',
+                'number' => null,
+                'obviative_code' => null
+            ],
+            [
+                'name' => '2s',
+                'person' => '2',
+                'number' => 1,
+                'obviative_code' => null
+            ],
+            [
+                'name' => '21',
+                'person' => '21',
+                'number' => 3,
+                'obviative_code' => null
+            ],
+            [
+                'name' => '2p',
+                'person' => '2',
+                'number' => 3,
+                'obviative_code' => null
             ]
         ]);
     }

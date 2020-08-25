@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Language;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
@@ -23,6 +22,7 @@ class LanguageController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Language  $language
+     *
      * @return \Illuminate\View\View
      */
     public function show(Language $language)

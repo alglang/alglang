@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchNominalParadigm;
 use App\Language;
-use App\NominalSearch;
 use App\NominalParadigmType;
-use Illuminate\Http\Request;
+use App\NominalSearch;
 use Illuminate\View\View;
 
 class NominalSearchController extends Controller
@@ -21,14 +21,9 @@ class NominalSearchController extends Controller
         ]);
     }
 
-    public function paradigmResults(): View
+    public function paradigmResults(SearchNominalParadigm $request): View
     {
-        $validated = request()->validate([
-            'languages' => 'required_without:paradigm_types|array',
-            'paradigm_types' => 'required_without:languages|array'
-        ]);
-
-        $results = NominalSearch::search($validated);
+        $results = NominalSearch::search($request->validated());
 
         return view('search.nominals.paradigm-results', ['results' => $results]);
     }

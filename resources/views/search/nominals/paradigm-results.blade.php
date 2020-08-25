@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@php
-    $languageNames = $results->pluck('language.name')->unique();
-@endphp
+@extends('layouts.search-results')
 
 @section('content')
     <section class="bg-white p-6 w-fit m-auto">
@@ -18,7 +14,7 @@
                     <th class="px-3 py-2 font-medium">
                         Features
                     </th>
-                    @foreach($languageNames as $languageName)
+                        @foreach($results->pluck('language.name')->unique() as $languageName)
                         <th class="px-3 py-2 font-medium">
                             {{ $languageName }}
                         </th>
@@ -46,7 +42,7 @@
                                     {{ $features }}
                                 </td>
                                 @foreach($resultsByFeatures->groupBy('language_code') as $results)
-                                    <td>
+                                    <td class="px-3 py-2">
                                         <ul>
                                             @foreach($results as $result)
                                                 <li>

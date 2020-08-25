@@ -4,12 +4,12 @@ namespace App;
 
 use App\Traits\HasParent;
 use App\Traits\Sourceable;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Form extends Model
 {
@@ -68,15 +68,14 @@ class Form extends Model
             case NominalStructure::class:
                 return (new NominalForm($this->attributes))->url;
             default:
-                throw new \UnexpectedValueException("Unknown verb form type '$this->structure_type'");
-        };
+                throw new \UnexpectedValueException("Unknown verb form type '{$this->structure_type}'");
+        }
     }
 
     public function getMorphemesAttribute(): Collection
     {
         return $this->morphemeConnections->pluck('morpheme');
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +84,7 @@ class Form extends Model
     |
     */
 
-    public function assignMorphemes(Iterable $morphemes): void
+    public function assignMorphemes(iterable $morphemes): void
     {
         $this->morphemeConnections()->delete();
 
@@ -105,24 +104,24 @@ class Form extends Model
     |
     */
 
-    protected function scopeOrderByFeature(Builder $query, string $column, string $table): Builder
+    public function scopeOrderByFeature(Builder $query, string $column, string $table): Builder
     {
-        $query->leftJoin("features as $table", "$table.name", '=', $column);
+        $query->leftJoin("features as {$table}", "{$table}.name", '=', $column);
 
         $query->orderByRaw(<<<SQL
             CASE
-                WHEN $table.person in ('1', '2', '21') THEN $table.number
-                WHEN $table.person = '3' THEN 10
-                WHEN $table.person = '0' THEN 11
+                WHEN {$table}.person in ('1', '2', '21') THEN {$table}.number
+                WHEN {$table}.person = '3' THEN 10
+                WHEN {$table}.person = '0' THEN 11
                 ELSE 12
             END,
-            CASE $table.person
+            CASE {$table}.person
                 WHEN '1' THEN 10
                 WHEN '21' THEN 11
                 WHEN '2' THEN 12
-                ELSE $table.number
+                ELSE {$table}.number
             END,
-            $table.obviative_code
+            {$table}.obviative_code
         SQL);
 
         return $query;

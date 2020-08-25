@@ -19,7 +19,6 @@ class SearchNominalParadigmsTest extends TestCase
     /** @test */
     public function it_returns_the_correct_view()
     {
-        $this->withoutExceptionHandling();
         $response = $this->get(route('search.nominals.paradigm-results', [
             'languages' => [factory(Language::class)->create()->name]
 		]));
@@ -33,6 +32,15 @@ class SearchNominalParadigmsTest extends TestCase
     {
         $response = $this->get(route('search.nominals.paradigm-results'));
         $response->assertStatus(302);
+        $response->assertSessionHasErrors('languages', 'paradigms');
+    }
+
+    /** @test */
+    public function an_error_message_is_shown_if_no_language_or_paradigm_type_is_included()
+    {
+        $response = $this->followingRedirects()->get(route('search.nominals.paradigm-results'));
+        $response->assertStatus(200);
+        $response->assertSee('Please select at least one language or paradigm.');
     }
 
     /** @test */

@@ -13,11 +13,11 @@ class VerbMode extends Model
     |
     */
 
-    protected $primaryKey = 'name';
-
-    protected $keyType = 'str';
-
     public $incrementing = false;
 
     public $timestamps = false;
+
+    protected $primaryKey = 'name';
+
+    protected $keyType = 'str';
 }

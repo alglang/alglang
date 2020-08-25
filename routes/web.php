@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GlossController;
@@ -121,6 +123,9 @@ Route::prefix('search')->group(function () {
     });
 
     Route::prefix('verbs')->group(function () {
+        Route::get('paradigms', [VerbSearchController::class, 'paradigms'])->name('search.verbs.paradigms');
+        Route::get('paradigm-results', [VerbSearchController::class, 'paradigmResults'])->name('search.verbs.paradigm-results');
+
         Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
         Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
     });
@@ -155,14 +160,6 @@ Route::get('/resources', function () {
 Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
-
-Route::get('/search/verbs/paradigms', function () {
-    abort(404);
-})->name('search.verbs.paradigms');
-
-Route::get('/search/verbs/paradigm-results', function () {
-    abort(404);
-})->name('search.verbs.paradigm-results');
 
 /*
 |--------------------------------------------------------------------------

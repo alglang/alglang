@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NominalFormCollection;
 use App\Language;
 use App\NominalForm;
-use App\Http\Resources\NominalFormCollection;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class NominalFormController extends Controller
@@ -46,7 +45,7 @@ class NominalFormController extends Controller
             'structure.nominalFeature',
             'structure.paradigm'
         )->paginate(request()->per_page ?? 10)
-         ->appends(request()->query());
+            ->appends(request()->query());
 
         return new NominalFormCollection($paginator);
     }

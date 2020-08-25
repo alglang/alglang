@@ -3,10 +3,10 @@
 namespace App;
 
 use App\Traits\HasParent;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Group extends Model
 {
@@ -20,11 +20,14 @@ class Group extends Model
     |
     */
 
+    /** @var string */
+    public $parentColumn = 'parent_name';
+
+    public $incrementing = false;
+
     protected $primaryKey = 'name';
 
     protected $keyType = 'str';
-
-    public $incrementing = false;
 
     protected $guarded = [];
 
@@ -36,9 +39,6 @@ class Group extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
-
-    /** @var string */
-    public $parentColumn = 'parent_name';
 
     /*
     |--------------------------------------------------------------------------
