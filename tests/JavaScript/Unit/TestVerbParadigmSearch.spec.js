@@ -1,5 +1,5 @@
 import '../setup';
-import { fireEvent, render } from '@testing-library/vue';
+import { render } from '@testing-library/vue';
 import { expect } from 'chai';
 
 import {
