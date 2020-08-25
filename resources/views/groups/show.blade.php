@@ -41,7 +41,7 @@
                 @endif
 
                 <alglang-detail-row label="Languages">
-                    <alglang-map style="height: 300px" :locations="{{ $group->languages->where('position', '!=', null) }}"></alglang-map>
+                    <alglang-map style="height: 300px" :locations="{{ $group->languages->where('position', '!=', null)->values() }}"></alglang-map>
                     <div class="mt-2">
                         <b class="font-semibold">Not shown:</b>
 
