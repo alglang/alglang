@@ -30,6 +30,19 @@ class VerbSearchController extends Controller
         ]);
     }
 
+    public function paradigms(): View
+    {
+        $languages = Language::all();
+        $classes = VerbClass::all();
+        $orders = VerbOrder::all();
+
+        return view('search.verbs.paradigms', [
+            'languages' => $languages,
+            'classes' => $classes,
+            'orders' => $orders
+        ]);
+    }
+
     public function formResults(): View
     {
         $validated = request()->validate([
@@ -70,6 +83,21 @@ class VerbSearchController extends Controller
         return view('search.verbs.form-results', [
             'columns' => $columns,
             'languages' => $languages
+        ]);
+    }
+
+    public function paradigmResults(): View
+    {
+        $validated = request()->validate([
+            'languages' => 'array',
+            'orders' => 'array',
+            'classes' => 'array'
+        ]);
+
+        $results = VerbSearch::search($validated);
+
+        return view('search.verbs.paradigm-results', [
+            'results' => $results
         ]);
     }
 }

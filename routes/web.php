@@ -50,22 +50,22 @@ Route::view('/phonology', 'phonemes.index')->name('phonology');
 |
 */
 
-Route::prefix('groups')->group(function (): void {
+Route::prefix('groups')->group(function () {
     Route::get('{group:slug}', [GroupController::class, 'show'])->name('groups.show');
     Route::post('', [GroupController::class, 'create']);
 });
 
-Route::prefix('languages')->group(function (): void {
+Route::prefix('languages')->group(function () {
     Route::get('create', [LanguageController::class, 'create'])->name('languages.create');
 
-    Route::prefix('{language:code}')->group(function (): void {
+    Route::prefix('{language:code}')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
 
-        Route::prefix('morphemes')->group(function (): void {
+        Route::prefix('morphemes')->group(function () {
             Route::get('{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
         });
 
-        Route::prefix('nominal-forms')->group(function (): void {
+        Route::prefix('nominal-forms')->group(function () {
             Route::get('{nominalForm:slug}', [NominalFormController::class, 'show'])->name('nominalForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
@@ -73,14 +73,14 @@ Route::prefix('languages')->group(function (): void {
             )->name('nominalForms.examples.show');
         });
 
-        Route::prefix('nominal-paradigms')->group(function (): void {
+        Route::prefix('nominal-paradigms')->group(function () {
             Route::get(
                 '{nominalParadigm:slug}',
                 [NominalParadigmController::class, 'show']
             )->name('nominalParadigms.show');
         });
 
-        Route::prefix('verb-forms')->group(function (): void {
+        Route::prefix('verb-forms')->group(function () {
             Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verbForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
@@ -92,16 +92,16 @@ Route::prefix('languages')->group(function (): void {
     });
 });
 
-Route::prefix('glosses')->group(function (): void {
+Route::prefix('glosses')->group(function () {
     Route::get('{gloss}', [GlossController::class, 'show'])->name('glosses.show');
 });
 
-Route::prefix('slots')->group(function (): void {
+Route::prefix('slots')->group(function () {
     Route::get('{slot}', [SlotController::class, 'show'])->name('slots.show');
 });
 
 Route::get('/bibliography', [SourceController::class, 'index'])->name('bibliography');
-Route::prefix('sources')->group(function (): void {
+Route::prefix('sources')->group(function () {
     Route::get('', [SourceController::class, 'index']);
     Route::get('{source:slug}', [SourceController::class, 'show'])->name('sources.show');
 });
@@ -113,8 +113,8 @@ Route::prefix('sources')->group(function (): void {
 |
 */
 
-Route::prefix('search')->group(function (): void {
-    Route::prefix('nominals')->group(function (): void {
+Route::prefix('search')->group(function () {
+    Route::prefix('nominals')->group(function () {
         Route::get('paradigms', [NominalSearchController::class, 'paradigms'])->name('search.nominals.paradigms');
         Route::get(
             'paradigms/results',
@@ -122,7 +122,10 @@ Route::prefix('search')->group(function (): void {
         )->name('search.nominals.paradigm-results');
     });
 
-    Route::prefix('verbs')->group(function (): void {
+    Route::prefix('verbs')->group(function () {
+        Route::get('paradigms', [VerbSearchController::class, 'paradigms'])->name('search.verbs.paradigms');
+        Route::get('paradigm-results', [VerbSearchController::class, 'paradigmResults'])->name('search.verbs.paradigm-results');
+
         Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
         Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
     });
@@ -146,25 +149,17 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 |
 */
 
-Route::get('/languages', function (): void {
+Route::get('/languages', function () {
     abort(404);
 })->name('languages.index');
 
-Route::get('/resources', function (): void {
+Route::get('/resources', function () {
     abort(404);
 })->name('resources');
 
-Route::get('/structural-survey', function (): void {
+Route::get('/structural-survey', function () {
     abort(404);
 })->name('structural-survey');
-
-Route::get('/search/verbs/paradigms', function (): void {
-    abort(404);
-})->name('search.verbs.paradigms');
-
-Route::get('/search/verbs/paradigm-results', function (): void {
-    abort(404);
-})->name('search.verbs.paradigm-results');
 
 /*
 |--------------------------------------------------------------------------
@@ -174,7 +169,7 @@ Route::get('/search/verbs/paradigm-results', function (): void {
 */
 
 if (app('env') === 'testing') {
-    Route::get('/500', function (): void {
+    Route::get('/500', function () {
         abort(500);
     });
 }

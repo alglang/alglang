@@ -27,6 +27,7 @@ Vue.component('alglang-language-verb-forms', require('./components/Language/Verb
 Vue.component('alglang-nominal-forms', require('./components/NominalForms.vue').default);
 
 Vue.component('alglang-verb-form-search', require('./components/VerbFormSearch.vue').default);
+Vue.component('alglang-verb-paradigm-search', require('./components/VerbParadigmSearch.vue').default);
 Vue.component('alglang-nominal-paradigm-search', require('./components/NominalParadigmSearch.vue').default);
 
 document.addEventListener('turbolinks:load', () => {
