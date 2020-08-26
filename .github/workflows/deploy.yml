@@ -51,3 +51,14 @@ jobs:
           script_stop: true
           script: |
             # Move to the correct directory
+            cd "$NFSN_DIR"
+
+            # Install composer dependencies, but don't try to run the script
+            # afterword because it will segfault
+            composer install -o --no-dev --no-scripts
+
+            # Run the postinstall script manually
+            php artisan package:discover
+
+            # Migrate any new migrations
+            php artisan migrate --force
