@@ -142,4 +142,30 @@ class SearchVerbParadigmsTest extends TestCase
         $response->assertSee('V-foo');
         $response->assertDontSee('V-bar');
     }
+
+    /** @test */
+    public function it_filters_search_results_by_mode()
+    {
+        $mode = factory(VerbMode::class)->create();
+        factory(VerbForm::class)->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'mode_name' => $mode
+            ])
+        ]);
+        factory(VerbForm::class)->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'mode_name' => factory(VerbMode::class)->create()
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results', [
+			'modes' => [$mode->name]
+		]));
+
+        $response->assertOk();
+        $response->assertSee('V-foo');
+        $response->assertDontSee('V-bar');
+    }
 }

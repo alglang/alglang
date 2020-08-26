@@ -91,7 +91,8 @@ class VerbSearchController extends Controller
         $validated = request()->validate([
             'languages' => 'array',
             'orders' => 'array',
-            'classes' => 'array'
+            'classes' => 'array',
+            'modes' => 'array'
         ]);
 
         $results = VerbSearch::search($validated);
