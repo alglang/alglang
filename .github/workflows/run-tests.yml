@@ -9,12 +9,7 @@ on:
 jobs:
   php-tests:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        php-version: [ '7.4' ]
-
-    name: PHP v${{ matrix.php-version }}
+    name: PHP v7.4
 
     steps:
       - name: Checkout code
@@ -23,14 +18,14 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: 7.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: xdebug
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
 
       - name: Generate key
@@ -55,30 +50,36 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          fail_ci_if_error: false
+          fail_ci_if_error: true
 
   js-tests:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
-    name: Node v${{ matrix.node-version }}
+    name: Node v14.x
 
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Setup node
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install --frozen-lockfile
-      - run: yarn prod
-      - run: yarn test
-      - run: yarn lint
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter
+        run: yarn lint
+
+      - name: Build production version of app
+        run: yarn prod
+
+      - name: Run tests
+        run: yarn test
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: './coverage/cobertura-coverage.xml'
-          fail_ci_if_error: false
+          fail_ci_if_error: true
