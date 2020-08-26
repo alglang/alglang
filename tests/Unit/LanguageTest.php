@@ -111,4 +111,14 @@ class LanguageTest extends TestCase
         $this->assertCount(2, $language->forms);
         $this->assertEquals([$verbForm->id, $nominalForm->id], $language->forms->pluck('id')->toArray());
     }
+
+    /** @test */
+    public function it_has_alternate_names()
+    {
+        $language = factory(Language::class)->create([
+            'alternate_names' => ['foo', 'bar']
+        ]);
+
+        $this->assertEquals(['foo', 'bar'], $language->alternate_names);
+    }
 }

@@ -17,6 +17,7 @@ class CreateLanguagesTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('iso')->nullable();
+            $table->text('alternate_names')->nullable();
             $table->boolean('reconstructed')->default(false);
             $table->json('position')->nullable();
             $table->text('notes')->nullable();

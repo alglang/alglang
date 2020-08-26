@@ -36,7 +36,8 @@ class Language extends Model implements CachableAttributes
     protected $appends = ['url'];
 
     protected $casts = [
-        'reconstructed' => 'bool'
+        'reconstructed' => 'bool',
+        'alternate_names' => 'array'
     ];
 
     /** @var array */

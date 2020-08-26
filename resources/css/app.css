@@ -120,6 +120,14 @@ a:hover {
   @apply text-gray-900;
 }
 
+.comma-list {
+  @apply inline;
+}
+
+.comma-list li:not(:last-child)::after {
+  content: ", ";
+}
+
 .small-caps {
   font-variant: small-caps;
 }
