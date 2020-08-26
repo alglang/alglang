@@ -15,11 +15,6 @@
 
             <ul class="absolute right-0 md:right-auto md:left-0 py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap z-50">
                 <li>
-                    <a href="{{ route('structural-survey') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
-                        Structural survey
-                    </a>
-                </li>
-                <li>
                     <a href="{{ route('verb-forms') }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
                         Verb forms
                     </a>

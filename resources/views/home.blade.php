@@ -10,9 +10,6 @@
 
         <ul class="mb-8">
             <li class="mb-4 md:mb-0 p-2 md:p-1 md:pl-2 border-l-4 border-red-600 bg-gray-200 md:bg-gray-100">
-                <a href="{{ route('structural-survey') }}" class="uppercase">Structural survey</a>: maps showing the patterning of various features across the Algonquian family
-            </li>
-            <li class="mb-4 md:mb-0 p-2 md:p-1 md:pl-2 border-l-4 border-red-600 bg-gray-200 md:bg-gray-100">
                 <a href="{{ route('verb-forms') }}" class="uppercase">Verb forms</a> and <a href="{{ route('nominal-forms') }}" class="uppercase">nominal forms</a> annotated with glosses, allomorphy, examples, cognates, and historical derivation
             </li>
             <li class="mb-4 md:mb-0 p-2 md:p-1 md:pl-2 border-l-4 border-red-600 bg-gray-200 md:bg-gray-100">
