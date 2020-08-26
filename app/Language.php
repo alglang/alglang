@@ -36,7 +36,8 @@ class Language extends Model implements CachableAttributes
     protected $appends = ['url'];
 
     protected $casts = [
-        'reconstructed' => 'bool'
+        'reconstructed' => 'bool',
+        'alternate_names' => 'array'
     ];
 
     /** @var array */
@@ -75,6 +76,10 @@ class Language extends Model implements CachableAttributes
                 'slot_abv' => 'STM',
                 'gloss' => 'N'
             ]);
+        });
+
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('order_key');
         });
     }
 

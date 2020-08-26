@@ -364,12 +364,12 @@ class MorphemeSeeder extends Seeder
         DB::table('disambiguations')->insert([
             [
                 'disambiguatable_type' => Morpheme::class,
-                'disambiguatable_id' => 14,
+                'disambiguatable_id' => 12,
                 'disambiguator' => 0
             ],
             [
                 'disambiguatable_type' => Morpheme::class,
-                'disambiguatable_id' => 15,
+                'disambiguatable_id' => 14,
                 'disambiguator' => 1
             ]
         ]);

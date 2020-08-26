@@ -62,6 +62,12 @@
       </select>
     </div>
 
+    <input
+      type="hidden"
+      name="modes[]"
+      value="Indicative"
+    />
+
     <button
       type="submit"
     >

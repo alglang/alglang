@@ -3,7 +3,7 @@
 @section('content')
     <alglang-details title="Language details">
         <template v-slot:header>
-            <h1 class="text-3xl font-light">
+            <h1 class="text-2xl text-gray-800">
                 {{ $language->name }}
             </h1>
 
@@ -16,6 +16,16 @@
 
         <alglang-detail-page title="Basic details">
             <div>
+                @if($language->alternate_names)
+                    <alglang-detail-row label="Also known as">
+                        <ul class="comma-list">
+                            @foreach($language->alternate_names as $alternate_name)
+                                <li class="inline">{{ $alternate_name }}</li>
+                            @endforeach
+                        </ul>
+                    </alglang-detail-row>
+                @endif
+
                 <alglang-detail-row label="Algonquianist code">
                     <p>{{ $language->code }}</p>
                 </alglang-detail-row>

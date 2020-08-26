@@ -3,7 +3,7 @@
 @section('content')
     <alglang-details title="Source details">
         <template v-slot:header>
-            <h1 class="text-3xl font-light">
+            <h1 class="text-2xl text-gray-800">
                 {{ $source->short_citation }}
             </h1>
         </template>

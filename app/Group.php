@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\HasParent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Spatie\Sluggable\HasSlug;
@@ -67,5 +68,19 @@ class Group extends Model
     public function languages(): Relation
     {
         return $this->hasMany(Language::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Protected methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('order_key');
+        });
     }
 }

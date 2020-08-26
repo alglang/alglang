@@ -3,7 +3,7 @@
 @section('content')
     <alglang-details title="Slot details">
         <template v-slot:header>
-            <h1 class="text-3xl font-light" style="color: {{ $slot->colour }}">
+            <h1 class="text-2xl text-gray-800" style="color: {{ $slot->colour }}">
                 {{ $slot->abv }}
             </h1>
         </template>

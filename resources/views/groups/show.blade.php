@@ -3,7 +3,7 @@
 @section('content')
     <alglang-details title="Group details">
         <template v-slot:header>
-            <h1 class="text-3xl font-light">
+            <h1 class="text-2xl text-gray-800">
                 {{ $group->name }} languages
             </h1>
         </template>
@@ -41,7 +41,7 @@
                 @endif
 
                 <alglang-detail-row label="Languages">
-                    <alglang-map style="height: 300px" :locations="{{ $group->languages->where('position', '!=', null) }}"></alglang-map>
+                    <alglang-map style="height: 300px" :locations="{{ $group->languages->where('position', '!=', null)->values() }}"></alglang-map>
                     <div class="mt-2">
                         <b class="font-semibold">Not shown:</b>
 

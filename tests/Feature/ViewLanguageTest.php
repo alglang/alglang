@@ -293,4 +293,17 @@ class ViewLanguageTest extends TestCase
         $response->assertSee('Parent');
         $response->assertSee('Test Super Language');
     }
+
+    /** @test */
+    public function the_alternate_names_are_displayed()
+    {
+        $language = factory(Language::class)->create(['alternate_names' => ['alt1', 'alt2']]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertSee('Also known as');
+        $response->assertSee('alt1');
+        $response->assertSee('alt2');
+    }
 }

@@ -14,6 +14,7 @@ class LanguageSeeder extends Seeder
         DB::table('languages')->insert([
             [
                 'name' => 'Proto-Algonquian',
+                'alternate_names' => null,
                 'parent_code' => null,
                 'code' => 'PA',
                 'iso' => 'alg',
@@ -23,6 +24,7 @@ class LanguageSeeder extends Seeder
             ],
             [
                 'name' => 'Common Cree',
+                'alternate_names' => null,
                 'parent_code' =>'PA',
                 'code' => 'C',
                 'iso' => null,
@@ -32,6 +34,7 @@ class LanguageSeeder extends Seeder
             ],
             [
                 'name' => 'Southwestern Ojibwe',
+                'alternate_names' => '["Chippewa"]',
                 'parent_code' => 'PA',
                 'code' => 'SwO',
                 'iso' => 'ciw',

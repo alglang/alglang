@@ -13,7 +13,7 @@
     >
       <li
         v-for="morpheme of morphemes"
-        :key="morpheme.shape"
+        :key="morpheme.id"
         class="mr-4"
       >
         <alglang-morpheme-card :morpheme="morpheme" />

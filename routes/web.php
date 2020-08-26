@@ -157,10 +157,6 @@ Route::get('/resources', function () {
     abort(404);
 })->name('resources');
 
-Route::get('/structural-survey', function () {
-    abort(404);
-})->name('structural-survey');
-
 /*
 |--------------------------------------------------------------------------
 | Testing routes
