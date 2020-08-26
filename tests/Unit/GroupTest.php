@@ -29,4 +29,14 @@ class GroupTest extends TestCase
             $group->preview
         );
     }
+
+    /** @test */
+    public function groups_are_ordered_by_order_key_by_default()
+    {
+        $group1 = factory(Group::class)->create(['order_key' => 2]);
+        $group2 = factory(Group::class)->create(['order_key' => 1]);
+
+        $groups = Group::all();
+        $this->assertEquals([$group2->name, $group1->name], $groups->pluck('name')->toArray());
+    }
 }

@@ -121,4 +121,14 @@ class LanguageTest extends TestCase
 
         $this->assertEquals(['foo', 'bar'], $language->alternate_names);
     }
+
+    /** @test */
+    public function languages_are_ordered_by_order_key()
+    {
+        $group1 = factory(Language::class)->create(['order_key' => 2]);
+        $group2 = factory(Language::class)->create(['order_key' => 1]);
+
+        $groups = Language::all();
+        $this->assertEquals([$group2->code, $group1->code], $groups->pluck('code')->toArray());
+    }
 }

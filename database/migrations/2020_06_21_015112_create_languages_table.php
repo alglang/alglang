@@ -21,6 +21,7 @@ class CreateLanguagesTable extends Migration
             $table->boolean('reconstructed')->default(false);
             $table->json('position')->nullable();
             $table->text('notes')->nullable();
+            $table->integer('order_key')->default(-1);
             $table->string('group_name');
             $table->string('parent_code')->nullable();
             $table->timestamps();

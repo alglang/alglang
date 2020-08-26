@@ -77,6 +77,10 @@ class Language extends Model implements CachableAttributes
                 'gloss' => 'N'
             ]);
         });
+
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('order_key');
+        });
     }
 
     /*
