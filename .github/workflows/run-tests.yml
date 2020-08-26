@@ -50,7 +50,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          fail_ci_if_error: true
+          fail_ci_if_error: false
 
   js-tests:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
 
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Setup node
         uses: actions/setup-node@v1
@@ -82,4 +82,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: './coverage/cobertura-coverage.xml'
-          fail_ci_if_error: true
+          fail_ci_if_error: false
