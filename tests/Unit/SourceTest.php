@@ -39,6 +39,17 @@ class SourceTest extends TestCase
     }
 
     /** @test */
+    public function it_removes_special_characters_from_its_slug()
+    {
+        $source = factory(Source::class)->create([
+            'author' => 'Foo & Bar et al.',
+            'year' => 1234
+        ]);
+
+        $this->assertEquals('/sources/foo-bar-et-al-1234', $source->fresh()->url);
+    }
+
+    /** @test */
     public function it_has_a_disambiguation_letter()
     {
         $sourceA = factory(Source::class)->create([
@@ -53,6 +64,17 @@ class SourceTest extends TestCase
 
         $this->assertEquals('a', $sourceA->fresh()->disambiguation_letter);
         $this->assertEquals('b', $sourceB->fresh()->disambiguation_letter);
+    }
+
+    /** @test */
+    public function year_does_not_have_to_be_a_number()
+    {
+        $source = factory(Source::class)->create([
+            'author' => 'foo',
+            'year' => 'bar'
+        ]);
+
+        $this->assertEquals('foo-bar', $source->slug);
     }
 
     /** @test */

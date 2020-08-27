@@ -10,17 +10,31 @@
 
         <alglang-detail-page title="Basic details">
             <div>
-                <alglang-detail-row label="Full citation">
-                    <div class="hanging-indent">
-                        {!! $source->full_citation !!}
-                    </div>
-                </alglang-detail-row>
+                @if($source->full_citation)
+                    <alglang-detail-row label="Full citation">
+                        <div class="hanging-indent">
+                            {!! $source->full_citation !!}
+                        </div>
+                    </alglang-detail-row>
+                @endif
+
+                @if($source->summary)
+                    <alglang-detail-row label="Summary">
+                        {!! $source->summary !!}
+                    </alglang-detail-row>
+                @endif
 
                 @if($source->website)
                     <alglang-detail-row label="Website">
                         <a href="{{ $source->website }}">
                             {{ $source->website }}
                         </a>
+                    </alglang-detail-row>
+                @endif
+
+                @if($source->notes)
+                    <alglang-detail-row label="Notes">
+                        {!! $source->notes !!}
                     </alglang-detail-row>
                 @endif
             </div>

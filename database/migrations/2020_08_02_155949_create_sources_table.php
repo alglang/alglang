@@ -16,10 +16,12 @@ class CreateSourcesTable extends Migration
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
             $table->string('author');
-            $table->smallInteger('year');
-            $table->text('full_citation');
+            $table->string('year');
+            $table->text('full_citation')->nullable();
             $table->string('slug')->nullable();
             $table->string('website')->nullable();
+            $table->text('summary')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
