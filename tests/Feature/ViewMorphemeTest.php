@@ -97,6 +97,31 @@ class ViewMorphemeTest extends TestCase
     }
 
     /** @test */
+    public function usage_notes_appear_if_the_morpheme_has_usage_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create([
+            'usage_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Usage notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function usage_notes_do_not_appear_if_the_morpheme_has_no_usage_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create(['usage_notes' => null]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Usage notes');
+    }
+
+    /** @test */
     public function private_notes_appear_if_a_contributor_is_logged_in_and_the_morpheme_has_private_notes()
     {
         $this->withPermissions();

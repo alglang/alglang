@@ -61,6 +61,12 @@
                     </alglang-detail-row>
                 @endif
 
+                @if ($morpheme->usage_notes)
+                    <alglang-detail-row label="Usage notes">
+                        {!! $morpheme->usage_notes !!}
+                    </alglang-detail-row>
+                @endif
+
                 @can('view private notes')
                 @if ($morpheme->private_notes)
                     <alglang-detail-row label="Private notes">
