@@ -65,6 +65,10 @@ a:hover {
 |
 */
 
+.vue2leaflet-map {
+  @apply z-0;
+}
+
 .vue2leaflet-map.leaflet-container {
   @apply font-body;
 }
