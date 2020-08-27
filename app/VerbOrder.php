@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class VerbOrder extends Model
@@ -20,4 +21,17 @@ class VerbOrder extends Model
     protected $primaryKey = 'name';
 
     protected $keyType = 'str';
+
+    /*
+    |--------------------------------------------------------------------------
+    | Protected methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected static function booted() {
+        static::addGlobalScope('order', function (Builder $query) {
+            return $query->orderBy('order_key');
+        });
+    }
 }
