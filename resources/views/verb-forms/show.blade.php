@@ -29,6 +29,13 @@
                             @if($verbForm->structure->is_diminutive)
                                 <span>(Diminutive)</span>
                             @endif
+                            @isset($verbForm->structure->is_absolute)
+                                @if($verbForm->structure->is_absolute)
+                                    <span>(Absolute)</span>
+                                @else
+                                    <span>(Objective)</span>
+                                @endif
+                            @endif
                         </a>
                     </p>
                 </alglang-detail-row>

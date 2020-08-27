@@ -95,6 +95,52 @@ class ViewVerbFormTest extends TestCase
     }
 
     /** @test */
+    public function a_verb_form_shows_that_it_is_absolute_if_it_is_absolute()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => true
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Absolute');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_that_it_is_objective_if_its_absolute_value_is_false()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => false
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Objective');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_absolute_information_if_it_has_none()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => null
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Absolute');
+        $response->assertDontSee('Objective');
+    }
+
+    /** @test */
     public function a_verb_form_does_not_show_that_it_is_diminutive_if_it_is_not_diminutive()
     {
         $verbForm = factory(VerbForm::class)->create([

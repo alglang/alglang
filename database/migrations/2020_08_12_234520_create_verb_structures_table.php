@@ -23,6 +23,7 @@ class CreateVerbStructuresTable extends Migration
             $table->string('secondary_object_name')->nullable();
             $table->boolean('is_negative')->default(false);
             $table->boolean('is_diminutive')->default(false);
+            $table->boolean('is_absolute')->nullable();
             $table->timestamps();
         });
     }
