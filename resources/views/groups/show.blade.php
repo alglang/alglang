@@ -41,12 +41,14 @@
                 @endif
 
                 <alglang-detail-row label="Languages">
-                    <alglang-map style="height: 300px" :locations="{{ $group->languages->where('position', '!=', null)->values() }}"></alglang-map>
+                    <alglang-map
+                        style="height: 300px"
+                        :locations="{{ $group->languagesWithDescendants()->where('position', '!=', null)->values() }}"></alglang-map>
                     <div class="mt-2">
                         <b class="font-semibold">Not shown:</b>
 
                         <ul class="flex">
-                            @foreach($group->languages->where('position', null) as $language)
+                            @foreach($group->languagesWithDescendants()->whereNull('position')->sortBy('name') as $language)
                                 @if(!$loop->first)
                                     <span class="mx-1" aria-hidden="true">&#9642;</span>
                                 @endif

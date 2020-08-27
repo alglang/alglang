@@ -6,6 +6,7 @@ use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -56,6 +57,25 @@ class Group extends Model
     public function getPreviewAttribute(): ?string
     {
         return $this->description;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function languagesWithDescendants(): Collection
+    {
+        /** @var Collection */
+        $languages = $this->languages;
+
+        foreach ($languages as $language) {
+            $languages = $languages->concat($language->descendants);
+        }
+
+        return $languages;
     }
 
     /*
