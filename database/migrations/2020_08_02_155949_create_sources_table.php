@@ -17,7 +17,7 @@ class CreateSourcesTable extends Migration
             $table->id();
             $table->string('author');
             $table->string('year');
-            $table->text('full_citation');
+            $table->text('full_citation')->nullable();
             $table->string('slug')->nullable();
             $table->string('website')->nullable();
             $table->text('summary')->nullable();

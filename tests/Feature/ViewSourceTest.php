@@ -21,8 +21,7 @@ class ViewSourceTest extends TestCase
     {
         $source = factory(Source::class)->create([
             'author' => 'Foo bar',
-            'year' => 1234,
-            'full_citation' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr</p>'
+            'year' => 1234
         ]);
 
         $response = $this->get($source->url);
@@ -31,7 +30,31 @@ class ViewSourceTest extends TestCase
         $response->assertViewHas('source', $source);
         $response->assertSee('Foo bar');
         $response->assertSee('1234');
-        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr');
+    }
+
+    /** @test */
+    public function a_source_shows_its_full_citation_if_it_has_one()
+    {
+        $source = factory(Source::class)->create([
+            'full_citation' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertSee('Full citation');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_source_does_not_show_a_full_citation_if_it_has_none()
+    {
+        $source = factory(Source::class)->create(['full_citation' => null]);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Full citation');
     }
 
     /** @test */
