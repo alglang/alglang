@@ -60,6 +60,52 @@ class ViewSourceTest extends TestCase
     }
 
     /** @test */
+    public function a_source_shows_its_summary()
+    {
+        $source = factory(Source::class)->create(['summary' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertSee('Summary');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_source_does_not_show_a_summary_if_it_has_none()
+    {
+        $source = factory(Source::class)->create(['summary' => null]);
+        
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Summary');
+    }
+
+    /** @test */
+    public function a_source_shows_its_notes()
+    {
+        $source = factory(Source::class)->create(['notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertSee('Notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function a_source_does_not_show_a_notes_if_it_has_none()
+    {
+        $source = factory(Source::class)->create(['notes' => null]);
+        
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Notes');
+    }
+
+    /** @test */
     public function the_source_comes_with_its_morpheme_count()
     {
         $source = factory(Source::class)->create();

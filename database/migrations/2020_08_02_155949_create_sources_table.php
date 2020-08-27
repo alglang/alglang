@@ -20,6 +20,8 @@ class CreateSourcesTable extends Migration
             $table->text('full_citation');
             $table->string('slug')->nullable();
             $table->string('website')->nullable();
+            $table->text('summary')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
