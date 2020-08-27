@@ -15,11 +15,11 @@ class VerbSearchController extends Controller
 {
     public function forms(): View
     {
-        $languages = Language::all();
-        $classes = VerbClass::all();
-        $modes = VerbMode::all();
-        $orders = VerbOrder::all();
-        $features = Feature::all();
+        $languages = Language::orderBy('name')->get();
+        $classes = VerbClass::orderBy('abv')->get();
+        $modes = VerbMode::orderBy('name')->get();
+        $orders = VerbOrder::orderBy('name')->get();
+        $features = Feature::orderBy('name')->get();
 
         return view('search.verbs.forms', [
             'languages' => $languages,

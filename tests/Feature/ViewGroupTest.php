@@ -121,6 +121,34 @@ class ViewGroupTest extends TestCase
     }
 
     /** @test */
+    public function descendants_of_group_languages_appear_on_the_group_page()
+    {
+        $group = factory(Group::class)->create();
+        $groupChild = factory(Group::class)->create(['parent_name' => $group->name]);
+
+        factory(Language::class)->create([
+            'name' => 'Test Language 1',
+            'code' => 'tl1',
+            'position' => '{"lat":46.1,"lng":-87.1}',
+            'group_name' => $group->name
+        ]);
+        factory(Language::class)->create([
+            'name' => 'Test Language 2',
+            'position' => '{"lat":47.1,"lng":-86.1}',
+            'parent_code' => 'tl1',
+            'group_name' => $groupChild->name
+        ]);
+
+        $response = $this->get($group->url);
+
+        $response->assertOk();
+        $response->assertSee('Test Language 1');
+        $response->assertSee('{"lat":46.1,"lng":-87.1}');
+        $response->assertSee('Test Language 2');
+        $response->assertSee('{"lat":47.1,"lng":-86.1}');
+    }
+
+    /** @test */
     public function languages_without_positions_appear_under_the_map()
     {
         $group = factory(Group::class)->create();
@@ -135,5 +163,27 @@ class ViewGroupTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeInOrder(['Not shown', 'Test Language']);
+    }
+
+    /** @test */
+    public function languages_without_positions_are_ordered_by_name()
+    {
+        $group = factory(Group::class)->create();
+
+        factory(Language::class)->create([
+            'name' => 'Foo',
+            'group_name' => $group->name,
+            'position' => null
+        ]);
+        factory(Language::class)->create([
+            'name' => 'Bar',
+            'group_name' => $group->name,
+            'position' => null
+        ]);
+
+        $response = $this->get($group->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Not shown', 'Bar', 'Foo']);
     }
 }

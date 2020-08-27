@@ -23,23 +23,46 @@ class ViewNominalParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_languages()
     {
-        $languages = factory(Language::class, 2)->create();
+        $language = factory(Language::class)->create();
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();
         $response->assertViewHas('languages');
-        $this->assertEquals($languages->pluck('code'), $response['languages']->pluck('code'));
+        $this->assertEquals($language->code, $response['languages']->first()->code);
+    }
+
+    /** @test */
+    public function languages_are_ordered_by_name()
+    {
+        factory(Language::class)->create(['name' => 'Foo', 'order_key' => 0]);
+        factory(Language::class)->create(['name' => 'Bar', 'order_key' => 1]);
+
+        $response = $this->get('/search/nominals/paradigms');
+        $response->assertOk();
+        $response->assertViewHas('languages');
+        $this->assertEquals(['Bar', 'Foo'], $response['languages']->pluck('name')->toArray());
     }
 
     /** @test */
     public function it_includes_paradigm_types()
     {
-        $this->withoutExceptionHandling();
-        $paradigmTypes = factory(NominalParadigmType::class, 2)->create();
+        $paradigmType = factory(NominalParadigmType::class)->create();
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();
         $response->assertViewHas('paradigmTypes');
-        $this->assertEquals($paradigmTypes->pluck('id'), $response['paradigmTypes']->pluck('id'));
+        $this->assertEquals($paradigmType->id, $response['paradigmTypes']->first()->id);
+    }
+
+    /** @test */
+    public function paradigm_types_are_ordered_by_name()
+    {
+        factory(NominalParadigmType::class)->create(['name' => 'Foo']);
+        factory(NominalParadigmType::class)->create(['name' => 'Bar']);
+
+        $response = $this->get('/search/nominals/paradigms');
+        $response->assertOk();
+        $response->assertViewHas('paradigmTypes');
+        $this->assertEquals(['Bar', 'Foo'], $response['paradigmTypes']->pluck('name')->toArray());
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Group;
+use App\Language;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -38,5 +39,26 @@ class GroupTest extends TestCase
 
         $groups = Group::all();
         $this->assertEquals([$group2->name, $group1->name], $groups->pluck('name')->toArray());
+    }
+
+    /** @test */
+    public function it_has_languages_with_descendants()
+    {
+        $group = factory(Group::class)->create();
+        $groupChild = factory(Group::class)->create(['parent_name' => $group->name]);
+
+        factory(Language::class)->create([
+            'code' => 'tl1',
+            'group_name' => $group->name
+        ]);
+        factory(Language::class)->create([
+            'code' => 'tl2',
+            'parent_code' => 'tl1',
+            'group_name' => $groupChild->name
+        ]);
+
+        $languagesWithDescendants = $group->languagesWithDescendants();
+
+        $this->assertEquals(['tl1', 'tl2'], $languagesWithDescendants->pluck('code')->toArray());
     }
 }
