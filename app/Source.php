@@ -6,32 +6,28 @@ use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Str;
 
 class Source extends Model
 {
     use Disambiguatable;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
     /** @var array */
     protected $disambiguatableFields = ['author', 'year'];
 
-    public static function booted()
-    {
-        self::created(function (self $model) {
-            $tokens = [
-                ...explode(' ', $model->author),
-                $model->year
-            ];
-
-            $slug = strtolower(implode('-', $tokens));
-
-            $model->slug = $slug;
-            $model->save();
-        });
-
-        static::addGlobalScope('order', function (Builder $query) {
-            $query->orderBy('author')->orderBy('year', 'desc');
-        });
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Attribute accessors
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function getUrlAttribute(): string
     {
@@ -59,6 +55,26 @@ class Source extends Model
 
         return chr($this->disambiguator + ord('a'));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    public function afterDisambiguated(): void
+    {
+        $this->slug = $this->generateSlug();
+        $this->save();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relations
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function morphemes(): Relation
     {
@@ -90,16 +106,27 @@ class Source extends Model
         return $this->morphedByMany(Example::class, 'sourceable');
     }
 
-    public function afterDisambiguated(): void
-    {
-        $tokens = [
-            ...explode(' ', $this->author),
-            $this->year,
-            $this->disambiguation_letter
-        ];
+    /*
+    |--------------------------------------------------------------------------
+    | Protected methods
+    |--------------------------------------------------------------------------
+    |
+    */
 
-        $slug = strtolower(implode('-', $tokens));
-        $this->slug = $slug;
-        $this->save();
+    protected static function booted()
+    {
+        self::created(function (self $model) {
+            $model->slug = $model->generateSlug();
+            $model->save();
+        });
+
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('author')->orderBy('year', 'desc');
+        });
+    }
+
+    protected function generateSlug(): string
+    {
+        return Str::slug("{$this->author} {$this->year} {$this->disambiguation_letter}");
     }
 }

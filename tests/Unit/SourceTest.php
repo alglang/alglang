@@ -39,6 +39,17 @@ class SourceTest extends TestCase
     }
 
     /** @test */
+    public function it_removes_special_characters_from_its_slug()
+    {
+        $source = factory(Source::class)->create([
+            'author' => 'Foo & Bar et al.',
+            'year' => 1234
+        ]);
+
+        $this->assertEquals('/sources/foo-bar-et-al-1234', $source->fresh()->url);
+    }
+
+    /** @test */
     public function it_has_a_disambiguation_letter()
     {
         $sourceA = factory(Source::class)->create([
