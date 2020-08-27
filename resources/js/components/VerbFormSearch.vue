@@ -14,7 +14,7 @@
       </p>
       <fieldset
         aria-labelledby="language-select-label"
-        class="overflow-auto p-2 border border-gray-300"
+        class="overflow-auto p-2 border border-gray-300 h-56"
       >
         <label
           v-for="language in languages"

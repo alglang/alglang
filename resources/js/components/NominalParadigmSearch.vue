@@ -5,7 +5,7 @@
     class="w-full md:w-fit"
   >
     <div class="flex flex-col md:flex-row">
-      <div class="md:mr-4 mb-4 md:mb-0">
+      <div class="mx-6 md:ml-0 md:mr-4 mb-4 md:mb-0">
         <p
           id="language-select-label"
           class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
@@ -14,7 +14,7 @@
         </p>
         <fieldset
           aria-labelledby="language-select-label"
-          class="overflow-auto p-2 border border-gray-300"
+          class="overflow-auto p-2 border border-gray-300 h-56"
         >
           <label
             v-for="language in languages"
@@ -34,7 +34,7 @@
         </fieldset>
       </div>
 
-      <div>
+      <div class="mx-6 md:mx-0">
         <p
           id="paradigm-select-label"
           class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
@@ -43,7 +43,7 @@
         </p>
         <fieldset
           aria-labelledby="paradigm-select-label"
-          class="overflow-auto p-2 border border-gray-300"
+          class="overflow-auto p-2 border border-gray-300 h-56"
         >
           <label
             v-for="paradigm in paradigmTypes"
