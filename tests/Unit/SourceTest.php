@@ -67,6 +67,17 @@ class SourceTest extends TestCase
     }
 
     /** @test */
+    public function year_does_not_have_to_be_a_number()
+    {
+        $source = factory(Source::class)->create([
+            'author' => 'foo',
+            'year' => 'bar'
+        ]);
+
+        $this->assertEquals('foo-bar', $source->slug);
+    }
+
+    /** @test */
     public function it_has_a_short_citation()
     {
         $source = factory(Source::class)->create([
