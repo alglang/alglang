@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Source;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait Sourceable
 {
@@ -13,7 +13,7 @@ trait Sourceable
         return $this;
     }
 
-    public function sources(): MorphToMany
+    public function sources(): BelongsToMany
     {
         return $this->morphToMany(Source::class, 'sourceable')
                     ->as('attribution')
