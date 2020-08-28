@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Gloss;
-use App\Language;
-use App\NominalForm;
-use App\Morpheme;
-use App\Slot;
-use App\Source;
-use App\User;
-use App\VerbForm;
+use App\Models\Gloss;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\Morpheme;
+use App\Models\Slot;
+use App\Models\Source;
+use App\Models\User;
+use App\Models\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

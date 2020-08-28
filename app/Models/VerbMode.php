@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VerbClass extends Model
+class VerbMode extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ class VerbClass extends Model
 
     public $timestamps = false;
 
-    protected $primaryKey = 'abv';
+    protected $primaryKey = 'name';
 
     protected $keyType = 'str';
 }

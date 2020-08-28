@@ -1,7 +1,7 @@
 <?php
 
-use App\Group;
-use App\Language;
+use App\Models\Group;
+use App\Models\Language;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

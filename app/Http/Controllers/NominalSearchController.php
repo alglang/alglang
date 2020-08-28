@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchNominalParadigm;
-use App\Language;
-use App\NominalParadigmType;
+use App\Models\Language;
+use App\Models\NominalParadigmType;
 use App\NominalSearch;
 use Illuminate\View\View;
 

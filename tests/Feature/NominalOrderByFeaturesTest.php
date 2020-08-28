@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Feature;
-use App\Language;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
+use App\Models\Feature;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;

@@ -2,17 +2,17 @@
 
 namespace Tests\Unit;
 
-use \DB;
-use App\Form;
-use App\Gloss;
-use App\Language;
-use App\Morpheme;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
-use App\VerbForm;
+use App\Models\Form;
+use App\Models\Gloss;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
+use App\Models\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class MorphemeTest extends TestCase
 {

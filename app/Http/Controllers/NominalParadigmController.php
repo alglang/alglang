@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Language;
-use App\NominalParadigm;
+use App\Models\Language;
+use App\Models\NominalParadigm;
 use Illuminate\View\View;
 
 class NominalParadigmController extends Controller

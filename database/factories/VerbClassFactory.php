@@ -1,6 +1,6 @@
 <?php
 
-use App\VerbClass;
+use App\Models\VerbClass;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

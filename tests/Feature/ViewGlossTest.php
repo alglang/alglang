@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Gloss;
+use App\Models\Gloss;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Slot;
+use App\Models\Slot;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

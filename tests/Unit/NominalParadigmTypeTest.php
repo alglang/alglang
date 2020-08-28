@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\NominalParadigmType;
+use App\Models\NominalParadigmType;
 use Tests\TestCase;
 
 class NominalParadigmTypeTest extends TestCase

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\VerbOrder;
+use App\Models\VerbOrder;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

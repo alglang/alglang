@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Group;
-use App\Language;
+use App\Models\Group;
+use App\Models\Language;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

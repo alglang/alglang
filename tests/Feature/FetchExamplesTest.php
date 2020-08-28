@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Form;
-use App\Source;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

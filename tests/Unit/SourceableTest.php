@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
+use App\Models\Source;
 use App\Traits\Sourceable;
-use App\Source;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

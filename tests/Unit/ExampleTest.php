@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Example;
-use App\Form;
-use App\Language;
-use App\Morpheme;
-use App\NominalForm;
-use App\VerbForm;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\NominalForm;
+use App\Models\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

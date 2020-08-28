@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Form;
-use App\Language;
-use App\Morpheme;
-use App\Source;
-use App\User;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Source;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

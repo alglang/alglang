@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\User;
-use App\Group;
-use App\Language;
+use App\Models\User;
+use App\Models\Group;
+use App\Models\Language;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

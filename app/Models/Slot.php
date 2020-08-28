@@ -1,11 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class VerbOrder extends Model
+class Slot extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -18,20 +17,21 @@ class VerbOrder extends Model
 
     public $timestamps = false;
 
-    protected $primaryKey = 'name';
+    protected $primaryKey = 'abv';
 
     protected $keyType = 'str';
 
+    protected $appends = ['url'];
+
     /*
     |--------------------------------------------------------------------------
-    | Protected methods
+    | Attribute accessors
     |--------------------------------------------------------------------------
     |
     */
 
-    protected static function booted() {
-        static::addGlobalScope('order', function (Builder $query) {
-            return $query->orderBy('order_key');
-        });
+    public function getUrlAttribute(): string
+    {
+        return route('slots.show', $this, false);
     }
 }

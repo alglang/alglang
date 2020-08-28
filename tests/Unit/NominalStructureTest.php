@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Feature;
-use App\NominalStructure;
+use App\Models\Feature;
+use App\Models\NominalStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

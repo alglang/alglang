@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Gloss extends Model
+class VerbOrder extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -15,27 +16,22 @@ class Gloss extends Model
 
     public $incrementing = false;
 
-    protected $guarded = [];
+    public $timestamps = false;
 
-    protected $primaryKey = 'abv';
+    protected $primaryKey = 'name';
 
     protected $keyType = 'str';
 
-    protected $appends = ['url'];
-
     /*
     |--------------------------------------------------------------------------
-    | Attribute accessors
+    | Protected methods
     |--------------------------------------------------------------------------
     |
     */
 
-    public function getUrlAttribute(): ?string
-    {
-        if ($this->exists) {
-            return route('glosses.show', $this, false);
-        }
-
-        return null;
+    protected static function booted() {
+        static::addGlobalScope('order', function (Builder $query) {
+            return $query->orderBy('order_key');
+        });
     }
 }

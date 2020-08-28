@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Feature extends Model
+class NominalParadigmType extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -30,21 +30,20 @@ class Feature extends Model
     |
     */
 
-    public function getNameAttribute(?string $value): string
+    public function getMetaTypeAttribute(): string
     {
-        if (isset($value)) {
-            return $value;
+        if ($this->has_pronominal_feature && $this->has_nominal_feature) {
+            return 'Possessed noun';
         }
 
-        // First person exclusive doesn't need any more information
-        if ($this->person === '21') {
-            return $this->person;
+        if ($this->has_pronominal_feature) {
+            return 'Personal pronoun';
         }
 
-        return implode('', [
-            $this->person,
-            ['', 's', 'd', 'p'][$this->number ?? 0],
-            ['', '\'', '"'][$this->obviative_code ?? 0]
-        ]);
+        if ($this->has_nominal_feature) {
+            return 'Third person form';
+        }
+
+        throw new \UnexpectedValueException('Paradigm has no features; cannot extrapolate a meta type');
     }
 }

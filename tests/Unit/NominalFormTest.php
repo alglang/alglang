@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Language;
-use App\NominalForm;
+use App\Models\Language;
+use App\Models\NominalForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

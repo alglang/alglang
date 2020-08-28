@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\Feature;
-use App\Language;
-use App\VerbClass;
-use App\VerbForm;
-use App\VerbMode;
-use App\VerbOrder;
+use App\Models\Feature;
+use App\Models\Language;
+use App\Models\VerbClass;
+use App\Models\VerbForm;
+use App\Models\VerbMode;
+use App\Models\VerbOrder;
+use App\Models\VerbStructure;
 use App\VerbSearch;
-use App\VerbStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

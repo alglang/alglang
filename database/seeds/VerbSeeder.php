@@ -1,10 +1,10 @@
 <?php
 
-use App\Example;
-use App\Form;
-use App\Morpheme;
-use App\Source;
-use App\VerbStructure;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Morpheme;
+use App\Models\Source;
+use App\Models\VerbStructure;
 use Illuminate\Database\Seeder;
 
 class VerbSeeder extends Seeder

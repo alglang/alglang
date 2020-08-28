@@ -2,15 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Language;
-use App\Morpheme;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
-use App\Source;
-use App\VerbForm;
-use DB;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
+use App\Models\Source;
+use App\Models\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class LanguageTest extends TestCase

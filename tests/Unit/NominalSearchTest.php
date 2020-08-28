@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Language;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalParadigmType;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalParadigmType;
+use App\Models\NominalStructure;
 use App\NominalSearch;
-use App\NominalStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

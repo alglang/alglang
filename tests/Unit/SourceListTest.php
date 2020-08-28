@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Source;
+use App\Models\Source;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;

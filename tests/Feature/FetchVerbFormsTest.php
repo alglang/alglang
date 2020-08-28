@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Feature;
-use App\Language;
-use App\NominalForm;
-use App\Morpheme;
-use App\Source;
-use App\VerbClass;
-use App\VerbForm;
-use App\VerbMode;
-use App\VerbOrder;
-use App\VerbStructure;
+use App\Models\Feature;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\Morpheme;
+use App\Models\Source;
+use App\Models\VerbClass;
+use App\Models\VerbForm;
+use App\Models\VerbMode;
+use App\Models\VerbOrder;
+use App\Models\VerbStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

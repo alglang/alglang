@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Language;
-use App\VerbParadigm;
+use App\Models\Language;
+use App\Models\VerbParadigm;
 use Illuminate\View\View;
 
 class VerbParadigmController extends Controller

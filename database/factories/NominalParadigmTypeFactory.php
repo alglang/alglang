@@ -1,6 +1,6 @@
 <?php
 
-use App\NominalParadigmType;
+use App\Models\NominalParadigmType;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

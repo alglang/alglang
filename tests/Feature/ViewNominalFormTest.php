@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Language;
-use App\Morpheme;
-use App\Feature;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
-use App\Source;
-use App\User;
+use App\Models\Example;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Feature;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
+use App\Models\Source;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

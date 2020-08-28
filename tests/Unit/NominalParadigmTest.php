@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Language;
-use App\NominalParadigm;
+use App\Models\Language;
+use App\Models\NominalParadigm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

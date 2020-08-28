@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Gloss;
+use App\Models\Gloss;
 
 class GlossController extends Controller
 {

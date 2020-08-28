@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
