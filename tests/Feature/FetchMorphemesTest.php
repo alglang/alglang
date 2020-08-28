@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Gloss;
-use App\Language;
-use App\Morpheme;
-use App\Slot;
-use App\Source;
+use App\Models\Gloss;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Slot;
+use App\Models\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -177,6 +177,22 @@ class FetchMorphemesTest extends TestCase
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function it_includes_morpheme_formatted_shape()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language]);
+
+        $response = $this->get("/api/morphemes?language=$language->code");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                ['formatted_shape' => $morpheme->formatted_shape]
+            ]
+        ]);
     }
 
     /** @test */

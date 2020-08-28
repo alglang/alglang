@@ -11,7 +11,13 @@
                             style="color: {{ $morpheme->slot->colour }};"
                             @endif
                         >
-                            {{ trim($morpheme->shape, '-') }}
+                            @unless($morpheme->isPlaceholder())
+                            <i>
+                            @endunless
+                                {{ trim($morpheme->shape, '-') }}
+                            @unless($morpheme->isPlaceholder())
+                            </i>
+                            @endunless
                         </a>
                     </td>
                 @endforeach

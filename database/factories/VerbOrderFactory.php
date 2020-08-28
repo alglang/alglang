@@ -1,6 +1,6 @@
 <?php
 
-use App\VerbOrder;
+use App\Models\VerbOrder;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

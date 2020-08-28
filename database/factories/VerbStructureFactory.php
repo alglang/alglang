@@ -1,10 +1,10 @@
 <?php
 
-use App\Feature;
-use App\VerbClass;
-use App\VerbMode;
-use App\VerbOrder;
-use App\VerbStructure;
+use App\Models\Feature;
+use App\Models\VerbClass;
+use App\Models\VerbMode;
+use App\Models\VerbOrder;
+use App\Models\VerbStructure;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

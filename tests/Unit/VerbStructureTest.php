@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Feature;
-use App\VerbStructure;
+use App\Models\Feature;
+use App\Models\VerbStructure;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

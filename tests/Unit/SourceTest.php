@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Source;
+use App\Models\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,6 +19,13 @@ class SourceTest extends TestCase
         ]);
 
         $this->assertEquals('/sources/foo-bar-1234', $source->url);
+    }
+
+    /** @test */
+    public function its_url_is_an_empty_string_if_it_has_no_slug()
+    {
+        $source = factory(Source::class)->make(['slug' => null]);
+        $this->assertEquals('', $source->url);
     }
 
     /** @test */

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MorphemeCollection;
-use App\Language;
-use App\Morpheme;
+use App\Models\Language;
+use App\Models\Morpheme;
 use Illuminate\Database\Eloquent\Builder;
 
 class MorphemeController extends Controller

@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Gloss;
-use App\Language;
-use App\NominalForm;
-use App\Morpheme;
-use App\Slot;
-use App\Source;
-use App\User;
-use App\VerbForm;
+use App\Models\Gloss;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\Morpheme;
+use App\Models\Slot;
+use App\Models\Source;
+use App\Models\User;
+use App\Models\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -44,6 +44,21 @@ class ViewMorphemeTest extends TestCase
         $response->assertSee('Test Language');  // Language name
         $response->assertSee('PER');            // Slot abv
         $response->assertSee('AN.PL');          // Gloss abbreviations
+    }
+
+    /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $morpheme = factory(Morpheme::class)->create([
+            'shape' => '-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($morpheme->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*-ak</i>', false);
     }
 
     /** @test */
@@ -94,6 +109,31 @@ class ViewMorphemeTest extends TestCase
         $response->assertOk();
 
         $response->assertDontSee('Allomorphy notes');
+    }
+
+    /** @test */
+    public function usage_notes_appear_if_the_morpheme_has_usage_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create([
+            'usage_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+        ]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertSee('Usage notes');
+        $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function usage_notes_do_not_appear_if_the_morpheme_has_no_usage_notes()
+    {
+        $morpheme = factory(Morpheme::class)->create(['usage_notes' => null]);
+
+        $response = $this->get($morpheme->url);
+        $response->assertOk();
+
+        $response->assertDontSee('Usage notes');
     }
 
     /** @test */

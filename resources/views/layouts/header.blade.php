@@ -47,7 +47,7 @@
             </a>
             
             <ul class="absolute md:right-0 py-1 border-t border-gray-100 bg-gray-900 hidden group-hover:block whitespace-no-wrap z-50">
-                @foreach(App\Language::limit(10)->get() as $language)
+                @foreach(App\Models\Language::limit(10)->get() as $language)
                 <li>
                     <a href="{{ $language->url }}" class="block p-2 uppercase tracking-wide text-gray-100 hover:text-gray-100 hover:bg-red-700">
                         {{ $language->name }}

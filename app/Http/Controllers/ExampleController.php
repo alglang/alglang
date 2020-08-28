@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Example;
-use App\Form;
 use App\Http\Resources\ExampleCollection;
-use App\Language;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Language;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 

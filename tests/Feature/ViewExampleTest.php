@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Form;
-use App\Language;
-use App\Morpheme;
-use App\Source;
-use App\User;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Source;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -51,6 +51,23 @@ class ViewExampleTest extends TestCase
         $response->assertSee('foobar');
         $response->assertSee('V-bar');
         $response->assertSee('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam');
+    }
+
+    /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $example = factory(Example::class)->create([
+            'shape' => 'foobar',
+            'form_id' => factory(Form::class)->create([
+                'language_code' => $language
+            ])
+        ]);
+
+        $response = $this->get($example->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*foobar</i>', false);
     }
 
     /** @test */

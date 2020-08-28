@@ -22,7 +22,7 @@ class HasParentTest extends TestCase
             protected $guarded = [];
         };
 
-        $this->artisan('migrate', ['--path' => 'tests/database/migrations']);
+        $this->migrateTestTables();
     }
 
     /** @test */

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Gloss;
+use App\Models\Gloss;
 use Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;

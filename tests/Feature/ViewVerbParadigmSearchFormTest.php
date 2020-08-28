@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Language;
-use App\VerbClass;
-use App\VerbOrder;
+use App\Models\Language;
+use App\Models\VerbClass;
+use App\Models\VerbOrder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

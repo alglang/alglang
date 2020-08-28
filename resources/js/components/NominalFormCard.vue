@@ -7,9 +7,10 @@
     <p class="text-gray-600">
       {{ nominalForm.argument_string }}
     </p>
-    <p class="text-xl py-2 text-gray-900 hover:text-gray-900">
-      {{ nominalForm.shape }}
-    </p>
+    <p
+      class="text-xl py-2 text-gray-900 hover:text-gray-900"
+      v-html="nominalForm.formatted_shape"
+    />
   </a>
 </template>
 

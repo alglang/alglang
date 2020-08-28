@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Language;
-use App\Morpheme;
-use App\User;
-use App\VerbClass;
-use App\VerbForm;
-use App\VerbOrder;
-use App\VerbMode;
-use App\Feature;
-use App\VerbStructure;
-use App\Source;
+use App\Models\Example;
+use App\Models\Feature;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Source;
+use App\Models\User;
+use App\Models\VerbClass;
+use App\Models\VerbForm;
+use App\Models\VerbMode;
+use App\Models\VerbOrder;
+use App\Models\VerbStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -27,7 +27,6 @@ class ViewVerbFormTest extends TestCase
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $subject = factory(Feature::class)->create(['name' => '3s']);
         $verbForm = factory(VerbForm::class)->create([
-            'shape' => 'V-test',
             'language_code' => $language->code,
 
             'structure_id' => factory(VerbStructure::class)->create([
@@ -42,11 +41,25 @@ class ViewVerbFormTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Test Language');
-        $response->assertSee('V-test');
         $response->assertSee('TA');
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');
         $response->assertSee('3s');
+    }
+
+    /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $verbForm = factory(VerbForm::class)->create([
+            'shape' => 'V-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*<span class="not-italic">V</span>-ak</i>', false);
     }
 
     /** @test */
@@ -92,6 +105,52 @@ class ViewVerbFormTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Diminutive');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_that_it_is_absolute_if_it_is_absolute()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => true
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Absolute');
+    }
+
+    /** @test */
+    public function a_verb_form_shows_that_it_is_objective_if_its_absolute_value_is_false()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => false
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('Objective');
+    }
+
+    /** @test */
+    public function a_verb_form_does_not_show_absolute_information_if_it_has_none()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'structure_id' => factory(VerbStructure::class)->create([
+                'is_absolute' => null
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Absolute');
+        $response->assertDontSee('Objective');
     }
 
     /** @test */

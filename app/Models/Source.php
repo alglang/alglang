@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,6 +31,10 @@ class Source extends Model
 
     public function getUrlAttribute(): string
     {
+        if (!$this->slug) {
+            return '';
+        }
+
         return route('sources.show', [
             'source' => $this->slug
         ], false);

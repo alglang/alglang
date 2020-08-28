@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Example;
-use App\Language;
-use App\Morpheme;
-use App\Feature;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
-use App\Source;
-use App\User;
+use App\Models\Example;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Feature;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
+use App\Models\Source;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -34,7 +34,6 @@ class ViewNominalFormTest extends TestCase
         $language = factory(Language::class)->create(['name' => 'Test Language']);
 
         $nominalForm = factory(NominalForm::class)->create([
-            'shape' => 'N-test',
             'language_code' => $language->code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_name' => factory(Feature::class)->create(['name' => '3s']),
@@ -49,11 +48,25 @@ class ViewNominalFormTest extends TestCase
         $response = $this->get($nominalForm->url);
 
         $response->assertViewHas('form', $nominalForm);
-        $response->assertSee('N-test');
         $response->assertSee('Test Language');
         $response->assertSee('3s');
         $response->assertSee('2p');
         $response->assertSee('Test paradigm');
+    }
+
+    /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'shape' => 'N-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*<span class="not-italic">N</span>-ak</i>', false);
     }
 
     /** @test */

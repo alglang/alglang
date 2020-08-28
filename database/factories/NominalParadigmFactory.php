@@ -1,8 +1,8 @@
 <?php
 
-use App\Language;
-use App\NominalParadigm;
-use App\NominalParadigmType;
+use App\Models\Language;
+use App\Models\NominalParadigm;
+use App\Models\NominalParadigmType;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

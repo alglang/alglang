@@ -1,8 +1,8 @@
 <?php
 
-use App\Language;
-use App\Morpheme;
-use App\Slot;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Slot;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

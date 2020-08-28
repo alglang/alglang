@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Presenters\ExamplePresenter;
+use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -11,7 +13,9 @@ use Spatie\Sluggable\SlugOptions;
 
 class Example extends Model
 {
+    use ExamplePresenter;
     use HasSlug;
+    use Reconstructable;
     use Sourceable;
 
     /*
@@ -20,6 +24,8 @@ class Example extends Model
     |--------------------------------------------------------------------------
     |
     */
+
+    protected $guarded = [];
 
     public function getSlugOptions(): SlugOptions
     {

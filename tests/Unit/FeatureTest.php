@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Feature;
+use App\Models\Feature;
 use Tests\TestCase;
 
 class FeatureTest extends TestCase

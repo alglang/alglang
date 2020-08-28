@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NominalFormCollection;
-use App\Language;
-use App\NominalForm;
+use App\Models\Language;
+use App\Models\NominalForm;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 

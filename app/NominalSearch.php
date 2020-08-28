@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\NominalForm;
 use Illuminate\Support\Collection;
 
 class NominalSearch extends ModelSearch

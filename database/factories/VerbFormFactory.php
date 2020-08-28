@@ -1,8 +1,8 @@
 <?php
 
-use App\Language;
-use App\VerbForm;
-use App\VerbStructure;
+use App\Models\Language;
+use App\Models\VerbForm;
+use App\Models\VerbStructure;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

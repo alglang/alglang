@@ -1,10 +1,10 @@
 <?php
 
-use App\Example;
-use App\Form;
-use App\Morpheme;
-use App\NominalForm;
-use App\VerbForm;
+use App\Models\Example;
+use App\Models\Form;
+use App\Models\Morpheme;
+use App\Models\NominalForm;
+use App\Models\VerbForm;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

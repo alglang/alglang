@@ -1,6 +1,6 @@
 <?php
 
-use App\Gloss;
+use App\Models\Gloss;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

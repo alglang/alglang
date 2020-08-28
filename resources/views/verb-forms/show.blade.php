@@ -4,7 +4,7 @@
     <alglang-details title="Verb form details">
         <template v-slot:header>
             <h1 class="text-2xl text-gray-800">
-                {{ $verbForm->shape }}
+                {!! $verbForm->formatted_shape !!}
             </h1>
 
             <p class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
@@ -28,6 +28,13 @@
                             @endif
                             @if($verbForm->structure->is_diminutive)
                                 <span>(Diminutive)</span>
+                            @endif
+                            @isset($verbForm->structure->is_absolute)
+                                @if($verbForm->structure->is_absolute)
+                                    <span>(Absolute)</span>
+                                @else
+                                    <span>(Objective)</span>
+                                @endif
                             @endif
                         </a>
                     </p>

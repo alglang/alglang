@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\VerbFormCollection;
-use App\Language;
-use App\VerbForm;
+use App\Models\Language;
+use App\Models\VerbForm;
 use Illuminate\Database\Eloquent\Builder;
 
 class VerbFormController extends Controller

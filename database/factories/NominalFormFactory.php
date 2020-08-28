@@ -1,9 +1,9 @@
 <?php
 
-use App\Language;
-use App\NominalForm;
-use App\NominalStructure;
-use App\NominalParadigm;
+use App\Models\Language;
+use App\Models\NominalForm;
+use App\Models\NominalStructure;
+use App\Models\NominalParadigm;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

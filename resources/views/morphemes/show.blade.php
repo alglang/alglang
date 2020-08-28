@@ -4,7 +4,7 @@
     <alglang-details title="Morpheme details">
         <template v-slot:header>
             <h1 class="text-2xl text-gray-800">
-                <span>{{ $morpheme->shape }}</span><!--
+                <span>{!! $morpheme->formatted_shape !!}</span><!--
              --><span class="text-base align-top">{{ $morpheme->disambiguator + 1 }}</span>
             </h1>
 
@@ -61,6 +61,12 @@
                     </alglang-detail-row>
                 @endif
 
+                @if ($morpheme->usage_notes)
+                    <alglang-detail-row label="Usage notes">
+                        {!! $morpheme->usage_notes !!}
+                    </alglang-detail-row>
+                @endif
+
                 @can('view private notes')
                 @if ($morpheme->private_notes)
                     <alglang-detail-row label="Private notes">
@@ -71,15 +77,7 @@
 
                 @if ($morpheme->sources->count() > 0)
                     <alglang-detail-row label="Sources">
-                        <ul>
-                            @foreach($morpheme->sources as $source)
-                                <li>
-                                    <x-preview-link :model="$source">
-                                        {{ $source->short_citation }}
-                                    </x-preview-link>
-                                </li>
-                            @endforeach
-                        </ul>
+                        <x-source-list :sources="$morpheme->sources" />
                     </alglang-detail-row>
                 @endif
             </div>

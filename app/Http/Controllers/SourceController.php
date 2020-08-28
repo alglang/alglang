@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\SourceCollection;
-use App\Language;
-use App\Source;
+use App\Models\Language;
+use App\Models\Source;
 use Illuminate\View\View;
 
 class SourceController extends Controller

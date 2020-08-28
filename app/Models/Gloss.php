@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Slot extends Model
+class Gloss extends Model
 {
     /*
     |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ class Slot extends Model
 
     public $incrementing = false;
 
-    public $timestamps = false;
+    protected $guarded = [];
 
     protected $primaryKey = 'abv';
 
@@ -30,8 +30,12 @@ class Slot extends Model
     |
     */
 
-    public function getUrlAttribute(): string
+    public function getUrlAttribute(): ?string
     {
-        return route('slots.show', $this, false);
+        if ($this->exists) {
+            return route('glosses.show', $this, false);
+        }
+
+        return null;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-use App\Morpheme;
-use App\NominalForm;
-use App\NominalStructure;
-use App\Source;
+use App\Models\Morpheme;
+use App\Models\NominalForm;
+use App\Models\NominalStructure;
+use App\Models\Source;
 use Illuminate\Database\Seeder;
 
 class NominalSeeder extends Seeder

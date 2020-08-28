@@ -23,6 +23,7 @@ class CreateMorphemesTable extends Migration
             $table->string('slot_abv');
             $table->text('historical_notes')->nullable();
             $table->text('allomorphy_notes')->nullable();
+            $table->text('usage_notes')->nullable();
             $table->text('private_notes')->nullable();
             $table->timestamps();
         });

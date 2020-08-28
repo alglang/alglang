@@ -18,10 +18,15 @@ abstract class TestCase extends BaseTestCase
         $this->withoutMix();
     }
 
-    public function withPermissions()
+    public function withPermissions(): void
     {
         $this->seed('PermissionSeeder');
         $this->app->make(PermissionRegistrar::class)->registerPermissions();
+    }
+
+    public function migrateTestTables(): void
+    {
+        $this->artisan('migrate', ['--path' => 'tests/database/migrations']);
     }
 
     /**
@@ -33,7 +38,7 @@ abstract class TestCase extends BaseTestCase
      *
      * @deprecated When moved to laravel 8.0 remove this
      */
-    protected function blade(string $template, array $data = [])
+    protected function blade(string $template, array $data = []): TestView
     {
         $tempDirectory = sys_get_temp_dir();
 

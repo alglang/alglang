@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Language;
+use App\Models\Group;
+use App\Models\Language;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\View\View;
 
 class LanguageController extends Controller
 {
@@ -18,14 +20,7 @@ class LanguageController extends Controller
         return ['data' => Language::all()];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Language  $language
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show(Language $language)
+    public function show(Language $language): View
     {
         $language->load('group', 'children', 'parent');
         $language->loadCount([
@@ -40,7 +35,7 @@ class LanguageController extends Controller
         return view('languages.show', ['language' => $language]);
     }
 
-    public function create(): \Illuminate\View\View
+    public function create(): View
     {
         return view('languages.create');
     }
@@ -48,10 +43,10 @@ class LanguageController extends Controller
     public function store(): Language
     {
         $languageData = request()->validate([
-            'name' => 'required|string|unique:App\Language',
+            'name' => ['required', 'string', 'unique:' . Language::class],
             'code' => 'required|string|max:5',
-            'group_name' => 'required|exists:App\Group,name',
-            'parent_code' => 'required|exists:App\Language,code',
+            'group_name' => ['required', 'exists:' . Group::class . ',name'],
+            'parent_code' => ['required', 'exists:' . Language::class . ',code'],
             'reconstructed' => 'boolean',
             'position' => 'json',
             'notes' => 'string'

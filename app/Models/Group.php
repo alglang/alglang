@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;

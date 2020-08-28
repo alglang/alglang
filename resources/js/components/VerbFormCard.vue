@@ -7,9 +7,10 @@
     <p class="text-gray-600">
       {{ verbForm.argument_string }}
     </p>
-    <p class="text-xl py-2 text-gray-900 hover:text-gray-900">
-      {{ verbForm.shape }}
-    </p>
+    <p
+      class="text-xl py-2 text-gray-900 hover:text-gray-900"
+      v-html="verbForm.formatted_shape"
+    />
   </a>
 </template>
 

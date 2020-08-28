@@ -1,6 +1,6 @@
 <?php
 
-use App\Source;
+use App\Models\Source;
 use Faker\Generator as Faker;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */

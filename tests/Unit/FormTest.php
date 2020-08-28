@@ -2,15 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Form;
-use App\Language;
-use App\Morpheme;
-use App\MorphemeConnection;
-use App\VerbFeature;
-use App\VerbStructure;
-use DB;
+use App\Models\Form;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\MorphemeConnection;
+use App\Models\VerbFeature;
+use App\Models\VerbStructure;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 
 class FormTest extends TestCase
 {

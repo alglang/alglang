@@ -16,7 +16,11 @@ class MorphemeCollection extends ResourceCollection
     public function toArray($request)
     {
         $this->collection->each(function ($morpheme) {
-            $morpheme->append('glosses', 'disambiguator');
+            $morpheme->append(
+                'glosses',
+                'disambiguator',
+                'formatted_shape'
+            );
         });
 
         return parent::toArray($request);

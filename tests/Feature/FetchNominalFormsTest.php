@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Language;
-use App\Morpheme;
-use App\Feature;
-use App\NominalForm;
-use App\NominalParadigm;
-use App\NominalStructure;
-use App\Source;
+use App\Models\Language;
+use App\Models\Morpheme;
+use App\Models\Feature;
+use App\Models\NominalForm;
+use App\Models\NominalParadigm;
+use App\Models\NominalStructure;
+use App\Models\Source;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -178,5 +178,21 @@ class FetchNominalFormsTest extends TestCase
         $nextResponse = $this->get($response->decodeResponseJson()['links']['next']);
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function it_includes_formatted_shapes()
+    {
+        $language = factory(Language::class)->create();
+        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language]);
+
+        $response = $this->get("/api/nominal-forms?language=$language->code");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                ['formatted_shape' => $nominalForm->formatted_shape]
+            ]
+        ]);
     }
 }

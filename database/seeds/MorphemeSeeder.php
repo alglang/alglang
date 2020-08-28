@@ -1,7 +1,7 @@
 <?php
 
-use App\Morpheme;
-use App\Source;
+use App\Models\Morpheme;
+use App\Models\Source;
 use Illuminate\Database\Seeder;
 
 class MorphemeSeeder extends Seeder
