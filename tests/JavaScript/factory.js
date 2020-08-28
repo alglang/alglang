@@ -24,6 +24,9 @@ export const morphemeFactory = props => ({
   slot: slotFactory(),
   gloss: 'TGL',
   glosses: [glossFactory({ abv: 'TGL' })],
+  get formatted_shape() {
+    return `<i>${this.shape}</i>`;
+  },
   ...props
 });
 

@@ -47,6 +47,21 @@ class ViewMorphemeTest extends TestCase
     }
 
     /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $morpheme = factory(Morpheme::class)->create([
+            'shape' => '-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($morpheme->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*-ak</i>');
+    }
+
+    /** @test */
     public function historical_notes_appear_if_the_morpheme_has_historical_notes()
     {
         $morpheme = factory(Morpheme::class)->create([

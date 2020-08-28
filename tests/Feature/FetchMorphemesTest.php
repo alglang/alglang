@@ -180,6 +180,22 @@ class FetchMorphemesTest extends TestCase
     }
 
     /** @test */
+    public function it_includes_morpheme_formatted_shape()
+    {
+        $language = factory(Language::class)->create();
+        $morpheme = factory(Morpheme::class)->create(['language_code' => $language]);
+
+        $response = $this->get("/api/morphemes?language=$language->code");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                ['formatted_shape' => $morpheme->formatted_shape]
+            ]
+        ]);
+    }
+
+    /** @test */
     public function it_includes_morpheme_glosses()
     {
         $gloss = factory(Gloss::class)->create(['abv' => 'G1']);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Adoxography\Disambiguatable\Disambiguatable;
+use App\Presenters\MorphemePresenter;
 use App\Traits\HasParent;
 use App\Traits\Sourceable;
 use Astrotomic\CachableAttributes\CachableAttributes;
@@ -20,6 +21,7 @@ class Morpheme extends Model implements CachableAttributes
     use Disambiguatable;
     use HasParent;
     use HasSlug;
+    use MorphemePresenter;
     use Sourceable;
 
     /**
