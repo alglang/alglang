@@ -4,7 +4,7 @@ namespace App\Presenters;
 
 trait FormPresenter
 {
-    public function getFormattedShapeAttribute()
+    public function getFormattedShapeAttribute(): string
     {
         $mark = $this->isReconstructed() ? '*' : '';
         return "<i>{$mark}{$this->getMarkedUpShape()}</i>";
