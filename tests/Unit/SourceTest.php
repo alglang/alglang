@@ -22,6 +22,13 @@ class SourceTest extends TestCase
     }
 
     /** @test */
+    public function its_url_is_an_empty_string_if_it_has_no_slug()
+    {
+        $source = factory(Source::class)->make(['slug' => null]);
+        $this->assertEquals('', $source->url);
+    }
+
+    /** @test */
     public function its_url_includes_its_disambiguator_when_necessary()
     {
         $sourceA = factory(Source::class)->create([

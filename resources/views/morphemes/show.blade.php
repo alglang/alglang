@@ -77,15 +77,7 @@
 
                 @if ($morpheme->sources->count() > 0)
                     <alglang-detail-row label="Sources">
-                        <ul>
-                            @foreach($morpheme->sources as $source)
-                                <li>
-                                    <x-preview-link :model="$source">
-                                        {{ $source->short_citation }}
-                                    </x-preview-link>
-                                </li>
-                            @endforeach
-                        </ul>
+                        <x-source-list :sources="$morpheme->sources" />
                     </alglang-detail-row>
                 @endif
             </div>

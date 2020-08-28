@@ -31,6 +31,10 @@ class Source extends Model
 
     public function getUrlAttribute(): string
     {
+        if (!$this->slug) {
+            return '';
+        }
+
         return route('sources.show', [
             'source' => $this->slug
         ], false);
