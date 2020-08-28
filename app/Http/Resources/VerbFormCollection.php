@@ -16,7 +16,7 @@ class VerbFormCollection extends ResourceCollection
     public function toArray($request)
     {
         $this->collection->each(function ($verbForm) {
-            $verbForm->append('url');
+            $verbForm->append('url', 'formatted_shape');
             $verbForm->structure->append('feature_string');
         });
 

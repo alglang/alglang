@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Presenters\FormPresenter;
 use App\Traits\HasParent;
 use App\Traits\Sourceable;
+use App\Traits\Reconstructable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -13,8 +15,10 @@ use Spatie\Sluggable\SlugOptions;
 
 class Form extends Model
 {
+    use FormPresenter;
     use HasParent;
     use HasSlug;
+    use Reconstructable;
     use Sourceable;
 
     /*

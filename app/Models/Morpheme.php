@@ -5,6 +5,7 @@ namespace App\Models;
 use Adoxography\Disambiguatable\Disambiguatable;
 use App\Presenters\MorphemePresenter;
 use App\Traits\HasParent;
+use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
 use Astrotomic\CachableAttributes\CachableAttributes;
 use Astrotomic\CachableAttributes\CachesAttributes;
@@ -22,6 +23,7 @@ class Morpheme extends Model implements CachableAttributes
     use HasParent;
     use HasSlug;
     use MorphemePresenter;
+    use Reconstructable;
     use Sourceable;
 
     /**
@@ -113,6 +115,11 @@ class Morpheme extends Model implements CachableAttributes
     public function isStem(): bool
     {
         return $this->slot_abv === 'STM';
+    }
+
+    public function isPlaceholder(): bool
+    {
+        return $this->shape === 'V-' || $this->shape === 'N-';
     }
 
     public function scopeWithoutPlaceholders(Builder $query): Builder

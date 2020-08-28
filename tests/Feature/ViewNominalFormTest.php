@@ -57,6 +57,21 @@ class ViewNominalFormTest extends TestCase
     }
 
     /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $nominalForm = factory(NominalForm::class)->create([
+            'shape' => 'N-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*<span class="not-italic">N</span>-ak</i>', false);
+    }
+
+    /** @test */
     public function a_nominal_form_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();

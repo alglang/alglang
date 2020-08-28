@@ -153,6 +153,16 @@ class MorphemeTest extends TestCase
     }
 
     /** @test */
+    public function it_determines_if_it_is_a_placeholder()
+    {
+        $vPlaceholder = new Morpheme(['shape' => 'V-']);
+        $nPlaceholder = new Morpheme(['shape' => 'N-']);
+
+        $this->assertTrue($vPlaceholder->isPlaceholder());
+        $this->assertTrue($nPlaceholder->isPlaceholder());
+    }
+
+    /** @test */
     public function it_retrieves_forms_that_contain_it()
     {
         $language = factory(Language::class)->create();

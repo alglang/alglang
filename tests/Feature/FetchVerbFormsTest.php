@@ -238,4 +238,20 @@ class FetchVerbFormsTest extends TestCase
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
     }
+
+    /** @test */
+    public function it_includes_formatted_shapes()
+    {
+        $language = factory(Language::class)->create();
+        $verbForm = factory(VerbForm::class)->create(['language_code' => $language]);
+
+        $response = $this->get("/api/verb-forms?language=$language->code");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                ['formatted_shape' => $verbForm->formatted_shape]
+            ]
+        ]);
+    }
 }

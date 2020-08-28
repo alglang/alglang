@@ -31,6 +31,9 @@ export const morphemeFactory = props => ({
 });
 
 export const verbFormFactory = props => ({
+  get formatted_shape() {
+    return `<i>${this.shape}</i>`;
+  },
   ...props
 });
 
@@ -51,6 +54,9 @@ export const featureFactory = props => ({
 });
 
 export const nominalFormFactory = props => ({
+  get formatted_shape() {
+    return `<i>${this.shape}</i>`;
+  },
   ...props
 });
 

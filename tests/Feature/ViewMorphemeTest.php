@@ -58,7 +58,7 @@ class ViewMorphemeTest extends TestCase
         $response = $this->get($morpheme->url);
 
         $response->assertOk();
-        $response->assertSee('<i>*-ak</i>');
+        $response->assertSee('<i>*-ak</i>', false);
     }
 
     /** @test */

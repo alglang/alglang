@@ -50,6 +50,21 @@ class ViewVerbFormTest extends TestCase
     }
 
     /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $verbForm = factory(VerbForm::class)->create([
+            'shape' => 'V-ak',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*<span class="not-italic">V</span>-ak</i>', false);
+    }
+
+    /** @test */
     public function a_verb_form_shows_that_it_is_negative_if_it_is_negative()
     {
         $verbForm = factory(VerbForm::class)->create([

@@ -179,4 +179,20 @@ class FetchNominalFormsTest extends TestCase
         $nextResponse->assertOk();
         $nextResponse->assertJsonCount(1, 'data');
     }
+
+    /** @test */
+    public function it_includes_formatted_shapes()
+    {
+        $language = factory(Language::class)->create();
+        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language]);
+
+        $response = $this->get("/api/nominal-forms?language=$language->code");
+
+        $response->assertOk();
+        $response->assertJson([
+            'data' => [
+                ['formatted_shape' => $nominalForm->formatted_shape]
+            ]
+        ]);
+    }
 }
