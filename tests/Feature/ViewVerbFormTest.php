@@ -27,7 +27,6 @@ class ViewVerbFormTest extends TestCase
         $language = factory(Language::class)->create(['name' => 'Test Language']);
         $subject = factory(Feature::class)->create(['name' => '3s']);
         $verbForm = factory(VerbForm::class)->create([
-            'shape' => 'V-test',
             'language_code' => $language->code,
 
             'structure_id' => factory(VerbStructure::class)->create([
@@ -42,7 +41,6 @@ class ViewVerbFormTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Test Language');
-        $response->assertSee('V-test');
         $response->assertSee('TA');
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');

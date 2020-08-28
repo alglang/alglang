@@ -34,7 +34,6 @@ class ViewNominalFormTest extends TestCase
         $language = factory(Language::class)->create(['name' => 'Test Language']);
 
         $nominalForm = factory(NominalForm::class)->create([
-            'shape' => 'N-test',
             'language_code' => $language->code,
             'structure_id' => factory(NominalStructure::class)->create([
                 'pronominal_feature_name' => factory(Feature::class)->create(['name' => '3s']),
@@ -49,7 +48,6 @@ class ViewNominalFormTest extends TestCase
         $response = $this->get($nominalForm->url);
 
         $response->assertViewHas('form', $nominalForm);
-        $response->assertSee('N-test');
         $response->assertSee('Test Language');
         $response->assertSee('3s');
         $response->assertSee('2p');

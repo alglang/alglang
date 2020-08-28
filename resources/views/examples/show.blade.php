@@ -4,7 +4,7 @@
     <alglang-details title="Example details">
         <template v-slot:header>
             <h1 class="text-2xl text-gray-800">
-                {{ $example->shape }}
+                {!! $example->formatted_shape !!}
             </h1>
 
             <p class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
@@ -17,7 +17,7 @@
         <alglang-detail-page title="Basic details">
             <alglang-detail-row label="Form">
                 <x-preview-link :model="$example->form">
-                    {{ $example->form->shape }}
+                    {!! $example->form->formatted_shape !!}
                 </x-preview-link>
             </alglang-detail-row>
 

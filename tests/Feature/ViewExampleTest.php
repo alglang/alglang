@@ -54,6 +54,23 @@ class ViewExampleTest extends TestCase
     }
 
     /** @test */
+    public function the_shape_is_formatted_correctly()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $example = factory(Example::class)->create([
+            'shape' => 'foobar',
+            'form_id' => factory(Form::class)->create([
+                'language_code' => $language
+            ])
+        ]);
+
+        $response = $this->get($example->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>*foobar</i>', false);
+    }
+
+    /** @test */
     public function an_example_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();
