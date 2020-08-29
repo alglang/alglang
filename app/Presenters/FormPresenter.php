@@ -7,15 +7,27 @@ trait FormPresenter
     public function getFormattedShapeAttribute(): string
     {
         $mark = $this->isReconstructed() ? '*' : '';
-        return "<i>{$mark}{$this->getMarkedUpShape()}</i>";
+        return "<i>{$mark}{$this->markUpShape($this->shape)}</i>";
     }
 
-    protected function getMarkedUpShape(): string
+    public function getFormattedPhonemicShapeAttribute(): ?string
     {
-        return preg_replace(
+        if (!$this->phonemic_shape) {
+            return null;
+        }
+
+        $mark = $this->isReconstructed() ? '*' : '';
+        return "<i>{$mark}{$this->markUpShape($this->phonemic_shape)}</i>";
+    }
+
+    protected function markUpShape(string $shape): string
+    {
+        /** @var string */
+        $markedUp = preg_replace(
             '/([A-Z])/',
             '<span class="not-italic">$1</span>',
-            $this->shape
+            $shape
         );
+        return $markedUp;
     }
 }

@@ -18,7 +18,7 @@
             <div>
                 <alglang-detail-row label="Description">
                     <p>
-                        <span>{{ $verbForm->structure->feature_string }}</span>
+                        <span>{!! $verbForm->structure->feature_string !!}</span>
                         <a href="{{ $verbForm->paradigm->url }}">
                             <span>{{ $verbForm->structure->class->abv }}</span>
                             <span>{{ $verbForm->structure->order->name }}</span>
@@ -39,6 +39,14 @@
                         </a>
                     </p>
                 </alglang-detail-row>
+
+                @if($verbForm->phonemic_shape)
+                    <alglang-detail-row label="Phonology">
+                        <p>
+                            {!! $verbForm->formatted_phonemic_shape ?: $verbForm->formatted_shape !!}
+                        </p>
+                    </alglang-detail-row>
+                @endif
 
                 @if($verbForm->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">

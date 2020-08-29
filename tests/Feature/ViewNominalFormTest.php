@@ -55,6 +55,38 @@ class ViewNominalFormTest extends TestCase
     }
 
     /** @test */
+    public function pronominal_feature_is_omitted_if_there_is_no_pronominal_feature()
+    {
+        $nominalForm = factory(NominalForm::class)->create([
+            'structure_id' => factory(NominalStructure::class)->create([
+                'pronominal_feature_name' => null,
+                'nominal_feature_name' => factory(Feature::class)->create()
+            ])
+        ]);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Pronominal feature');
+    }
+
+    /** @test */
+    public function nominal_feature_is_omitted_if_there_is_no_nominal_feature()
+    {
+        $nominalForm = factory(NominalForm::class)->create([
+            'structure_id' => factory(NominalStructure::class)->create([
+                'pronominal_feature_name' => factory(Feature::class)->create(),
+                'nominal_feature_name' => null
+            ])
+        ]);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Nominal feature');
+    }
+
+    /** @test */
     public function the_shape_is_formatted_correctly()
     {
         $language = factory(Language::class)->create(['reconstructed' => true]);
@@ -67,6 +99,17 @@ class ViewNominalFormTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('<i>*<span class="not-italic">N</span>-ak</i>', false);
+    }
+
+    /** @test */
+    public function a_nominal_form_shows_its_phonemic_shape()
+    {
+        $nominalForm = factory(NominalForm::class)->create(['phonemic_shape' => 'N-phonemes']);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i><span class="not-italic">N</span>-phonemes</i>', false);
     }
 
     /** @test */

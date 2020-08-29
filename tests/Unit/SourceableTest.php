@@ -50,4 +50,18 @@ class SourceableTest extends TestCase
 
         $this->assertEquals('lorem ipsum', $sourced->sources[0]->attribution->extra_info);
     }
+
+    /** @test */
+    public function sources_can_be_added_with_descriptions()
+    {
+        $source = factory(Source::class)->create();
+        $sourced = $this->sourcedClass->create();
+
+        $sourced->addSource($source, ['description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr']);
+
+        $this->assertEquals(
+            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr',
+            $sourced->sources[0]->attribution->description
+        );
+    }
 }

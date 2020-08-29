@@ -16,6 +16,7 @@ class CreateFormsTable extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('shape');
+            $table->string('phonemic_shape')->nullable();
 
             $table->string('language_code');
             $table->unsignedInteger('parent_id')->nullable();

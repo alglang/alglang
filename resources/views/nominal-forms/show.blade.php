@@ -22,17 +22,29 @@
                     </x-preview-link>
                 </alglang-detail-row>
 
-                <alglang-detail-row label="Pronominal feature">
-                    <x-preview-link :model="$form->structure->pronominalFeature">
-                        {{ $form->structure->pronominalFeature->name }}
-                    </x-preview-link>
-                </alglang-detail-row>
+                @if($form->structure->pronominalFeature)
+                    <alglang-detail-row label="Pronominal feature">
+                        <x-preview-link :model="$form->structure->pronominalFeature">
+                            {{ $form->structure->pronominalFeature->name }}
+                        </x-preview-link>
+                    </alglang-detail-row>
+                @endif
 
-                <alglang-detail-row label="Nominal feature">
-                    <x-preview-link :model="$form->structure->nominalFeature">
-                        {{ $form->structure->nominalFeature->name }}
-                    </x-preview-link>
-                </alglang-detail-row>
+                @if($form->structure->nominalFeature)
+                    <alglang-detail-row label="Nominal feature">
+                        <x-preview-link :model="$form->structure->nominalFeature">
+                            {{ $form->structure->nominalFeature->name }}
+                        </x-preview-link>
+                    </alglang-detail-row>
+                @endif
+
+                @if($form->phonemic_shape)
+                    <alglang-detail-row label="Phonology">
+                        <p>
+                            {!! $form->formatted_phonemic_shape !!}
+                        </p>
+                    </alglang-detail-row>
+                @endif
 
                 @if($form->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">

@@ -18,6 +18,7 @@ class CreateSourceablesTable extends Migration
             $table->unsignedInteger('source_id');
             $table->morphs('sourceable');
             $table->string('extra_info')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

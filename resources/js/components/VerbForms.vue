@@ -30,8 +30,8 @@
 <script>
 import axios from 'axios';
 
-import Loader from '../Loader';
-import VerbFormCard from '../VerbFormCard';
+import Loader from './Loader';
+import VerbFormCard from './VerbFormCard';
 
 export default {
   components: {

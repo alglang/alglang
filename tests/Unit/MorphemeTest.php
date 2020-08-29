@@ -43,7 +43,6 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_updates_its_url_when_its_disambiguator_changes()
     {
-        
         $language = factory(Language::class)->create(['code' => 'PA']);
         $morpheme1 = factory(Morpheme::class)->create([
             'language_code' => $language->code,
@@ -59,6 +58,23 @@ class MorphemeTest extends TestCase
         $morpheme1->delete();
 
         $this->assertEquals('/languages/PA/morphemes/ak-1', $morpheme2->fresh()->url);
+    }
+
+    /** @test */
+    public function its_slug_isnt_affected_by_morphemes_from_other_languages()
+    {
+        $language1 = factory(Language::class)->create(['code' => 'A']);
+        $language2 = factory(Language::class)->create(['code' => 'B']);
+        $morpheme1 = factory(Morpheme::class)->create([
+            'language_code' => $language1->code,
+            'shape' => '-x'
+        ]);
+        $morpheme2 = factory(Morpheme::class)->create([
+            'language_code' => $language2->code,
+            'shape' => '-x'
+        ]);
+
+        $this->assertEquals('/languages/B/morphemes/x-1', $morpheme2->url);
     }
 
     /** @test */

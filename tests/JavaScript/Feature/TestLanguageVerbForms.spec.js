@@ -3,7 +3,7 @@ import { render, waitForElementToBeRemoved } from '@testing-library/vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
 
-import VerbForms from '../../../resources/js/components/Language/VerbForms';
+import VerbForms from '../../../resources/js/components/VerbForms';
 import { verbFormFactory } from '../factory';
 
 const renderVerbForms = props => render(VerbForms, {
@@ -19,7 +19,7 @@ const renderVerbFormsAndWaitForLoad = async props => {
   return wrapper;
 };
 
-describe('Language/VerbForms.vue', function () {
+describe('VerbForms.vue', function () {
   beforeEach(function () { moxios.install(); });
 
   afterEach(function () { moxios.uninstall(); });

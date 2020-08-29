@@ -13,15 +13,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class Morpheme extends Model implements CachableAttributes
 {
     use CachesAttributes;
     use Disambiguatable;
     use HasParent;
-    use HasSlug;
     use MorphemePresenter;
     use Reconstructable;
     use Sourceable;
@@ -63,13 +60,6 @@ class Morpheme extends Model implements CachableAttributes
      * @var array
      */
     protected $disambiguatableFields = ['language_code', 'shape'];
-
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('shape')
-            ->saveSlugsTo('slug');
-    }
 
     /*
     |--------------------------------------------------------------------------
