@@ -17,6 +17,6 @@ trait Sourceable
     {
         return $this->morphToMany(Source::class, 'sourceable')
                     ->as('attribution')
-                    ->withPivot('extra_info');
+                    ->withPivot('extra_info', 'description');
     }
 }
