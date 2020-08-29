@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Presenters\VerbStructurePresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbStructure extends Model
 {
+    use VerbStructurePresenter;
+
     /*
     |--------------------------------------------------------------------------
     | Configuration
@@ -54,28 +57,6 @@ class VerbStructure extends Model
         }
 
         return new self($params);
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attribute accessors
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getFeatureStringAttribute(): string
-    {
-        $string = (string) $this->subject_name;
-
-        if ($this->primary_object_name) {
-            $string .= "→{$this->primary_object_name}";
-        }
-
-        if ($this->secondary_object_name) {
-            $string .= "+{$this->secondary_object_name}";
-        }
-
-        return $string;
     }
 
     /*

@@ -21,6 +21,7 @@ class CreateVerbStructuresTable extends Migration
             $table->string('subject_name');
             $table->string('primary_object_name')->nullable();
             $table->string('secondary_object_name')->nullable();
+            $table->string('head')->nullable();
             $table->boolean('is_negative')->default(false);
             $table->boolean('is_diminutive')->default(false);
             $table->boolean('is_absolute')->nullable();

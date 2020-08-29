@@ -33,7 +33,6 @@ class ViewVerbFormTest extends TestCase
                 'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA']),
                 'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
                 'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
-                'subject_name' => factory(Feature::class)->create(['name' => '3s'])
             ])
         ]);
 
@@ -44,7 +43,6 @@ class ViewVerbFormTest extends TestCase
         $response->assertSee('TA');
         $response->assertSee('Conjunct');
         $response->assertSee('Indicative');
-        $response->assertSee('3s');
     }
 
     /** @test */
@@ -60,6 +58,26 @@ class ViewVerbFormTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('<i>*<span class="not-italic">V</span>-ak</i>', false);
+    }
+
+    /** @test */
+    public function it_shows_its_features()
+    {
+        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $verbForm = factory(VerbForm::class)->create([
+            'language_code' => $language,
+            'structure_id' => factory(VerbStructure::class)->create([
+                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
+                'primary_object_name' => factory(Feature::class)->create(['name' => '2d']),
+                'secondary_object_name' => factory(Feature::class)->create(['name' => '3p']),
+                'head' => 'primary object'
+            ])
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('1s→<u>2d</u>+3p', false);
     }
 
     /** @test */
