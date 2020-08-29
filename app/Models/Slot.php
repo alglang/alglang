@@ -23,6 +23,8 @@ class Slot extends Model
 
     protected $appends = ['url'];
 
+    protected $guarded = [];
+
     /*
     |--------------------------------------------------------------------------
     | Attribute accessors

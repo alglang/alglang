@@ -32,10 +32,6 @@ class Gloss extends Model
 
     public function getUrlAttribute(): ?string
     {
-        if ($this->exists) {
-            return route('glosses.show', $this, false);
-        }
-
-        return null;
+        return route('glosses.show', $this, false);
     }
 }

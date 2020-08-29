@@ -87,7 +87,7 @@ class SourceTest extends TestCase
     /** @test */
     public function it_has_a_short_citation()
     {
-        $source = factory(Source::class)->create([
+        $source = new Source([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);

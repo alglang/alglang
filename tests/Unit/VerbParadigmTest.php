@@ -29,8 +29,8 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_can_be_generated_from_a_language_and_verb_structure()
     {
-        $language = factory(Language::class)->make(['code' => 'PA']);
-        $structure = factory(VerbStructure::class)->make([
+        $language = new Language(['code' => 'PA']);
+        $structure = new VerbStructure([
             'mode_name' => 'MODE',
             'class_abv' => 'CLASS',
             'order_name' => 'ORDER',

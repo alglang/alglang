@@ -5,12 +5,9 @@ namespace Tests\Unit;
 use App\Models\Feature;
 use App\Models\VerbStructure;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class VerbStructureTest extends TestCase
 {
-    use RefreshDatabase;
-
     /*
     |--------------------------------------------------------------------------
     | matchesStructure
@@ -20,7 +17,7 @@ class VerbStructureTest extends TestCase
 
     protected function generateStructure(array $params = []): VerbStructure
     {
-        return factory(VerbStructure::class)->make(array_merge([
+        return new VerbStructure(array_merge([
             'class_abv' => 'CLS',
             'order_name' => 'ORDER',
             'mode_name' => 'MODE',

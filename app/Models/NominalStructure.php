@@ -9,6 +9,15 @@ class NominalStructure extends Model
 {
     /*
     |--------------------------------------------------------------------------
+    | Configuration
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected $guarded = [];
+
+    /*
+    |--------------------------------------------------------------------------
     | Attribute accessors
     |--------------------------------------------------------------------------
     |
@@ -18,12 +27,12 @@ class NominalStructure extends Model
     {
         $features = [];
 
-        if ($this->pronominalFeature) {
-            $features[] = $this->pronominalFeature->name;
+        if ($this->pronominal_feature_name) {
+            $features[] = $this->pronominal_feature_name;
         }
 
-        if ($this->nominalFeature) {
-            $features[] = $this->nominalFeature->name;
+        if ($this->nominal_feature_name) {
+            $features[] = $this->nominal_feature_name;
         }
 
         return implode('→', $features);

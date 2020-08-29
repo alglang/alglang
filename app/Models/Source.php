@@ -19,6 +19,8 @@ class Source extends Model
     |
     */
 
+    protected $guarded = [];
+
     /** @var array */
     protected $disambiguatableFields = ['author', 'year'];
 

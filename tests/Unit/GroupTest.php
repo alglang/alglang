@@ -14,14 +14,14 @@ class GroupTest extends TestCase
     /** @test */
     public function it_has_a_url_property()
     {
-        $group = factory(Group::class)->create(['name' => 'Test Group']);
+        $group = new Group(['slug' => 'test-group']);
         $this->assertEquals('/groups/test-group', $group->url);
     }
 
     /** @test */
     public function its_preview_is_its_description()
     {
-        $group = factory(Group::class)->create([
+        $group = new Group([
             'description' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 

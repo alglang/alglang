@@ -17,18 +17,9 @@ class FormTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function language_is_always_eager_loaded()
-    {
-        factory(Form::class)->create();
-        $form = Form::first();
-
-        $this->assertTrue($form->relationLoaded('language'));
-    }
-
-    /** @test */
     public function it_does_not_generate_a_url_without_an_acceptable_structure()
     {
-        $form = factory(Form::class)->create(['structure_type' => 'foo']);
+        $form = new Form(['structure_type' => 'foo']);
 
         $this->expectException(\UnexpectedValueException::class);
 
