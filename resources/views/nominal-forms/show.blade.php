@@ -34,6 +34,14 @@
                     </x-preview-link>
                 </alglang-detail-row>
 
+                @if($form->phonemic_shape)
+                    <alglang-detail-row label="Phonology">
+                        <p>
+                            {!! $form->formatted_phonemic_shape !!}
+                        </p>
+                    </alglang-detail-row>
+                @endif
+
                 @if($form->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">
                         <x-morpheme-table :morphemes="$form->morphemes" />

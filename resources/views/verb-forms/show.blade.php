@@ -40,6 +40,14 @@
                     </p>
                 </alglang-detail-row>
 
+                @if($verbForm->phonemic_shape)
+                    <alglang-detail-row label="Phonology">
+                        <p>
+                            {!! $verbForm->formatted_phonemic_shape ?: $verbForm->formatted_shape !!}
+                        </p>
+                    </alglang-detail-row>
+                @endif
+
                 @if($verbForm->morphemes->count() > 0)
                     <alglang-detail-row label="Morphology">
                         <x-morpheme-table :morphemes="$verbForm->morphemes" />

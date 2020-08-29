@@ -187,6 +187,19 @@ class ViewVerbFormTest extends TestCase
     }
 
     /** @test */
+    public function a_verb_form_shows_its_phonemic_shape()
+    {
+        $verbForm = factory(VerbForm::class)->create([
+            'phonemic_shape' => 'V-phonemes'
+        ]);
+
+        $response = $this->get($verbForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i><span class="not-italic">V</span>-phonemes</i>', false);
+    }
+
+    /** @test */
     public function a_verb_form_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();

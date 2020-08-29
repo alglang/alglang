@@ -70,6 +70,17 @@ class ViewNominalFormTest extends TestCase
     }
 
     /** @test */
+    public function a_nominal_form_shows_its_phonemic_shape()
+    {
+        $nominalForm = factory(NominalForm::class)->create(['phonemic_shape' => 'N-phonemes']);
+
+        $response = $this->get($nominalForm->url);
+
+        $response->assertOk();
+        $response->assertSee('<i><span class="not-italic">N</span>-phonemes</i>', false);
+    }
+
+    /** @test */
     public function a_nominal_form_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();
