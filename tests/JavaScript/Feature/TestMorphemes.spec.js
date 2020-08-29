@@ -3,12 +3,12 @@ import { render, waitForElementToBeRemoved } from '@testing-library/vue';
 import { expect } from 'chai';
 import moxios from 'moxios';
 
-import Morphemes from '../../../resources/js/components/Language/Morphemes';
+import Morphemes from '../../../resources/js/components/Morphemes';
 import { morphemeFactory } from '../factory';
 
 const renderMorphemes = props => render(Morphemes, { props });
 
-describe('Language/Morphemes.vue', function () {
+describe('Morphemes.vue', function () {
   beforeEach(function () { moxios.install(); });
 
   afterEach(function () { moxios.uninstall(); });

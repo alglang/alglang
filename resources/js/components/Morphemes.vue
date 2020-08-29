@@ -27,8 +27,8 @@
 
 <script>
 import axios from 'axios';
-import MorphemeCard from '../MorphemeCard';
-import Loader from '../Loader';
+import MorphemeCard from './MorphemeCard';
+import Loader from './Loader';
 
 export default {
   components: {

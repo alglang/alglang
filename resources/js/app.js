@@ -22,8 +22,8 @@ Vue.component('alglang-gloss-field', require('./components/GlossField.vue').defa
 
 Vue.component('alglang-sources', require('./components/Sources.vue').default);
 Vue.component('alglang-examples', require('./components/Examples.vue').default);
-Vue.component('alglang-language-morphemes', require('./components/Language/Morphemes.vue').default);
-Vue.component('alglang-language-verb-forms', require('./components/Language/VerbForms.vue').default);
+Vue.component('alglang-language-morphemes', require('./components/Morphemes.vue').default);
+Vue.component('alglang-language-verb-forms', require('./components/VerbForms.vue').default);
 Vue.component('alglang-nominal-forms', require('./components/NominalForms.vue').default);
 
 Vue.component('alglang-verb-form-search', require('./components/VerbFormSearch.vue').default);
