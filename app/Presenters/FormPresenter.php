@@ -20,12 +20,14 @@ trait FormPresenter
         return "<i>{$mark}{$this->markUpShape($this->phonemic_shape)}</i>";
     }
 
-    protected function markUpShape($shape): string
+    protected function markUpShape(string $shape): string
     {
-        return preg_replace(
+        /** @var string */
+        $markedUp = preg_replace(
             '/([A-Z])/',
             '<span class="not-italic">$1</span>',
             $shape
         );
+        return $markedUp;
     }
 }
