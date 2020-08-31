@@ -22,7 +22,16 @@ if (process.env.NODE_ENV === 'testing') {
   mix.sourceMaps();
 }
 
-mix.js('resources/js/app.js', 'public/js');
+mix.js('resources/js/app.js', 'public/js')
+  .extract([
+    'axios',
+    'leaflet',
+    'lodash',
+    'v-tooltip',
+    'vue',
+    'vue2-leaflet'
+  ]);
+
 mix.postCss('resources/css/app.css', 'public/css', [
   autoprefixer(),
   tailwindcss()
