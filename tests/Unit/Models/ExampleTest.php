@@ -82,4 +82,23 @@ class ExampleTest extends TestCase
 
         $this->assertEquals(['foo-', '-bar'], $example->morphemes->pluck('shape')->toArray());
     }
+
+    /** @test */
+    public function its_morphemes_are_the_same_as_its_forms_if_it_has_no_stem()
+    {
+        $language = factory(Language::class)->create();
+        $suffix = factory(Morpheme::class)->create([
+            'language_code' => $language->code,
+            'shape' => '-bar'
+        ]);
+        $form = factory(Form::class)->create(['language_code' => $language->code]);
+        $form->assignMorphemes([$language->vStem, $suffix]);
+
+        $example = factory(Example::class)->create([
+            'form_id' => $form->id,
+            'stem_id' => null
+        ]);
+
+        $this->assertEquals(['V-', '-bar'], $example->morphemes->pluck('shape')->toArray());
+    }
 }

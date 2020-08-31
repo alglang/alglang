@@ -58,7 +58,10 @@ class Example extends Model
     public function getMorphemesAttribute(): Collection
     {
         return $this->form->morphemes->map(function ($morpheme) {
-            return $morpheme->isStem() ? $this->stem : $morpheme;
+            if ($this->stem && $morpheme->isStem()) {
+                return $this->stem;
+            }
+            return $morpheme;
         });
     }
 
