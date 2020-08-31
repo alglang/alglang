@@ -6,8 +6,17 @@
             </h1>
         </a>
         <div class="group">
-            <button class="flex h-full items-center px-6 md:px-3 text-yellow-400 md:text-gray-900 md:bg-yellow-400 md:hover:bg-yellow-500">
-                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <button
+                class="flex h-full items-center px-6 md:px-3 text-yellow-400 md:text-gray-900 md:bg-yellow-400 md:hover:bg-yellow-500"
+                aria-label="Main menu"
+            >
+                <svg
+                    class="fill-current h-3 w-3"
+                    aria-hidden="true"
+                    tabindex="-1"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
                 </svg>
@@ -39,7 +48,12 @@
     </div>
 
     <div class="flex items-center self-stretch w-full md:w-auto justify-around h-8 md:h-auto bg-gray-800 md:bg-transparent">
-        <input type="text" class="hidden md:block bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700" placeholder="Smart search..." />
+        <input
+            type="text"
+            class="hidden md:block bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700"
+            placeholder="Smart search..."
+            aria-label="Smart search"
+        />
 
         <div class="relative group h-full">
             <a href="{{ route('groups.show', ['group' => 'algonquian']) }}" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">

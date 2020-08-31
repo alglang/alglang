@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\VerbSearch;
+use App\Search\VerbSearch;
 use Astrotomic\CachableAttributes\CachableAttributes;
 use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Support\Collection;

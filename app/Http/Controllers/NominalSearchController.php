@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchNominalParadigm;
 use App\Models\Language;
 use App\Models\NominalParadigmType;
-use App\NominalSearch;
+use App\Search\NominalSearch;
 use Illuminate\View\View;
 
 class NominalSearchController extends Controller

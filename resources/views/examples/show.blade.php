@@ -21,6 +21,14 @@
                 </x-preview-link>
             </alglang-detail-row>
 
+            @if($example->phonemic_shape)
+                <alglang-detail-row label="Phonology">
+                    <p>
+                        {!! $example->formatted_phonemic_shape !!}
+                    </p>
+                </alglang-detail-row>
+            @endif
+
             <alglang-detail-row label="Morphology">
                 <x-morpheme-table :morphemes="$example->morphemes" />
             </alglang-detail-row>
@@ -30,6 +38,24 @@
                     {{ $example->translation }}
                 </p>
             </alglang-detail-row>
+
+            @if($example->parent)
+                <alglang-detail-row label="Parent">
+                    <div class="mb-2">
+                        <x-preview-link :model="$example->parent">
+                            {{ $example->parent->shape }}
+                        </x-preview-link>
+
+                        <span class="inline-flex">
+                            (
+                            <x-preview-link :model="$example->parent->language">
+                                {{ $example->parent->language->name }}
+                            </x-preview-link>
+                            )
+                        </span>
+                    </div>
+                </alglang-detail-row>
+            @endif
 
             @if($example->notes)
                 <alglang-detail-row label="Notes">

@@ -255,10 +255,9 @@ class ViewVerbFormTest extends TestCase
     /** @test */
     public function the_verb_form_parent_is_not_displayed_if_the_verb_form_has_no_parent()
     {
-        $this->withoutExceptionHandling();
-        $morpheme = factory(VerbForm::class)->create();
+        $verbForm = factory(VerbForm::class)->create();
 
-        $response = $this->get($morpheme->url);
+        $response = $this->get($verbForm->url);
 
         $response->assertOk();
         $response->assertDontSee('Parent');
