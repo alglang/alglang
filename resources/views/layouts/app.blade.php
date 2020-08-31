@@ -17,11 +17,11 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-    @include('layouts.favicon')
+    @include('layouts.partials.favicon')
 </head>
 <body class="min-h-screen bg-gray-300 text-gray-900 antialiased font-body leading-none">
     <div id="app" class="flex flex-col min-h-screen">
-        @include('layouts.header')
+        @include('layouts.partials.header')
 
         @include('layouts.partials.errors')
 
@@ -29,7 +29,7 @@
             @yield('content')
         </div>
 
-        @include('layouts.footer')
+        @include('layouts.partials.footer')
     </div>
 </body>
 </html>

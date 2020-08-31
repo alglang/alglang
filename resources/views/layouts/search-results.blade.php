@@ -9,7 +9,7 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-    @include('layouts.favicon')
+    @include('layouts.partials.favicon')
 </head>
 <body class="bg-gray-300 m-5 text-gray-900 antialiased bont-body leading-none">
     @yield('content')
