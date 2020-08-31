@@ -6,12 +6,12 @@
     target="_blank"
   >
     <div class="mr-8 mb-4">
-      <p
+      <legend
         id="language-select-label"
-        class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2"
+        class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2 w-full"
       >
         Languages
-      </p>
+      </legend>
       <fieldset
         aria-labelledby="language-select-label"
         class="overflow-auto p-2 border border-gray-300 h-56"
@@ -61,6 +61,8 @@
         >
           <svg
             class="w-8"
+            aria-hidden="true"
+            tabindex="-1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -81,6 +83,8 @@
         >
           <svg
             class="w-8"
+            aria-hidden="true"
+            tabindex="-1"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"

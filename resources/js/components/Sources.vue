@@ -5,6 +5,8 @@
         <span class="text-gray-600">
           <svg
             class="absolute w-6 m-1 stroke-current"
+            aria-hidden="true"
+            tabindex="-1"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -38,6 +40,8 @@
         >
           <svg
             class="w-8 stroke-current"
+            aria-hidden="true"
+            tabindex="-1"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -59,6 +63,8 @@
         >
           <svg
             class="w-8 stroke-current"
+            aria-hidden="true"
+            tabindex="-1"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
