@@ -14,22 +14,21 @@
     <div class="flex flex-wrap md:flex-no-wrap">
       <ul
         role="tablist"
-        class="flex justify-center md:justify-start flex-wrap md:flex-col
-               mb-4 md:mr-4 uppercase font-semibold w-full md:w-auto"
+        class="uppercase font-semibold grid md:block grid-cols-2
+               md:whitespace-no-wrap mb-4 md:mr-4 w-full"
       >
         <li
           v-for="(page, i) in pages"
           :key="i"
-          class="flex-1 md:flex-none w-1/2 md:w-auto"
+          class="block"
         >
           <component
             :is="page.count === 0 ? 'p' : 'a'"
             :aria-selected="page.isActive"
-            class="flex justify-between items-center p-2 whitespace-no-wrap bg-gray-200
-                   text-xs md:text-base"
-            :class="page.count === 0
-              ? 'cursor-not-allowed text-gray-500'
-              : 'text-gray-700 hover:bg-gray-300 hover:text-gray-700'"
+            class="bg-gray-200 text-xs md:text-base flex justify-between items-center h-full p-2"
+            :class="page.count === 0 ?
+              'cursor-not-allowed text-gray-500' :
+              'text-gray-700 hover:bg-gray-300 hover:text-gray-700'"
             :href="page.isActive ? '' : '#' + page.hash"
             role="tab"
             @click.prevent="visit(page.hash)"
@@ -46,12 +45,6 @@
             </div>
           </component>
         </li>
-
-        <li
-          v-if="pages.length % 2 === 1"
-          aria-hidden
-          class="flex-1 md:hidden"
-        />
       </ul>
 
       <div class="overflow-hidden w-full relative">
