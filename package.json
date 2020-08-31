@@ -47,6 +47,7 @@
         "mochapack": "^2.0.0",
         "moxios": "^0.4.0",
         "nyc": "^15.1.0",
+        "postcss-font-display": "^0.2.1",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^10.0",
