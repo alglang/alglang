@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between">
-      <div class="relative text-lg">
+      <div class="relative flex min-w-0 text-lg ">
         <span class="text-gray-600">
           <svg
             class="absolute w-6 m-1 stroke-current"
@@ -23,13 +23,13 @@
         <input
           v-model="filter"
           aria-label="Filter"
-          class="py-1 pl-8 pr-2 bg-gray-100 shadow-inner bg-transparent
+          class="py-1 pl-8 pr-2 min-w-0 bg-gray-100 shadow-inner bg-transparent
                  focus:outline-none focus:shadow-outline"
           @input="onUpdate"
         />
       </div>
 
-      <div>
+      <div class="flex flex-none">
         <button
           aria-label="Previous"
           class="text-blue-600 hover:text-red-600 disabled:text-gray-500 disabled:cursor-default"
