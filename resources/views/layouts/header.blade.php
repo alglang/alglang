@@ -39,7 +39,7 @@
     </div>
 
     <div class="flex items-center self-stretch w-full md:w-auto justify-around h-8 md:h-auto bg-gray-800 md:bg-transparent">
-        <input type="text" class="hidden md:block bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700" placeholder="Smart search..." />
+        <input type="text" class="hidden md:block bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700" placeholder="Smart search..." aria-label="Smart search" />
 
         <div class="relative group h-full">
             <a href="{{ route('groups.show', ['group' => 'algonquian']) }}" class="flex items-center px-3 h-full uppercase tracking-wide text-gray-100 hover:bg-red-700 hover:text-gray-900">

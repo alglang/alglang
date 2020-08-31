@@ -2,7 +2,7 @@
   <section class="bg-white p-6">
     <header class="flex justify-between mb-6">
       <div class="leading-normal w-full md:w-auto text-center md:text-left">
-        <h2 class="block text-base uppercase text-gray-600">
+        <h2 class="block text-base uppercase text-gray-700">
           {{ title }}
         </h2>
         <div>
@@ -38,7 +38,7 @@
             </div>
             <div
               v-if="page.count !== null"
-              class="ml-2 md:ml-4 bg-white shadow-inner text-gray-600 px-1 rounded-full
+              class="ml-2 md:ml-4 bg-white shadow-inner text-gray-700 px-1 rounded-full
                      text-xs font-bold"
             >
               {{ page.count }}

@@ -4,13 +4,13 @@
     :class="{ 'bg-gray-300': disabled, disabled: disabled }"
     class="detail-row p-2 mb-2 flex items-center flex-wrap md:flex-no-wrap"
   >
-    <h3
+    <p
       :id="ariaId"
       :class="{ 'text-gray-700': !disabled, 'text-gray-500': disabled }"
       class="inline-block w-64 uppercase mb-2 md:mb-0 text-sm md:text-base"
     >
       {{ label }}
-    </h3>
+    </p>
     <div class="inline-block w-full">
       <slot />
     </div>
