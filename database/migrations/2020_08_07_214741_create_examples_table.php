@@ -16,6 +16,7 @@ class CreateExamplesTable extends Migration
         Schema::create('examples', function (Blueprint $table) {
             $table->id();
             $table->string('shape');
+            $table->string('phonemic_shape')->nullable();
             $table->unsignedInteger('stem_id');
             $table->unsignedInteger('form_id');
             $table->string('slug');

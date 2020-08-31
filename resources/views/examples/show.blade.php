@@ -21,6 +21,14 @@
                 </x-preview-link>
             </alglang-detail-row>
 
+            @if($example->phonemic_shape)
+                <alglang-detail-row label="Phonology">
+                    <p>
+                        {!! $example->formatted_phonemic_shape !!}
+                    </p>
+                </alglang-detail-row>
+            @endif
+
             <alglang-detail-row label="Morphology">
                 <x-morpheme-table :morphemes="$example->morphemes" />
             </alglang-detail-row>

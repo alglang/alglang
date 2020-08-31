@@ -71,6 +71,19 @@ class ViewExampleTest extends TestCase
     }
 
     /** @test */
+    public function an_example_shows_its_phonemic_shape()
+    {
+        $example = factory(Example::class)->create([
+            'phonemic_shape' => 'phonemes'
+        ]);
+
+        $response = $this->get($example->url);
+
+        $response->assertOk();
+        $response->assertSee('<i>phonemes</i>', false);
+    }
+
+    /** @test */
     public function an_example_shows_its_morphemes()
     {
         $language = factory(Language::class)->create();
