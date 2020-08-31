@@ -19,6 +19,7 @@ class CreateExamplesTable extends Migration
             $table->string('phonemic_shape')->nullable();
             $table->unsignedInteger('stem_id');
             $table->unsignedInteger('form_id');
+            $table->unsignedInteger('parent_id')->nullable();
             $table->string('slug');
             $table->string('translation');
             $table->text('notes')->nullable();

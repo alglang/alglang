@@ -105,6 +105,43 @@ class ViewExampleTest extends TestCase
     }
 
     /** @test */
+    public function the_example_parent_is_displayed_if_the_example_has_a_parent()
+    {
+        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
+        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
+
+        $parentExample = factory(Example::class)->create([
+            'shape' => 'V-foo',
+            'form_id' => factory(Form::class)->create([
+                'language_code' => $parentLanguage
+            ])
+        ]);
+        $childExample = factory(Example::class)->create([
+            'parent_id' => $parentExample->id,
+            'form_id' => factory(Form::class)->create([
+                'language_code' => $childLanguage
+            ])
+        ]);
+        
+        $response = $this->get($childExample->url);
+        $response->assertOk();
+        $response->assertSee('Parent');
+        $response->assertSee('V-foo');
+        $response->assertSee('Superlanguage');
+    }
+
+    /** @test */
+    public function the_example_parent_is_not_displayed_if_the_example_has_no_parent()
+    {
+        $example = factory(Example::class)->create();
+
+        $response = $this->get($example->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Parent');
+    }
+
+    /** @test */
     public function an_example_shows_its_notes_if_it_has_any()
     {
         $example = factory(Example::class)->create([

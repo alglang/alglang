@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Presenters\ExamplePresenter;
+use App\Traits\HasParent;
 use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,7 @@ use Spatie\Sluggable\SlugOptions;
 class Example extends Model
 {
     use ExamplePresenter;
+    use HasParent;
     use HasSlug;
     use Reconstructable;
     use Sourceable;

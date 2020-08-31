@@ -39,6 +39,24 @@
                 </p>
             </alglang-detail-row>
 
+            @if($example->parent)
+                <alglang-detail-row label="Parent">
+                    <div class="mb-2">
+                        <x-preview-link :model="$example->parent">
+                            {{ $example->parent->shape }}
+                        </x-preview-link>
+
+                        <span class="inline-flex">
+                            (
+                            <x-preview-link :model="$example->parent->language">
+                                {{ $example->parent->language->name }}
+                            </x-preview-link>
+                            )
+                        </span>
+                    </div>
+                </alglang-detail-row>
+            @endif
+
             @if($example->notes)
                 <alglang-detail-row label="Notes">
                     {!! $example->notes !!}
