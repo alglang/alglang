@@ -3,6 +3,7 @@
 const mix = require('laravel-mix');
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
+const fontDisplay = require('postcss-font-display');
 
 require('laravel-mix-merge-manifest');
 
@@ -34,7 +35,8 @@ mix.js('resources/js/app.js', 'public/js')
 
 mix.postCss('resources/css/app.css', 'public/css', [
   autoprefixer(),
-  tailwindcss()
+  tailwindcss(),
+  fontDisplay({ display: 'swap', replace: false })
 ]);
 
 if (mix.inProduction()) {
