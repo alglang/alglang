@@ -8,7 +8,7 @@ use App\Models\VerbClass;
 use App\Models\VerbMode;
 use App\Models\VerbOrder;
 use App\Models\VerbStructure;
-use App\VerbSearch;
+use App\Search\VerbSearch;
 use Illuminate\View\View;
 
 class VerbSearchController extends Controller

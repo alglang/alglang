@@ -15,7 +15,7 @@
       <ul
         role="tablist"
         class="uppercase font-semibold grid md:block grid-cols-2
-               md:whitespace-no-wrap mb-4 md:mr-4 w-full"
+               md:whitespace-no-wrap mb-4 md:mr-4 w-full md:w-fit"
       >
         <li
           v-for="(page, i) in pages"
