@@ -82,7 +82,7 @@ export default {
 
     const hash = window.location.hash.substring(1);
     if (!this.pages.some(page => page.hash === hash)) {
-      window.history.replaceState({ turbolinks: true }, null, `${window.location.pathname}${window.location.search}#${this.pages[0].hash}`);
+      window.history.replaceState(null, null, `${window.location.pathname}${window.location.search}#${this.pages[0].hash}`);
     }
 
     this.visit(window.location.hash.substring(1));
@@ -91,7 +91,7 @@ export default {
   methods: {
     visit(hash) {
       if (window.location.hash !== `#${hash}`) {
-        window.Turbolinks.visit(`#${hash}`);
+        window.location.hash = `#${hash}`;
       }
 
       this.pages.forEach(page => page.setIsActive(hash === page.hash));
