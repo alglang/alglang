@@ -37,6 +37,7 @@
         "eslint-config-airbnb-base": "^14.2.0",
         "eslint-plugin-chai-friendly": "^0.6.0",
         "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-mocha": "^8.0",
         "eslint-plugin-vue": "^6.2.2",
         "jsdom": "^16.2.2",
         "jsdom-global": "^3.0.2",
@@ -57,7 +58,6 @@
     },
     "dependencies": {
         "axios": "^0.20.0",
-        "eslint-plugin-mocha": "^8.0",
         "lato-font": "^3.0.0",
         "leaflet": "^1.6.0",
         "leaflet-defaulticon-compatibility": "^0.1.1",
