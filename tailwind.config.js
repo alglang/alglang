@@ -34,7 +34,8 @@ module.exports = {
     display: ['responsive', 'group-hover', 'group-focus-within'],
     filter: ['responsive', 'hover', 'focus'],
     cursor: ['responsive', 'disabled'],
-    textColor: ['responsive', 'hover', 'focus', 'disabled']
+    textColor: ['responsive', 'hover', 'focus', 'disabled'],
+    scale: ['responsive', 'hover', 'focus', 'active', 'group-hover']
   },
   plugins: [
     customForms,
