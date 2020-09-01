@@ -2,21 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\AggregatesSources;
 use App\Traits\HasParent;
-use Astrotomic\CachableAttributes\CachableAttributes;
-use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class Language extends Model implements CachableAttributes
+class Language extends Model
 {
-    use CachesAttributes;
+    use AggregatesSources;
     use HasParent;
-
-    /** @var int */
-    public $sources_count;
 
     /*
     |--------------------------------------------------------------------------
@@ -37,12 +32,8 @@ class Language extends Model implements CachableAttributes
 
     protected $casts = [
         'reconstructed' => 'bool',
-        'alternate_names' => 'array'
-    ];
-
-    /** @var array */
-    protected $cachableAttributes = [
-        'sources'
+        'alternate_names' => 'array',
+        'position' => 'array'
     ];
 
     /** @var array */
@@ -57,34 +48,6 @@ class Language extends Model implements CachableAttributes
 
     /*
     |--------------------------------------------------------------------------
-    | Hooks
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public static function booted()
-    {
-        static::created(function (Language $language) {
-            $language->morphemes()->create([
-                'shape' => 'V-',
-                'slot_abv' => 'STM',
-                'gloss' => 'V'
-            ]);
-
-            $language->morphemes()->create([
-                'shape' => 'N-',
-                'slot_abv' => 'STM',
-                'gloss' => 'N'
-            ]);
-        });
-
-        static::addGlobalScope('order', function (Builder $query) {
-            $query->orderBy('order_key');
-        });
-    }
-
-    /*
-    |--------------------------------------------------------------------------
     | Attribute accessors
     |--------------------------------------------------------------------------
     |
@@ -95,38 +58,14 @@ class Language extends Model implements CachableAttributes
         return $this->code;
     }
 
-    public function getPositionAttribute(?string $value): ?object
-    {
-        return json_decode($value);
-    }
-
     public function getUrlAttribute(): string
     {
         return route('languages.show', ['language' => $this], false);
     }
 
-    public function getSourcesAttribute(): Collection
-    {
-        return $this->remember('sources', 0, function () {
-            return $this->sources()->get();
-        });
-    }
-
     public function getVStemAttribute(): Morpheme
     {
         return $this->morphemes()->where('shape', 'V-')->first();
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Methods
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function loadSourcesCount(): void
-    {
-        $this->sources_count = $this->sources()->count();
     }
 
     /*
@@ -178,16 +117,31 @@ class Language extends Model implements CachableAttributes
         return $this->hasMany(NominalParadigm::class);
     }
 
-    public function sources(): Builder
+    /*
+    |--------------------------------------------------------------------------
+    | Protected methods
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    protected static function booted()
     {
-        $query = Source::query();
+        static::created(function (Language $language) {
+            $language->morphemes()->create([
+                'shape' => 'V-',
+                'slot_abv' => 'STM',
+                'gloss' => 'V'
+            ]);
 
-        foreach ($this->sourcedRelations as $relation) {
-            $query = $query->orWhereHas($relation, function ($query) {
-                return $query->where('language_code', $this->code);
-            });
-        }
+            $language->morphemes()->create([
+                'shape' => 'N-',
+                'slot_abv' => 'STM',
+                'gloss' => 'N'
+            ]);
+        });
 
-        return $query;
+        static::addGlobalScope('order', function (Builder $query) {
+            $query->orderBy('order_key');
+        });
     }
 }

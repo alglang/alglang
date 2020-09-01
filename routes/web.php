@@ -62,11 +62,17 @@ Route::prefix('languages')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
 
         Route::prefix('morphemes')->group(function () {
-            Route::get('{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
+            Route::get(
+                '{morpheme:slug}',
+                [MorphemeController::class, 'show']
+            )->name('morphemes.show');
         });
 
         Route::prefix('nominal-forms')->group(function () {
-            Route::get('{nominalForm:slug}', [NominalFormController::class, 'show'])->name('nominalForms.show');
+            Route::get(
+                '{nominalForm:slug}',
+                [NominalFormController::class, 'show']
+            )->name('nominalForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
@@ -81,14 +87,20 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('verb-forms')->group(function () {
-            Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verbForms.show');
+            Route::get(
+                '{verbForm:slug}',
+                [VerbFormController::class, 'show']
+            )->name('verbForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
             )->name('verbForms.examples.show');
         });
 
-        Route::get('verb-paradigms', [VerbParadigmController::class, 'show'])->name('verbParadigms.show');
+        Route::get(
+            'verb-paradigms',
+            [VerbParadigmController::class, 'show']
+        )->name('verbParadigms.show');
     });
 });
 
@@ -115,7 +127,10 @@ Route::prefix('sources')->group(function () {
 
 Route::prefix('search')->group(function () {
     Route::prefix('nominals')->group(function () {
-        Route::get('paradigms', [NominalSearchController::class, 'paradigms'])->name('search.nominals.paradigms');
+        Route::get(
+            'paradigms',
+            [NominalSearchController::class, 'paradigms']
+        )->name('search.nominals.paradigms');
         Route::get(
             'paradigms/results',
             [NominalSearchController::class, 'paradigmResults']
@@ -123,11 +138,23 @@ Route::prefix('search')->group(function () {
     });
 
     Route::prefix('verbs')->group(function () {
-        Route::get('paradigms', [VerbSearchController::class, 'paradigms'])->name('search.verbs.paradigms');
-        Route::get('paradigm-results', [VerbSearchController::class, 'paradigmResults'])->name('search.verbs.paradigm-results');
+        Route::get(
+            'paradigms',
+            [VerbSearchController::class, 'paradigms']
+        )->name('search.verbs.paradigms');
+        Route::get(
+            'paradigm-results',
+            [VerbSearchController::class, 'paradigmResults']
+        )->name('search.verbs.paradigm-results');
 
-        Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
-        Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
+        Route::get(
+            'forms',
+            [VerbSearchController::class, 'forms']
+        )->name('search.verbs.forms');
+        Route::get(
+            'forms/results',
+            [VerbSearchController::class, 'formResults']
+        )->name('search.verbs.form-results');
     });
 });
 /*

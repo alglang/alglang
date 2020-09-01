@@ -22,12 +22,13 @@ trait FormPresenter
 
     protected function markUpShape(string $shape): string
     {
-        /** @var string */
+        /** @var string $markedUp */
         $markedUp = preg_replace(
             '/([A-Z])/',
             '<span class="not-italic">$1</span>',
             $shape
         );
+
         return $markedUp;
     }
 }

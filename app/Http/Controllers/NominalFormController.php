@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\NominalFormCollection;
 use App\Models\Language;
 use App\Models\NominalForm;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\View\View;
 
 class NominalFormController extends Controller
@@ -18,25 +17,24 @@ class NominalFormController extends Controller
             abort(400);
         }
 
-        if (request()->language) {
-            $query->whereHas('language', function (Builder $query) {
-                return $query->where('code', request()->language);
-            });
-        }
+        $query->when(
+            request()->language,
+            fn ($query, $language) => $query->whereHas('language', fn ($query) => $query->where('code', $language))
+        );
 
-        if (request()->source_id) {
-            $query->whereHas('sources', function (Builder $query) {
-                return $query->where('sources.id', request()->source_id);
-            });
-        }
+        $query->when(
+            request()->source_id,
+            fn ($query, $source) => $query->whereHas('sources', fn ($query) => $query->where('sources.id', $source))
+        );
 
-        if (request()->with_morphemes) {
-            foreach (request()->with_morphemes as $morpheme) {
-                $query->whereHas('morphemeConnections', function (Builder $query) use ($morpheme) {
-                    $query->where('morpheme_id', $morpheme);
-                });
+        $query->when(
+            request()->with_morphemes,
+            function ($query, $morphemes) {
+                foreach ($morphemes as $morpheme) {
+                    $query->whereHas('morphemeConnections', fn ($query) => $query->where('morpheme_id', $morpheme));
+                }
             }
-        }
+        );
 
         $paginator = $query->with(
             'language',

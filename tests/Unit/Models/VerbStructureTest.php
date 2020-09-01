@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Feature;
 use App\Models\VerbStructure;
 use Tests\TestCase;
 

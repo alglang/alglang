@@ -64,11 +64,11 @@ class HomeTest extends TestCase
     {
         factory(Language::class)->create([
             'name' => 'Test Language 1',
-            'position' => '{"lat":46.1,"lng":-87.1}'
+            'position' => ['lat' => 46.1, 'lng' => -87.1]
         ]);
         factory(Language::class)->create([
             'name' => 'Test Language 2',
-            'position' => '{"lat":47.1,"lng":-86.1}'
+            'position' => ['lat' => 47.1, 'lng' => -86.1]
         ]);
 
         $response = $this->get('/');

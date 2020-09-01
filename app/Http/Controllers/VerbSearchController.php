@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VerbFormSearchRequest;
 use App\Models\Feature;
 use App\Models\Language;
 use App\Models\VerbClass;
@@ -43,30 +44,13 @@ class VerbSearchController extends Controller
         ]);
     }
 
-    public function formResults(): View
+    public function formResults(VerbFormSearchRequest $request): View
     {
-        $validated = request()->validate([
-            'languages' => 'array',
-            'structures' => 'required',
-            'structures.*.modes' => 'required|array|size:1',
-            'structures.*.classes' => 'required|array|size:1',
-            'structures.*.orders' => 'required|array|size:1',
-            'structures.*.subject_persons' => 'required|array|size:1',
-            'structures.*.subject_numbers' => 'nullable|array|size:1',
-            'structures.*.subject_obviative_codes' => 'nullable|array|size:1',
-            'structures.*.primary_object_persons' => 'nullable|array|size:1',
-            'structures.*.primary_object_numbers' => 'nullable|array|size:1',
-            'structures.*.primary_object_obviative_codes' => 'nullable|array|size:1',
-            'structures.*.secondary_object_persons' => 'nullable|array|size:1',
-            'structures.*.secondary_object_numbers' => 'nullable|array|size:1',
-            'structures.*.secondary_object_obviative_codes' => 'nullable|array|size:1',
-        ]);
-
         $columns = [];
 
-        foreach ($validated['structures'] as $structure) {
-            if (isset($validated['languages'])) {
-                $structure['languages'] = $validated['languages'];
+        foreach ($request['structures'] as $structure) {
+            if (isset($request['languages'])) {
+                $structure['languages'] = $request['languages'];
             }
 
             $columns[] = [
@@ -80,10 +64,7 @@ class VerbSearchController extends Controller
             ->pluck('language')
             ->unique('code');
 
-        return view('search.verbs.form-results', [
-            'columns' => $columns,
-            'languages' => $languages
-        ]);
+        return view('search.verbs.form-results', compact('columns', 'languages'));
     }
 
     public function paradigmResults(): View

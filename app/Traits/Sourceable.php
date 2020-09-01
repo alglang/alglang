@@ -16,7 +16,7 @@ trait Sourceable
     public function sources(): BelongsToMany
     {
         return $this->morphToMany(Source::class, 'sourceable')
-                    ->as('attribution')
-                    ->withPivot('extra_info', 'description');
+            ->as('attribution')
+            ->withPivot('extra_info', 'description');
     }
 }

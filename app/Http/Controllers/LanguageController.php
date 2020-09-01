@@ -52,6 +52,10 @@ class LanguageController extends Controller
             'notes' => 'string'
         ]);
 
+        if (isset($languageData['position'])) {
+            $languageData['position'] = json_decode($languageData['position']);
+        }
+
         $language = Language::create($languageData);
         $language->load('parent', 'group');
         return $language;

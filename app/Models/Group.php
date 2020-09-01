@@ -68,7 +68,7 @@ class Group extends Model
 
     public function languagesWithDescendants(): Collection
     {
-        /** @var Collection */
+        /** @var Collection $languages */
         $languages = $this->languages;
 
         foreach ($languages as $language) {

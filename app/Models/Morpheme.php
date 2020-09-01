@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Adoxography\Disambiguatable\Disambiguatable;
 use App\Presenters\MorphemePresenter;
+use App\Traits\HasGlosses;
 use App\Traits\HasParent;
 use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
-use Astrotomic\CachableAttributes\CachableAttributes;
-use Astrotomic\CachableAttributes\CachesAttributes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
 
-class Morpheme extends Model implements CachableAttributes
+class Morpheme extends Model
 {
-    use CachesAttributes;
     use Disambiguatable;
+    use HasGlosses;
     use HasParent;
     use MorphemePresenter;
     use Reconstructable;
@@ -46,11 +44,6 @@ class Morpheme extends Model implements CachableAttributes
 
     protected $appends = ['url'];
 
-    /** @var array */
-    protected $cachableAttributes = [
-        'glosses'
-    ];
-
     /**
      * @var bool
      */
@@ -71,18 +64,6 @@ class Morpheme extends Model implements CachableAttributes
     public function getUrlAttribute(): string
     {
         return "/languages/{$this->language->slug}/morphemes/{$this->slug}";
-    }
-
-    public function getGlossesAttribute(): Collection
-    {
-        return $this->remember('glosses', 0, function () {
-            $abvs = collect(explode('.', $this->gloss));
-            $existing = Gloss::find($abvs);
-
-            return $abvs->map(function ($abv) use ($existing) {
-                return $existing->firstWhere('abv', $abv) ?? new Gloss(['abv' => $abv]);
-            });
-        });
     }
 
     /*

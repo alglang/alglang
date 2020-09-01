@@ -190,7 +190,7 @@ class ViewLanguageTest extends TestCase
     {
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
-            'position' => '{"lat":57.5,"lng":74.3}'
+            'position' => ['lat' => 57.5, 'lng' => 74.3]
         ]);
 
         $response = $this->get($language->url);
