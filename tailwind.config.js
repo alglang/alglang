@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const plugin = require('tailwindcss/plugin');
 const customForms = require('@tailwindcss/custom-forms');
 const filters = require('tailwindcss-filters');
 
@@ -30,14 +31,19 @@ module.exports = {
   variants: {
     backgroundColor: ['responsive', 'even', 'odd', 'hover', 'focus'],
     padding: ['responsive', 'first'],
-    display: ['responsive', 'group-hover'],
+    display: ['responsive', 'group-hover', 'group-focus-within'],
     filter: ['responsive', 'hover', 'focus'],
     cursor: ['responsive', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled']
   },
   plugins: [
     customForms,
-    filters
+    filters,
+    plugin(function ({ addVariant, e }) {
+      addVariant('group-focus-within', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => `.group:focus-within .${e(`group-focus-within${separator}${className}`)}`);
+      });
+    })
   ],
   future: {
     removeDeprecatedGapUtilities: true

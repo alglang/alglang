@@ -48,14 +48,6 @@
 
     {{-- Right side --}}
     <div class="flex items-center self-stretch w-full md:w-auto justify-around h-8 md:h-auto bg-gray-800 md:bg-transparent">
-        {{-- Smart search --}}
-        <input
-            type="text"
-            class="hidden md:block bg-gray-600 placeholder-gray-800 p-2 mx-3 border border-gray-900 text-gray-100 hover:border-yellow-400 focus:outline-none focus:border-red-700"
-            placeholder="Smart search..."
-            aria-label="Smart search"
-        />
-
         {{-- Language dropdown --}}
         <div class="relative group h-full">
             <a
@@ -86,7 +78,7 @@
                 <span>Search</span>
             </p>
 
-            @include('layouts.partials.dropdown-list', [
+            @component('layouts.partials.dropdown-list', [
                 'links' => [
                     'Nominal paradigms' => route('search.nominals.paradigms'),
                     'Verb paradigms' => route('search.verbs.paradigms'),
@@ -95,6 +87,13 @@
                 'class' => 'right-0',
                 'labelledby' => 'search-menu'
             ])
+                <input
+                    type="text"
+                    class="mx-1 mt-1 p-2 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:bg-gray-300 focus:placeholder-gray-700 shadow-inner"
+                    placeholder="Smart search..."
+                    aria-label="Smart search"
+                />
+            @endcomponent
         </div>
 
         {{-- Add dropdown --}}
