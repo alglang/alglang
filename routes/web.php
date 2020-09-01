@@ -13,6 +13,7 @@ use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\SlotController;
+use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
 use App\Http\Controllers\VerbParadigmController;
@@ -156,6 +157,8 @@ Route::prefix('search')->group(function () {
             [VerbSearchController::class, 'formResults']
         )->name('search.verbs.form-results');
     });
+
+    Route::get('smart', [SmartSearchController::class, 'index'])->name('smart-search');
 });
 /*
 |--------------------------------------------------------------------------

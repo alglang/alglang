@@ -87,12 +87,16 @@
                 'class' => 'right-0',
                 'labelledby' => 'search-menu'
             ])
-                <input
-                    type="text"
-                    class="mx-1 mt-1 p-2 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:bg-gray-300 focus:placeholder-gray-700 shadow-inner"
-                    placeholder="Smart search..."
-                    aria-label="Smart search"
-                />
+                <form class="contents" method="GET" action="{{ route('smart-search') }}">
+                    <input
+                        type="text"
+                        class="mx-1 mt-1 p-2 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:bg-gray-300 placeholder-gray-100 focus:placeholder-gray-700 shadow-inner"
+                        placeholder="Smart search..."
+                        aria-label="Smart search"
+                        name="q"
+                        required
+                    />
+                </form>
             @endcomponent
         </div>
 
