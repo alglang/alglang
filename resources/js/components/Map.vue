@@ -1,11 +1,11 @@
 <template>
   <l-map
-    :zoom="zoom"
-    :min-zoom="zoom"
+    ref="map"
     :center="center"
     :max-bounds="maxBounds"
     :max-bounds-viscosity="1.0"
     @click.right="handleRightClick"
+    @ready="handleMapReady"
   >
     <span data-testid="alglang-map" />
     <l-tile-layer
@@ -71,6 +71,7 @@ import {
   LMarker,
   LPopup
 } from 'vue2-leaflet';
+import { LatLngBounds } from 'leaflet';
 import 'leaflet-defaulticon-compatibility'; // eslint-disable-line import/no-unresolved
 import statesData from '../data/us-states.json';
 import provincesData from '../data/canada.json';
@@ -99,6 +100,7 @@ export default {
 
   data() {
     return {
+      map: null,
       zoom: 4,
       center: [46.0, -87.659916],
       maxBounds: [
@@ -118,6 +120,23 @@ export default {
   },
 
   methods: {
+    handleMapReady() {
+      this.map = this.$refs.map;
+      this.setZoom();
+    },
+
+    setZoom() {
+      const positions = this.locations.map(location => location.position);
+
+      if (positions.length > 0) {
+        const bounds = new LatLngBounds(positions);
+        this.map.fitBounds(bounds);
+        this.map.setZoom(Math.min(this.zoom, this.map.mapObject.getZoom()));
+      } else {
+        this.map.setZoom(this.zoom);
+      }
+    },
+
     handleRightClick(e) {
       this.$emit('input', {
         ...this.value,
