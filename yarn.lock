@@ -9413,6 +9413,11 @@ table@^5.2.3, table@^5.4.6:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
+tailwind-scrollbar@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tailwind-scrollbar/-/tailwind-scrollbar-1.0.0.tgz#5fbb0c54e51e765a13962c205aeb51d948cbdaef"
+  integrity sha512-/iHTx1CaNB2aYwM8mKYu6/6GVlgCF6vDpnIHDLx7P73DRXk0qONFkRFh1YUtMgM2cFWA1a+Cl/SdHdO3Rt2xHw==
+
 tailwindcss-filters@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/tailwindcss-filters/-/tailwindcss-filters-3.0.0.tgz#d5d40ca018a54b1aa2bdc57aeb6677529c24c8d8"
