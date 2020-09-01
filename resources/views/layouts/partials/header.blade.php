@@ -61,8 +61,8 @@
             </a>
 
             @include('layouts.partials.dropdown-list', [
-                'links' => App\Models\Language::limit(10)->get()->mapWithKeys(fn ($language) => [$language->name => $language->url]),
-                'class' => 'md:right-0',
+                'links' => App\Models\Language::orderBy('name')->get()->mapWithKeys(fn ($language) => [$language->name => $language->url]),
+                'class' => 'md:right-0 overflow-auto',
                 'labelledby' => 'language-menu'
             ])
         </div>
