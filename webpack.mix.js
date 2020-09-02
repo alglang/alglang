@@ -27,10 +27,7 @@ mix.js('resources/js/app.js', 'public/js')
   .extract([
     'axios',
     'leaflet',
-    'lodash',
-    'v-tooltip',
-    'vue',
-    'vue2-leaflet'
+    'lodash'
   ]);
 
 mix.postCss('resources/css/app.css', 'public/css', [
