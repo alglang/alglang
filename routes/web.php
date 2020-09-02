@@ -57,6 +57,10 @@ Route::prefix('groups')->group(function () {
 });
 
 Route::prefix('languages')->group(function () {
+    Route::get('', function () {
+        return redirect()->route('groups.show', ['group' => 'algonquian']);
+    })->name('languages.index');
+
     Route::get('create', [LanguageController::class, 'create'])->name('languages.create');
 
     Route::prefix('{language:code}')->group(function () {
@@ -160,6 +164,7 @@ Route::prefix('search')->group(function () {
 
     Route::get('smart', [SmartSearchController::class, 'index'])->name('smart-search');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Auth routes
@@ -171,21 +176,6 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');
 Route::get('/auth/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-/*
-|--------------------------------------------------------------------------
-| Dead routes
-|--------------------------------------------------------------------------
-|
-*/
-
-Route::get('/languages', function () {
-    abort(404);
-})->name('languages.index');
-
-Route::get('/resources', function () {
-    abort(404);
-})->name('resources');
 
 /*
 |--------------------------------------------------------------------------
