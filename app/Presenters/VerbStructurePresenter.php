@@ -6,28 +6,32 @@ trait VerbStructurePresenter
 {
     public function getFeatureStringAttribute(): string
     {
-        $string = (string) $this->subject_name;
-
-        if ($this->head === 'subject') {
-            $string = "<u>{$string}</u>";
-        }
+        $string = $this->convertFeatureToString($this->subject_name, 'subject');
 
         if ($this->primary_object_name) {
-            $pobj = $this->primary_object_name;
-            if ($this->head === 'primary object') {
-                $pobj = "<u>{$pobj}</u>";
-            }
+            $pobj = $this->convertFeatureToString(
+                $this->primary_object_name,
+                'primary object'
+            );
             $string .= "→{$pobj}";
         }
 
         if ($this->secondary_object_name) {
-            $sobj = $this->secondary_object_name;
-            if ($this->head === 'secondary object') {
-                $sobj = "<u>{$sobj}</u>";
-            }
+            $sobj = $this->convertFeatureToString(
+                $this->secondary_object_name,
+                'secondary object'
+            );
             $string .= "+{$sobj}";
         }
 
         return $string;
+    }
+
+    protected function convertFeatureToString(string $feature, string $headCode): string
+    {
+        if ($this->head === $headCode) {
+            return "<u>{$feature}</u>";
+        }
+        return $feature;
     }
 }

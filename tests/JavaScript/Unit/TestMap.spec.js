@@ -2,8 +2,13 @@ import '../setup';
 import { render, fireEvent, waitFor } from '@testing-library/vue';
 import { expect } from 'chai';
 import Vue from 'vue';
+import { Map as LMap } from 'leaflet';
 
 import Map from '../../../resources/js/components/Map';
+
+LMap.prototype.fitBounds = () => {};
+LMap.prototype.setZoom = () => {};
+LMap.prototype.getZoom = () => 4;
 
 const renderMap = async props => {
   const wrapper = render(Map, { props });
@@ -97,8 +102,8 @@ describe('Map.vue', function () {
 
       await fireEvent(getByTestId('map'), new MouseEvent('contextmenu'));
 
-      expect(getByTestId('lat')).to.have.text('46.01222384063236');
-      expect(getByTestId('lng')).to.have.text('-87.626953125');
+      expect(getByTestId('lat')).to.have.text('46.07323062540835');
+      expect(getByTestId('lng')).to.have.text('-87.18750000000001');
       expect(getByTestId('foo')).to.have.text('foo'); // Shouldn't modify other properties
     });
 

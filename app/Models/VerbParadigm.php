@@ -87,9 +87,7 @@ class VerbParadigm extends VerbStructure implements CachableAttributes
 
     public function getLanguageAttribute(): Language
     {
-        return $this->remember('language', 0, function () {
-            return Language::find($this->language_code);
-        });
+        return $this->remember('language', 0, fn () => Language::find($this->language_code));
     }
 
     public function getNameAttribute(): string

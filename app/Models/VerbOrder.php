@@ -29,7 +29,8 @@ class VerbOrder extends Model
     |
     */
 
-    protected static function booted() {
+    protected static function booted()
+    {
         static::addGlobalScope('order', function (Builder $query) {
             return $query->orderBy('order_key');
         });

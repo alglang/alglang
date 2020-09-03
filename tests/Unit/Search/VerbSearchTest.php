@@ -79,7 +79,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -134,7 +135,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -189,7 +191,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -244,7 +247,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -347,7 +351,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -406,7 +411,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -465,7 +471,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -551,7 +558,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -610,7 +618,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -669,7 +678,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -755,7 +765,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -814,7 +825,8 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 
     /** @test */
@@ -873,6 +885,7 @@ class VerbSearchTest extends TestCase
         ]);
 
         $this->assertCount(2, $forms);
-        $this->assertEquals(['V-foo', 'V-baz'], $forms->pluck('shape')->toArray());
+        $this->assertContains('V-foo', $forms->pluck('shape'));
+        $this->assertContains('V-baz', $forms->pluck('shape'));
     }
 }

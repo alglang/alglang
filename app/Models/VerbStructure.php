@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Presenters\VerbStructurePresenter;
+use App\Traits\GeneratesFromSearchQuery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbStructure extends Model
 {
+    use GeneratesFromSearchQuery;
     use VerbStructurePresenter;
 
     /*
@@ -19,45 +21,21 @@ class VerbStructure extends Model
 
     public $guarded = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Constructors
-    |--------------------------------------------------------------------------
-    |
-    */
+    /** @var array */
+    protected $wildCardProps = [
+        'class_abv',
+        'order_name',
+        'mode_name',
+        'subject_name',
+        'primary_object_name',
+        'secondary_object_name'
+    ];
 
-    public static function fromSearchQuery(array $query): self
-    {
-        $params = [
-            'class_abv' => isset($query['classes']) ? $query['classes'][0] : null,
-            'order_name' => isset($query['orders']) ? $query['orders'][0] : null,
-            'mode_name' => isset($query['modes']) ? $query['modes'][0] : null
-        ];
-
-        foreach (['subject', 'primary_object', 'secondary_object'] as $feature) {
-            if (isset($query[$feature]) && !$query[$feature]) {
-                continue;
-            }
-
-            if (!(isset($query["{$feature}_persons"])
-                || isset($query["{$feature}_numbers"])
-                || isset($query["{$feature}_obviative_codes"])
-            )) {
-                $params["{$feature}_name"] = '?';
-                continue;
-            }
-
-            $featureModel = new Feature([
-                'person' => isset($query["{$feature}_persons"]) ? $query["{$feature}_persons"][0] : null,
-                'number' => isset($query["{$feature}_numbers"]) ? $query["{$feature}_numbers"][0] : null,
-                'obviative_code' => isset($query["{$feature}_obviative_codes"]) ? $query["{$feature}_obviative_codes"][0] : null
-            ]);
-
-            $params["{$feature}_name"] = $featureModel->name;
-        }
-
-        return new self($params);
-    }
+    /** @var array */
+    protected $booleanProps = [
+        'is_negative',
+        'is_diminutive'
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -68,28 +46,14 @@ class VerbStructure extends Model
 
     public function matchesStructure(self $other): bool
     {
-        $properties = [
-            'class_abv',
-            'order_name',
-            'mode_name',
-            'subject_name',
-            'primary_object_name',
-            'secondary_object_name'
-        ];
-
-        $booleanProperties = [
-            'is_negative',
-            'is_diminutive'
-        ];
-
-        foreach ($properties as $property) {
+        foreach ($this->wildCardProps as $property) {
             $ownValue = $this->$property;
             if ($ownValue !== '?' && $ownValue !== $other->$property) {
                 return false;
             }
         }
 
-        foreach ($booleanProperties as $property) {
+        foreach ($this->booleanProps as $property) {
             $ownValue = $this->$property;
             if ($ownValue !== null && $ownValue !== $other->$property) {
                 return false;

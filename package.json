@@ -19,7 +19,7 @@
         "serve": "php artisan serve",
         "start": "concurrently --kill-others \"yarn serve\" \"yarn watch\"",
         "favicon-generate": "real-favicon generate faviconDescription.json faviconData.json public/images/favicon",
-        "favicon-inject": "real-favicon inject faviconData.json public/images/favicon resources/views/layouts/favicon.blade.php && mv public/images/favicon/favicon.blade.php resources/views/layouts",
+        "favicon-inject": "real-favicon inject faviconData.json public/images/favicon resources/views/layouts/partials/favicon.blade.php && mv public/images/favicon/favicon.blade.php resources/views/layouts/partials",
         "favicon-update": "real-favicon check-for-update --fail-on-update faviconData.json"
     },
     "devDependencies": {
@@ -47,11 +47,13 @@
         "mochapack": "^2.0.0",
         "moxios": "^0.4.0",
         "nyc": "^15.1.0",
+        "postcss-font-display": "^0.2.1",
         "resolve-url-loader": "^3.1.0",
         "sass": "^1.15.2",
         "sass-loader": "^10.0",
         "stylelint": "^13.6.1",
         "stylelint-config-standard": "^20.0.0",
+        "tailwind-scrollbar": "^1.0.0",
         "tailwindcss": "^1.4",
         "tailwindcss-filters": "^3.0.0",
         "vue-template-compiler": "^2.6.11"

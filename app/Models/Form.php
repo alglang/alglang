@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Presenters\FormPresenter;
 use App\Traits\HasParent;
-use App\Traits\Sourceable;
 use App\Traits\Reconstructable;
+use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;

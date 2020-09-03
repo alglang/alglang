@@ -13,6 +13,7 @@ use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\SlotController;
+use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\VerbFormController;
 use App\Http\Controllers\VerbParadigmController;
@@ -56,17 +57,27 @@ Route::prefix('groups')->group(function () {
 });
 
 Route::prefix('languages')->group(function () {
+    Route::get('', function () {
+        return redirect()->route('groups.show', ['group' => 'algonquian']);
+    })->name('languages.index');
+
     Route::get('create', [LanguageController::class, 'create'])->name('languages.create');
 
     Route::prefix('{language:code}')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
 
         Route::prefix('morphemes')->group(function () {
-            Route::get('{morpheme:slug}', [MorphemeController::class, 'show'])->name('morphemes.show');
+            Route::get(
+                '{morpheme:slug}',
+                [MorphemeController::class, 'show']
+            )->name('morphemes.show');
         });
 
         Route::prefix('nominal-forms')->group(function () {
-            Route::get('{nominalForm:slug}', [NominalFormController::class, 'show'])->name('nominalForms.show');
+            Route::get(
+                '{nominalForm:slug}',
+                [NominalFormController::class, 'show']
+            )->name('nominalForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
@@ -81,14 +92,20 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('verb-forms')->group(function () {
-            Route::get('{verbForm:slug}', [VerbFormController::class, 'show'])->name('verbForms.show');
+            Route::get(
+                '{verbForm:slug}',
+                [VerbFormController::class, 'show']
+            )->name('verbForms.show');
             Route::get(
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
             )->name('verbForms.examples.show');
         });
 
-        Route::get('verb-paradigms', [VerbParadigmController::class, 'show'])->name('verbParadigms.show');
+        Route::get(
+            'verb-paradigms',
+            [VerbParadigmController::class, 'show']
+        )->name('verbParadigms.show');
     });
 });
 
@@ -115,7 +132,10 @@ Route::prefix('sources')->group(function () {
 
 Route::prefix('search')->group(function () {
     Route::prefix('nominals')->group(function () {
-        Route::get('paradigms', [NominalSearchController::class, 'paradigms'])->name('search.nominals.paradigms');
+        Route::get(
+            'paradigms',
+            [NominalSearchController::class, 'paradigms']
+        )->name('search.nominals.paradigms');
         Route::get(
             'paradigms/results',
             [NominalSearchController::class, 'paradigmResults']
@@ -123,13 +143,28 @@ Route::prefix('search')->group(function () {
     });
 
     Route::prefix('verbs')->group(function () {
-        Route::get('paradigms', [VerbSearchController::class, 'paradigms'])->name('search.verbs.paradigms');
-        Route::get('paradigm-results', [VerbSearchController::class, 'paradigmResults'])->name('search.verbs.paradigm-results');
+        Route::get(
+            'paradigms',
+            [VerbSearchController::class, 'paradigms']
+        )->name('search.verbs.paradigms');
+        Route::get(
+            'paradigm-results',
+            [VerbSearchController::class, 'paradigmResults']
+        )->name('search.verbs.paradigm-results');
 
-        Route::get('forms', [VerbSearchController::class, 'forms'])->name('search.verbs.forms');
-        Route::get('forms/results', [VerbSearchController::class, 'formResults'])->name('search.verbs.form-results');
+        Route::get(
+            'forms',
+            [VerbSearchController::class, 'forms']
+        )->name('search.verbs.forms');
+        Route::get(
+            'forms/results',
+            [VerbSearchController::class, 'formResults']
+        )->name('search.verbs.form-results');
     });
+
+    Route::get('smart', [SmartSearchController::class, 'index'])->name('smart-search');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Auth routes
@@ -141,21 +176,6 @@ Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/auth/{provider}', [LoginController::class, 'redirectToProvider'])->name('auth');
 Route::get('/auth/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-/*
-|--------------------------------------------------------------------------
-| Dead routes
-|--------------------------------------------------------------------------
-|
-*/
-
-Route::get('/languages', function () {
-    abort(404);
-})->name('languages.index');
-
-Route::get('/resources', function () {
-    abort(404);
-})->name('resources');
 
 /*
 |--------------------------------------------------------------------------

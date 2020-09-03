@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
+const plugin = require('tailwindcss/plugin');
 const customForms = require('@tailwindcss/custom-forms');
 const filters = require('tailwindcss-filters');
+const scrollbars = require('tailwind-scrollbar');
 
 module.exports = {
   purge: [
@@ -24,20 +26,30 @@ module.exports = {
       },
       width: {
         fit: 'fit-content'
+      },
+      maxHeight: {
+        md: '28rem'
       }
     }
   },
   variants: {
     backgroundColor: ['responsive', 'even', 'odd', 'hover', 'focus'],
     padding: ['responsive', 'first'],
-    display: ['responsive', 'group-hover'],
+    display: ['responsive', 'group-hover', 'group-focus-within'],
     filter: ['responsive', 'hover', 'focus'],
     cursor: ['responsive', 'disabled'],
-    textColor: ['responsive', 'hover', 'focus', 'disabled']
+    textColor: ['responsive', 'hover', 'focus', 'disabled'],
+    scale: ['responsive', 'hover', 'focus', 'active', 'group-hover', 'group-focus-within']
   },
   plugins: [
     customForms,
-    filters
+    filters,
+    scrollbars,
+    plugin(function ({ addVariant, e }) {
+      addVariant('group-focus-within', ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => `.group:focus-within .${e(`group-focus-within${separator}${className}`)}`);
+      });
+    })
   ],
   future: {
     removeDeprecatedGapUtilities: true

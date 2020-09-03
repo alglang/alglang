@@ -3,6 +3,7 @@
 const mix = require('laravel-mix');
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
+const fontDisplay = require('postcss-font-display');
 
 require('laravel-mix-merge-manifest');
 
@@ -22,10 +23,20 @@ if (process.env.NODE_ENV === 'testing') {
   mix.sourceMaps();
 }
 
-mix.js('resources/js/app.js', 'public/js');
+mix.js('resources/js/app.js', 'public/js')
+  .extract([
+    'axios',
+    'leaflet',
+    'lodash',
+    'v-tooltip',
+    'vue',
+    'vue2-leaflet'
+  ]);
+
 mix.postCss('resources/css/app.css', 'public/css', [
   autoprefixer(),
-  tailwindcss()
+  tailwindcss(),
+  fontDisplay({ display: 'swap', replace: false })
 ]);
 
 if (mix.inProduction()) {

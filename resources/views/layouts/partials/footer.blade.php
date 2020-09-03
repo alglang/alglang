@@ -15,11 +15,11 @@
                     About
                 </a>
             </li>
-            <li>
-                <a href="{{ route('resources') }}" class="mr-3 text-gray-100 hover:text-gray-300">
-                    Resources
-                </a>
-            </li>
+            {{-- <li> --}}
+            {{--     <a href="{{ route('resources') }}" class="mr-3 text-gray-100 hover:text-gray-300"> --}}
+            {{--         Resources --}}
+            {{--     </a> --}}
+            {{-- </li> --}}
         </ul>
     </div>
 

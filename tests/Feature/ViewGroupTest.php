@@ -102,12 +102,12 @@ class ViewGroupTest extends TestCase
 
         factory(Language::class)->create([
             'name' => 'Test Language 1',
-            'position' => '{"lat":46.1,"lng":-87.1}',
+            'position' => ['lat' => 46.1, 'lng' => -87.1],
             'group_name' => $group->name
         ]);
         factory(Language::class)->create([
             'name' => 'Test Language 2',
-            'position' => '{"lat":47.1,"lng":-86.1}',
+            'position' => ['lat' => 47.1, 'lng' => -86.1],
             'group_name' => $group->name
         ]);
 
@@ -129,12 +129,12 @@ class ViewGroupTest extends TestCase
         factory(Language::class)->create([
             'name' => 'Test Language 1',
             'code' => 'tl1',
-            'position' => '{"lat":46.1,"lng":-87.1}',
+            'position' => ['lat' => 46.1, 'lng' => -87.1],
             'group_name' => $group->name
         ]);
         factory(Language::class)->create([
             'name' => 'Test Language 2',
-            'position' => '{"lat":47.1,"lng":-86.1}',
+            'position' => ['lat' => 47.1, 'lng' => -86.1],
             'parent_code' => 'tl1',
             'group_name' => $groupChild->name
         ]);

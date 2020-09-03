@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Language;
+use App\Models\Morpheme;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -52,7 +53,7 @@ class CreateLanguageTest extends TestCase
         $this->assertEquals($this->group->name, $language->group_name);
         $this->assertEquals($this->parent->code, $language->parent_code);
         $this->assertTrue($language->reconstructed);
-        $this->assertEquals((object) ['lat' => 52, 'lng' => 46], $language->position);
+        $this->assertEquals(['lat' => 52, 'lng' => 46], $language->position);
         $this->assertEquals(
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod',
             $language->notes
@@ -125,6 +126,8 @@ class CreateLanguageTest extends TestCase
     /** @test */
     public function placeholder_morphemes_are_generated_with_the_language()
     {
+        $existingMorphemes = \DB::table(with(new Morpheme)->getTable())->count();
+
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
@@ -133,16 +136,20 @@ class CreateLanguageTest extends TestCase
                             'parent_code' => $this->parent->code
                         ]);
 
-        $language = Language::where(['code' => 'TL'])->first();
-        $this->assertCount(2, $language->morphemes);
-
-        $this->assertEquals('V-', $language->morphemes[0]->shape);
-        $this->assertEquals('STM', $language->morphemes[0]->slot_abv);
-        $this->assertEquals('V', $language->morphemes[0]->gloss);
-
-        $this->assertEquals('N-', $language->morphemes[1]->shape);
-        $this->assertEquals('STM', $language->morphemes[1]->slot_abv);
-        $this->assertEquals('N', $language->morphemes[1]->gloss);
+        $this->assertDatabaseHas(with(new Language)->getTable(), ['code' => 'TL']);
+        $this->assertDatabaseCount(with(new Morpheme)->getTable(), $existingMorphemes + 2);
+        $this->assertDatabaseHas(with(new Morpheme)->getTable(), [
+            'shape' => 'V-',
+            'slot_abv' => 'STM',
+            'gloss' => 'V',
+            'language_code' => 'TL'
+        ]);
+        $this->assertDatabaseHas(with(new Morpheme)->getTable(), [
+            'shape' => 'N-',
+            'slot_abv' => 'STM',
+            'gloss' => 'N',
+            'language_code' => 'TL'
+        ]);
     }
 
     /** @test */

@@ -14,13 +14,11 @@ class FetchLanguagesTest extends TestCase
     /** @test */
     public function it_retrieves_languages_from_the_database()
     {
-        $this->withoutExceptionHandling();
-
         $language = factory(Language::class)->create([
             'name' => 'Test Language',
             'code' => 'TL',
             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'position' => json_encode(['lat' => 53, 'lng' => 34])
+            'position' => ['lat' => 53, 'lng' => 34]
         ]);
 
         $response = $this->get('/api/languages');
