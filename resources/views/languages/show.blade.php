@@ -76,10 +76,7 @@
 
                 @if ($language->position)
                     <alglang-detail-row label="Location">
-                        <alglang-map
-                            style="height: 300px"
-                            :locations="[{ name: '{{ $language->name }}', url: '{{ $language->url }}', position: {{ json_encode($language->position) }} }]"
-                        />
+                        @livewire('map', ['locations' => [$language]])
                     </alglang-detail-row>
                 @endif
             </div>

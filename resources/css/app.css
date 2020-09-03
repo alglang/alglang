@@ -65,32 +65,34 @@ a:hover {
 |
 */
 
-.vue2leaflet-map {
+#alglang-map {
+  height: 30rem;
+
   @apply z-0;
 }
 
-.vue2leaflet-map.leaflet-container {
+#alglang-map.leaflet-container {
   @apply font-body;
 }
 
-.vue2leaflet-map .leaflet-popup-content-wrapper,
-.vue2leaflet-map .leaflet-popup-content-wrapper .leaflet-popup-tip {
+#alglang-map .leaflet-popup-content-wrapper,
+#alglang-map .leaflet-popup-content-wrapper .leaflet-popup-tip {
   background: #f7fafc;
 }
 
-.vue2leaflet-map .leaflet-popup-content-wrapper {
+#alglang-map .leaflet-popup-content-wrapper {
   @apply rounded-none;
 }
 
-.vue2leaflet-map.leaflet-container a {
+#alglang-map a {
   @apply text-blue-600;
 }
 
-.vue2leaflet-map .leaflet-bar a {
+#alglang-map .leaflet-bar a {
   @apply text-black;
 }
 
-.vue2leaflet-map.leaflet-container .leaflet-popup-content-wrapper a:hover {
+#alglang-map.leaflet-container .leaflet-popup-content-wrapper a:hover {
   @apply text-red-600;
 }
 

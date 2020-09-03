@@ -41,9 +41,8 @@
                 @endif
 
                 <alglang-detail-row label="Languages">
-                    <alglang-map
-                        style="height: 300px"
-                        :locations="{{ $group->languagesWithDescendants()->where('position', '!=', null)->values() }}"></alglang-map>
+                    @livewire('map', ['locations' => $group->languagesWithDescendants()->whereNotNull('position')])
+
                     <div class="mt-2">
                         <b class="font-semibold">Not shown:</b>
 
