@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\HasMorphemes as HasMorphemesInterface;
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 
-class Source extends Model
+class Source extends Model implements HasMorphemesInterface
 {
     use Disambiguatable;
     use HasFactory;

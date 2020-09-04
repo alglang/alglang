@@ -36,7 +36,7 @@ if ($language->sources_count) {
         @endslot
 
         @slot('morphemes')
-            {{-- <livewire:collections.morphemes :url="'/api/morphemes?language=' . $language->code" /> --}}
+            <livewire:collections.morphemes :model="$language" />
         @endslot
 
         @slot('nominal_paradigms')

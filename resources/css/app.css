@@ -137,3 +137,7 @@ a:hover {
 .small-caps {
   font-variant: small-caps;
 }
+
+.align-super {
+  vertical-align: super;
+}

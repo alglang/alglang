@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\View\Components;
+namespace Tests\Unit\View\Components;
 
 use Tests\TestCase;
 

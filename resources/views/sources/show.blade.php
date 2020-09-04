@@ -50,7 +50,7 @@ $pages = [
         @endslot
 
         @slot('morphemes')
-            {{-- <livewire:collections.morphemes :url="'/api/morphemes?source_id=' . $source->id" /> --}}
+            <livewire:collections.morphemes :model="$source" />
         @endslot
 
         @slot('nominal_paradigms')
