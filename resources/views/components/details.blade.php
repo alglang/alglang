@@ -13,6 +13,7 @@
     <div
         x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : 'basic_details' }"
         class="flex flex-wrap md:flex-no-wrap"
+        @hashchange.window="tab = window.location.hash.substring(1)"
     >
         <ul
             role="tablist"
