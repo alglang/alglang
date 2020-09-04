@@ -62,6 +62,6 @@ class VerbFormController extends Controller
             'sources'
         );
         $verbForm->loadCount('examples');
-        return view('verb-forms.show', ['verbForm' => $verbForm]);
+        return view('verb-forms.show', ['form' => $verbForm]);
     }
 }

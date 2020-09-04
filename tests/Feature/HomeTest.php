@@ -45,7 +45,7 @@ class HomeTest extends TestCase
         $response = $this->actingAs($user)->get('/');
 
         $response->assertOk();
-        $response->assertSee('Add');
+        $response->assertSee('add-menu');
     }
 
     /** @test */
@@ -56,27 +56,6 @@ class HomeTest extends TestCase
         $response = $this->actingAs($user)->get('/');
 
         $response->assertOk();
-        $response->assertDontSee('Add');
-    }
-
-    /** @test */
-    public function all_languages_with_positions_appear_on_the_home_page()
-    {
-        Language::factory()->create([
-            'name' => 'Test Language 1',
-            'position' => ['lat' => 46.1, 'lng' => -87.1]
-        ]);
-        Language::factory()->create([
-            'name' => 'Test Language 2',
-            'position' => ['lat' => 47.1, 'lng' => -86.1]
-        ]);
-
-        $response = $this->get('/');
-
-        $response->assertOk();
-        $response->assertSee('Test Language 1');
-        $response->assertSee('{"lat":46.1,"lng":-87.1}');
-        $response->assertSee('Test Language 2');
-        $response->assertSee('{"lat":47.1,"lng":-86.1}');
+        $response->assertDontSee('add-menu');
     }
 }

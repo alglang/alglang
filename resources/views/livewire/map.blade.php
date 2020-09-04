@@ -1,5 +1,5 @@
 <div>
-    <div wire:ignore id="alglang-map" />
+    <div wire:ignore id="alglang-map"></div>
 </div>
 
 @push('scripts')
@@ -104,6 +104,7 @@
 
     function initializeMap() {
         const center = [46.0, -87.659916];
+        console.log('hello');
 
         window.mapState = new MapState(window.leaflet);
         window.mapState.bind('alglang-map', {
@@ -137,6 +138,8 @@
         }
     }
 
-    document.addEventListener('livewire:load', initializeMap);
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeMap();
+    });
 </script>
 @endpush

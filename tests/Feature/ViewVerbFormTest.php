@@ -448,7 +448,7 @@ class ViewVerbFormTest extends TestCase
         $response = $this->get($form->url);
 
         $response->assertOk();
-        $response->assertViewHas('verbForm', $form);
-        $this->assertEquals(1, $response['verbForm']->examples_count);
+        $response->assertViewHas('form', $form);
+        $this->assertEquals(1, $response['form']->examples_count);
     }
 }

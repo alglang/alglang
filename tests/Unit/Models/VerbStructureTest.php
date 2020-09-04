@@ -3,7 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Models\VerbStructure;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class VerbStructureTest extends TestCase
 {
