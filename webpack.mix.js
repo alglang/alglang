@@ -25,9 +25,7 @@ if (process.env.NODE_ENV === 'testing') {
 
 mix.js('resources/js/app.js', 'public/js')
   .extract([
-    'axios',
-    'leaflet',
-    'lodash'
+    'leaflet'
   ]);
 
 mix.postCss('resources/css/app.css', 'public/css', [
