@@ -14,21 +14,6 @@ class SourceController extends Controller
         return view('sources.index');
     }
 
-    public function fetch(): SourceCollection
-    {
-        if (request()->language) {
-            /** @var Language $language */
-            $language = Language::find(request()->language);
-            $query = $language->sources();
-        } else {
-            $query = Source::query();
-        }
-
-        $sources = $query->paginate(request()->per_page ?? 10)
-            ->appends(request()->query());
-        return new SourceCollection($sources);
-    }
-
     public function show(Source $source): View
     {
         $source->loadCount(
