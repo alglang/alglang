@@ -70,14 +70,14 @@ class Sources extends Component
         }
     }
 
-    public function hasMoreSources(): bool
+    public function hasMoreItems(): bool
     {
         return $this->query()->count() > ($this->page + 1) * $this->sourcesPerPage();
     }
 
     public function nextPage(): void
     {
-        if ($this->hasMoreSources()) {
+        if ($this->hasMoreItems()) {
             $this->page++;
         }
     }

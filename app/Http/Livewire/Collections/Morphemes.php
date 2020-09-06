@@ -54,7 +54,7 @@ class Morphemes extends Component
 
     public function nextPage(): void
     {
-        if ($this->model->morphemes()->count() > ($this->page + 1) * $this->perPage()) {
+        if ($this->hasMoreItems()) {
             $this->page++;
         }
     }
@@ -64,6 +64,12 @@ class Morphemes extends Component
         if ($this->page > 0) {
             $this->page--;
         }
+    }
+
+    public function hasMoreItems(): bool
+    {
+        
+        return $this->model->morphemes()->count() > ($this->page + 1) * $this->perPage();
     }
 
     public function resize(string $size): void
