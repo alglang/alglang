@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Contracts\HasMorphemes as HasMorphemesInterface;
+use App\Contracts\HasMorphemes;
+use App\Contracts\HasSources;
 use App\Traits\AggregatesSources;
 use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class Language extends Model implements HasMorphemesInterface
+class Language extends Model implements HasMorphemes, HasSources
 {
     use AggregatesSources;
     use HasFactory;

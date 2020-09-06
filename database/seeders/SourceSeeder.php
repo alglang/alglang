@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Source;
+use App\Models\Source;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -76,13 +76,11 @@ class SourceSeeder extends Seeder
 
         DB::table('disambiguations')->insert([
             [
-                'id' => 1,
                 'disambiguatable_type' => Source::class,
                 'disambiguatable_id' => 5,
                 'disambiguator' => 0
             ],
             [
-                'id' => 2,
                 'disambiguatable_type' => Source::class,
                 'disambiguatable_id' => 6,
                 'disambiguator' => 1

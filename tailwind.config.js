@@ -29,17 +29,21 @@ module.exports = {
       },
       maxHeight: {
         md: '28rem'
+      },
+      zIndex: {
+        '-10': '-10'
       }
     }
   },
   variants: {
-    backgroundColor: ['responsive', 'even', 'odd', 'hover', 'focus'],
+    backgroundColor: ['responsive', 'even', 'odd', 'hover', 'focus', 'disabled'],
     padding: ['responsive', 'first'],
     display: ['responsive', 'group-hover', 'group-focus-within'],
     filter: ['responsive', 'hover', 'focus'],
     cursor: ['responsive', 'disabled'],
     textColor: ['responsive', 'hover', 'focus', 'disabled'],
-    scale: ['responsive', 'hover', 'focus', 'active', 'group-hover', 'group-focus-within']
+    scale: ['responsive', 'hover', 'focus', 'active', 'group-hover', 'group-focus-within'],
+    boxShadow: ['responsive', 'hover', 'focus', 'disabled']
   },
   plugins: [
     customForms,

@@ -60,7 +60,7 @@ if ($language->sources_count) {
         @endslot
 
         @slot('sources')
-            {{-- <livewire:collections.sources :url="'/api/sources?language=' . $language->code" /> --}}
+            <livewire:collections.sources :model="$language"></livewire:collections.sources>
         @endslot
     @endcomponent
 @endsection
