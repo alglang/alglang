@@ -14,7 +14,7 @@ class VerbFormFactory extends Factory
     public function definition(): array
     {
         return [
-            'shape' => 'V-factory',
+            'shape' => 'V-' . $this->faker->unique()->word,
             'language_code' => Language::factory(),
             'structure_type' => VerbStructure::class,
             'structure_id' => VerbStructure::factory()

@@ -52,11 +52,11 @@ if ($language->sources_count) {
         @endslot
 
         @slot('verb_forms')
-            {{-- <livewire:collections.verb-forms :url="'/api/verb-forms?language=' . $language->code" /> --}}
+            <livewire:collections.verb-forms :model="$language"></livewire:collections.verb-forms>
         @endslot
 
         @slot('nominal_forms')
-            {{-- <livewire:collections.nominal-forms :url="'/api/nominal-forms?language=' . $language->code" /> --}}
+            <livewire:collections.nominal-forms :model="$language"></livewire:collections.nominal-forms>
         @endslot
 
         @slot('sources')

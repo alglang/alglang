@@ -66,11 +66,11 @@ $pages = [
         @endslot
 
         @slot('verb_forms')
-            {{-- <livewire:collections.verb-forms :url="'/api/verb-forms?source_id=' . $source->id" /> --}}
+            <livewire:collections.verb-forms :model="$source"></livewire:collections.verb-forms>
         @endslot
 
         @slot('nominal_forms')
-            {{-- <livewire:collections.nominal-forms :url="'/api/nominal-forms?source_id=' . $source->id" /> --}}
+            <livewire:collections.nominal-forms :model="$source"></livewire:collections.nominal-forms>
         @endslot
 
         @slot('examples')

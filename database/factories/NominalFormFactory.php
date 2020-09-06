@@ -15,7 +15,7 @@ class NominalFormFactory extends Factory
     public function definition(): array
     {
         return [
-            'shape' => 'V-test',
+            'shape' => 'V-' . $this->faker->unique()->word,
             'language_code' => Language::factory(),
             'structure_type' => NominalStructure::class,
             'structure_id' => function (array $form) {
