@@ -114,7 +114,7 @@ $pages = [
         @endslot
 
         @slot('examples')
-            {{-- TODO --}}
+            <livewire:collections.examples :model="$form"></livewire:collections.examples>
         @endslot
     </x-details>
 @endsection

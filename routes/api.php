@@ -28,8 +28,6 @@ Route::get('/groups', [GroupController::class, 'fetch']);
 Route::get('/languages', [LanguageController::class, 'fetch']);
 Route::post('/languages', [LanguageController::class, 'store']);
 
-Route::get('/examples', [ExampleController::class, 'fetch']);
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

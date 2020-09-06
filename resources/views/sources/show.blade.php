@@ -74,7 +74,7 @@ $pages = [
         @endslot
 
         @slot('examples')
-            {{-- <livewire:collections.examples :url="'/api/examples?source_id=' . $source->id" /> --}}
+            <livewire:collections.examples :model="$source"></livewire:collections.examples>
         @endslot
     </x-details>
 @endsection
