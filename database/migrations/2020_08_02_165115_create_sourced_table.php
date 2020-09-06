@@ -13,10 +13,12 @@ class CreateSourcedTable extends Migration
      */
     public function up()
     {
-        Schema::create('sourced', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (app('env') === 'testing') {
+            Schema::create('sourced', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

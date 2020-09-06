@@ -23,8 +23,6 @@ class SourceableTest extends TestCase
 
             public $table = 'sourced';
         };
-
-        $this->migrateTestTables();
     }
 
     /** @test */

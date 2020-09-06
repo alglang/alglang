@@ -13,13 +13,15 @@ class CreateParentedTable extends Migration
      */
     public function up()
     {
-        Schema::create('parented', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->unsignedInteger('parent_id')->nullable();
-            $table->string('parent_name')->nullable();
-            $table->timestamps();
-        });
+        if (app('env') === 'testing') {
+            Schema::create('parented', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->unsignedInteger('parent_id')->nullable();
+                $table->string('parent_name')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

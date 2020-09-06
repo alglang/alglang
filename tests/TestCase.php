@@ -25,11 +25,6 @@ abstract class TestCase extends BaseTestCase
         $this->app->make(PermissionRegistrar::class)->registerPermissions();
     }
 
-    public function migrateTestTables(): void
-    {
-        $this->artisan('migrate', ['--path' => 'tests/database/migrations']);
-    }
-
     protected function livewire(string $class, array $data = [])
     {
         return Livewire::test($class, $data);

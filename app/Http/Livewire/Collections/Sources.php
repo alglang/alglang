@@ -49,7 +49,7 @@ class Sources extends Component
     public function getSourcesProperty(): Collection
     {
         return $this->query()
-            ->where(DB::raw('author || " " || year'), 'LIKE', "%{$this->filter}%")
+            ->where(DB::raw('CONCAT(author, " ", year)'), 'LIKE', "%{$this->filter}%")
             ->skip($this->page * $this->sourcesPerPage())
             ->take($this->sourcesPerPage())
             ->get();

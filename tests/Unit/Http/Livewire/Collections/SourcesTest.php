@@ -47,7 +47,6 @@ class SourcesTest extends TestCase
             use Sourceable;
             public $table = 'sourced';
         };
-        $this->migrateTestTables();
 
         $source = factory(Source::class)->create(['author' => 'Foo']);
         factory(Source::class)->create(['author' => 'Bar']);
