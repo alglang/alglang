@@ -7,12 +7,30 @@ use App\Traits\Sourceable;
 use App\Contracts\HasSources;
 use App\Http\Livewire\Collections\Sources;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SourcesTest extends TestCase
 {
-    use RefreshDatabase;
+    /** @var bool */
+    public static $seeded = false;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!static::$seeded) {
+            // Ensure the database has been migrated
+            Artisan::call('migrate');
+
+            // Ensure sources were cleaned up from earlier runs
+            DB::table('sources')->delete();
+
+            factory(Source::class, 225)->create();
+            static::$seeded = true;
+        }
+    }
 
     protected function assertSourcesSliceInView($view, $sources, $start, $end): void
     {
@@ -62,8 +80,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_the_next_page()
     {
-        factory(Source::class, 40)->create();
-
         $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
         $view->call('nextPage');
 
@@ -73,8 +89,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_the_previous_page()
     {
-        factory(Source::class, 40)->create();
-
         $view = $this->livewire(Sources::class, ['screenSize' => 'sm', 'page' => 1]);
         $view->call('prevPage');
 
@@ -84,13 +98,11 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
-        factory(Source::class, 25)->create();
-
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm', 'page' => 1]);
+        $view = $this->livewire(Sources::class, ['screenSize' => 'sm', 'page' => 12]);
         $view->call('nextPage');
 
-        $view->assertSet('page', 1);
-        $this->assertSourcesSliceInView($view, Source::all(), 20, 25);
+        $view->assertSet('page', 12);
+        $this->assertSourcesSliceInView($view, Source::all(), 220, 225);
     }
 
     /** @test */
@@ -133,7 +145,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_20_sources_on_a_small_screen()
     {
-        factory(Source::class, 21)->create();
         $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
         $this->assertSourcesSliceInView($view, Source::all(), 0, 20);
     }
@@ -141,7 +152,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_100_sources_on_a_medium_screen()
     {
-        factory(Source::class, 101)->create();
         $view = $this->livewire(Sources::class, ['screenSize' => 'md']);
         $this->assertSourcesSliceInView($view, Source::all(), 0, 100);
     }
@@ -149,7 +159,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_180_sources_on_a_large_screen()
     {
-        factory(Source::class, 181)->create();
         $view = $this->livewire(Sources::class, ['screenSize' => 'lg']);
         $this->assertSourcesSliceInView($view, Source::all(), 0, 180);
     }
@@ -157,7 +166,6 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_224_sources_on_an_extra_large_screen()
     {
-        factory(Source::class, 225)->create();
         $view = $this->livewire(Sources::class, ['screenSize' => 'xl']);
         $this->assertSourcesSliceInView($view, Source::all(), 0, 224);
     }
@@ -165,11 +173,9 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_resizes()
     {
-        factory(Source::class, 30)->create();
-
         $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
         $view->emit('resize', 'md');
 
-        $this->assertSourcesSliceInView($view, Source::all(), 0, 30);
+        $this->assertSourcesSliceInView($view, Source::all(), 0, 100);
     }
 }

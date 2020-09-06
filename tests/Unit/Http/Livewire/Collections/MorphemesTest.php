@@ -6,12 +6,32 @@ use App\Models\Language;
 use App\Models\Morpheme;
 use App\Models\Source;
 use App\Http\Livewire\Collections\Morphemes;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class MorphemesTest extends TestCase
 {
-    use RefreshDatabase;
+    /** @var bool */
+    public static $seeded = false;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!static::$seeded) {
+            // Ensure the database has been migrated
+            Artisan::call('migrate');
+
+            DB::table('morphemes')->delete();
+            DB::table('languages')->delete();
+            DB::table('sources')->delete();
+
+            $language = factory(Language::class)->create(['name' => 'Seed language']);
+            factory(Morpheme::class, 57)->create(['language_code' => $language]);
+            static::$seeded = true;
+        }
+    }
 
     protected function assertMorphemesSliceInView($view, $morphemes, $start, $end): void
     {
@@ -65,8 +85,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_the_next_page()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 20)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -80,8 +99,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_the_previous_page()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 20)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -96,24 +114,23 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 15)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
             'screenSize' => 'sm',
-            'page' => 1
+            'page' => 5
         ]);
         $view->call('nextPage');
 
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 10, $language->morphemes->count());
+        $view->assertSet('page', 5);
+        $this->assertMorphemesSliceInView($view, $language->morphemes, 50, 59);
     }
 
     /** @test */
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 20)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -127,8 +144,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_10_morphemes_on_a_small_screen()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 11)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -141,8 +157,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_14_morphemes_on_a_medium_screen()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 15)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -155,8 +170,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_27_morphemes_on_a_large_screen()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 28)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -169,8 +183,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_a_maximum_of_56_morphemes_on_an_extra_large_screen()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 57)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -183,8 +196,7 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_resizes()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 15)->create(['language_code' => $language]);
+        $language = Language::where('name', 'Seed language')->first();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
