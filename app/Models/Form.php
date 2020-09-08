@@ -78,7 +78,13 @@ class Form extends Model
 
     public function getMorphemesAttribute(): Collection
     {
-        return $this->morphemeConnections->pluck('morpheme');
+        $morphemes = $this->morphemeConnections->pluck('morpheme');
+
+        foreach ($morphemes as $morpheme) {
+            $morpheme->language_code = $morpheme->language_code ?? $this->language_code;
+        }
+
+        return $morphemes;
     }
 
     /*

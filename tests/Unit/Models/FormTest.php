@@ -52,6 +52,16 @@ class FormTest extends TestCase
     }
 
     /** @test */
+    public function assigned_string_morphemes_know_their_language()
+    {
+        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create(['code' => 'FOO'])]);
+
+        $form->assignMorphemes(['bar']);
+
+        $this->assertEquals('FOO', $form->morphemes->first()->language->code);
+    }
+
+    /** @test */
     public function it_retrieves_its_morphemes_in_order()
     {
         $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
