@@ -104,7 +104,6 @@
 
     function initializeMap() {
         const center = [46.0, -87.659916];
-        console.log('hello');
 
         window.mapState = new MapState(window.leaflet);
         window.mapState.bind('alglang-map', {
