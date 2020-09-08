@@ -36,20 +36,20 @@ class VerbFormsTest extends TestCase
             DB::table('languages')->delete();
             DB::table('forms')->delete();
 
-            $language = factory(Language::class)->create(['name' => 'Seed language']);
-            $structure = factory(VerbStructure::class)->create();
+            $language = Language::factory()->create(['name' => 'Seed language']);
+            $structure = VerbStructure::factory()->create();
 
-            factory(VerbForm::class)->create([
+            VerbForm::factory()->create([
                 'shape' => 'V-foo',
                 'language_code' => $language,
                 'structure_id' => $structure
             ]);
-            factory(VerbForm::class)->create([
+            VerbForm::factory()->create([
                 'shape' => 'V-bar',
                 'language_code' => $language,
                 'structure_id' => $structure
             ]);
-            factory(VerbForm::class, VerbForms::maxSizeFor('xl') + 1)->create([
+            VerbForm::factory()->count(VerbForms::maxSizeFor('xl') + 1)->create([
                 'language_code' => $language,
                 'structure_id' => $structure
             ]);

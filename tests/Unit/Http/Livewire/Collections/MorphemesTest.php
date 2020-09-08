@@ -27,8 +27,8 @@ class MorphemesTest extends TestCase
             DB::table('languages')->delete();
             DB::table('sources')->delete();
 
-            $language = factory(Language::class)->create(['name' => 'Seed language']);
-            factory(Morpheme::class, 57)->create(['language_code' => $language]);
+            $language = Language::factory()->create(['name' => 'Seed language']);
+            Morpheme::factory()->count(57)->create(['language_code' => $language]);
             static::$seeded = true;
         }
     }
@@ -50,12 +50,12 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_morphemes_from_a_language()
     {
-        $language = factory(Language::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $morpheme1 = Morpheme::factory()->create([
             'shape' => 'foo-',
             'language_code' => $language
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'shape' => 'bar-',
             'language_code' => $language
         ]);
@@ -69,9 +69,9 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_morphemes_from_a_source()
     {
-        $source = factory(Source::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create(['shape' => 'foo-']);
-        $morpheme2 = factory(Morpheme::class)->create(['shape' => 'bar-']);
+        $source = Source::factory()->create();
+        $morpheme1 = Morpheme::factory()->create(['shape' => 'foo-']);
+        $morpheme2 = Morpheme::factory()->create(['shape' => 'bar-']);
 
         $morpheme1->addSource($source);
         $morpheme2->addSource($source);

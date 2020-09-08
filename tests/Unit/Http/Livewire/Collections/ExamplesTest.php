@@ -35,17 +35,17 @@ class ExamplesTest extends TestCase
             DB::table('forms')->delete();
             DB::table('examples')->delete();
 
-            $form = factory(Form::class)->create(['shape' => 'V-seed']);
+            $form = Form::factory()->create(['shape' => 'V-seed']);
 
-            factory(Example::class)->create([
+            Example::factory()->create([
                 'shape' => 'fooexample',
                 'form_id' => $form
             ]);
-            factory(Example::class)->create([
+            Example::factory()->create([
                 'shape' => 'barexample',
                 'form_id' => $form
             ]);
-            factory(Example::class, Examples::maxSizeFor('xl') + 1)->create([
+            Example::factory()->count(Examples::maxSizeFor('xl') + 1)->create([
                 'form_id' => $form
             ]);
             static::$seeded = true;

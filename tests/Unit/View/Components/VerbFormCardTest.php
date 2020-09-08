@@ -18,7 +18,7 @@ class VerbFormCardTest extends TestCase
     /** @test */
     public function it_shows_a_formatted_shape()
     {
-        $form = factory(VerbForm::class)->create(['shape' => 'V-foo']);
+        $form = VerbForm::factory()->create(['shape' => 'V-foo']);
 
         $view = $this->blade('<x-verb-form-card :form="$form" />', compact('form'));
 
@@ -28,9 +28,9 @@ class VerbFormCardTest extends TestCase
     /** @test */
     public function it_shows_the_feature_string()
     {
-        $form = factory(VerbForm::class)->create([
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
+        $form = VerbForm::factory()->create([
+            'structure_id' => VerbStructure::factory()->create([
+                'subject_name' => Feature::factory()->create(['name' => '1s']),
                 'head' => 'subject'
             ])
         ]);
@@ -43,9 +43,9 @@ class VerbFormCardTest extends TestCase
     /** @test */
     public function it_shows_its_mode()
     {
-        $form = factory(VerbForm::class)->create([
-            'structure_id' => factory(VerbStructure::class)->create([
-                'mode_name' => factory(VerbMode::class)->create(['name' => 'themode']),
+        $form = VerbForm::factory()->create([
+            'structure_id' => VerbStructure::factory()->create([
+                'mode_name' => VerbMode::factory()->create(['name' => 'themode']),
             ])
         ]);
 
@@ -57,9 +57,9 @@ class VerbFormCardTest extends TestCase
     /** @test */
     public function it_shows_its_order()
     {
-        $form = factory(VerbForm::class)->create([
-            'structure_id' => factory(VerbStructure::class)->create([
-                'order_name' => factory(VerbOrder::class)->create(['name' => 'theorder']),
+        $form = VerbForm::factory()->create([
+            'structure_id' => VerbStructure::factory()->create([
+                'order_name' => VerbOrder::factory()->create(['name' => 'theorder']),
             ])
         ]);
 
@@ -71,9 +71,9 @@ class VerbFormCardTest extends TestCase
     /** @test */
     public function it_shows_its_class()
     {
-        $form = factory(VerbForm::class)->create([
-            'structure_id' => factory(VerbStructure::class)->create([
-                'class_abv' => factory(VerbClass::class)->create(['abv' => 'theclass']),
+        $form = VerbForm::factory()->create([
+            'structure_id' => VerbStructure::factory()->create([
+                'class_abv' => VerbClass::factory()->create(['abv' => 'theclass']),
             ])
         ]);
 

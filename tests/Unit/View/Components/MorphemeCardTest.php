@@ -15,7 +15,7 @@ class MorphemeCardTest extends TestCase
     /** @test */
     public function it_displays_the_formatted_shape()
     {
-        $morpheme = factory(Morpheme::class)->create();
+        $morpheme = Morpheme::factory()->create();
 
         $view = $this->blade('<x-morpheme-card :morpheme="$morpheme" />', compact('morpheme'));
 
@@ -25,11 +25,11 @@ class MorphemeCardTest extends TestCase
     /** @test */
     public function it_displays_the_slot()
     {
-        $slot = factory(Slot::class)->create([
+        $slot = Slot::factory()->create([
             'abv' => 'FOO',
             'colour' => 'rgb(255, 0, 0)'
         ]);
-        $morpheme = factory(Morpheme::class)->create(['slot_abv' => $slot]);
+        $morpheme = Morpheme::factory()->create(['slot_abv' => $slot]);
 
         $view = $this->blade('<x-morpheme-card :morpheme="$morpheme" />', compact('morpheme'));
 
@@ -40,9 +40,9 @@ class MorphemeCardTest extends TestCase
     /** @test */
     public function it_displays_the_glosses()
     {
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'G1']);
-        $gloss2 = factory(Gloss::class)->create(['abv' => 'G2']);
-        $morpheme = factory(Morpheme::class)->create(['gloss' => 'G1.G2']);
+        $gloss1 = Gloss::factory()->create(['abv' => 'G1']);
+        $gloss2 = Gloss::factory()->create(['abv' => 'G2']);
+        $morpheme = Morpheme::factory()->create(['gloss' => 'G1.G2']);
 
         $view = $this->blade('<x-morpheme-card :morpheme="$morpheme" />', compact('morpheme'));
 

@@ -14,7 +14,7 @@ class ExampleCardTest extends TestCase
     /** @test */
     public function it_shows_its_formatted_shape()
     {
-        $example = factory(Example::class)->create();
+        $example = Example::factory()->create();
 
         $view = $this->blade('<x-example-card :example="$example" />', compact('example'));
 

@@ -27,7 +27,7 @@ class SourcesTest extends TestCase
             // Ensure sources were cleaned up from earlier runs
             DB::table('sources')->delete();
 
-            factory(Source::class, 225)->create();
+            Source::factory()->count(225)->create();
             static::$seeded = true;
         }
     }
@@ -49,8 +49,8 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_shows_all_sources()
     {
-        $source1 = factory(Source::class)->create(['author' => 'Doe', 'year' => 1]);
-        $source2 = factory(Source::class)->create(['author' => 'Doe', 'year' => 1]);
+        $source1 = Source::factory()->create(['author' => 'Doe', 'year' => 1]);
+        $source2 = Source::factory()->create(['author' => 'Doe', 'year' => 1]);
 
         $view = $this->livewire(Sources::class);
 
@@ -66,8 +66,8 @@ class SourcesTest extends TestCase
             public $table = 'sourced';
         };
 
-        $source = factory(Source::class)->create(['author' => 'Foo']);
-        factory(Source::class)->create(['author' => 'Bar']);
+        $source = Source::factory()->create(['author' => 'Foo']);
+        Source::factory()->create(['author' => 'Bar']);
         $sourced = $sourcedClass->create();
         $sourced->addSource($source);
 
@@ -108,7 +108,7 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
-        factory(Source::class, 25)->create();
+        Source::factory()->count(25)->create();
 
         $view = $this->livewire(Sources::class, ['screenSize' => 'sm', 'page' => 0]);
         $view->call('prevPage');
@@ -120,8 +120,8 @@ class SourcesTest extends TestCase
     /** @test */
     public function it_filters_with_a_text_query()
     {
-        factory(Source::class)->create(['author' => 'Foo', 'year' => 2000]);
-        factory(Source::class)->create(['author' => 'Bar', 'year' => 1999]);
+        Source::factory()->create(['author' => 'Foo', 'year' => 2000]);
+        Source::factory()->create(['author' => 'Bar', 'year' => 1999]);
 
         $view = $this->livewire(Sources::class);
         $view->set('filter', 'F');
@@ -132,8 +132,8 @@ class SourcesTest extends TestCase
 
     public function it_filters_including_the_year()
     {
-        factory(Source::class)->create(['author' => 'Foo', 'year' => 2000]);
-        factory(Source::class)->create(['author' => 'Bar', 'year' => 1999]);
+        Source::factory()->create(['author' => 'Foo', 'year' => 2000]);
+        Source::factory()->create(['author' => 'Bar', 'year' => 1999]);
 
         $view = $this->livewire(Sources::class);
         $view->set('filter', 'o 2');

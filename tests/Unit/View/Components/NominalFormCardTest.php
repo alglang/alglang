@@ -16,7 +16,7 @@ class NominalFormCardTest extends TestCase
     /** @test */
     public function it_shows_a_formatted_shape()
     {
-        $form = factory(NominalForm::class)->create(['shape' => 'V-foo']);
+        $form = NominalForm::factory()->create(['shape' => 'V-foo']);
 
         $view = $this->blade('<x-nominal-form-card :form="$form" />', compact('form'));
 
@@ -26,9 +26,9 @@ class NominalFormCardTest extends TestCase
     /** @test */
     public function it_shows_the_feature_string()
     {
-        $form = factory(NominalForm::class)->create([
-            'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_name' => factory(Feature::class)->create(['name' => '1s']),
+        $form = NominalForm::factory()->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'pronominal_feature_name' => Feature::factory()->create(['name' => '1s']),
             ])
         ]);
 
@@ -40,9 +40,9 @@ class NominalFormCardTest extends TestCase
     /** @test */
     public function it_shows_its_paradigm()
     {
-        $form = factory(NominalForm::class)->create([
-            'structure_id' => factory(NominalStructure::class)->create([
-                'paradigm_id' => factory(NominalParadigm::class)->create(['name' => 'theparadigm']),
+        $form = NominalForm::factory()->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'paradigm_id' => NominalParadigm::factory()->create(['name' => 'theparadigm']),
             ])
         ]);
 

@@ -36,20 +36,20 @@ class NominalFormsTest extends TestCase
             DB::table('languages')->delete();
             DB::table('forms')->delete();
 
-            $language = factory(Language::class)->create(['name' => 'Seed language']);
-            $structure = factory(NominalStructure::class)->create();
+            $language = Language::factory()->create(['name' => 'Seed language']);
+            $structure = NominalStructure::factory()->create();
 
-            factory(NominalForm::class)->create([
+            NominalForm::factory()->create([
                 'shape' => 'N-foo',
                 'language_code' => $language,
                 'structure_id' => $structure->id
             ]);
-            factory(NominalForm::class)->create([
+            NominalForm::factory()->create([
                 'shape' => 'N-bar',
                 'language_code' => $language,
                 'structure_id' => $structure->id
             ]);
-            factory(NominalForm::class, NominalForms::maxSizeFor('xl') + 1)->create([
+            NominalForm::factory()->count(NominalForms::maxSizeFor('xl') + 1)->create([
                 'language_code' => $language,
                 'structure_id' => $structure->id
             ]);
