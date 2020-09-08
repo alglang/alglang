@@ -15,7 +15,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function a_group_can_be_viewed()
     {
-        $group = factory(Group::class)->create(['name' => 'Test Group']);
+        $group = Group::factory()->create(['name' => 'Test Group']);
 
         $response = $this->get($group->url);
         $response->assertOk();
@@ -27,7 +27,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function the_description_is_displayed_if_the_group_has_a_description()
     {
-        $group = factory(Group::class)->create([
+        $group = Group::factory()->create([
             'description' => 'Lorem ipsum dolor sit amet'
         ]);
 
@@ -42,8 +42,8 @@ class ViewGroupTest extends TestCase
     public function the_group_parent_is_displayed_if_the_group_has_a_parent()
     {
         $this->withoutExceptionHandling();
-        $parent = factory(Group::class)->create(['name' => 'Supergroup']);
-        $child = factory(Group::class)->create(['parent_name' => $parent->name]);
+        $parent = Group::factory()->create(['name' => 'Supergroup']);
+        $child = Group::factory()->create(['parent_name' => $parent->name]);
 
         $response = $this->get($child->url);
         $response->assertOk();
@@ -55,12 +55,12 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function the_group_children_are_displayed_if_there_are_any_children()
     {
-        $parent = factory(Group::class)->create();
-        $child1 = factory(Group::class)->create([
+        $parent = Group::factory()->create();
+        $child1 = Group::factory()->create([
             'name' => 'Child 1',
             'parent_name' => $parent->name
         ]);
-        $child2 = factory(Group::class)->create([
+        $child2 = Group::factory()->create([
             'name' => 'Child 2',
             'parent_name' => $parent->name
         ]);
@@ -76,7 +76,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function the_children_field_is_not_displayed_if_there_are_no_children()
     {
-        $group = factory(Group::class)->create();
+        $group = Group::factory()->create();
 
         $response = $this->get($group->url);
         $response->assertOk();
@@ -87,7 +87,7 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function the_description_is_not_displayed_if_the_group_has_no_description()
     {
-        $group = factory(Group::class)->create(['description' => null]);
+        $group = Group::factory()->create(['description' => null]);
 
         $response = $this->get($group->url);
         $response->assertOk();
@@ -98,14 +98,14 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
-        $group = factory(Group::class)->create();
+        $group = Group::factory()->create();
 
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 1',
             'position' => ['lat' => 46.1, 'lng' => -87.1],
             'group_name' => $group->name
         ]);
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 2',
             'position' => ['lat' => 47.1, 'lng' => -86.1],
             'group_name' => $group->name
@@ -123,16 +123,16 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function descendants_of_group_languages_appear_on_the_group_page()
     {
-        $group = factory(Group::class)->create();
-        $groupChild = factory(Group::class)->create(['parent_name' => $group->name]);
+        $group = Group::factory()->create();
+        $groupChild = Group::factory()->create(['parent_name' => $group->name]);
 
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 1',
             'code' => 'tl1',
             'position' => ['lat' => 46.1, 'lng' => -87.1],
             'group_name' => $group->name
         ]);
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 2',
             'position' => ['lat' => 47.1, 'lng' => -86.1],
             'parent_code' => 'tl1',
@@ -151,9 +151,9 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function languages_without_positions_appear_under_the_map()
     {
-        $group = factory(Group::class)->create();
+        $group = Group::factory()->create();
 
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language',
             'group_name' => $group->name,
             'position' => null
@@ -168,14 +168,14 @@ class ViewGroupTest extends TestCase
     /** @test */
     public function languages_without_positions_are_ordered_by_name()
     {
-        $group = factory(Group::class)->create();
+        $group = Group::factory()->create();
 
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Foo',
             'group_name' => $group->name,
             'position' => null
         ]);
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Bar',
             'group_name' => $group->name,
             'position' => null

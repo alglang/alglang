@@ -24,7 +24,7 @@ class ViewVerbParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_languages()
     {
-        $languages = factory(Language::class, 2)->create();
+        $languages = Language::factory()->count(2)->create();
 
         $response = $this->get('/search/verbs/paradigms');
         $response->assertOk();
@@ -35,7 +35,7 @@ class ViewVerbParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_classes()
     {
-        $classes = factory(VerbClass::class, 2)->create();
+        $classes = VerbClass::factory()->count(2)->create();
 
         $response = $this->get('/search/verbs/paradigms');
         $response->assertOk();
@@ -46,7 +46,7 @@ class ViewVerbParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_orders()
     {
-        $orders = factory(VerbOrder::class, 2)->create();
+        $orders = VerbOrder::factory()->count(2)->create();
 
         $response = $this->get('/search/verbs/paradigms');
         $response->assertOk();

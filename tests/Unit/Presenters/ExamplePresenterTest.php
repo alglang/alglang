@@ -22,10 +22,10 @@ class ExamplePresenterTest extends TestCase
     /** @test */
     public function its_formatted_shape_includes_an_asterisk_if_its_language_is_reconstructed()
     {
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'shape' => 'foobar',
-            'form_id' => factory(Form::class)->create([
-                'language_code' => factory(Language::class)->create(['reconstructed' => true])
+            'form_id' => Form::factory()->create([
+                'language_code' => Language::factory()->create(['reconstructed' => true])
             ])
         ]);
         $this->assertEquals('<i>*foobar</i>', $example->formatted_shape);
@@ -41,10 +41,10 @@ class ExamplePresenterTest extends TestCase
     /** @test */
     public function its_formatted_phonemic_shape_includes_an_asterisk_if_its_language_is_reconstructed()
     {
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'phonemic_shape' => 'foobar',
-            'form_id' => factory(Form::class)->create([
-                'language_code' => factory(Language::class)->create(['reconstructed' => true])
+            'form_id' => Form::factory()->create([
+                'language_code' => Language::factory()->create(['reconstructed' => true])
             ])
         ]);
         $this->assertEquals('<i>*foobar</i>', $example->formatted_phonemic_shape);

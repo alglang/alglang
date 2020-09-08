@@ -28,28 +28,4 @@ abstract class TestCase extends BaseTestCase
     {
         $this->artisan('migrate', ['--path' => 'tests/database/migrations']);
     }
-
-    /**
-     * Render the contents of the given Blade template string.
-     *
-     * @param  string  $template
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
-     * @return \Illuminate\Testing\TestView
-     *
-     * @deprecated When moved to laravel 8.0 remove this
-     */
-    protected function blade(string $template, array $data = []): TestView
-    {
-        $tempDirectory = sys_get_temp_dir();
-
-        if (! in_array($tempDirectory, ViewFacade::getFinder()->getPaths())) {
-            ViewFacade::addLocation(sys_get_temp_dir());
-        }
-
-        $tempFile = tempnam($tempDirectory, 'laravel-blade').'.blade.php';
-
-        file_put_contents($tempFile, $template);
-
-        return new TestView(view(Str::before(basename($tempFile), '.blade.php'), $data));
-    }
 }

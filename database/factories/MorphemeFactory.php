@@ -1,15 +1,22 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Language;
 use App\Models\Morpheme;
 use App\Models\Slot;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Morpheme::class, function (Faker $faker) {
-    return [
-        'shape' => '-ak',
-        'language_code' => factory(Language::class),
-        'slot_abv' => factory(Slot::class)
-    ];
-});
+class MorphemeFactory extends Factory
+{
+    protected $model = Morpheme::class;
+
+    public function definition()
+    {
+        return [
+            'shape' => '-ak',
+            'language_code' => Language::factory(),
+            'slot_abv' => Slot::factory()
+        ];
+    }
+}

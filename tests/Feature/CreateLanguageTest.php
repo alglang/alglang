@@ -23,10 +23,10 @@ class CreateLanguageTest extends TestCase
         parent::setUp();
 
         $this->withPermissions();
-        $this->group = factory(Group::class)->create();
-        $this->parent = factory(Language::class)->create();
+        $this->group = Group::factory()->create();
+        $this->parent = Language::factory()->create();
 
-        $this->contributor = factory(User::class)->create();
+        $this->contributor = User::factory()->create();
         $this->contributor->assignRole('contributor');
     }
 
@@ -63,8 +63,8 @@ class CreateLanguageTest extends TestCase
     /** @test */
     public function the_created_language_is_returned_in_the_response()
     {
-        $group = factory(Group::class)->create(['name' => 'Test Group']);
-        $parent = factory(Language::class)->create(['name' => 'Test Parent']);
+        $group = Group::factory()->create(['name' => 'Test Group']);
+        $parent = Language::factory()->create(['name' => 'Test Parent']);
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [
                             'name' => 'Test Language',
@@ -109,7 +109,7 @@ class CreateLanguageTest extends TestCase
     /** @test */
     public function a_user_cannot_add_a_language_without_permission()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
                         ->postJson('/api/languages', [
@@ -183,7 +183,7 @@ class CreateLanguageTest extends TestCase
     /** @test */
     public function the_language_name_must_be_unique()
     {
-        factory(Language::class)->create(['name' => 'Test Language', 'code' => 'XX']);
+        Language::factory()->create(['name' => 'Test Language', 'code' => 'XX']);
 
         $response = $this->actingAs($this->contributor)
                         ->postJson('/api/languages', [

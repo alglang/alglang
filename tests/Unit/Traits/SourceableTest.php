@@ -6,7 +6,6 @@ use App\Models\Source;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class SourceableTest extends TestCase
@@ -31,7 +30,7 @@ class SourceableTest extends TestCase
     /** @test */
     public function sources_can_be_added()
     {
-        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
         $sourced = $this->sourcedClass->create();
 
         $sourced->addSource($source);
@@ -43,7 +42,7 @@ class SourceableTest extends TestCase
     /** @test */
     public function sources_can_be_added_with_extra_info()
     {
-        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
         $sourced = $this->sourcedClass->create();
 
         $sourced->addSource($source, ['extra_info' => 'lorem ipsum']);
@@ -54,7 +53,7 @@ class SourceableTest extends TestCase
     /** @test */
     public function sources_can_be_added_with_descriptions()
     {
-        $source = factory(Source::class)->create();
+        $source = Source::factory()->create();
         $sourced = $this->sourcedClass->create();
 
         $sourced->addSource($source, ['description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr']);

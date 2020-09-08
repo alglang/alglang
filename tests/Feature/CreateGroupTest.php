@@ -18,7 +18,7 @@ class CreateGroupTest extends TestCase
 
         $this->withPermissions();
 
-        $this->contributor = factory(User::class)->create();
+        $this->contributor = User::factory()->create();
         $this->contributor->assignRole('contributor');
     }
 
@@ -72,7 +72,7 @@ class CreateGroupTest extends TestCase
     /** @test */
     public function a_group_cannot_be_created_if_the_user_does_not_have_permission()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->postJson('/groups', [

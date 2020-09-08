@@ -17,7 +17,7 @@ class ViewLanguageCreateTest extends TestCase
 
         $this->withPermissions();
 
-        $this->contributor = factory(User::class)->create();
+        $this->contributor = User::factory()->create();
         $this->contributor->assignRole('contributor');
     }
 
@@ -40,7 +40,7 @@ class ViewLanguageCreateTest extends TestCase
     /** @test */
     public function the_language_create_form_cannot_be_viewed_by_a_user_without_permission()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/languages/create');
         $response->assertForbidden();
     }

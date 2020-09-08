@@ -26,7 +26,7 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function it_includes_languages()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -37,8 +37,8 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function languages_are_ordered_by_name()
     {
-        factory(Language::class)->create(['name' => 'Foo', 'order_key' => 0]);
-        factory(Language::class)->create(['name' => 'Bar', 'order_key' => 1]);
+        Language::factory()->create(['name' => 'Foo', 'order_key' => 0]);
+        Language::factory()->create(['name' => 'Bar', 'order_key' => 1]);
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -49,7 +49,7 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function it_includes_classes()
     {
-        $class = factory(VerbClass::class)->create();
+        $class = VerbClass::factory()->create();
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -60,8 +60,8 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function classes_are_ordered_by_abv()
     {
-        factory(VerbClass::class)->create(['abv' => 'Foo']);
-        factory(VerbClass::class)->create(['abv' => 'Bar']);
+        VerbClass::factory()->create(['abv' => 'Foo']);
+        VerbClass::factory()->create(['abv' => 'Bar']);
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -72,7 +72,7 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function it_includes_modes()
     {
-        $mode = factory(VerbMode::class)->create();
+        $mode = VerbMode::factory()->create();
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -83,8 +83,8 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function modes_are_ordered_by_name()
     {
-        factory(VerbMode::class)->create(['name' => 'Foo']);
-        factory(VerbMode::class)->create(['name' => 'Bar']);
+        VerbMode::factory()->create(['name' => 'Foo']);
+        VerbMode::factory()->create(['name' => 'Bar']);
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -95,7 +95,7 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function it_includes_orders()
     {
-        $order = factory(VerbOrder::class)->create();
+        $order = VerbOrder::factory()->create();
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -106,8 +106,8 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function orders_are_ordered_by_name()
     {
-        factory(VerbOrder::class)->create(['name' => 'Foo']);
-        factory(VerbOrder::class)->create(['name' => 'Bar']);
+        VerbOrder::factory()->create(['name' => 'Foo']);
+        VerbOrder::factory()->create(['name' => 'Bar']);
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -118,7 +118,7 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function it_includes_features()
     {
-        $feature = factory(Feature::class)->create();
+        $feature = Feature::factory()->create();
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();
@@ -129,8 +129,8 @@ class ViewVerbFormSearchFormTest extends TestCase
     /** @test */
     public function features_are_ordered_by_name()
     {
-        factory(Feature::class)->create(['name' => 'Foo']);
-        factory(Feature::class)->create(['name' => 'Bar']);
+        Feature::factory()->create(['name' => 'Foo']);
+        Feature::factory()->create(['name' => 'Bar']);
 
         $response = $this->get('/search/verbs/forms');
         $response->assertOk();

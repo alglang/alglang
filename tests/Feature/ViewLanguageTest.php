@@ -29,8 +29,8 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_can_be_viewed()
     {
-        $group = factory(Group::class)->create(['name' => 'Test Group']);
-        $language = factory(Language::class)->create([
+        $group = Group::factory()->create(['name' => 'Test Group']);
+        $language = Language::factory()->create([
             'name' => 'Test Language',
             'code' => 'PA',
             'group_name' => $group->name
@@ -49,9 +49,9 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_comes_with_its_morpheme_count()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['language_code' => $language->code]);
-        factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        Morpheme::factory()->create(['language_code' => $language->code]);
+        Morpheme::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get($language->url);
 
@@ -63,10 +63,10 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_comes_with_its_verb_form_count()
     {
-        $language = factory(Language::class)->create();
-        factory(VerbForm::class)->create(['language_code' => $language->code]);
-        factory(VerbForm::class)->create(['language_code' => $language->code]);
-        factory(NominalForm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        VerbForm::factory()->create(['language_code' => $language->code]);
+        VerbForm::factory()->create(['language_code' => $language->code]);
+        NominalForm::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get($language->url);
 
@@ -78,10 +78,10 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_comes_with_its_nominal_form_count()
     {
-        $language = factory(Language::class)->create();
-        factory(NominalForm::class)->create(['language_code' => $language->code]);
-        factory(NominalForm::class)->create(['language_code' => $language->code]);
-        factory(VerbForm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        NominalForm::factory()->create(['language_code' => $language->code]);
+        NominalForm::factory()->create(['language_code' => $language->code]);
+        VerbForm::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get($language->url);
 
@@ -93,8 +93,8 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_comes_with_its_nominal_paradigm_count()
     {
-        $language = factory(Language::class)->create();
-        factory(NominalParadigm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        NominalParadigm::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get($language->url);
 
@@ -106,9 +106,9 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_comes_with_its_source_count()
     {
-        $language = factory(Language::class)->create();
-        $source = factory(Source::class)->create();
-        factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $source = Source::factory()->create();
+        Morpheme::factory()->create([
             'language_code' => $language->code
         ])->addSource($source);
 
@@ -122,8 +122,8 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_parent_comes_with_the_language()
     {
-        $language = factory(Language::class)->create([
-            'parent_code' => factory(Language::class)->create(['name' => 'Parent Language'])
+        $language = Language::factory()->create([
+            'parent_code' => Language::factory()->create(['name' => 'Parent Language'])
         ]);
 
         $response = $this->get($language->url);
@@ -134,8 +134,8 @@ class ViewLanguageTest extends TestCase
 
     /* public function a_contributor_can_see_edit_mode() */
     /* { */
-    /*     $language = factory(Language::class)->create(); */
-    /*     $contributor = factory(User::class)->create(); */
+    /*     $language = Language::factory()->create(); */
+    /*     $contributor = User::factory()->create(); */
     /*     $contributor->assignRole('contributor'); */
 
     /*     $response = $this->actingAs($contributor)->get($language->url); */
@@ -145,8 +145,8 @@ class ViewLanguageTest extends TestCase
 
     /* public function a_user_cannot_see_edit_mode_without_permission() */
     /* { */
-    /*     $language = factory(Language::class)->create(); */
-    /*     $user = factory(User::class)->create(); */
+    /*     $language = Language::factory()->create(); */
+    /*     $user = User::factory()->create(); */
 
     /*     $response = $this->actingAs($user)->get($language->url); */
 
@@ -156,12 +156,12 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_shows_its_children_if_it_has_children()
     {
-        $language = factory(Language::class)->create();
-        $child1 = factory(Language::class)->create([
+        $language = Language::factory()->create();
+        $child1 = Language::factory()->create([
             'name' => 'Test Child 1',
             'parent_code' => $language->code
         ]);
-        $child2 = factory(Language::class)->create([
+        $child2 = Language::factory()->create([
             'name' => 'Test Child 2',
             'parent_code' => $language->code
         ]);
@@ -177,7 +177,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function a_language_does_not_show_children_if_it_has_no_children()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
         $response = $this->get($language->url);
 
@@ -188,7 +188,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_displays_its_location_if_it_has_one()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'name' => 'Test Language',
             'position' => ['lat' => 57.5, 'lng' => 74.3]
         ]);
@@ -203,7 +203,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function iso_code_is_displayed_if_it_exists()
     {
-        $language = factory(Language::class)->create(['iso' => 'xyz']);
+        $language = Language::factory()->create(['iso' => 'xyz']);
 
         $response = $this->get($language->url);
 
@@ -215,7 +215,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function iso_code_is_not_displayed_if_it_does_not_exist()
     {
-        $language = factory(Language::class)->create(['iso' => null]);
+        $language = Language::factory()->create(['iso' => null]);
 
         $response = $this->get($language->url);
 
@@ -226,7 +226,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function notes_are_displayed_if_they_exist()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -240,7 +240,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function notes_are_not_displayed_if_they_dont_exist()
     {
-        $language = factory(Language::class)->create(['notes' => null]);
+        $language = Language::factory()->create(['notes' => null]);
 
         $response = $this->get($language->url);
 
@@ -251,7 +251,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_language_does_not_display_its_location_if_it_does_not_have_one()
     {
-        $language = factory(Language::class)->create(['position' => null]);
+        $language = Language::factory()->create(['position' => null]);
 
         $response = $this->get($language->url);
 
@@ -262,7 +262,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function reconstructed_languages_are_indicated()
     {
-        $language = factory(Language::class)->create(['reconstructed' => true]);
+        $language = Language::factory()->create(['reconstructed' => true]);
 
         $response = $this->get($language->url);
 
@@ -273,7 +273,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function nonreconstructed_languages_dont_say_theyre_reconstructed()
     {
-        $language = factory(Language::class)->create(['reconstructed' => false]);
+        $language = Language::factory()->create(['reconstructed' => false]);
 
         $response = $this->get($language->url);
 
@@ -284,8 +284,8 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_parent_is_displayed()
     {
-        $parent = factory(Language::class)->create(['name' => 'Test Super Language']);
-        $child = factory(Language::class)->create(['parent_code' => $parent->code]);
+        $parent = Language::factory()->create(['name' => 'Test Super Language']);
+        $child = Language::factory()->create(['parent_code' => $parent->code]);
 
         $response = $this->get($child->url);
 
@@ -297,7 +297,7 @@ class ViewLanguageTest extends TestCase
     /** @test */
     public function the_alternate_names_are_displayed()
     {
-        $language = factory(Language::class)->create(['alternate_names' => ['alt1', 'alt2']]);
+        $language = Language::factory()->create(['alternate_names' => ['alt1', 'alt2']]);
 
         $response = $this->get($language->url);
 

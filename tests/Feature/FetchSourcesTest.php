@@ -16,8 +16,8 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_fetches_sources()
     {
-        $source1 = factory(Source::class)->create(['author' => 'Jane Doe']);
-        $source2 = factory(Source::class)->create(['author' => 'John Doe']);
+        $source1 = Source::factory()->create(['author' => 'Jane Doe']);
+        $source2 = Source::factory()->create(['author' => 'John Doe']);
 
         $response = $this->get('/api/sources');
 
@@ -35,12 +35,12 @@ class FetchSourcesTest extends TestCase
     public function it_filters_sources_by_language()
     {
         $this->withoutExceptionHandling();
-        $source1 = factory(Source::class)->create(['author' => 'Jane Doe']);
-        $source2 = factory(Source::class)->create(['author' => 'John Doe']);
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create(['language_code' => $language1->code]);
-        $morpheme2 = factory(Morpheme::class)->create(['language_code' => $language2->code]);
+        $source1 = Source::factory()->create(['author' => 'Jane Doe']);
+        $source2 = Source::factory()->create(['author' => 'John Doe']);
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
+        $morpheme1 = Morpheme::factory()->create(['language_code' => $language1->code]);
+        $morpheme2 = Morpheme::factory()->create(['language_code' => $language2->code]);
         $morpheme1->addSource($source1);
         $morpheme2->addSource($source2);
 
@@ -58,7 +58,7 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_includes_short_citations()
     {
-        $source = factory(Source::class)->create();
+        $source = Source::factory()->create();
 
         $response = $this->get('/api/sources');
 
@@ -73,7 +73,7 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_includes_urls()
     {
-        $source = factory(Source::class)->create();
+        $source = Source::factory()->create();
 
         $response = $this->get('/api/sources');
 
@@ -88,7 +88,7 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_paginates_sources()
     {
-        factory(Source::class, 3)->create();
+        Source::factory()->count(3)->create();
 
         $response = $this->get('/api/sources?per_page=2');
         $response->assertOk();
@@ -102,15 +102,15 @@ class FetchSourcesTest extends TestCase
     /** @test */
     public function it_sorts_sources_by_author_then_year()
     {
-        $source1 = factory(Source::class)->create([
+        $source1 = Source::factory()->create([
             'author' => 'Beta',
             'year' => 10
         ]);
-        $source2 = factory(Source::class)->create([
+        $source2 = Source::factory()->create([
             'author' => 'Alpha',
             'year' => 11
         ]);
-        $source3 = factory(Source::class)->create([
+        $source3 = Source::factory()->create([
             'author' => 'Alpha',
             'year' => 12
         ]);

@@ -1,11 +1,18 @@
 <?php
 
-use App\Models\Group;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Group::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->word
-    ];
-});
+use App\Models\Group;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class GroupFactory extends Factory
+{
+    protected $model = Group::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->unique()->word
+        ];
+    }
+}

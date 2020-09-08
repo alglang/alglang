@@ -18,12 +18,12 @@ class ExampleTest extends TestCase
     /** @test */
     public function it_has_a_url_attribute_when_it_has_a_verb_form()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
-        $form = factory(VerbForm::class)->create([
+        $language = Language::factory()->create(['code' => 'TL']);
+        $form = VerbForm::factory()->create([
             'language_code' => $language->code,
             'shape' => 'V-bar'
         ]);
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'form_id' => $form->id,
             'shape' => 'foo'
         ]);
@@ -35,12 +35,12 @@ class ExampleTest extends TestCase
     /** @test */
     public function it_has_a_url_attribute_when_it_has_a_nominal_form()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
-        $form = factory(NominalForm::class)->create([
+        $language = Language::factory()->create(['code' => 'TL']);
+        $form = NominalForm::factory()->create([
             'language_code' => $language->code,
             'shape' => 'V-bar'
         ]);
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'form_id' => $form->id,
             'shape' => 'foo'
         ]);
@@ -52,9 +52,9 @@ class ExampleTest extends TestCase
     /** @test */
     public function its_language_is_the_same_as_its_form()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
-        $example = factory(Example::class)->create([
-            'form_id' => factory(Form::class)->create(['language_code' => $language->code])
+        $language = Language::factory()->create(['code' => 'TL']);
+        $example = Example::factory()->create([
+            'form_id' => Form::factory()->create(['language_code' => $language->code])
         ]);
 
         $this->assertEquals($language->code, $example->language->code);
@@ -63,19 +63,19 @@ class ExampleTest extends TestCase
     /** @test */
     public function its_morphemes_are_the_same_as_its_forms_but_with_V_replaced_with_stem()
     {
-        $language = factory(Language::class)->create();
-        $stem = factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $stem = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
-        $suffix = factory(Morpheme::class)->create([
+        $suffix = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-bar'
         ]);
-        $form = factory(Form::class)->create(['language_code' => $language->code]);
+        $form = Form::factory()->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, $suffix]);
 
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'form_id' => $form->id,
             'stem_id' => $stem->id
         ]);
@@ -86,15 +86,15 @@ class ExampleTest extends TestCase
     /** @test */
     public function its_morphemes_are_the_same_as_its_forms_if_it_has_no_stem()
     {
-        $language = factory(Language::class)->create();
-        $suffix = factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $suffix = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-bar'
         ]);
-        $form = factory(Form::class)->create(['language_code' => $language->code]);
+        $form = Form::factory()->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, $suffix]);
 
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'form_id' => $form->id,
             'stem_id' => null
         ]);

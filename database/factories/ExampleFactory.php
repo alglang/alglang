@@ -1,30 +1,39 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Example;
 use App\Models\Form;
 use App\Models\Morpheme;
 use App\Models\NominalForm;
 use App\Models\VerbForm;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Example::class, function (Faker $faker) {
-    return [
-        'shape' => 'exampleshape',
-        'stem_id' => factory(Morpheme::class),
-        'form_id' => factory(Form::class),
-        'translation' => '<p>factory translation</p>'
-    ];
-});
+class ExampleFactory extends Factory
+{
+    protected $model = Example::class;
 
-$factory->state(Example::class, 'verb', function (Faker $faker) {
-    return [
-        'form_id' => factory(VerbForm::class)
-    ];
-});
+    public function definition(): array
+    {
+        return [
+            'shape' => 'exampleshape',
+            'stem_id' => Morpheme::factory(),
+            'form_id' => Form::factory(),
+            'translation' => '<p>factory translation</p>'
+        ];
+    }
 
-$factory->state(Example::class, 'nominal', function (Faker $faker) {
-    return [
-        'form_id' => factory(NominalForm::class)
-    ];
-});
+    public function verb()
+    {
+        return $this->state([
+            'form_id' => VerbForm::factory()
+        ]);
+    }
+
+    public function nominal()
+    {
+        return $this->state([
+            'form_id' => NominalForm::factory()
+        ]);
+    }
+}

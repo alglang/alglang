@@ -6,6 +6,7 @@ use App\Presenters\ExamplePresenter;
 use App\Traits\HasParent;
 use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
@@ -15,6 +16,7 @@ use Spatie\Sluggable\SlugOptions;
 class Example extends Model
 {
     use ExamplePresenter;
+    use HasFactory;
     use HasParent;
     use HasSlug;
     use Reconstructable;

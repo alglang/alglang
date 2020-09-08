@@ -36,10 +36,10 @@ class FormTest extends TestCase
     /** @test */
     public function it_can_assign_morphemes()
     {
-        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
+        $form = Form::factory()->create(['language_code' => Language::factory()->create()->code]);
 
         $morphemes = [
-            factory(Morpheme::class)->create([
+            Morpheme::factory()->create([
                 'language_code' => $form->language_code,
                 'shape' => 'foo-'
             ]),
@@ -54,7 +54,7 @@ class FormTest extends TestCase
     /** @test */
     public function assigned_string_morphemes_know_their_language()
     {
-        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create(['code' => 'FOO'])]);
+        $form = Form::factory()->create(['language_code' => Language::factory()->create(['code' => 'FOO'])]);
 
         $form->assignMorphemes(['bar']);
 
@@ -64,12 +64,12 @@ class FormTest extends TestCase
     /** @test */
     public function it_retrieves_its_morphemes_in_order()
     {
-        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
-        $morpheme1 = factory(Morpheme::class)->create([
+        $form = Form::factory()->create(['language_code' => Language::factory()->create()->code]);
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $form->language_code,
             'shape' => '-bar'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $form->language_code,
             'shape' => 'foo-'
         ]);
@@ -83,12 +83,12 @@ class FormTest extends TestCase
     /** @test */
     public function it_replaces_old_morpheme_connections()
     {
-        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
-        $morpheme1 = factory(Morpheme::class)->create([
+        $form = Form::factory()->create(['language_code' => Language::factory()->create()->code]);
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $form->language_code,
             'shape' => 'foo-'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $form->language_code,
             'shape' => 'bar-'
         ]);
@@ -107,7 +107,7 @@ class FormTest extends TestCase
     /** @test */
     public function it_caches_the_morphemes_attribute()
     {
-        $form = factory(Form::class)->create();
+        $form = Form::factory()->create();
 
         DB::connection()->enableQueryLog();
 

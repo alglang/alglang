@@ -30,15 +30,15 @@ class SearchVerbFormsTest extends TestCase
     {
         parent::setUp();
 
-        $this->mode = factory(VerbMode::class)->create(['name' => 'factory mode']);
-        $this->order = factory(VerbOrder::class)->create(['name' => 'factory order']);
-        $this->class = factory(VerbClass::class)->create(['abv' => 'fc']);
-        $this->subject = factory(Feature::class)->create(['name' => 'X', 'person' => 'X']);
+        $this->mode = VerbMode::factory()->create(['name' => 'factory mode']);
+        $this->order = VerbOrder::factory()->create(['name' => 'factory order']);
+        $this->class = VerbClass::factory()->create(['abv' => 'fc']);
+        $this->subject = Feature::factory()->create(['name' => 'X', 'person' => 'X']);
     }
 
     protected function generateStructure(array $fields = []): VerbStructure
     {
-        return factory(VerbStructure::class)->create(array_merge([
+        return VerbStructure::factory()->create(array_merge([
             'mode_name' => $this->mode,
             'order_name' => $this->order,
             'class_abv' => $this->class,
@@ -99,15 +99,15 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_orders_forms_by_language()
     {
-        $language2 = factory(Language::class)->create(['name' => 'Test Language 2']);
-        $language1 = factory(Language::class)->create(['name' => 'Test Language 1']);
+        $language2 = Language::factory()->create(['name' => 'Test Language 2']);
+        $language1 = Language::factory()->create(['name' => 'Test Language 1']);
 
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'language_code' => $language2,
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure()
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'language_code' => $language1,
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure()
@@ -126,14 +126,14 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_language()
     {
-        $language = factory(Language::class)->create();
-        factory(VerbForm::class)->create([
+        $language = Language::factory()->create();
+        VerbForm::factory()->create([
             'language_code' => $language,
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure()
         ]);
-        factory(VerbForm::class)->create([
-            'language_code' => factory(Language::class)->create(),
+        VerbForm::factory()->create([
+            'language_code' => Language::factory()->create(),
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure()
         ]);
@@ -151,17 +151,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_mode()
     {
-        $mode = factory(VerbMode::class)->create();
-        factory(VerbForm::class)->create([
+        $mode = VerbMode::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'mode_name' => $mode
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'mode_name' => factory(VerbMode::class)->create()
+                'mode_name' => VerbMode::factory()->create()
             ])
         ]);
 
@@ -205,17 +205,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_order()
     {
-        $order = factory(VerbOrder::class)->create();
-        factory(VerbForm::class)->create([
+        $order = VerbOrder::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'order_name' => $order
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'order_name' => factory(VerbOrder::class)->create()
+                'order_name' => VerbOrder::factory()->create()
             ])
         ]);
 
@@ -259,17 +259,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_class()
     {
-        $class = factory(VerbClass::class)->create();
-        factory(VerbForm::class)->create([
+        $class = VerbClass::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'class_abv' => $class
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'class_abv' => factory(VerbClass::class)->create()
+                'class_abv' => VerbClass::factory()->create()
             ])
         ]);
 
@@ -312,13 +312,13 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_negativity()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'is_negative' => false
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'is_negative' => true
@@ -339,13 +339,13 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_diminutivity()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'is_diminutive' => true
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'is_diminutive' => false
@@ -366,17 +366,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_subject_person()
     {
-        $feature = factory(Feature::class)->create(['person' => '1']);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['person' => '1']);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'person' => '2'
                 ])
             ])
@@ -421,20 +421,20 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_subject_number()
     {
-        $feature = factory(Feature::class)->create([
+        $feature = Feature::factory()->create([
             'person' => $this->subject->person,
             'number' => 1
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'person' => $this->subject->person,
                     'number' => 2
                 ])
@@ -467,20 +467,20 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_subject_obviative_code()
     {
-        $feature = factory(Feature::class)->create([
+        $feature = Feature::factory()->create([
             'person' => $this->subject->person,
             'obviative_code' => 1
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'person' => $this->subject->person,
                     'obviative_code' => null
                 ])
@@ -513,14 +513,14 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_can_exclude_verb_forms_with_primary_objects()
     {
-        $feature = factory(Feature::class)->create(['person' => '1']);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['person' => '1']);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature,
@@ -545,17 +545,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_primary_object_person()
     {
-        $feature = factory(Feature::class)->create(['person' => '1']);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['person' => '1']);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'primary_object_name' => factory(Feature::class)->create([
+                'primary_object_name' => Feature::factory()->create([
                     'person' => '2'
                 ])
             ])
@@ -587,17 +587,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_primary_object_number()
     {
-        $feature = factory(Feature::class)->create(['number' => 1]);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['number' => 1]);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'primary_object_name' => factory(Feature::class)->create([
+                'primary_object_name' => Feature::factory()->create([
                     'number' => 2
                 ])
             ])
@@ -629,17 +629,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_primary_object_obviative_code()
     {
-        $feature = factory(Feature::class)->create(['obviative_code' => 1]);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['obviative_code' => 1]);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'primary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'primary_object_name' => factory(Feature::class)->create([
+                'primary_object_name' => Feature::factory()->create([
                     'obviative_code' => null
                 ])
             ])
@@ -671,14 +671,14 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_can_exclude_verb_forms_with_secondary_objects()
     {
-        $feature = factory(Feature::class)->create(['person' => '1']);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['person' => '1']);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $feature,
@@ -703,17 +703,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_secondary_object_person()
     {
-        $feature = factory(Feature::class)->create(['person' => '1']);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['person' => '1']);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'secondary_object_name' => factory(Feature::class)->create([
+                'secondary_object_name' => Feature::factory()->create([
                     'person' => '2'
                 ])
             ])
@@ -745,17 +745,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_secondary_object_number()
     {
-        $feature = factory(Feature::class)->create(['number' => 1]);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['number' => 1]);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'secondary_object_name' => factory(Feature::class)->create([
+                'secondary_object_name' => Feature::factory()->create([
                     'number' => 2
                 ])
             ])
@@ -787,17 +787,17 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_secondary_object_obviative_code()
     {
-        $feature = factory(Feature::class)->create(['obviative_code' => 1]);
-        factory(VerbForm::class)->create([
+        $feature = Feature::factory()->create(['obviative_code' => 1]);
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'secondary_object_name' => $feature
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'secondary_object_name' => factory(Feature::class)->create([
+                'secondary_object_name' => Feature::factory()->create([
                     'obviative_code' => null
                 ])
             ])
@@ -829,10 +829,10 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_shows_forms_feature_strings_if_the_subject_differs_from_the_query()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'name' => 'bar',
                     'person' => '1',
                     'number' => 1
@@ -858,11 +858,11 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_shows_forms_feature_strings_if_the_primary_object_differs_from_the_query()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $this->subject,
-                'primary_object_name' => factory(Feature::class)->create([
+                'primary_object_name' => Feature::factory()->create([
                     'name' => 'baz',
                     'person' => '2',
                     'number' => 2
@@ -889,11 +889,11 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_shows_forms_feature_strings_if_the_secondary_object_differs_from_the_query()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'subject_name' => $this->subject,
-                'secondary_object_name' => factory(Feature::class)->create([
+                'secondary_object_name' => Feature::factory()->create([
                     'name' => 'baz',
                     'person' => '2',
                     'number' => 2
@@ -920,10 +920,10 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_does_not_show_forms_feature_strings_if_they_only_differ_from_the_query_by_primary_object_wildcard()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'name' => '1s',
                     'person' => '1',
                     'number' => 1
@@ -950,10 +950,10 @@ class SearchVerbFormsTest extends TestCase
     /** @test */
     public function it_does_not_show_forms_feature_strings_if_they_only_differ_from_the_query_by_secondary_object_wildcard()
     {
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
-                'subject_name' => factory(Feature::class)->create([
+                'subject_name' => Feature::factory()->create([
                     'name' => '1s',
                     'person' => '1',
                     'number' => 1

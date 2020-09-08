@@ -23,18 +23,18 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_verb_forms()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
+        $language = Language::factory()->create(['code' => 'TL']);
 
-        $verbForm = factory(VerbForm::class)->create([
+        $verbForm = VerbForm::factory()->create([
             'shape' => 'V-a',
             'language_code' => $language->code,
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
-                'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
-                'secondary_object_name' => factory(Feature::class)->create(['name' => '3d']),
-                'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
-                'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-                'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            'structure_id' => VerbStructure::factory()->create([
+                'subject_name' => Feature::factory()->create(['name' => '1s']),
+                'primary_object_name' => Feature::factory()->create(['name' => '2p']),
+                'secondary_object_name' => Feature::factory()->create(['name' => '3d']),
+                'mode_name' => VerbMode::factory()->create(['name' => 'Indicative']),
+                'order_name' => VerbOrder::factory()->create(['name' => 'Conjunct']),
+                'class_abv' => VerbClass::factory()->create(['abv' => 'TA'])
             ])
         ]);
 
@@ -65,11 +65,11 @@ class FetchVerbFormsTest extends TestCase
     public function it_fetches_verb_forms_by_morpheme()
     {
         $this->withoutExceptionHandling();
-        $morpheme = factory(Morpheme::class)->create();
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $morpheme->language_code]);
+        $morpheme = Morpheme::factory()->create();
+        $verbForm = VerbForm::factory()->create(['language_code' => $morpheme->language_code]);
         $verbForm->assignMorphemes([$morpheme]);
 
-        factory(VerbForm::class)->create(['language_code' => $morpheme->language_code])->assignMorphemes(['foo', 'bar']);
+        VerbForm::factory()->create(['language_code' => $morpheme->language_code])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/verb-forms?with_morphemes[]=$morpheme->id");
 
@@ -85,17 +85,17 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_fetches_source_verb_forms()
     {
-        $source = factory(Source::class)->create();
-        $verbForm = factory(VerbForm::class)->create([
+        $source = Source::factory()->create();
+        $verbForm = VerbForm::factory()->create([
             'shape' => 'V-a',
-            'language_code' => factory(Language::class)->create(['code' => 'TL']),
-            'structure_id' => factory(VerbStructure::class)->create([
-                'subject_name' => factory(Feature::class)->create(['name' => '1s']),
-                'primary_object_name' => factory(Feature::class)->create(['name' => '2p']),
-                'secondary_object_name' => factory(Feature::class)->create(['name' => '3d']),
-                'mode_name' => factory(VerbMode::class)->create(['name' => 'Indicative']),
-                'order_name' => factory(VerbOrder::class)->create(['name' => 'Conjunct']),
-                'class_abv' => factory(VerbClass::class)->create(['abv' => 'TA'])
+            'language_code' => Language::factory()->create(['code' => 'TL']),
+            'structure_id' => VerbStructure::factory()->create([
+                'subject_name' => Feature::factory()->create(['name' => '1s']),
+                'primary_object_name' => Feature::factory()->create(['name' => '2p']),
+                'secondary_object_name' => Feature::factory()->create(['name' => '3d']),
+                'mode_name' => VerbMode::factory()->create(['name' => 'Indicative']),
+                'order_name' => VerbOrder::factory()->create(['name' => 'Conjunct']),
+                'class_abv' => VerbClass::factory()->create(['abv' => 'TA'])
             ])
         ]);
         $verbForm->addSource($source);
@@ -126,9 +126,9 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_does_not_include_other_kinds_of_verb_forms()
     {
-        $language = factory(Language::class)->create();
-        factory(VerbForm::class, 2)->create(['language_code' => $language->code]);
-        factory(NominalForm::class, 2)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        VerbForm::factory()->count(2)->create(['language_code' => $language->code]);
+        NominalForm::factory()->count(2)->create(['language_code' => $language->code]);
 
         $response = $this->get("/api/verb-forms?language=$language->code");
 
@@ -146,13 +146,13 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function verb_forms_are_filtered_by_language()
     {
-        $language1 = factory(Language::class)->create(['code' => 'TL']);
-        $language2 = factory(Language::class)->create();
-        $verbForm1 = factory(VerbForm::class)->create([
+        $language1 = Language::factory()->create(['code' => 'TL']);
+        $language2 = Language::factory()->create();
+        $verbForm1 = VerbForm::factory()->create([
             'shape' => 'V-a',
             'language_code' => $language1->code
         ]);
-        $verbForm2 = factory(VerbForm::class)->create([
+        $verbForm2 = VerbForm::factory()->create([
             'shape' => 'V-b',
             'language_code' => $language2->code
         ]);
@@ -171,10 +171,10 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function verb_forms_are_filtered_by_source()
     {
-        $source1 = factory(Source::class)->create();
-        $source2 = factory(Source::class)->create();
-        $verbForm1 = factory(VerbForm::class)->create(['shape' => 'V-a']);
-        $verbForm2 = factory(VerbForm::class)->create(['shape' => 'V-b',]);
+        $source1 = Source::factory()->create();
+        $source2 = Source::factory()->create();
+        $verbForm1 = VerbForm::factory()->create(['shape' => 'V-a']);
+        $verbForm2 = VerbForm::factory()->create(['shape' => 'V-b',]);
         $verbForm1->addSource($source1);
         $verbForm2->addSource($source2);
 
@@ -192,19 +192,19 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function verb_forms_are_filtered_by_source_and_language()
     {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
-        $source1 = factory(Source::class)->create();
-        $source2 = factory(Source::class)->create();
-        $verbForm1 = factory(VerbForm::class)->create([
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
+        $source1 = Source::factory()->create();
+        $source2 = Source::factory()->create();
+        $verbForm1 = VerbForm::factory()->create([
             'language_code' => $language1->code,
             'shape' => 'V-a'
         ]);
-        $verbForm2 = factory(VerbForm::class)->create([
+        $verbForm2 = VerbForm::factory()->create([
             'language_code' => $language1->code,
             'shape' => 'V-b'
         ]);
-        $verbForm3 = factory(VerbForm::class)->create([
+        $verbForm3 = VerbForm::factory()->create([
             'language_code' => $language2->code,
             'shape' => 'V-c'
         ]);
@@ -226,8 +226,8 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_paginates_verb_forms()
     {
-        $language = factory(Language::class)->create();
-        factory(VerbForm::class, 3)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        VerbForm::factory()->count(3)->create(['language_code' => $language->code]);
 
         $response = $this->get("/api/verb-forms?language=$language->code&per_page=2");
 
@@ -242,8 +242,8 @@ class FetchVerbFormsTest extends TestCase
     /** @test */
     public function it_includes_formatted_shapes()
     {
-        $language = factory(Language::class)->create();
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language]);
+        $language = Language::factory()->create();
+        $verbForm = VerbForm::factory()->create(['language_code' => $language]);
 
         $response = $this->get("/api/verb-forms?language=$language->code");
 

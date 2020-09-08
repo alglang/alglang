@@ -1,14 +1,21 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Group;
 use App\Models\Language;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Language::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->words(3, true),
-        'code' => $faker->unique()->lexify('???'),
-        'group_name' => factory(Group::class)
-    ];
-});
+class LanguageFactory extends Factory
+{
+    protected $model = Language::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->unique()->words(3, true),
+            'code' => $this->faker->unique()->lexify('???'),
+            'group_name' => Group::factory()
+        ];
+    }
+}

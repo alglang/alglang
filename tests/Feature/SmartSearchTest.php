@@ -15,7 +15,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_redirects_to_a_language_from_its_code()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
+        $language = Language::factory()->create(['code' => 'PA']);
 
         $response = $this->get(route('smart-search', ['q' => 'PA']));
 
@@ -25,7 +25,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_checks_the_language_code_case_insensitively()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
+        $language = Language::factory()->create(['code' => 'PA']);
 
         $response = $this->get(route('smart-search', ['q' => 'pa']));
 
@@ -35,7 +35,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_redirects_to_a_language_from_its_name()
     {
-        $language = factory(Language::class)->create(['name' => 'Proto-Algonquian']);
+        $language = Language::factory()->create(['name' => 'Proto-Algonquian']);
 
         $response = $this->get(route('smart-search', ['q' => 'Proto-Algonquian']));
 
@@ -45,7 +45,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_checks_the_language_name_case_insensitively()
     {
-        $language = factory(Language::class)->create(['name' => 'Proto-Algonquian']);
+        $language = Language::factory()->create(['name' => 'Proto-Algonquian']);
 
         $response = $this->get(route('smart-search', ['q' => 'PROTO-ALGONQUIAN']));
 
@@ -55,7 +55,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_redirects_to_a_language_from_its_alternate_name()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'alternate_names' => ['Algonq']
         ]);
 
@@ -67,7 +67,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_checks_the_language_alternate_names_case_insensitively()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'alternate_names' => ['Algonq']
         ]);
 
@@ -79,7 +79,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_redirects_to_a_group_from_its_name()
     {
-        $group = factory(Group::class)->create(['name' => 'Algonquian']);
+        $group = Group::factory()->create(['name' => 'Algonquian']);
 
         $response = $this->get(route('smart-search', ['q' => 'Algonquian']));
 
@@ -89,7 +89,7 @@ class SmartSearchTest extends TestCase
     /** @test */
     public function it_checks_the_group_name_case_insensitively()
     {
-        $group = factory(Group::class)->create(['name' => 'Algonquian']);
+        $group = Group::factory()->create(['name' => 'Algonquian']);
 
         $response = $this->get(route('smart-search', ['q' => 'AlGOnqUIan']));
 

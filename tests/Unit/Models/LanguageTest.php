@@ -20,39 +20,39 @@ class LanguageTest extends TestCase
     /** @test */
     public function its_slug_is_its_code()
     {
-        $language = factory(Language::class)->make(['code' => 'PA']);
+        $language = Language::factory()->make(['code' => 'PA']);
         $this->assertEquals('PA', $language->slug);
     }
 
     /** @test */
     public function it_has_a_url_property()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
+        $language = Language::factory()->create(['code' => 'PA']);
         $this->assertEquals('/languages/PA', $language->url);
     }
 
     /** @test */
     public function its_sources_are_those_of_its_data()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
-        $morphemeSource = factory(Source::class)->create(['author' => 'Morpheme Source']);
-        factory(Morpheme::class)->create([
+        $morphemeSource = Source::factory()->create(['author' => 'Morpheme Source']);
+        Morpheme::factory()->create([
             'language_code' => $language->code
         ])->addSource($morphemeSource);
 
-        $verbFormSource = factory(Source::class)->create(['author' => 'Verbform Source']);
-        factory(VerbForm::class)->create([
+        $verbFormSource = Source::factory()->create(['author' => 'Verbform Source']);
+        VerbForm::factory()->create([
             'language_code' => $language->code
         ])->addSource($verbFormSource);
 
-        $nominalParadigmSource = factory(Source::class)->create(['author' => 'NominalParadigm Source']);
-        $nominalParadigm = factory(NominalParadigm::class)->create([
+        $nominalParadigmSource = Source::factory()->create(['author' => 'NominalParadigm Source']);
+        $nominalParadigm = NominalParadigm::factory()->create([
             'language_code' => $language->code
         ])->addSource($nominalParadigmSource);
 
-        $nominalFormSource = factory(Source::class)->create(['author' => 'Nominalform Source']);
-        factory(NominalForm::class)->create([
+        $nominalFormSource = Source::factory()->create(['author' => 'Nominalform Source']);
+        NominalForm::factory()->create([
             'language_code' => $language->code,
         ])->addSource($nominalFormSource);
 
@@ -66,10 +66,10 @@ class LanguageTest extends TestCase
     /** @test */
     public function it_loads_its_sources_count()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
-        $source = factory(Source::class)->create(['author' => 'Morpheme Source']);
-        factory(Morpheme::class)->create([
+        $source = Source::factory()->create(['author' => 'Morpheme Source']);
+        Morpheme::factory()->create([
             'language_code' => $language->code
         ])->addSource($source);
 
@@ -81,14 +81,14 @@ class LanguageTest extends TestCase
     /** @test */
     public function it_retrieves_its_verb_stem()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
         $this->assertEquals('V-', $language->vStem->shape);
     }
 
     /** @test */
     public function it_caches_the_sources_attribute()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
         DB::connection()->enableQueryLog();
 
@@ -104,9 +104,9 @@ class LanguageTest extends TestCase
     /** @test */
     public function its_forms_are_its_nominal_and_verb_forms_combined()
     {
-        $language = factory(Language::class)->create();
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
 
         $this->assertCount(2, $language->forms);
         $this->assertEquals([$verbForm->id, $nominalForm->id], $language->forms->pluck('id')->toArray());
@@ -115,7 +115,7 @@ class LanguageTest extends TestCase
     /** @test */
     public function it_has_alternate_names()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'alternate_names' => ['foo', 'bar']
         ]);
 
@@ -125,8 +125,8 @@ class LanguageTest extends TestCase
     /** @test */
     public function languages_are_ordered_by_order_key()
     {
-        $group1 = factory(Language::class)->create(['order_key' => 2]);
-        $group2 = factory(Language::class)->create(['order_key' => 1]);
+        $group1 = Language::factory()->create(['order_key' => 2]);
+        $group2 = Language::factory()->create(['order_key' => 1]);
 
         $groups = Language::all();
         $this->assertEquals([$group2->code, $group1->code], $groups->pluck('code')->toArray());

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Sourceable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Spatie\Sluggable\HasSlug;
@@ -10,6 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class NominalParadigm extends Model
 {
+    use HasFactory;
     use HasSlug;
     use Sourceable;
 

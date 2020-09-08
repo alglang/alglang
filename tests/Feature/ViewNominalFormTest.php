@@ -22,7 +22,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_correct_view_is_loaded()
     {
-        $form = factory(NominalForm::class)->create();
+        $form = NominalForm::factory()->create();
         $response = $this->get($form->url);
         $response->assertOk();
         $response->assertViewIs('nominal-forms.show');
@@ -31,14 +31,14 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_can_be_viewed()
     {
-        $language = factory(Language::class)->create(['name' => 'Test Language']);
+        $language = Language::factory()->create(['name' => 'Test Language']);
 
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'language_code' => $language->code,
-            'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_name' => factory(Feature::class)->create(['name' => '3s']),
-                'nominal_feature_name' => factory(Feature::class)->create(['name' => '2p']),
-                'paradigm_id' => factory(NominalParadigm::class)->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'pronominal_feature_name' => Feature::factory()->create(['name' => '3s']),
+                'nominal_feature_name' => Feature::factory()->create(['name' => '2p']),
+                'paradigm_id' => NominalParadigm::factory()->create([
                     'name' => 'Test paradigm',
                     'language_code' => $language->code
                 ])
@@ -57,10 +57,10 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function pronominal_feature_is_omitted_if_there_is_no_pronominal_feature()
     {
-        $nominalForm = factory(NominalForm::class)->create([
-            'structure_id' => factory(NominalStructure::class)->create([
+        $nominalForm = NominalForm::factory()->create([
+            'structure_id' => NominalStructure::factory()->create([
                 'pronominal_feature_name' => null,
-                'nominal_feature_name' => factory(Feature::class)->create()
+                'nominal_feature_name' => Feature::factory()->create()
             ])
         ]);
 
@@ -73,9 +73,9 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function nominal_feature_is_omitted_if_there_is_no_nominal_feature()
     {
-        $nominalForm = factory(NominalForm::class)->create([
-            'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_name' => factory(Feature::class)->create(),
+        $nominalForm = NominalForm::factory()->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'pronominal_feature_name' => Feature::factory()->create(),
                 'nominal_feature_name' => null
             ])
         ]);
@@ -89,8 +89,8 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_shape_is_formatted_correctly()
     {
-        $language = factory(Language::class)->create(['reconstructed' => true]);
-        $nominalForm = factory(NominalForm::class)->create([
+        $language = Language::factory()->create(['reconstructed' => true]);
+        $nominalForm = NominalForm::factory()->create([
             'shape' => 'N-ak',
             'language_code' => $language
         ]);
@@ -104,7 +104,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_shows_its_phonemic_shape()
     {
-        $nominalForm = factory(NominalForm::class)->create(['phonemic_shape' => 'N-phonemes']);
+        $nominalForm = NominalForm::factory()->create(['phonemic_shape' => 'N-phonemes']);
 
         $response = $this->get($nominalForm->url);
 
@@ -115,13 +115,13 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_shows_its_morphemes()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-morph',
             'gloss' => 'GLS'
         ]);
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($nominalForm->url);
@@ -135,7 +135,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_morphology_section_is_not_shown_if_the_nominal_form_has_no_morphemes()
     {
-        $nominalForm = factory(NominalForm::class)->create();
+        $nominalForm = NominalForm::factory()->create();
 
         $response = $this->get($nominalForm->url);
 
@@ -146,14 +146,14 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_nominal_form_parent_is_displayed_if_the_nominal_form_has_a_parent()
     {
-        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
+        $parentLanguage = Language::factory()->create(['name' => 'Superlanguage']);
+        $childLanguage = Language::factory()->create(['parent_code' => $parentLanguage->code]);
 
-        $parentForm = factory(NominalForm::class)->create([
+        $parentForm = NominalForm::factory()->create([
             'language_code' => $parentLanguage->code,
             'shape' => 'V-foo'
         ]);
-        $childForm = factory(NominalForm::class)->create([
+        $childForm = NominalForm::factory()->create([
             'language_code' => $childLanguage->code,
             'parent_id' => $parentForm->id
         ]);
@@ -169,7 +169,7 @@ class ViewNominalFormTest extends TestCase
     public function the_nominal_form_parent_is_not_displayed_if_the_nominal_form_has_no_parent()
     {
         $this->withoutExceptionHandling();
-        $morpheme = factory(NominalForm::class)->create();
+        $morpheme = NominalForm::factory()->create();
 
         $response = $this->get($morpheme->url);
 
@@ -181,7 +181,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_shows_its_historical_notes_if_it_has_them()
     {
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'historical_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -195,7 +195,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_does_not_show_historical_notes_if_it_does_not_have_them()
     {
-        $nominalForm = factory(NominalForm::class)->create(['historical_notes' => null]);
+        $nominalForm = NominalForm::factory()->create(['historical_notes' => null]);
 
         $response = $this->get($nominalForm->url);
 
@@ -206,7 +206,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_shows_its_allomorphy_notes_if_it_has_them()
     {
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'allomorphy_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -220,7 +220,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_does_not_show_allomorphy_notes_if_it_does_not_have_them()
     {
-        $nominalForm = factory(NominalForm::class)->create(['allomorphy_notes' => null]);
+        $nominalForm = NominalForm::factory()->create(['allomorphy_notes' => null]);
 
         $response = $this->get($nominalForm->url);
 
@@ -231,7 +231,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_shows_its_usage_notes_if_it_has_them()
     {
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'usage_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -245,7 +245,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_does_not_show_usage_notes_if_it_does_not_have_them()
     {
-        $nominalForm = factory(NominalForm::class)->create(['usage_notes' => null]);
+        $nominalForm = NominalForm::factory()->create(['usage_notes' => null]);
 
         $response = $this->get($nominalForm->url);
 
@@ -258,10 +258,10 @@ class ViewNominalFormTest extends TestCase
     {
         $this->withPermissions();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->givePermissionTo('view private notes');
 
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -275,7 +275,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_does_not_show_private_notes_if_it_does_not_have_them()
     {
-        $nominalForm = factory(NominalForm::class)->create(['private_notes' => null]);
+        $nominalForm = NominalForm::factory()->create(['private_notes' => null]);
 
         $response = $this->get($nominalForm->url);
 
@@ -286,9 +286,9 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function a_nominal_form_does_not_show_private_note_if_the_user_does_not_have_permission()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'private_notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam'
         ]);
 
@@ -302,8 +302,8 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function sources_appear_if_the_nominal_form_has_sources()
     {
-        $nominalForm = factory(NominalForm::class)->create();
-        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $nominalForm = NominalForm::factory()->create();
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
         $nominalForm->addSource($source);
 
         $response = $this->get($nominalForm->url);
@@ -316,7 +316,7 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function sources_do_not_appear_if_the_nominal_form_has_no_sources()
     {
-        $nominalForm = factory(NominalForm::class)->create();
+        $nominalForm = NominalForm::factory()->create();
 
         $response = $this->get($nominalForm->url);
         $response->assertOk();
@@ -327,8 +327,8 @@ class ViewNominalFormTest extends TestCase
     /** @test */
     public function the_form_comes_with_its_example_count()
     {
-        $form = factory(NominalForm::class)->create();
-        $example = factory(Example::class)->create(['form_id' => $form->id]);
+        $form = NominalForm::factory()->create();
+        $example = Example::factory()->create(['form_id' => $form->id]);
 
         $response = $this->get($form->url);
 

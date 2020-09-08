@@ -30,15 +30,15 @@ class SearchVerbParadigmsTest extends TestCase
     {
         parent::setUp();
 
-        $this->mode = factory(VerbMode::class)->create(['name' => 'factory mode']);
-        $this->order = factory(VerbOrder::class)->create(['name' => 'factory order']);
-        $this->class = factory(VerbClass::class)->create(['abv' => 'fc']);
-        $this->subject = factory(Feature::class)->create(['name' => 'X', 'person' => 'X']);
+        $this->mode = VerbMode::factory()->create(['name' => 'factory mode']);
+        $this->order = VerbOrder::factory()->create(['name' => 'factory order']);
+        $this->class = VerbClass::factory()->create(['abv' => 'fc']);
+        $this->subject = Feature::factory()->create(['name' => 'X', 'person' => 'X']);
     }
 
     protected function generateStructure(array $fields = []): VerbStructure
     {
-        return factory(VerbStructure::class)->create(array_merge([
+        return VerbStructure::factory()->create(array_merge([
             'mode_name' => $this->mode,
             'order_name' => $this->order,
             'class_abv' => $this->class,
@@ -70,14 +70,14 @@ class SearchVerbParadigmsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_language()
     {
-        $language = factory(Language::class)->create();
-        factory(VerbForm::class)->create([
+        $language = Language::factory()->create();
+        VerbForm::factory()->create([
             'language_code' => $language,
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure()
         ]);
-        factory(VerbForm::class)->create([
-            'language_code' => factory(Language::class)->create(),
+        VerbForm::factory()->create([
+            'language_code' => Language::factory()->create(),
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure()
         ]);
@@ -94,17 +94,17 @@ class SearchVerbParadigmsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_order()
     {
-        $order = factory(VerbOrder::class)->create();
-        factory(VerbForm::class)->create([
+        $order = VerbOrder::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'order_name' => $order
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'order_name' => factory(VerbOrder::class)->create()
+                'order_name' => VerbOrder::factory()->create()
             ])
         ]);
 
@@ -120,17 +120,17 @@ class SearchVerbParadigmsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_class()
     {
-        $class = factory(VerbClass::class)->create();
-        factory(VerbForm::class)->create([
+        $class = VerbClass::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'class_abv' => $class
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'class_abv' => factory(VerbClass::class)->create()
+                'class_abv' => VerbClass::factory()->create()
             ])
         ]);
 
@@ -146,17 +146,17 @@ class SearchVerbParadigmsTest extends TestCase
     /** @test */
     public function it_filters_search_results_by_mode()
     {
-        $mode = factory(VerbMode::class)->create();
-        factory(VerbForm::class)->create([
+        $mode = VerbMode::factory()->create();
+        VerbForm::factory()->create([
             'shape' => 'V-foo',
             'structure_id' => $this->generateStructure([
                 'mode_name' => $mode
             ])
         ]);
-        factory(VerbForm::class)->create([
+        VerbForm::factory()->create([
             'shape' => 'V-bar',
             'structure_id' => $this->generateStructure([
-                'mode_name' => factory(VerbMode::class)->create()
+                'mode_name' => VerbMode::factory()->create()
             ])
         ]);
 

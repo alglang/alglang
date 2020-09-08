@@ -15,8 +15,8 @@ class VerbFormTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
-        $form = factory(VerbForm::class)->create([
+        $language = Language::factory()->create(['code' => 'PA']);
+        $form = VerbForm::factory()->create([
             'shape' => 'V-test',
             'language_code' => $language->code
         ]);
@@ -26,11 +26,11 @@ class VerbFormTest extends TestCase
     /** @test */
     public function it_has_a_paradigm()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
-        $form = factory(VerbForm::class)->make([
+        $language = Language::factory()->create(['code' => 'PA']);
+        $form = VerbForm::factory()->make([
             'shape' => 'V-test',
             'language_code' => $language,
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => VerbStructure::factory()->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
                 'order_name' => 'ORDER',

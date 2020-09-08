@@ -105,7 +105,7 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
+        $language = Language::factory()->create(['code' => 'PA']);
 
         $paradigm = new VerbParadigm([
             'language_code' => $language->code,
@@ -188,11 +188,11 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_has_forms()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
-        $structure = factory(VerbStructure::class)->create();
+        $structure = VerbStructure::factory()->create();
 
-        $form = factory(VerbForm::class)->create([
+        $form = VerbForm::factory()->create([
             'language_code' => $language,
             'structure_id' => $structure
         ]);
@@ -206,17 +206,17 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_filters_forms_by_language()
     {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
 
-        $structure = factory(VerbStructure::class)->create();
+        $structure = VerbStructure::factory()->create();
 
-        $form1 = factory(VerbForm::class)->create([
+        $form1 = VerbForm::factory()->create([
             'language_code' => $language1,
             'structure_id' => $structure
         ]);
 
-        $form2 = factory(VerbForm::class)->create([
+        $form2 = VerbForm::factory()->create([
             'language_code' => $language2,
             'structure_id' => $structure
         ]);
@@ -230,19 +230,19 @@ class VerbParadigmTest extends TestCase
     /** @test */
     public function it_filters_forms_by_structure()
     {
-        $language = factory(Language::class)->create();
-        $class = factory(VerbClass::class)->create(['abv' => 'CLS']);
-        $mode = factory(VerbMode::class)->create(['name' => 'MODE']);
-        $order = factory(VerbOrder::class)->create(['name' => 'ORDER']);
+        $language = Language::factory()->create();
+        $class = VerbClass::factory()->create(['abv' => 'CLS']);
+        $mode = VerbMode::factory()->create(['name' => 'MODE']);
+        $order = VerbOrder::factory()->create(['name' => 'ORDER']);
 
-        $structure1 = factory(VerbStructure::class)->create([
+        $structure1 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
             'is_negative' => true,
             'is_diminutive' => false
         ]);
-        $structure2 = factory(VerbStructure::class)->create([
+        $structure2 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
@@ -250,12 +250,12 @@ class VerbParadigmTest extends TestCase
             'is_diminutive' => false
         ]);
 
-        $form1 = factory(VerbForm::class)->create([
+        $form1 = VerbForm::factory()->create([
             'language_code' => $language,
             'structure_id' => $structure1
         ]);
 
-        $form2 = factory(VerbForm::class)->create([
+        $form2 = VerbForm::factory()->create([
             'language_code' => $language,
             'structure_id' => $structure2
         ]);
@@ -270,7 +270,7 @@ class VerbParadigmTest extends TestCase
     public function it_caches_the_forms_attribute()
     {
         $paradigm = new VerbParadigm([
-            'language_code' => factory(Language::class)->create()
+            'language_code' => Language::factory()->create()
         ]);
 
         DB::connection()->enableQueryLog();
@@ -288,7 +288,7 @@ class VerbParadigmTest extends TestCase
     public function it_caches_the_language_attribute()
     {
         $paradigm = new VerbParadigm([
-            'language_code' => factory(Language::class)->create()->code
+            'language_code' => Language::factory()->create()->code
         ]);
 
         DB::connection()->enableQueryLog();
