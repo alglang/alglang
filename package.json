@@ -61,6 +61,8 @@
         "alpinejs": "^2.6.0",
         "lato-font": "^3.0.0",
         "leaflet": "^1.6.0",
-        "leaflet-defaulticon-compatibility": "^0.1.1"
+        "leaflet-defaulticon-compatibility": "^0.1.1",
+        "livewire-vue": "^0.3.0",
+        "vue": "^2.6.12"
     }
 }
