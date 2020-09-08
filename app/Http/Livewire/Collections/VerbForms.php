@@ -11,14 +11,14 @@ use Livewire\Component;
 
 class VerbForms extends Component
 {
-    /** @var mixed */
+    /** @var HasVerbForms */
     public $model;
 
     /** @var string */
-    public $screenSize;
+    public $screenSize = 'xl';
 
     /** @var int */
-    public $page;
+    public $page = 0;
 
     /** @var string */
     public $filter = '';
@@ -38,13 +38,6 @@ class VerbForms extends Component
     public static function maxSizeFor(string $size): int
     {
         return static::$sizes[$size];
-    }
-
-    public function mount(HasVerbForms $model, string $screenSize = 'xl', int $page = 0): void
-    {
-        $this->model = $model;
-        $this->screenSize = $screenSize;
-        $this->page = $page;
     }
 
     /**

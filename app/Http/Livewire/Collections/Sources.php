@@ -12,11 +12,11 @@ use Livewire\Component;
 
 class Sources extends Component
 {
-    /** @var string */
-    public $screenSize;
+    /** @var HasSources */
+    public $screenSize = 'xl';
 
     /** @var int */
-    public $page;
+    public $page = 0;
 
     /** @var string */
     public $filter = '';
@@ -26,13 +26,6 @@ class Sources extends Component
 
     /** @var array */
     protected $listeners = ['resize'];
-
-    public function mount(string $screenSize = 'xl', int $page = 0, HasSources $model = null): void
-    {
-        $this->screenSize = $screenSize;
-        $this->page = $page;
-        $this->model = $model;
-    }
 
     /**
      * @return Builder|Relation
@@ -58,15 +51,15 @@ class Sources extends Component
     public function sourcesPerPage(): int
     {
         switch ($this->screenSize) {
-        case 'xs':
-        case 'sm':
-            return 20;
-        case 'md':
-            return 100;
-        case 'lg':
-            return 180;
-        default:
-            return 224;
+            case 'xs':
+            case 'sm':
+                return 20;
+            case 'md':
+                return 100;
+            case 'lg':
+                return 180;
+            default:
+                return 224;
         }
     }
 

@@ -11,14 +11,14 @@ use Livewire\Component;
 
 class Examples extends Component
 {
-    /** @var mixed */
+    /** @var HasExamples */
     public $model;
 
     /** @var int */
-    public $page;
+    public $page = 0;
 
     /** @var string */
-    public $screenSize;
+    public $screenSize = 'xl';
 
     /** @var string */
     public $filter = '';
@@ -38,13 +38,6 @@ class Examples extends Component
     public static function maxSizeFor(string $size): int
     {
         return static::$sizes[$size];
-    }
-
-    public function mount(HasExamples $model, int $page = 0, string $screenSize = 'xl'): void
-    {
-        $this->model = $model;
-        $this->page = $page;
-        $this->screenSize = $screenSize;
     }
 
     public function nextPage(): void

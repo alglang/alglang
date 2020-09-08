@@ -11,14 +11,14 @@ use Livewire\Component;
 
 class NominalForms extends Component
 {
-    /** @var mixed */
+    /** @var HasNominalForms */
     public $model;
 
     /** @var string */
-    public $screenSize;
+    public $screenSize = 'xl';
 
     /** @var int */
-    public $page;
+    public $page = 0;
 
     /** @var string */
     public $filter = '';
@@ -38,13 +38,6 @@ class NominalForms extends Component
     public static function maxSizeFor(string $size): int
     {
         return static::$sizes[$size];
-    }
-
-    public function mount(HasNominalForms $model, string $screenSize = 'xl', int $page = 0): void
-    {
-        $this->model = $model;
-        $this->screenSize = $screenSize;
-        $this->page = $page;
     }
 
     /**

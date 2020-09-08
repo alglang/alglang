@@ -10,24 +10,17 @@ use Illuminate\View\View;
 
 class Morphemes extends Component
 {
-    /** @var mixed */
+    /** @var HasMorphemes */
     public $model;
 
     /** @var string */
-    public $size;
+    public $screenSize = 'xl';
 
     /** @var int */
-    public $page;
+    public $page = 0;
 
     /** @var array */
     protected $listeners = ['resize'];
-
-    public function mount(HasMorphemes $model, string $screenSize = 'xl', int $page = 0): void
-    {
-        $this->model = $model;
-        $this->size = $screenSize;
-        $this->page = $page;
-    }
 
     public function getMorphemesProperty(): Collection
     {
@@ -39,16 +32,16 @@ class Morphemes extends Component
 
     public function perPage(): int
     {
-        switch ($this->size) {
-        case 'xs':
-        case 'sm':
-            return 10;
-        case 'md':
-            return 14;
-        case 'lg':
-            return 27;
-        default:
-            return 56;
+        switch ($this->screenSize) {
+            case 'xs':
+            case 'sm':
+                return 10;
+            case 'md':
+                return 14;
+            case 'lg':
+                return 27;
+            default:
+                return 56;
         }
     }
 
@@ -72,9 +65,9 @@ class Morphemes extends Component
         return $this->model->morphemes()->count() > ($this->page + 1) * $this->perPage();
     }
 
-    public function resize(string $size): void
+    public function resize(string $screenSize): void
     {
-        $this->size = $size;
+        $this->screenSize = $screenSize;
     }
 
     public function render(): View
