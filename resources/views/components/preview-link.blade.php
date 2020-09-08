@@ -1,8 +1,4 @@
-<v-popover
-    :delay="{ show: 500, hide: 100 }"
-    trigger="{{ isset($model->preview) ? 'hover' : 'manual' }}"
-    class="inline"
->
+<div class="inline relative group">
     <a
         href="{{ $model->url }}"
         @if($class)
@@ -12,8 +8,8 @@
         {{ $slot }}
     </a>
     @isset($model->preview)
-        <template slot="popover">
-            {!! $model->preview !!}
-        </template>
+    <div class="absolute hidden lg:group-hover:block z-50 bg-gray-100 shadow-lg w-56 mt-2 p-2">
+        {!! $model->preview !!}
+    </div>
     @endisset
-</v-popover>
+</div>
