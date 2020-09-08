@@ -1,10 +1,13 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Morpheme;
 use App\Models\NominalForm;
 use App\Models\NominalStructure;
 use App\Models\Source;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class NominalSeeder extends Seeder
 {

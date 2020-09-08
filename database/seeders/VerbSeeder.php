@@ -1,11 +1,14 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Example;
 use App\Models\Form;
 use App\Models\Morpheme;
 use App\Models\Source;
 use App\Models\VerbStructure;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class VerbSeeder extends Seeder
 {

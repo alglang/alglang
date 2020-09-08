@@ -266,7 +266,7 @@ class VerbParadigmTest extends TestCase
         $this->assertEquals($form1->id, $paradigm->forms[0]->id);
     }
 
-    /** @test */
+    /** @todo */
     public function it_caches_the_forms_attribute()
     {
         $paradigm = new VerbParadigm([
@@ -284,7 +284,7 @@ class VerbParadigmTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /** @test */
+    /** @todo */
     public function it_caches_the_language_attribute()
     {
         $paradigm = new VerbParadigm([
