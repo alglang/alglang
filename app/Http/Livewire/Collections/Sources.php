@@ -12,7 +12,7 @@ use Livewire\Component;
 
 class Sources extends Component
 {
-    /** @var HasSources */
+    /** @var string */
     public $screenSize = 'xl';
 
     /** @var int */
@@ -21,7 +21,7 @@ class Sources extends Component
     /** @var string */
     public $filter = '';
 
-    /** @var mixed */
+    /** @var HasSources */
     public $model;
 
     /** @var array */
@@ -32,7 +32,7 @@ class Sources extends Component
      */
     protected function query()
     {
-        if ($this->model) {
+        if (isset($this->model)) {
             return $this->model->sources();
         }
 
