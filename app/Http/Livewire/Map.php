@@ -13,11 +13,6 @@ class Map extends Component
     /** @var bool */
     public $showBorders = false;
 
-    public function mount(Iterable $locations): void
-    {
-        $this->locations = $locations;
-    }
-
     public function render(): View
     {
         return view('livewire.map');
