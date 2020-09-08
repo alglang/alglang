@@ -20,7 +20,7 @@ class ViewVerbParadigmTest extends TestCase
     /** @test */
     public function it_shows_the_correct_view()
     {
-        $verbForm = factory(VerbForm::class)->create();
+        $verbForm = VerbForm::factory()->create();
 
         $response = $this->get($verbForm->paradigm->url);
 
@@ -31,10 +31,10 @@ class ViewVerbParadigmTest extends TestCase
     /** @test */
     public function it_passes_in_a_paradigm()
     {
-        $language = factory(Language::class)->create();
-        $verbForm = factory(VerbForm::class)->create([
+        $language = Language::factory()->create();
+        $verbForm = VerbForm::factory()->create([
             'language_code' => $language,
-            'structure_id' => factory(VerbStructure::class)->create([
+            'structure_id' => VerbStructure::factory()->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
                 'order_name' => 'ORDER',
@@ -58,9 +58,9 @@ class ViewVerbParadigmTest extends TestCase
     /** @test */
     public function it_shows_its_name()
     {
-        $verbForm = factory(VerbForm::class)->create([
-            'language_code' => factory(Language::class)->create(),
-            'structure_id' => factory(VerbStructure::class)->create([
+        $verbForm = VerbForm::factory()->create([
+            'language_code' => Language::factory()->create(),
+            'structure_id' => VerbStructure::factory()->create([
                 'mode_name' => 'MODE',
                 'class_abv' => 'CLASS',
                 'order_name' => 'ORDER',
@@ -78,34 +78,34 @@ class ViewVerbParadigmTest extends TestCase
     /** @test */
     public function it_shows_its_forms()
     {
-        $language = factory(Language::class)->create();
-        $class = factory(VerbClass::class)->create(['abv' => 'CLS']);
-        $mode = factory(VerbMode::class)->create(['name' => 'MODE']);
-        $order = factory(VerbOrder::class)->create(['name' => 'ORDER']);
+        $language = Language::factory()->create();
+        $class = VerbClass::factory()->create(['abv' => 'CLS']);
+        $mode = VerbMode::factory()->create(['name' => 'MODE']);
+        $order = VerbOrder::factory()->create(['name' => 'ORDER']);
 
-        $structure1 = factory(VerbStructure::class)->create([
+        $structure1 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
             'is_negative' => false,
             'is_diminutive' => false,
-            'subject_name' => factory(Feature::class)->create(['name' => '1s'])
+            'subject_name' => Feature::factory()->create(['name' => '1s'])
         ]);
-        $structure2 = factory(VerbStructure::class)->create([
+        $structure2 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
             'is_negative' => false,
             'is_diminutive' => false,
-            'subject_name' => factory(Feature::class)->create(['name' => '1p'])
+            'subject_name' => Feature::factory()->create(['name' => '1p'])
         ]);
 
-        $form1 = factory(VerbForm::class)->create([
+        $form1 = VerbForm::factory()->create([
             'shape' => 'V-foo',
             'language_code' => $language,
             'structure_id' => $structure1
         ]);
-        $form2 = factory(VerbForm::class)->create([
+        $form2 = VerbForm::factory()->create([
             'shape' => 'V-bar',
             'language_code' => $language,
             'structure_id' => $structure2
@@ -121,42 +121,42 @@ class ViewVerbParadigmTest extends TestCase
     /** @test */
     public function it_shows_its_forms_orderd_by_features()
     {
-        $language = factory(Language::class)->create();
-        $class = factory(VerbClass::class)->create(['abv' => 'CLS']);
-        $mode = factory(VerbMode::class)->create(['name' => 'MODE']);
-        $order = factory(VerbOrder::class)->create(['name' => 'ORDER']);
+        $language = Language::factory()->create();
+        $class = VerbClass::factory()->create(['abv' => 'CLS']);
+        $mode = VerbMode::factory()->create(['name' => 'MODE']);
+        $order = VerbOrder::factory()->create(['name' => 'ORDER']);
 
-        $structure1 = factory(VerbStructure::class)->create([
+        $structure1 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
             'is_negative' => false,
             'is_diminutive' => false,
-            'subject_name' => factory(Feature::class)->create([
+            'subject_name' => Feature::factory()->create([
                 'name' => '1p',
                 'person' => '1',
                 'number' => 3
             ])
         ]);
-        $structure2 = factory(VerbStructure::class)->create([
+        $structure2 = VerbStructure::factory()->create([
             'class_abv' => $class,
             'mode_name' => $mode,
             'order_name' => $order,
             'is_negative' => false,
             'is_diminutive' => false,
-            'subject_name' => factory(Feature::class)->create([
+            'subject_name' => Feature::factory()->create([
                 'name' => '1s',
                 'person' => '1',
                 'number' => 1
             ])
         ]);
 
-        $form1 = factory(VerbForm::class)->create([
+        $form1 = VerbForm::factory()->create([
             'shape' => 'V-foo',
             'language_code' => $language,
             'structure_id' => $structure1
         ]);
-        $form2 = factory(VerbForm::class)->create([
+        $form2 = VerbForm::factory()->create([
             'shape' => 'V-bar',
             'language_code' => $language,
             'structure_id' => $structure2

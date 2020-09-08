@@ -1,16 +1,23 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Language;
 use App\Models\VerbForm;
 use App\Models\VerbStructure;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(VerbForm::class, function (Faker $faker) {
-    return [
-        'shape' => 'V-factory',
-        'language_code' => factory(Language::class),
-        'structure_type' => VerbStructure::class,
-        'structure_id' => factory(VerbStructure::class)
-    ];
-});
+class VerbFormFactory extends Factory
+{
+    protected $model = VerbForm::class;
+
+    public function definition(): array
+    {
+        return [
+            'shape' => 'V-factory',
+            'language_code' => Language::factory(),
+            'structure_type' => VerbStructure::class,
+            'structure_id' => VerbStructure::factory()
+        ];
+    }
+}

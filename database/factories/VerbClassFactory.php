@@ -1,11 +1,18 @@
 <?php
 
-use App\Models\VerbClass;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(VerbClass::class, function (Faker $faker) {
-    return [
-        'abv' => $faker->unique()->lexify('??')
-    ];
-});
+use App\Models\VerbClass;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class VerbClassFactory extends Factory
+{
+    protected $model = VerbClass::class;
+
+    public function definition(): array
+    {
+        return [
+            'abv' => $this->faker->unique()->lexify('??')
+        ];
+    }
+}

@@ -1,15 +1,22 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Language;
 use App\Models\NominalParadigm;
 use App\Models\NominalParadigmType;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(NominalParadigm::class, function (Faker $faker) {
-    return [
-        'name' => 'Factory paradigm',
-        'paradigm_type_name' => factory(NominalParadigmType::class),
-        'language_code' => factory(Language::class)
-    ];
-});
+class NominalParadigmFactory extends Factory
+{
+    protected $model = NominalParadigm::class;
+
+    public function definition()
+    {
+        return [
+            'name' => 'Factory paradigm',
+            'paradigm_type_name' => NominalParadigmType::factory(),
+            'language_code' => Language::factory()
+        ];
+    }
+}

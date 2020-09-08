@@ -14,7 +14,7 @@ class ViewSlotTest extends TestCase
     /** @test */
     public function slots_can_be_viewed()
     {
-        $slot = factory(Slot::class)->create([
+        $slot = Slot::factory()->create([
             'abv' => 'SLT',
             'name' => 'the slot',
             'colour' => '#ff0000',
@@ -31,7 +31,7 @@ class ViewSlotTest extends TestCase
     /** @test */
     public function slot_displays_a_description_if_a_description_exists()
     {
-        $slot = factory(Slot::class)->create([
+        $slot = Slot::factory()->create([
             'description' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -45,7 +45,7 @@ class ViewSlotTest extends TestCase
     /** @test */
     public function slot_does_not_display_a_description_if_no_description_exists()
     {
-        $slot = factory(Slot::class)->create(['description' => null]);
+        $slot = Slot::factory()->create(['description' => null]);
 
         $response = $this->get($slot->url);
 

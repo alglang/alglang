@@ -23,7 +23,7 @@ class ViewErrorsTest extends TestCase
     /** @test */
     public function error_403_contains_a_contact_email()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/languages/create');  // Protected route
         $response->assertStatus(403);

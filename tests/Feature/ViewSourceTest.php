@@ -19,7 +19,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function sources_can_be_viewed()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'author' => 'Foo bar',
             'year' => 1234
         ]);
@@ -35,7 +35,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_shows_its_full_citation_if_it_has_one()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'full_citation' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -49,7 +49,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_does_not_show_a_full_citation_if_it_has_none()
     {
-        $source = factory(Source::class)->create(['full_citation' => null]);
+        $source = Source::factory()->create(['full_citation' => null]);
 
         $response = $this->get($source->url);
 
@@ -60,7 +60,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_shows_its_website_if_it_has_one()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'website' => 'https://google.ca'
         ]);
 
@@ -74,7 +74,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_does_not_show_a_website_if_it_has_none()
     {
-        $source = factory(Source::class)->create(['website' => null]);
+        $source = Source::factory()->create(['website' => null]);
 
         $response = $this->get($source->url);
 
@@ -85,7 +85,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_shows_its_summary()
     {
-        $source = factory(Source::class)->create(['summary' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+        $source = Source::factory()->create(['summary' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
 
         $response = $this->get($source->url);
 
@@ -97,7 +97,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_does_not_show_a_summary_if_it_has_none()
     {
-        $source = factory(Source::class)->create(['summary' => null]);
+        $source = Source::factory()->create(['summary' => null]);
         
         $response = $this->get($source->url);
 
@@ -108,7 +108,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_shows_its_notes()
     {
-        $source = factory(Source::class)->create(['notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+        $source = Source::factory()->create(['notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
 
         $response = $this->get($source->url);
 
@@ -120,7 +120,7 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function a_source_does_not_show_a_notes_if_it_has_none()
     {
-        $source = factory(Source::class)->create(['notes' => null]);
+        $source = Source::factory()->create(['notes' => null]);
         
         $response = $this->get($source->url);
 
@@ -131,8 +131,8 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function the_source_comes_with_its_morpheme_count()
     {
-        $source = factory(Source::class)->create();
-        $morpheme = factory(Morpheme::class)->create();
+        $source = Source::factory()->create();
+        $morpheme = Morpheme::factory()->create();
         $morpheme->addSource($source);
 
         $response = $this->get($source->url);
@@ -145,8 +145,8 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function the_source_comes_with_its_verb_form_count()
     {
-        $source = factory(Source::class)->create();
-        $verbForm = factory(VerbForm::class)->create();
+        $source = Source::factory()->create();
+        $verbForm = VerbForm::factory()->create();
         $verbForm->addSource($source);
 
         $response = $this->get($source->url);
@@ -159,8 +159,8 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function the_source_comes_with_its_nominal_form_count()
     {
-        $source = factory(Source::class)->create();
-        $nominalForm = factory(NominalForm::class)->create();
+        $source = Source::factory()->create();
+        $nominalForm = NominalForm::factory()->create();
         $nominalForm->addSource($source);
 
         $response = $this->get($source->url);
@@ -173,8 +173,8 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function the_source_comes_with_its_nominal_paradigm_count()
     {
-        $source = factory(Source::class)->create();
-        $paradigm = factory(NominalParadigm::class)->create()->addSource($source);
+        $source = Source::factory()->create();
+        $paradigm = NominalParadigm::factory()->create()->addSource($source);
 
         $response = $this->get($source->url);
 
@@ -186,8 +186,8 @@ class ViewSourceTest extends TestCase
     /** @test */
     public function the_source_comes_with_its_example_count()
     {
-        $source = factory(Source::class)->create();
-        $example = factory(Example::class)->create();
+        $source = Source::factory()->create();
+        $example = Example::factory()->create();
         $example->addSource($source);
 
         $response = $this->get($source->url);

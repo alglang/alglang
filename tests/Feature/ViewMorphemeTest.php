@@ -21,12 +21,12 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function a_morpheme_can_be_viewed()
     {
-        $language = factory(Language::class)->create(['name' => 'Test Language']);
-        $slot = factory(Slot::class)->create(['abv' => 'PER']);
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
-        $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
+        $language = Language::factory()->create(['name' => 'Test Language']);
+        $slot = Slot::factory()->create(['abv' => 'PER']);
+        $gloss1 = Gloss::factory()->create(['abv' => 'AN']);
+        $gloss2 = Gloss::factory()->create(['abv' => 'PL']);
 
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'shape' => '-ak',
             'language_code' => $language->code,
             'slot_abv' => $slot->abv,
@@ -49,8 +49,8 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function the_shape_is_formatted_correctly()
     {
-        $language = factory(Language::class)->create(['reconstructed' => true]);
-        $morpheme = factory(Morpheme::class)->create([
+        $language = Language::factory()->create(['reconstructed' => true]);
+        $morpheme = Morpheme::factory()->create([
             'shape' => '-ak',
             'language_code' => $language
         ]);
@@ -64,7 +64,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function historical_notes_appear_if_the_morpheme_has_historical_notes()
     {
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'historical_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -78,7 +78,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function historical_notes_do_not_appear_if_the_morpheme_has_no_historical_notes()
     {
-        $morpheme = factory(Morpheme::class)->create(['historical_notes' => null]);
+        $morpheme = Morpheme::factory()->create(['historical_notes' => null]);
 
         $response = $this->get($morpheme->url);
         $response->assertOk();
@@ -89,7 +89,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function allomorphy_notes_appear_if_the_morpheme_has_allomorphy_notes()
     {
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'allomorphy_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -103,7 +103,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function allomorphy_notes_do_not_appear_if_the_morpheme_has_no_allomorphy_notes()
     {
-        $morpheme = factory(Morpheme::class)->create(['allomorphy_notes' => null]);
+        $morpheme = Morpheme::factory()->create(['allomorphy_notes' => null]);
 
         $response = $this->get($morpheme->url);
         $response->assertOk();
@@ -114,7 +114,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function usage_notes_appear_if_the_morpheme_has_usage_notes()
     {
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'usage_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -128,7 +128,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function usage_notes_do_not_appear_if_the_morpheme_has_no_usage_notes()
     {
-        $morpheme = factory(Morpheme::class)->create(['usage_notes' => null]);
+        $morpheme = Morpheme::factory()->create(['usage_notes' => null]);
 
         $response = $this->get($morpheme->url);
         $response->assertOk();
@@ -141,10 +141,10 @@ class ViewMorphemeTest extends TestCase
     {
         $this->withPermissions();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->givePermissionTo('view private notes');
 
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -158,7 +158,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function private_notes_do_not_appear_if_the_morpheme_has_no_private_notes()
     {
-        $morpheme = factory(Morpheme::class)->create(['private_notes' => null]);
+        $morpheme = Morpheme::factory()->create(['private_notes' => null]);
 
         $response = $this->get($morpheme->url);
         $response->assertOk();
@@ -169,9 +169,9 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function private_notes_do_not_appear_if_the_user_is_not_a_contributor()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $morpheme = factory(Morpheme::class)->create([
+        $morpheme = Morpheme::factory()->create([
             'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -185,8 +185,8 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function sources_appear_if_the_morpheme_has_sources()
     {
-        $morpheme = factory(Morpheme::class)->create();
-        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $morpheme = Morpheme::factory()->create();
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
         $morpheme->addSource($source);
 
         $response = $this->get($morpheme->url);
@@ -199,7 +199,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function sources_do_not_appear_if_the_morpheme_has_no_sources()
     {
-        $morpheme = factory(Morpheme::class)->create();
+        $morpheme = Morpheme::factory()->create();
 
         $response = $this->get($morpheme->url);
         $response->assertOk();
@@ -210,14 +210,14 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function the_morpheme_parent_is_displayed_if_the_morpheme_has_a_parent()
     {
-        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
+        $parentLanguage = Language::factory()->create(['name' => 'Superlanguage']);
+        $childLanguage = Language::factory()->create(['parent_code' => $parentLanguage->code]);
 
-        $parentMorpheme = factory(Morpheme::class)->create([
+        $parentMorpheme = Morpheme::factory()->create([
             'language_code' => $parentLanguage->code,
             'shape' => 'parentmorph-'
         ]);
-        $childMorpheme = factory(Morpheme::class)->create([
+        $childMorpheme = Morpheme::factory()->create([
             'language_code' => $childLanguage->code,
             'parent_id' => $parentMorpheme->id
         ]);
@@ -232,7 +232,7 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function the_morpheme_parent_is_not_displayed_if_the_morpheme_has_no_parent()
     {
-        $morpheme = factory(Morpheme::class)->create();
+        $morpheme = Morpheme::factory()->create();
 
         $response = $this->get($morpheme->url);
 
@@ -243,10 +243,10 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function the_morpheme_comes_with_its_verb_form_count()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
+        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
         $verbForm->assignMorphemes([$morpheme]);
 
@@ -260,10 +260,10 @@ class ViewMorphemeTest extends TestCase
     /** @test */
     public function the_morpheme_comes_with_its_nominal_form_count()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language->code]);
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
+        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
         $nominalForm->assignMorphemes([$morpheme]);
         $verbForm->assignMorphemes([$morpheme]);
 

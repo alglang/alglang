@@ -1,23 +1,30 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Language;
 use App\Models\NominalForm;
 use App\Models\NominalStructure;
 use App\Models\NominalParadigm;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(NominalForm::class, function (Faker $faker) {
-    return [
-        'shape' => 'V-test',
-        'language_code' => factory(Language::class),
-        'structure_type' => NominalStructure::class,
-        'structure_id' => function (array $form) {
-            return factory(NominalStructure::class)->create([
-                'paradigm_id' => factory(NominalParadigm::class)->create([
-                    'language_code' => $form['language_code']
-                ])->id
-            ])->id;
-        }
-    ];
-});
+class NominalFormFactory extends Factory
+{
+    protected $model = NominalForm::class;
+
+    public function definition(): array
+    {
+        return [
+            'shape' => 'V-test',
+            'language_code' => Language::factory(),
+            'structure_type' => NominalStructure::class,
+            'structure_id' => function (array $form) {
+                return NominalStructure::factory()->create([
+                    'paradigm_id' => NominalParadigm::factory()->create([
+                        'language_code' => $form['language_code']
+                    ])->id
+                ])->id;
+            }
+        ];
+    }
+}

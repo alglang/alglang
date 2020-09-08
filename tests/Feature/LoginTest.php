@@ -61,7 +61,7 @@ class LoginTest extends TestCase
     /** @test */
     public function a_user_can_log_out()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         auth()->login($user, true);
         $this->assertAuthenticated();
 
@@ -74,7 +74,7 @@ class LoginTest extends TestCase
     /** @test */
     public function a_logged_in_user_cannot_visit_the_login_page()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/login');
 

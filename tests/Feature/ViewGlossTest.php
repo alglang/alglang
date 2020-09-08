@@ -14,7 +14,7 @@ class ViewGlossTest extends TestCase
     /** @test */
     public function glosses_can_be_viewed()
     {
-        $gloss = factory(Gloss::class)->create([
+        $gloss = Gloss::factory()->create([
             'abv' => 'GLS',
             'name' => 'Gloss name',
             /* 'description' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam' */
@@ -32,7 +32,7 @@ class ViewGlossTest extends TestCase
     /** @test */
     public function the_gloss_page_has_a_description_if_the_gloss_has_a_description()
     {
-        $gloss = factory(Gloss::class)->create([
+        $gloss = Gloss::factory()->create([
             'description' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -46,7 +46,7 @@ class ViewGlossTest extends TestCase
     /** @test */
     public function the_gloss_page_does_not_have_a_description_if_the_gloss_has_no_description()
     {
-        $gloss = factory(Gloss::class)->create([
+        $gloss = Gloss::factory()->create([
             'description' => null
         ]);
 

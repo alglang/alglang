@@ -26,7 +26,7 @@ class HomeTest extends TestCase
     /** @test */
     public function a_logged_in_user_sees_a_logout_link()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/');
 
@@ -39,7 +39,7 @@ class HomeTest extends TestCase
     {
         $this->withPermissions();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('contributor');
 
         $response = $this->actingAs($user)->get('/');
@@ -51,7 +51,7 @@ class HomeTest extends TestCase
     /** @test */
     public function a_non_contributor_does_not_see_the_add_menu()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/');
 
@@ -62,11 +62,11 @@ class HomeTest extends TestCase
     /** @test */
     public function all_languages_with_positions_appear_on_the_home_page()
     {
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 1',
             'position' => ['lat' => 46.1, 'lng' => -87.1]
         ]);
-        factory(Language::class)->create([
+        Language::factory()->create([
             'name' => 'Test Language 2',
             'position' => ['lat' => 47.1, 'lng' => -86.1]
         ]);

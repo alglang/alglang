@@ -19,7 +19,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function it_loads_the_correct_view_for_a_verb_form()
     {
-        $example = factory(Example::class)->state('verb')->create();
+        $example = Example::factory()->verb()->create();
         $response = $this->get($example->url);
         $response->assertOk();
         $response->assertViewIs('examples.show');
@@ -29,7 +29,7 @@ class ViewExampleTest extends TestCase
     public function it_loads_the_correct_view()
     {
         $this->withoutExceptionHandling();
-        $example = factory(Example::class)->state('nominal')->create();
+        $example = Example::factory()->nominal()->create();
         $response = $this->get($example->url);
         $response->assertOk();
         $response->assertViewIs('examples.show');
@@ -38,10 +38,10 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_can_be_viewed()
     {
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'shape' => 'foobar',
             'translation' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',
-            'form_id' => factory(Form::class)->create(['shape' => 'V-bar'])
+            'form_id' => Form::factory()->create(['shape' => 'V-bar'])
         ]);
 
         $response = $this->get($example->url);
@@ -56,10 +56,10 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function the_shape_is_formatted_correctly()
     {
-        $language = factory(Language::class)->create(['reconstructed' => true]);
-        $example = factory(Example::class)->create([
+        $language = Language::factory()->create(['reconstructed' => true]);
+        $example = Example::factory()->create([
             'shape' => 'foobar',
-            'form_id' => factory(Form::class)->create([
+            'form_id' => Form::factory()->create([
                 'language_code' => $language
             ])
         ]);
@@ -73,7 +73,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_shows_its_phonemic_shape()
     {
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'phonemic_shape' => 'phonemes'
         ]);
 
@@ -86,15 +86,15 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_shows_its_morphemes()
     {
-        $language = factory(Language::class)->create();
-        $stem = factory(Morpheme::class)->create([
+        $language = Language::factory()->create();
+        $stem = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => 'foo-'
         ]);
-        $form = factory(Form::class)->create(['language_code' => $language->code]);
+        $form = Form::factory()->create(['language_code' => $language->code]);
         $form->assignMorphemes([$language->vStem, 'bar']);
 
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'form_id' => $form->id,
             'stem_id' => $stem->id
         ]);
@@ -107,18 +107,18 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function the_example_parent_is_displayed_if_the_example_has_a_parent()
     {
-        $parentLanguage = factory(Language::class)->create(['name' => 'Superlanguage']);
-        $childLanguage = factory(Language::class)->create(['parent_code' => $parentLanguage->code]);
+        $parentLanguage = Language::factory()->create(['name' => 'Superlanguage']);
+        $childLanguage = Language::factory()->create(['parent_code' => $parentLanguage->code]);
 
-        $parentExample = factory(Example::class)->create([
+        $parentExample = Example::factory()->create([
             'shape' => 'V-foo',
-            'form_id' => factory(Form::class)->create([
+            'form_id' => Form::factory()->create([
                 'language_code' => $parentLanguage
             ])
         ]);
-        $childExample = factory(Example::class)->create([
+        $childExample = Example::factory()->create([
             'parent_id' => $parentExample->id,
-            'form_id' => factory(Form::class)->create([
+            'form_id' => Form::factory()->create([
                 'language_code' => $childLanguage
             ])
         ]);
@@ -133,7 +133,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function the_example_parent_is_not_displayed_if_the_example_has_no_parent()
     {
-        $example = factory(Example::class)->create();
+        $example = Example::factory()->create();
 
         $response = $this->get($example->url);
 
@@ -144,7 +144,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_shows_its_notes_if_it_has_any()
     {
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -158,7 +158,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_does_not_show_notes_if_it_has_none()
     {
-        $example = factory(Example::class)->create(['notes' => null]);
+        $example = Example::factory()->create(['notes' => null]);
         $response = $this->get($example->url);
 
         $response->assertOk();
@@ -170,9 +170,9 @@ class ViewExampleTest extends TestCase
     {
         $this->withPermissions();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('contributor');
-        $example = factory(Example::class)->create([
+        $example = Example::factory()->create([
             'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -188,9 +188,9 @@ class ViewExampleTest extends TestCase
     {
         $this->withPermissions();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $user->assignRole('contributor');
-        $example = factory(Example::class)->create(['private_notes' => null]);
+        $example = Example::factory()->create(['private_notes' => null]);
 
         $response = $this->actingAs($user)->get($example->url);
 
@@ -201,8 +201,8 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function an_example_does_not_show_private_notes_if_the_user_does_not_have_permission()
     {
-        $user = factory(User::class)->create();
-        $example = factory(Example::class)->create([
+        $user = User::factory()->create();
+        $example = Example::factory()->create([
             'private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
         ]);
 
@@ -216,8 +216,8 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function sources_appear_if_the_example_has_sources()
     {
-        $example = factory(Example::class)->create();
-        $source = factory(Source::class)->create(['author' => 'Foo Bar']);
+        $example = Example::factory()->create();
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
         $example->addSource($source);
 
         $response = $this->get($example->url);
@@ -230,7 +230,7 @@ class ViewExampleTest extends TestCase
     /** @test */
     public function sources_do_not_appear_if_the_example_has_no_sources()
     {
-        $example = factory(Example::class)->create();
+        $example = Example::factory()->create();
 
         $response = $this->get($example->url);
         $response->assertOk();

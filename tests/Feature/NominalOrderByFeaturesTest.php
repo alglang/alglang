@@ -23,7 +23,7 @@ class NominalOrderByFeaturesTest extends TestCase
     {
         parent::setUp();
 
-        $this->language = factory(Language::class)->create();
+        $this->language = Language::factory()->create();
     }
 
     /** @test */
@@ -232,12 +232,12 @@ class NominalOrderByFeaturesTest extends TestCase
     protected function createNominalForms(array $featureSets): void
     {
         foreach ($featureSets as $featureGroup) {
-            factory(NominalForm::class)->create([
+            NominalForm::factory()->create([
                 'language_code' => $this->language->code,
-                'structure_id' => factory(NominalStructure::class)->create([
-                    'pronominal_feature_name' => isset($featureGroup['pronominal']) ? factory(Feature::class)->create($featureGroup['pronominal']) : null,
-                    'nominal_feature_name' => isset($featureGroup['nominal']) ? factory(Feature::class)->create($featureGroup['nominal']) : null,
-                    'paradigm_id' => factory(NominalParadigm::class)->create([
+                'structure_id' => NominalStructure::factory()->create([
+                    'pronominal_feature_name' => isset($featureGroup['pronominal']) ? Feature::factory()->create($featureGroup['pronominal']) : null,
+                    'nominal_feature_name' => isset($featureGroup['nominal']) ? Feature::factory()->create($featureGroup['nominal']) : null,
+                    'paradigm_id' => NominalParadigm::factory()->create([
                         'language_code' => $this->language->code
                     ])
                 ])

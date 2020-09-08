@@ -13,7 +13,7 @@ class SourceTest extends TestCase
     /** @test */
     public function it_has_a_url()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
@@ -24,19 +24,19 @@ class SourceTest extends TestCase
     /** @test */
     public function its_url_is_an_empty_string_if_it_has_no_slug()
     {
-        $source = factory(Source::class)->make(['slug' => null]);
+        $source = Source::factory()->make(['slug' => null]);
         $this->assertEquals('', $source->url);
     }
 
     /** @test */
     public function its_url_includes_its_disambiguator_when_necessary()
     {
-        $sourceA = factory(Source::class)->create([
+        $sourceA = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
 
-        $sourceB = factory(Source::class)->create([
+        $sourceB = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
@@ -48,7 +48,7 @@ class SourceTest extends TestCase
     /** @test */
     public function it_removes_special_characters_from_its_slug()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'author' => 'Foo & Bar et al.',
             'year' => 1234
         ]);
@@ -59,12 +59,12 @@ class SourceTest extends TestCase
     /** @test */
     public function it_has_a_disambiguation_letter()
     {
-        $sourceA = factory(Source::class)->create([
+        $sourceA = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
 
-        $sourceB = factory(Source::class)->create([
+        $sourceB = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
@@ -76,7 +76,7 @@ class SourceTest extends TestCase
     /** @test */
     public function year_does_not_have_to_be_a_number()
     {
-        $source = factory(Source::class)->create([
+        $source = Source::factory()->create([
             'author' => 'foo',
             'year' => 'bar'
         ]);
@@ -98,12 +98,12 @@ class SourceTest extends TestCase
     /** @test */
     public function its_short_citation_includes_its_disambiguation_letter()
     {
-        $sourceA = factory(Source::class)->create([
+        $sourceA = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
 
-        $sourceB = factory(Source::class)->create([
+        $sourceB = Source::factory()->create([
             'author' => 'Foo Bar',
             'year' => 1234
         ]);
@@ -115,15 +115,15 @@ class SourceTest extends TestCase
     /** @test */
     public function it_orders_queries_by_author_then_year()
     {
-        $source1 = factory(Source::class)->create([
+        $source1 = Source::factory()->create([
             'author' => 'Beta',
             'year' => 10
         ]);
-        $source2 = factory(Source::class)->create([
+        $source2 = Source::factory()->create([
             'author' => 'Alpha',
             'year' => 11
         ]);
-        $source3 = factory(Source::class)->create([
+        $source3 = Source::factory()->create([
             'author' => 'Alpha',
             'year' => 12
         ]);

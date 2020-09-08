@@ -34,8 +34,8 @@ class GroupTest extends TestCase
     /** @test */
     public function groups_are_ordered_by_order_key_by_default()
     {
-        $group1 = factory(Group::class)->create(['order_key' => 2]);
-        $group2 = factory(Group::class)->create(['order_key' => 1]);
+        $group1 = Group::factory()->create(['order_key' => 2]);
+        $group2 = Group::factory()->create(['order_key' => 1]);
 
         $groups = Group::all();
         $this->assertEquals([$group2->name, $group1->name], $groups->pluck('name')->toArray());
@@ -44,14 +44,14 @@ class GroupTest extends TestCase
     /** @test */
     public function it_has_languages_with_descendants()
     {
-        $group = factory(Group::class)->create();
-        $groupChild = factory(Group::class)->create(['parent_name' => $group->name]);
+        $group = Group::factory()->create();
+        $groupChild = Group::factory()->create(['parent_name' => $group->name]);
 
-        factory(Language::class)->create([
+        Language::factory()->create([
             'code' => 'tl1',
             'group_name' => $group->name
         ]);
-        factory(Language::class)->create([
+        Language::factory()->create([
             'code' => 'tl2',
             'parent_code' => 'tl1',
             'group_name' => $groupChild->name

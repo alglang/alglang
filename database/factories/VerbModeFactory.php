@@ -1,11 +1,18 @@
 <?php
 
-use App\Models\VerbMode;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(VerbMode::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->word
-    ];
-});
+use App\Models\VerbMode;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class VerbModeFactory extends Factory
+{
+    protected $model = VerbMode::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->unique()->word
+        ];
+    }
+}

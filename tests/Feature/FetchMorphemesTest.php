@@ -18,11 +18,11 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_fetches_language_morphemes()
     {
-        $language = factory(Language::class)->create(['name' => 'Test Language']);
-        $morpheme = factory(Morpheme::class)->create([
+        $language = Language::factory()->create(['name' => 'Test Language']);
+        $morpheme = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-ak',
-            'slot_abv' => factory(Slot::class)->create(['abv' => 'bar'])->abv
+            'slot_abv' => Slot::factory()->create(['abv' => 'bar'])->abv
         ]);
 
         $response = $this->get("/api/morphemes?language=$language->code");
@@ -44,11 +44,11 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_fetches_source_morphemes()
     {
-        $source = factory(Source::class)->create();
-        $morpheme = factory(Morpheme::class)->create([
-            'language_code' => factory(Language::class)->create(['name' => 'Test Language'])->code,
+        $source = Source::factory()->create();
+        $morpheme = Morpheme::factory()->create([
+            'language_code' => Language::factory()->create(['name' => 'Test Language'])->code,
             'shape' => '-ak',
-            'slot_abv' => factory(Slot::class)->create(['abv' => 'bar'])->abv
+            'slot_abv' => Slot::factory()->create(['abv' => 'bar'])->abv
         ]);
         $morpheme->addSource($source);
 
@@ -70,7 +70,7 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_does_not_include_placeholder_morphemes()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
         $this->assertDatabaseCount('morphemes', 2);  // Verify that the placeholder morphemes were generated
 
         $response = $this->get("/api/morphemes?language=$language->code");
@@ -88,14 +88,14 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_filters_morphemes_by_language()
     {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
 
-        $morpheme1 = factory(Morpheme::class)->create([
+        $morpheme1 = Morpheme::factory()->create([
             'shape' => '-ak',
             'language_code' => $language1->code
         ]);
-        factory(Morpheme::class, 5)->create(['language_code' => $language2->code]);
+        Morpheme::factory()->count(5)->create(['language_code' => $language2->code]);
 
         $response = $this->get("/api/morphemes?language=$language1->code");
 
@@ -111,10 +111,10 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_filters_morphemes_by_source()
     {
-        $source1 = factory(Source::class)->create();
-        $source2 = factory(Source::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create(['shape' => '-ak']);
-        $morpheme2 = factory(Morpheme::class)->create(['shape' => '-bar']);
+        $source1 = Source::factory()->create();
+        $source2 = Source::factory()->create();
+        $morpheme1 = Morpheme::factory()->create(['shape' => '-ak']);
+        $morpheme2 = Morpheme::factory()->create(['shape' => '-bar']);
         $morpheme1->addSource($source1);
         $morpheme2->addSource($source2);
 
@@ -132,19 +132,19 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_filters_morphemes_by_language_and_source()
     {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
-        $source1 = factory(Source::class)->create();
-        $source2 = factory(Source::class)->create();
-        $morpheme1 = factory(Morpheme::class)->create([
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
+        $source1 = Source::factory()->create();
+        $source2 = Source::factory()->create();
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => '-foo'
         ]);
-        $morpheme3 = factory(Morpheme::class)->create([
+        $morpheme3 = Morpheme::factory()->create([
             'language_code' => $language2->code,
             'shape' => '-bar'
         ]);
@@ -166,8 +166,8 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_paginates_morphemes()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class, 3)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        Morpheme::factory()->count(3)->create(['language_code' => $language->code]);
 
         $response = $this->get("/api/morphemes?language=$language->code&per_page=2");
 
@@ -182,8 +182,8 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_includes_morpheme_formatted_shape()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language]);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language]);
 
         $response = $this->get("/api/morphemes?language=$language->code");
 
@@ -198,9 +198,9 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_includes_morpheme_glosses()
     {
-        $gloss = factory(Gloss::class)->create(['abv' => 'G1']);
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create([
+        $gloss = Gloss::factory()->create(['abv' => 'G1']);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create([
             'language_code' => $language->code,
             'gloss' => 'G1.G2',
         ]);
@@ -229,8 +229,8 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function it_include_morpheme_disambiguators()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get("/api/morphemes?language=$language->code");
 
@@ -247,10 +247,10 @@ class FetchMorphemesTest extends TestCase
     /** @todo when mysql test environment is set up */
     public function morphemes_are_sorted_alphabetically_by_shape()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'c-']);
-        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'a-']);
-        factory(Morpheme::class)->create(['language' => $language->code, 'shape' => 'b-']);
+        $language = Language::factory()->create();
+        Morpheme::factory()->create(['language' => $language->code, 'shape' => 'c-']);
+        Morpheme::factory()->create(['language' => $language->code, 'shape' => 'a-']);
+        Morpheme::factory()->create(['language' => $language->code, 'shape' => 'b-']);
 
         $response = $this->get("/api/morphemes?language=$language->code");
 
@@ -267,9 +267,9 @@ class FetchMorphemesTest extends TestCase
     /** @test */
     public function morphemes_are_sorted_ignoring_hyphens()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['language_code' => $language->code, 'shape' => 'a-']);
-        factory(Morpheme::class)->create(['language_code' => $language->code, 'shape' => '-b']);
+        $language = Language::factory()->create();
+        Morpheme::factory()->create(['language_code' => $language->code, 'shape' => 'a-']);
+        Morpheme::factory()->create(['language_code' => $language->code, 'shape' => '-b']);
 
         $response = $this->get("/api/morphemes?language=$language->code");
 

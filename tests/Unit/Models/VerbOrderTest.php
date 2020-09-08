@@ -13,8 +13,8 @@ class VerbOrderTest extends TestCase
     /** @test */
     public function orders_are_ordered_by_order_key_by_default()
     {
-        factory(VerbOrder::class)->create(['name' => 'Bar', 'order_key' => 2]);
-        factory(VerbOrder::class)->create(['name' => 'Foo', 'order_key' => 1]);
+        VerbOrder::factory()->create(['name' => 'Bar', 'order_key' => 2]);
+        VerbOrder::factory()->create(['name' => 'Foo', 'order_key' => 1]);
 
         $orders = VerbOrder::all();
 

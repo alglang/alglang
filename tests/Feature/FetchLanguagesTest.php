@@ -14,7 +14,7 @@ class FetchLanguagesTest extends TestCase
     /** @test */
     public function it_retrieves_languages_from_the_database()
     {
-        $language = factory(Language::class)->create([
+        $language = Language::factory()->create([
             'name' => 'Test Language',
             'code' => 'TL',
             'notes' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam',

@@ -1,12 +1,19 @@
 <?php
 
-use App\Models\Gloss;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Gloss::class, function (Faker $faker) {
-    return [
-        'abv' => 'DGN',
-        'name' => 'Dummy gloss name'
-    ];
-});
+use App\Models\Gloss;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class GlossFactory extends Factory
+{
+    protected $model = Gloss::class;
+
+    public function definition(): array
+    {
+        return [
+            'abv' => 'DGN',
+            'name' => 'Dummy gloss name'
+        ];
+    }
+}

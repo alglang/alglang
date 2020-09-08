@@ -1,18 +1,25 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Feature;
 use App\Models\VerbClass;
 use App\Models\VerbMode;
 use App\Models\VerbOrder;
 use App\Models\VerbStructure;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(VerbStructure::class, function (Faker $faker) {
-    return [
-        'class_abv' => factory(VerbClass::class),
-        'order_name' => factory(VerbOrder::class),
-        'mode_name' => factory(VerbMode::class),
-        'subject_name' => factory(Feature::class)
-    ];
-});
+class VerbStructureFactory extends Factory
+{
+    protected $model = VerbStructure::class;
+
+    public function definition(): array
+    {
+        return [
+            'class_abv' => VerbClass::factory(),
+            'order_name' => VerbOrder::factory(),
+            'mode_name' => VerbMode::factory(),
+            'subject_name' => Feature::factory()
+        ];
+    }
+}

@@ -9,12 +9,14 @@ use App\Traits\HasParent;
 use App\Traits\Reconstructable;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Morpheme extends Model
 {
     use Disambiguatable;
+    use HasFactory;
     use HasGlosses;
     use HasParent;
     use MorphemePresenter;

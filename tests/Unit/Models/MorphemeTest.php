@@ -21,8 +21,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_has_a_url_property()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
-        $morpheme = factory(Morpheme::class)->create([
+        $language = Language::factory()->create(['code' => 'PA']);
+        $morpheme = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-ak'
         ]);
@@ -32,8 +32,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_preserves_utf_8_in_its_url()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
-        $morpheme = factory(Morpheme::class)->create([
+        $language = Language::factory()->create(['code' => 'PA']);
+        $morpheme = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-a·'
         ]);
@@ -43,12 +43,12 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_updates_its_url_when_its_disambiguator_changes()
     {
-        $language = factory(Language::class)->create(['code' => 'PA']);
-        $morpheme1 = factory(Morpheme::class)->create([
+        $language = Language::factory()->create(['code' => 'PA']);
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-ak'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $language->code,
             'shape' => '-ak'
         ]);
@@ -63,13 +63,13 @@ class MorphemeTest extends TestCase
     /** @test */
     public function its_slug_isnt_affected_by_morphemes_from_other_languages()
     {
-        $language1 = factory(Language::class)->create(['code' => 'A']);
-        $language2 = factory(Language::class)->create(['code' => 'B']);
-        $morpheme1 = factory(Morpheme::class)->create([
+        $language1 = Language::factory()->create(['code' => 'A']);
+        $language2 = Language::factory()->create(['code' => 'B']);
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => '-x'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $language2->code,
             'shape' => '-x'
         ]);
@@ -80,7 +80,7 @@ class MorphemeTest extends TestCase
     /** @test */
     public function language_is_always_eager_loaded()
     {
-        factory(Morpheme::class)->create();
+        Morpheme::factory()->create();
         $morpheme = Morpheme::first();
 
         $this->assertTrue($morpheme->relationLoaded('language'));
@@ -89,9 +89,9 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_fetches_gloss_models_based_on_its_gloss()
     {
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
-        $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
-        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
+        $gloss1 = Gloss::factory()->create(['abv' => 'AN']);
+        $gloss2 = Gloss::factory()->create(['abv' => 'PL']);
+        $morpheme = Morpheme::factory()->create(['gloss' => 'AN.PL']);
 
         $this->assertEquals(collect(['AN', 'PL']), $morpheme->glosses->pluck('abv'));
         $this->assertTrue($morpheme->glosses[0]->exists);
@@ -101,7 +101,7 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_handles_glosses_that_dont_exist()
     {
-        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
+        $morpheme = Morpheme::factory()->create(['gloss' => 'AN.PL']);
 
         $this->assertEquals(collect(['AN', 'PL']), $morpheme->glosses->pluck('abv'));
         $this->assertFalse($morpheme->glosses[0]->exists);
@@ -110,9 +110,9 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_caches_the_glosses_attribute()
     {
-        $gloss1 = factory(Gloss::class)->create(['abv' => 'AN']);
-        $gloss2 = factory(Gloss::class)->create(['abv' => 'PL']);
-        $morpheme = factory(Morpheme::class)->create(['gloss' => 'AN.PL']);
+        $gloss1 = Gloss::factory()->create(['abv' => 'AN']);
+        $gloss2 = Gloss::factory()->create(['abv' => 'PL']);
+        $morpheme = Morpheme::factory()->create(['gloss' => 'AN.PL']);
 
         DB::connection()->enableQueryLog();
 
@@ -128,22 +128,22 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_has_a_unique_disambiguator()
     {
-        $language1 = factory(Language::class)->create();
-        $language2 = factory(Language::class)->create();
+        $language1 = Language::factory()->create();
+        $language2 = Language::factory()->create();
 
-        $morpheme1 = factory(Morpheme::class)->create([
+        $morpheme1 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
-        $morpheme2 = factory(Morpheme::class)->create([
+        $morpheme2 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => '-ak'
         ]);
-        $morpheme3 = factory(Morpheme::class)->create([
+        $morpheme3 = Morpheme::factory()->create([
             'language_code' => $language1->code,
             'shape' => 'foo-'
         ]);
-        $morpheme4 = factory(Morpheme::class)->create([
+        $morpheme4 = Morpheme::factory()->create([
             'language_code' => $language2->code,
             'shape' => '-ak'
         ]);
@@ -157,14 +157,14 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_determines_if_it_is_a_stem()
     {
-        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'STM']);
+        $morpheme = Morpheme::factory()->create(['slot_abv' => 'STM']);
         $this->assertTrue($morpheme->isStem());
     }
 
     /** @test */
     public function it_determines_if_it_is_not_a_stem()
     {
-        $morpheme = factory(Morpheme::class)->create(['slot_abv' => 'FOO']);
+        $morpheme = Morpheme::factory()->create(['slot_abv' => 'FOO']);
         $this->assertFalse($morpheme->isStem());
     }
 
@@ -181,10 +181,10 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_retrieves_forms_that_contain_it()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
 
-        $form = factory(Form::class)->create(['language_code' => $language->code]);
+        $form = Form::factory()->create(['language_code' => $language->code]);
         $form->assignMorphemes([$morpheme]);
 
         $forms = $morpheme->forms;
@@ -196,8 +196,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_does_not_include_forms_from_other_languages()
     {
-        $morpheme = factory(Morpheme::class)->create(['language_code' => factory(Language::class)->create()->code]);
-        $form = factory(Form::class)->create(['language_code' => factory(Language::class)->create()->code]);
+        $morpheme = Morpheme::factory()->create(['language_code' => Language::factory()->create()->code]);
+        $form = Form::factory()->create(['language_code' => Language::factory()->create()->code]);
         $form->assignMorphemes([$morpheme]);
 
         $this->assertCount(0, $morpheme->forms);
@@ -206,8 +206,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_only_counts_forms_with_duplicate_morphemes_once()
     {
-        $morpheme = factory(Morpheme::class)->create(['language_code' => factory(Language::class)->create()->code]);
-        $form = factory(Form::class)->create(['language_code' => $morpheme->language_code]);
+        $morpheme = Morpheme::factory()->create(['language_code' => Language::factory()->create()->code]);
+        $form = Form::factory()->create(['language_code' => $morpheme->language_code]);
         $form->assignMorphemes([$morpheme, $morpheme]);
 
         $this->assertCount(1, $morpheme->forms);
@@ -216,10 +216,10 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_retrieves_verb_forms_that_contain_it()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
-        $nominalForm = factory(NominalForm::class)->create([
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
+        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create([
             'language_code' => $language->code,
         ]);
         $verbForm->assignMorphemes([$morpheme]);
@@ -234,10 +234,10 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_retrieves_nominal_forms_that_contain_it()
     {
-        $language = factory(Language::class)->create();
-        $morpheme = factory(Morpheme::class)->create(['language_code' => $language->code]);
-        $verbForm = factory(VerbForm::class)->create(['language_code' => $language->code]);
-        $nominalForm = factory(NominalForm::class)->create([
+        $language = Language::factory()->create();
+        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
+        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
+        $nominalForm = NominalForm::factory()->create([
             'language_code' => $language->code,
         ]);
         $verbForm->assignMorphemes([$morpheme]);
@@ -252,8 +252,8 @@ class MorphemeTest extends TestCase
     /** @test */
     public function it_can_exclude_placeholders_from_queries()
     {
-        $language = factory(Language::class)->create();
-        factory(Morpheme::class)->create(['shape' => 'foo-', 'language_code' => $language->code]);
+        $language = Language::factory()->create();
+        Morpheme::factory()->create(['shape' => 'foo-', 'language_code' => $language->code]);
         $morphemes = Morpheme::all();
 
         // Verify that placeholder morphemes were created

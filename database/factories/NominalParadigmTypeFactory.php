@@ -1,13 +1,20 @@
 <?php
 
-use App\Models\NominalParadigmType;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(NominalParadigmType::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->word,
-        'has_pronominal_feature' => true,
-        'has_nominal_feature' => true
-    ];
-});
+use App\Models\NominalParadigmType;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class NominalParadigmTypeFactory extends Factory
+{
+    protected $model = NominalParadigmType::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->unique()->word,
+            'has_pronominal_feature' => true,
+            'has_nominal_feature' => true
+        ];
+    }
+}

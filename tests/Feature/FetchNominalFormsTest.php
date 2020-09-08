@@ -20,15 +20,15 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_language_nominal_forms()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
+        $language = Language::factory()->create(['code' => 'TL']);
 
-        $nominalForm = factory(NominalForm::class)->create([
+        $nominalForm = NominalForm::factory()->create([
             'shape' => 'N-a',
             'language_code' => $language->code,
-            'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
-                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
-                'paradigm_id' => factory(NominalParadigm::class)->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'pronominal_feature_name' => Feature::factory()->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => Feature::factory()->create(['name' => 'Nom Feat']),
+                'paradigm_id' => NominalParadigm::factory()->create([
                     'name' => 'Test Paradigm',
                     'language_code' => $language->code
                 ])
@@ -57,10 +57,10 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_nominal_forms_by_morpheme()
     {
-        $morpheme = factory(Morpheme::class)->create();
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $morpheme->language_code]);
+        $morpheme = Morpheme::factory()->create();
+        $nominalForm = NominalForm::factory()->create(['language_code' => $morpheme->language_code]);
         $nominalForm->assignMorphemes([$morpheme]);
-        factory(NominalForm::class)->create(['language_code' => $morpheme->language_code])->assignMorphemes(['foo', 'bar']);
+        NominalForm::factory()->create(['language_code' => $morpheme->language_code])->assignMorphemes(['foo', 'bar']);
 
         $response = $this->get("/api/nominal-forms?with_morphemes[]=$morpheme->id");
 
@@ -76,15 +76,15 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_fetches_source_verb_forms()
     {
-        $language = factory(Language::class)->create(['code' => 'TL']);
-        $source = factory(Source::class)->create();
-        $nominalForm = factory(NominalForm::class)->create([
+        $language = Language::factory()->create(['code' => 'TL']);
+        $source = Source::factory()->create();
+        $nominalForm = NominalForm::factory()->create([
             'shape' => 'N-a',
             'language_code' => $language->code,
-            'structure_id' => factory(NominalStructure::class)->create([
-                'pronominal_feature_name' => factory(Feature::class)->create(['name' => 'Pronom Feat']),
-                'nominal_feature_name' => factory(Feature::class)->create(['name' => 'Nom Feat']),
-                'paradigm_id' => factory(NominalParadigm::class)->create([
+            'structure_id' => NominalStructure::factory()->create([
+                'pronominal_feature_name' => Feature::factory()->create(['name' => 'Pronom Feat']),
+                'nominal_feature_name' => Feature::factory()->create(['name' => 'Nom Feat']),
+                'paradigm_id' => NominalParadigm::factory()->create([
                     'name' => 'Test Paradigm',
                     'language_code' => $language->code
                 ])
@@ -121,13 +121,13 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function nominal_forms_are_filtered_by_language()
     {
-        $language1 = factory(Language::class)->create(['code' => 'TL']);
-        $language2 = factory(Language::class)->create();
-        $nominalForm1 = factory(NominalForm::class)->create([
+        $language1 = Language::factory()->create(['code' => 'TL']);
+        $language2 = Language::factory()->create();
+        $nominalForm1 = NominalForm::factory()->create([
             'shape' => 'N-a',
             'language_code' => $language1->code
         ]);
-        $nominalForm2 = factory(NominalForm::class)->create([
+        $nominalForm2 = NominalForm::factory()->create([
             'shape' => 'N-b',
             'language_code' => $language2->code
         ]);
@@ -146,10 +146,10 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function nominal_forms_are_filtered_by_source()
     {
-        $source1 = factory(Source::class)->create();
-        $source2 = factory(Source::class)->create();
-        $nominalForm1 = factory(NominalForm::class)->create(['shape' => 'N-a']);
-        $nominalForm2 = factory(NominalForm::class)->create(['shape' => 'N-b',]);
+        $source1 = Source::factory()->create();
+        $source2 = Source::factory()->create();
+        $nominalForm1 = NominalForm::factory()->create(['shape' => 'N-a']);
+        $nominalForm2 = NominalForm::factory()->create(['shape' => 'N-b',]);
         $nominalForm1->addSource($source1);
         $nominalForm2->addSource($source2);
 
@@ -167,8 +167,8 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_paginates_nominal_forms()
     {
-        $language = factory(Language::class)->create();
-        factory(NominalForm::class, 3)->create(['language_code' => $language->code]);
+        $language = Language::factory()->create();
+        NominalForm::factory()->count(3)->create(['language_code' => $language->code]);
 
         $response = $this->get("/api/nominal-forms?language=$language->code&per_page=2");
 
@@ -183,8 +183,8 @@ class FetchNominalFormsTest extends TestCase
     /** @test */
     public function it_includes_formatted_shapes()
     {
-        $language = factory(Language::class)->create();
-        $nominalForm = factory(NominalForm::class)->create(['language_code' => $language]);
+        $language = Language::factory()->create();
+        $nominalForm = NominalForm::factory()->create(['language_code' => $language]);
 
         $response = $this->get("/api/nominal-forms?language=$language->code");
 

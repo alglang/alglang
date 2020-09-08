@@ -1,13 +1,20 @@
 <?php
 
-use App\Models\Source;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Source::class, function (Faker $faker) {
-    return [
-        'author' => $faker->lastName,
-        'year' => $faker->year,
-        'full_citation' => '<p>Joe Brown. 1984. <i>This is the title</i>. Winnipeg: Some Publisher.</p>'
-    ];
-});
+use App\Models\Source;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class SourceFactory extends Factory
+{
+    protected $model = Source::class;
+
+    public function definition(): array
+    {
+        return [
+            'author' => $this->faker->lastName,
+            'year' => $this->faker->year,
+            'full_citation' => '<p>Joe Brown. 1984. <i>This is the title</i>. Winnipeg: Some Publisher.</p>'
+        ];
+    }
+}

@@ -1,11 +1,18 @@
 <?php
 
-use App\Models\VerbOrder;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(VerbOrder::class, function (Faker $faker) {
-    return [
-        'name' => $faker->unique()->word
-    ];
-});
+use App\Models\VerbOrder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class VerbOrderFactory extends Factory
+{
+    protected $model = VerbOrder::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->unique()->word
+        ];
+    }
+}

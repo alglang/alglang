@@ -23,7 +23,7 @@ class ViewNominalParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_languages()
     {
-        $language = factory(Language::class)->create();
+        $language = Language::factory()->create();
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();
@@ -34,8 +34,8 @@ class ViewNominalParadigmSearchFormTest extends TestCase
     /** @test */
     public function languages_are_ordered_by_name()
     {
-        factory(Language::class)->create(['name' => 'Foo', 'order_key' => 0]);
-        factory(Language::class)->create(['name' => 'Bar', 'order_key' => 1]);
+        Language::factory()->create(['name' => 'Foo', 'order_key' => 0]);
+        Language::factory()->create(['name' => 'Bar', 'order_key' => 1]);
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();
@@ -46,7 +46,7 @@ class ViewNominalParadigmSearchFormTest extends TestCase
     /** @test */
     public function it_includes_paradigm_types()
     {
-        $paradigmType = factory(NominalParadigmType::class)->create();
+        $paradigmType = NominalParadigmType::factory()->create();
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();
@@ -57,8 +57,8 @@ class ViewNominalParadigmSearchFormTest extends TestCase
     /** @test */
     public function paradigm_types_are_ordered_by_name()
     {
-        factory(NominalParadigmType::class)->create(['name' => 'Foo']);
-        factory(NominalParadigmType::class)->create(['name' => 'Bar']);
+        NominalParadigmType::factory()->create(['name' => 'Foo']);
+        NominalParadigmType::factory()->create(['name' => 'Bar']);
 
         $response = $this->get('/search/nominals/paradigms');
         $response->assertOk();

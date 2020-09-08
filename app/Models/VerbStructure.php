@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Presenters\VerbStructurePresenter;
 use App\Traits\GeneratesFromSearchQuery;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 class VerbStructure extends Model
 {
     use GeneratesFromSearchQuery;
+    use HasFactory;
     use VerbStructurePresenter;
 
     /*
