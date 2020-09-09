@@ -14,11 +14,11 @@ $pages = [
                 {!! $form->formatted_shape !!}
             </h1>
 
-            <p class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
+            <div class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
                 <x-preview-link :model="$form->language">
                     {{ $form->language->name }}
                 </x-preview>
-            </p>
+            </div>
         @endslot
 
         @slot('basic_details')
