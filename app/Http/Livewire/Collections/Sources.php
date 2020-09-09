@@ -12,6 +12,8 @@ use Livewire\Component;
 
 class Sources extends Component
 {
+    use HasSlug;
+
     /** @var string */
     public $screenSize = 'xl';
 

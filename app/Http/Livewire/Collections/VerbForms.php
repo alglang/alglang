@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class VerbForms extends Component
 {
+    use HasSlug;
+
     /** @var HasVerbForms */
     public $model;
 

@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class Examples extends Component
 {
+    use HasSlug;
+
     /** @var HasExamples */
     public $model;
 

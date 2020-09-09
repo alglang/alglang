@@ -11,6 +11,8 @@ use Livewire\Component;
 
 class NominalForms extends Component
 {
+    use HasSlug;
+
     /** @var HasNominalForms */
     public $model;
 
