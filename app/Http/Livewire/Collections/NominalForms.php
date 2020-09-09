@@ -7,20 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Component;
 
-class NominalForms extends Component
+class NominalForms extends CollectionComponent
 {
     use HasSlug;
 
     /** @var HasNominalForms */
     public $model;
-
-    /** @var string */
-    public $screenSize = 'xl';
-
-    /** @var int */
-    public $page = 0;
 
     /** @var string */
     public $filter = '';
@@ -37,54 +30,12 @@ class NominalForms extends Component
     /** @var array */
     protected $listeners = ['resize'];
 
-    public static function maxSizeFor(string $size): int
-    {
-        return static::$sizes[$size];
-    }
-
     /**
      * @return Builder|Relation
      */
-    protected function filteredFormQuery()
+    protected function query()
     {
         return $this->model->nominalForms()->where('shape', 'LIKE', "%{$this->filter}%");
-    }
-
-    public function getFormsProperty(): Collection
-    {
-        return $this->filteredFormQuery()
-                    ->skip($this->perPage() * $this->page)
-                    ->take($this->perPage())
-                    ->get();
-    }
-
-    public function hasMoreItems(): bool
-    {
-        return $this->filteredFormQuery()->count() > ($this->page + 1) * $this->perPage();
-    }
-
-    public function resize(string $size): void
-    {
-        $this->screenSize = $size;
-    }
-
-    public function perPage(): int
-    {
-        return static::maxSizeFor($this->screenSize);
-    }
-
-    public function prevPage(): void
-    {
-        if ($this->page > 0) {
-            $this->page--;
-        }
-    }
-
-    public function nextPage(): void
-    {
-        if ($this->hasMoreItems()) {
-            $this->page++;
-        }
     }
 
     public function updatedFilter(): void
