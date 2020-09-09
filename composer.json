@@ -11,10 +11,6 @@
       {
         "type": "vcs",
         "url": "https://github.com/adoxography/disambiguatable"
-      },
-      {
-        "type": "vcs",
-        "url": "https://github.com/laravel-shift/laravel-sluggable.git"
       }
     ],
     "require": {
@@ -29,7 +25,7 @@
         "league/oauth1-client": "^1.7",
         "livewire/livewire": "^2.0",
         "spatie/laravel-permission": "^3.13",
-        "spatie/laravel-sluggable": "dev-l8-compatibility"
+        "spatie/laravel-sluggable": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
