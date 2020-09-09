@@ -25,12 +25,9 @@ if (process.env.NODE_ENV === 'testing') {
 
 mix.js('resources/js/app.js', 'public/js')
   .extract([
-    'axios',
+    'alpinejs',
     'leaflet',
-    'lodash',
-    'v-tooltip',
-    'vue',
-    'vue2-leaflet'
+    'vue'
   ]);
 
 mix.postCss('resources/css/app.css', 'public/css', [

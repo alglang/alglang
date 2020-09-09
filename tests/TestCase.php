@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\Support\Str;
+use Livewire\Livewire;
 use Spatie\Permission\PermissionRegistrar;
 
 abstract class TestCase extends BaseTestCase
@@ -24,8 +25,8 @@ abstract class TestCase extends BaseTestCase
         $this->app->make(PermissionRegistrar::class)->registerPermissions();
     }
 
-    public function migrateTestTables(): void
+    protected function livewire(string $class, array $data = [])
     {
-        $this->artisan('migrate', ['--path' => 'tests/database/migrations']);
+        return Livewire::test($class, $data);
     }
 }

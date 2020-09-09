@@ -14,7 +14,7 @@ class MorphemeFactory extends Factory
     public function definition()
     {
         return [
-            'shape' => '-ak',
+            'shape' => '-' . $this->faker->unique()->word . '-',
             'language_code' => Language::factory(),
             'slot_abv' => Slot::factory()
         ];

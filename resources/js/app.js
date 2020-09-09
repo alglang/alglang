@@ -1,29 +1,30 @@
+import Vue from 'vue';
+import 'livewire-vue';
+
 require('./bootstrap');
 require('lato-font/css/lato-font.css');
 
-const Vue = require('vue');
-const VTooltip = require('v-tooltip');
+Vue.component('alglang-nominal-paradigm-search', require('./components/NominalParadigmSearch.vue').default);
+Vue.component('alglang-verb-form-search', require('./components/VerbFormSearch.vue').default);
+Vue.component('alglang-verb-paradigm-search', require('./components/VerbParadigmSearch.vue').default);
 
 window.Vue = Vue;
 
-Vue.use(VTooltip);
+function dispatchMediaSize(mqls) {
+  const size = Object.entries(mqls).find(([_, mql]) => mql.matches)[0];
 
-Vue.component('alglang-details', require('./components/Details.vue').default);
-Vue.component('alglang-detail-page', require('./components/DetailPage.vue').default);
-Vue.component('alglang-detail-row', require('./components/DetailRow.vue').default);
-Vue.component('alglang-map', require('./components/Map.vue').default);
-Vue.component('alglang-gloss-field', require('./components/GlossField.vue').default);
+  if (window.livewire) {
+    window.livewire.emit('resize', size);
+  }
+}
 
-Vue.component('alglang-sources', require('./components/Sources.vue').default);
-Vue.component('alglang-examples', require('./components/Examples.vue').default);
-Vue.component('alglang-language-morphemes', require('./components/Morphemes.vue').default);
-Vue.component('alglang-language-verb-forms', require('./components/VerbForms.vue').default);
-Vue.component('alglang-nominal-forms', require('./components/NominalForms.vue').default);
+const mqls = {
+  xl: window.matchMedia('(min-width: 1280px)'),
+  lg: window.matchMedia('(min-width: 1024px)'),
+  md: window.matchMedia('(min-width: 768px)'),
+  sm: window.matchMedia('(min-width: 640px)'),
+  xs: window.matchMedia('(min-width: 0px)')
+};
 
-Vue.component('alglang-verb-form-search', require('./components/VerbFormSearch.vue').default);
-Vue.component('alglang-verb-paradigm-search', require('./components/VerbParadigmSearch.vue').default);
-Vue.component('alglang-nominal-paradigm-search', require('./components/NominalParadigmSearch.vue').default);
-
-new Vue({ // eslint-disable-line no-new
-  el: '#app'
-});
+Object.values(mqls).forEach(mql => mql.addListener(() => dispatchMediaSize(mqls)));
+dispatchMediaSize(mqls);

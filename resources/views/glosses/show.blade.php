@@ -1,25 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-    <alglang-details title="Gloss details">
-        <template v-slot:header>
+    <x-details title="Gloss details" :pages="[['hash' => 'basic_details']]">
+        @slot('header')
             <h1 class="text-2xl text-gray-800">
                 {{ $gloss->abv }}
             </h1>
-        </template>
+        @endslot
 
-        <alglang-detail-page title="Basic details">
-            <div>
-                <alglang-detail-row label="Full name">
-                    <p>{{ $gloss->name }}</p>
-                </alglang-detail-row>
+        @slot('basic_details')
+            <x-detail-row label="Full name">
+                <p>{{ $gloss->name }}</p>
+            </x-detail-row>
 
-                @if ($gloss->description)
-                    <alglang-detail-row label="Description">
-                        {!! $gloss->description !!}
-                    </alglang-detail-row>
-                @endif
-            </div>
-        </alglang-detail-page>
-    </alglang-details>
+            @if ($gloss->description)
+            <x-detail-row label="Description">
+                {!! $gloss->description !!}
+            </x-detail-row>
+            @endif
+        @endslot
+    </x-details>
 @endsection

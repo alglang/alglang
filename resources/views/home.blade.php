@@ -24,9 +24,6 @@
             To start using the database, click on any of the links above, or try doing a <a href="{{ route('search.verbs.paradigms') }}">verb paradigm search</a>, or click a language on the map below.</p>
         </p>
 
-        <alglang-map
-            style="height: 30rem;"
-            :locations="{{ $languages }}"
-        />
+        @livewire('map', ['locations' => $languages])
     </section>
 @endsection

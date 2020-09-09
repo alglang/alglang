@@ -16,7 +16,7 @@ class ExampleFactory extends Factory
     public function definition(): array
     {
         return [
-            'shape' => 'exampleshape',
+            'shape' => $this->faker->unique()->word,
             'stem_id' => Morpheme::factory(),
             'form_id' => Form::factory(),
             'translation' => '<p>factory translation</p>'

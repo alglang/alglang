@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Contracts\HasExamples;
+use App\Contracts\HasMorphemes;
+use App\Contracts\HasNominalForms;
+use App\Contracts\HasVerbForms;
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 
-class Source extends Model
+class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, HasNominalForms
 {
     use Disambiguatable;
     use HasFactory;

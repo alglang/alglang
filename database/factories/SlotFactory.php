@@ -12,7 +12,7 @@ class SlotFactory extends Factory
     public function definition(): array
     {
         return [
-            'abv' => 'TS',
+            'abv' => $this->faker->unique()->lexify('???'),
             'name' => 'theme sign'
         ];
     }

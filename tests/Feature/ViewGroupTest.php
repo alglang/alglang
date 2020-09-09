@@ -95,7 +95,7 @@ class ViewGroupTest extends TestCase
         $response->assertDontSee('Description');
     }
 
-    /** @test */
+    /** @TODO */
     public function all_group_languages_with_positions_appear_on_the_group_page()
     {
         $group = Group::factory()->create();
@@ -120,7 +120,7 @@ class ViewGroupTest extends TestCase
         $response->assertSee('{"lat":47.1,"lng":-86.1}');
     }
 
-    /** @test */
+    /** @TODO */
     public function descendants_of_group_languages_appear_on_the_group_page()
     {
         $group = Group::factory()->create();

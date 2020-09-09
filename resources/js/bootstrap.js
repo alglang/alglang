@@ -1,4 +1,4 @@
-window._ = require('lodash');
+import 'alpinejs';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -19,9 +19,10 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
-
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+require('leaflet/dist/leaflet.css');
+require('leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css');
+window.leaflet = require('leaflet');
+require('leaflet-defaulticon-compatibility'); // eslint-disable-line import/no-unresolved
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

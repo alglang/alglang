@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
+@php
+$pages = [
+    ['hash' => 'basic_details'],
+    ['hash' => 'verb_forms', 'count' => $morpheme->verb_forms_count],
+    ['hash' => 'nominal_forms', 'count' => $morpheme->nominal_forms_count]
+];
+@endphp
+
 @section('content')
-    <alglang-details title="Morpheme details">
-        <template v-slot:header>
+    <x-details title="Morpheme details" :pages="$pages">
+        @slot('header')
             <h1 class="text-2xl text-gray-800">
                 <span>{!! $morpheme->formatted_shape !!}</span><!--
              --><span class="text-base align-top">{{ $morpheme->disambiguator + 1 }}</span>
@@ -13,82 +21,80 @@
                     {{ $morpheme->language->name }}
                 </x-preview-link>
             </p>
-        </template>
+        @endslot
 
-        <alglang-detail-page title="Basic details">
-            <div>
-                <alglang-detail-row label="Gloss">
-                    <p class="small-caps">{{ $morpheme->gloss }}</p>
-                </alglang-detail-row>
+        @slot('basic_details')
+            <x-detail-row label="Gloss">
+                <p class="small-caps">{{ $morpheme->gloss }}</p>
+            </x-detail-row>
 
-                <alglang-detail-row label="Slot">
-                    <p>
-                        <a href="{{ $morpheme->slot->url }}" style="color: {{ $morpheme->slot->colour }}">
-                            {{ $morpheme->slot->abv }}
-                        </a>
-                    </p>
-                </alglang-detail-row>
+            <x-detail-row label="Slot">
+                <p>
+                    <a href="{{ $morpheme->slot->url }}" style="color: {{ $morpheme->slot->colour }}">
+                        {{ $morpheme->slot->abv }}
+                    </a>
+                </p>
+            </x-detail-row>
 
-                @if ($morpheme->parent)
-                    <alglang-detail-row label="Parent">
-                        <x-preview-link :model="$morpheme->parent">
-                            {{ $morpheme->parent->shape }}
-                        </x-preview-link>
-                        @if($morpheme->parent->gloss)
-                            <span class="small-caps">
-                                ({{ $morpheme->parent->gloss }})
-                            </span>
-                        @endif
-                        <span class="inline-flex">
-                            (
-                            <x-preview-link :model="$morpheme->parent->language">
-                                {{ $morpheme->parent->language->name }}
-                            </x-preview-link>
-                            )
-                        </span>
-                    </alglang-detail-row>
+            @if ($morpheme->parent)
+            <x-detail-row label="Parent">
+                <x-preview-link :model="$morpheme->parent">
+                    {{ $morpheme->parent->shape }}
+                </x-preview-link>
+                @if($morpheme->parent->gloss)
+                <span class="small-caps">
+                    ({{ $morpheme->parent->gloss }})
+                </span>
                 @endif
+                <span class="inline-flex">
+                    (
+                    <x-preview-link :model="$morpheme->parent->language">
+                        {{ $morpheme->parent->language->name }}
+                    </x-preview-link>
+                    )
+                </span>
+            </x-detail-row>
+            @endif
 
-                @if ($morpheme->historical_notes)
-                    <alglang-detail-row label="Historical notes">
-                        {!! $morpheme->historical_notes !!}
-                    </alglang-detail-row>
-                @endif
+            @if ($morpheme->historical_notes)
+            <x-detail-row label="Historical notes">
+                {!! $morpheme->historical_notes !!}
+            </x-detail-row>
+            @endif
 
-                @if ($morpheme->allomorphy_notes)
-                    <alglang-detail-row label="Allomorphy notes">
-                        {!! $morpheme->allomorphy_notes !!}
-                    </alglang-detail-row>
-                @endif
+            @if ($morpheme->allomorphy_notes)
+            <x-detail-row label="Allomorphy notes">
+                {!! $morpheme->allomorphy_notes !!}
+            </x-detail-row>
+            @endif
 
-                @if ($morpheme->usage_notes)
-                    <alglang-detail-row label="Usage notes">
-                        {!! $morpheme->usage_notes !!}
-                    </alglang-detail-row>
-                @endif
+            @if ($morpheme->usage_notes)
+            <x-detail-row label="Usage notes">
+                {!! $morpheme->usage_notes !!}
+            </x-detail-row>
+            @endif
 
-                @can('view private notes')
-                @if ($morpheme->private_notes)
-                    <alglang-detail-row label="Private notes">
-                        {!! $morpheme->private_notes !!}
-                    </alglang-detail-row>
-                @endif
-                @endcan
+            @can('view private notes')
+            @if ($morpheme->private_notes)
+            <x-detail-row label="Private notes">
+                {!! $morpheme->private_notes !!}
+            </x-detail-row>
+            @endif
+            @endcan
 
-                @if ($morpheme->sources->count() > 0)
-                    <alglang-detail-row label="Sources">
-                        <x-source-list :sources="$morpheme->sources" />
-                    </alglang-detail-row>
-                @endif
-            </div>
-        </alglang-detail-page>
+            @if ($morpheme->sources->count() > 0)
+            <x-detail-row label="Sources">
+                <x-source-list :sources="$morpheme->sources" />
+            </x-detail-row>
+            @endif
+        @endslot
 
-        <alglang-detail-page title="Verb forms" :count="{{ $morpheme->verb_forms_count }}">
-            <alglang-language-verb-forms url="/api/verb-forms?with_morphemes[]={{ $morpheme->id }}" />
-        </alglang-detail-page>
+        @slot('verb_forms')
+            {{-- <livewire:collections.verb-forms :url="'/api/verb-forms?with_morphemes[]=' . $morpheme->id" /> --}}
+        @endslot
 
-        <alglang-detail-page title="Nominal forms" :count="{{ $morpheme->nominal_forms_count }}">
-            <alglang-nominal-forms url="/api/nominal-forms?with_morphemes[]={{ $morpheme->id }}" />
-        </alglang-detail-page>
-    </alglang-details>
+        @slot('nominal_forms')
+            {{-- <livewire:collections.nominal-forms :url="'/api/nominal-forms?with_morphemes[]=' . $morpheme->id" /> --}}
+        @endslot
+    </x-details>
 @endsection

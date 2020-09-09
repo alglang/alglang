@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use App\Contracts\HasMorphemes;
+use App\Contracts\HasSources;
+use App\Contracts\HasVerbForms;
+use App\Contracts\HasNominalForms;
 use App\Traits\AggregatesSources;
 use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class Language extends Model
+class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms
 {
     use AggregatesSources;
     use HasFactory;
@@ -94,7 +99,7 @@ class Language extends Model
         return $this->belongsTo(Group::class);
     }
 
-    public function morphemes(): Relation
+    public function morphemes(): HasMany
     {
         return $this->hasMany(Morpheme::class);
     }
@@ -129,15 +134,20 @@ class Language extends Model
     protected static function booted()
     {
         static::created(function (Language $language) {
+            $stem = Slot::firstOrCreate([
+                'abv' => 'STM',
+                'name' => 'stem'
+            ]);
+
             $language->morphemes()->create([
                 'shape' => 'V-',
-                'slot_abv' => 'STM',
+                'slot_abv' => $stem->abv,
                 'gloss' => 'V'
             ]);
 
             $language->morphemes()->create([
                 'shape' => 'N-',
-                'slot_abv' => 'STM',
+                'slot_abv' => $stem->abv,
                 'gloss' => 'N'
             ]);
         });

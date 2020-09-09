@@ -21,8 +21,11 @@ class HasParentTest extends TestCase
             public $table = 'parented';
             protected $guarded = [];
         };
+    }
 
-        $this->migrateTestTables();
+    public function tearDown(): void
+    {
+        \DB::table('parented')->delete();
     }
 
     /** @test */

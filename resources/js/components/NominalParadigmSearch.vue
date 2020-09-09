@@ -83,7 +83,6 @@ export default {
       type: Array,
       required: true
     },
-
     paradigmTypes: {
       type: Array,
       required: true

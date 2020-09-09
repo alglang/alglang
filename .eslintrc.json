@@ -24,6 +24,9 @@
     "prefer-arrow-callback": "off",
     "import/extensions": ["error", "never", { "css": "always" }],
     "no-unused-expressions": "off",
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_"
+    }],
     "chai-friendly/no-unused-expressions": 2,
     "vue/no-v-html": "off",
     "vue/html-self-closing": [

@@ -6,6 +6,6 @@
             Bibliography
         </h1>
 
-        <alglang-sources url="/api/sources?per_page=200" />
+        <livewire:collections.sources></livewire:collections.sources>
     </section>
 @endsection

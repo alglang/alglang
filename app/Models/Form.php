@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\HasExamples;
 use App\Presenters\FormPresenter;
 use App\Traits\HasParent;
 use App\Traits\Reconstructable;
@@ -14,7 +15,7 @@ use Illuminate\Support\Collection;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Form extends Model
+class Form extends Model implements HasExamples
 {
     use FormPresenter;
     use HasFactory;
