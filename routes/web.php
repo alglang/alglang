@@ -14,6 +14,7 @@ use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\RuleController;
+use App\Http\Controllers\PhonemeController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
@@ -110,6 +111,13 @@ Route::prefix('languages')->group(function () {
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
             )->name('verbForms.examples.show');
+        });
+
+        Route::prefix('phonemes')->group(function () {
+            Route::get(
+                '{phoneme:slug}',
+                [PhonemeController::class, 'show']
+            );
         });
 
         Route::get(

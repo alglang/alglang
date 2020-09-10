@@ -144,6 +144,11 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(Rule::class);
     }
 
+    public function phonemes(): Relation
+    {
+        return $this->hasMany(Phoneme::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Protected methods

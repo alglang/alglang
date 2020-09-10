@@ -29,7 +29,8 @@ class LanguageController extends Controller
             },
             'verbForms',
             'nominalForms',
-            'nominalParadigms'
+            'nominalParadigms',
+            'phonemes'
         ]);
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);

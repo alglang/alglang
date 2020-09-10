@@ -120,6 +120,18 @@ class ViewLanguageTest extends TestCase
     }
 
     /** @test */
+    public function the_language_comes_with_its_phoneme_count()
+    {
+        $language = Language::factory()->hasPhonemes(1)->create();
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(1, $response['language']->phonemes_count);
+    }
+
+    /** @test */
     public function a_language_parent_comes_with_the_language()
     {
         $language = Language::factory()->create([

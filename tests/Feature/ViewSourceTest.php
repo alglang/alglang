@@ -204,13 +204,25 @@ class ViewSourceTest extends TestCase
     public function the_source_comes_with_its_rule_count()
     {
         $source = Source::factory()->create();
-        $rule = Rule::factory()->create();
-        $rule->addSource($source);
+        $rule = Rule::factory()->create()->addSource($source);
 
         $response = $this->get($source->url);
 
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->rules_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_phoneme_count()
+    {
+        $source = Source::factory()->hasPhonemes(1)->create();
+        $phoneme = Phoneme::factory()->create()->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->phonemes_count);
     }
 }

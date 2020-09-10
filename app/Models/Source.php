@@ -138,9 +138,15 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
         return $this->morphedByMany(Example::class, 'sourceable');
     }
 
+<<<<<<< HEAD
     public function rules(): Relation
     {
         return $this->morphedByMany(Rule::class, 'sourceable');
+=======
+    public function phonemes(): Relation
+    {
+        return $this->morphedByMany(Phoneme::class, 'sourceable');
+>>>>>>> Add phonemes
     }
 
     /*

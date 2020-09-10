@@ -4,6 +4,7 @@
 $pages = [
     ['hash' => 'basic_details',],
     ['hash' => 'morphemes', 'count' => $language->morphemes_count],
+    ['hash' => 'phonemes', 'count' => $language->phonemes_count],
     ['hash' => 'nominal_paradigms', 'count' => $language->nominal_paradigms_count],
     ['hash' => 'verb_forms', 'count' => $language->verb_forms_count],
     ['hash' => 'nominal_forms', 'count' => $language->nominal_forms_count],
@@ -37,6 +38,18 @@ if ($language->sources_count) {
 
         @slot('morphemes')
             <livewire:collections.morphemes :model="$language" />
+        @endslot
+
+        @slot('phonemes')
+            <ul>
+                @foreach ($language->phonemes as $phoneme)
+                <li>
+                    <x-preview-link :model="$phoneme">
+                        {!! $phoneme->formatted_shape !!}
+                    </x-preview-link>
+                </li>
+                @endforeach
+            </ul>
         @endslot
 
         @slot('nominal_paradigms')
