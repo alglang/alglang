@@ -17,7 +17,7 @@
         class="w-8 p-1 bg-gray-200 hover:bg-gray-100 disabled:bg-gray-500 disabled:cursor-default
                shadow hover:shadow-md disabled:shadow-none transition-all duration-150 ease-in-out"
         wire:click.prefetch="nextPage"
-        @if (!$this->hasMoreItems())
+        @if (!$this->hasMorePages)
         disabled="disabled"
         @endif
     >

@@ -48,11 +48,6 @@ abstract class CollectionComponent extends Component
         return $this->query()->count() > ($this->page + 1) * $this->perPage();
     }
 
-    public function hasMoreItems(): bool
-    {
-        return $this->hasMorePages;
-    }
-
     public function nextPage(): void
     {
         if ($this->hasMorePages) {
