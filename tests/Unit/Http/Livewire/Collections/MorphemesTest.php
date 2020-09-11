@@ -129,7 +129,10 @@ class MorphemesTest extends TestCase
         $view->assertSet('page', 0);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group slow
+     */
     public function it_adjusts_morpheme_count_by_screen_size()
     {
         $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('xl') + 1)->create();

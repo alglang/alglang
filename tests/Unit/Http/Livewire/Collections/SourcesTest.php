@@ -140,7 +140,10 @@ class SourcesTest extends TestCase
         $view->assertDontSee('Bar 1999');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group slow
+     */
     public function it_adjusts_source_count_by_screen_size()
     {
         Source::factory()->count(Sources::maxSizeFor('xl')+1)->create();

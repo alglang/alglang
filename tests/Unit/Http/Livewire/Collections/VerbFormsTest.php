@@ -154,7 +154,10 @@ class VerbFormsTest extends TestCase
         $view->assertSet('page', 0);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group slow
+     */
     public function it_adjusts_form_count_by_screen_size()
     {
         $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('xl')+1)->create();

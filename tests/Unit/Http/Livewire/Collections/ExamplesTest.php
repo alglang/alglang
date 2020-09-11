@@ -155,7 +155,10 @@ class ExamplesTest extends TestCase
         $view->assertSet('page', 0);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group slow
+     */
     public function it_adjusts_form_count_by_screen_size()
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('xl') + 1)->create();
