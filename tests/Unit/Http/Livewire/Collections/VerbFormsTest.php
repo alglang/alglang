@@ -6,60 +6,14 @@ use App\Http\Livewire\Collections\VerbForms;
 use App\Models\Language;
 use App\Models\VerbForm;
 use App\Models\VerbStructure;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class VerbFormsTest extends TestCase
 {
-    /** @var bool */
-    public static $seeded = false;
-
-    /** @var Language */
-    protected $language;
-
-    /** @var VerbForm */
-    protected $form1;
-
-    /** @var VerbForm */
-    protected $form2;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        if (!static::$seeded) {
-            // Ensure the database has been migrated
-            Artisan::call('migrate');
-
-            // Ensure sources were cleaned up from earlier runs
-            DB::table('languages')->delete();
-            DB::table('forms')->delete();
-
-            $language = Language::factory()->create(['name' => 'Seed language']);
-            $structure = VerbStructure::factory()->create();
-
-            VerbForm::factory()->create([
-                'shape' => 'V-foo',
-                'language_code' => $language,
-                'structure_id' => $structure
-            ]);
-            VerbForm::factory()->create([
-                'shape' => 'V-bar',
-                'language_code' => $language,
-                'structure_id' => $structure
-            ]);
-            VerbForm::factory()->count(VerbForms::maxSizeFor('xl') + 1)->create([
-                'language_code' => $language,
-                'structure_id' => $structure
-            ]);
-            static::$seeded = true;
-        }
-
-        $this->language = Language::where('name', 'Seed language')->first();
-        $this->form1 = VerbForm::where('shape', 'V-foo')->first();
-        $this->form2 = VerbForm::where('shape', 'V-bar')->first();
-    }
+    use RefreshDatabase;
 
     protected function assertFormsSliceInView($view, $forms, $start, $end): void
     {
@@ -78,30 +32,36 @@ class VerbFormsTest extends TestCase
     /** @test */
     public function it_shows_verb_forms_from_a_language()
     {
-        $view = $this->livewire(VerbForms::class, ['model' => $this->language]);
+        $language = Language::factory()->hasVerbForms(2)->create();
+        $view = $this->livewire(VerbForms::class, ['model' => $language]);
 
-        $view->assertSeeHtml($this->form1->formatted_shape);
-        $view->assertSeeHtml($this->form2->formatted_shape);
+        foreach ($language->forms as $form) {
+            $view->assertSeeHtml($form->formatted_shape);
+        }
     }
 
     /** @test */
     public function it_filters_by_shape()
     {
-        $view = $this->livewire(VerbForms::class, ['model' => $this->language]);
+        $language = Language::factory()->create();
+        $form1 = VerbForm::factory()->create(['language_code' => $language, 'shape' => 'V-foo']);
+        $form2 = VerbForm::factory()->create(['language_code' => $language, 'shape' => 'V-bar']);
+        $view = $this->livewire(VerbForms::class, ['model' => $language]);
 
         $view->set('filter', 'V-f');
 
-        $view->assertSeeHtml($this->form1->formatted_shape);
-        $view->assertDontSeeHtml($this->form2->formatted_shape);
+        $view->assertSeeHtml($form1->formatted_shape);
+        $view->assertDontSeeHtml($form2->formatted_shape);
     }
 
     /** @test */
     public function it_resets_the_page_when_a_filter_is_applied()
     {
-        
-        $view = $this->livewire(VerbForms::class, ['model' => $this->language, 'page' => 2]);
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('sm'))->create();
+        VerbForm::factory()->create(['language_code' => $language, 'shape' => 'V-mxyzptlk']);
+        $view = $this->livewire(VerbForms::class, ['model' => $language, 'page' => 1]);
 
-        $view->set('filter', 'V-f');
+        $view->set('filter', 'V-mxyzpt');
 
         $view->assertSet('page', 0);
     }
@@ -109,35 +69,40 @@ class VerbFormsTest extends TestCase
     /** @test */
     public function it_shows_the_next_page()
     {
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('sm')+1)->create();
         $view = $this->livewire(VerbForms::class, [
-            'model' => $this->language,
+            'model' => $language,
             'screenSize' => 'sm'
         ]);
+        $view->assertSet('page', 0);
+
         $view->call('nextPage');
 
         $view->assertSet('page', 1);
         $this->assertFormsSliceInView(
             $view,
-            $this->language->verbForms,
+            $language->verbForms,
             VerbForms::maxSizeFor('sm'),
-            VerbForms::maxSizeFor('sm') * 2
+            $language->verbForms->count()
         );
     }
 
     /** @test */
     public function it_shows_the_previous_page()
     {
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('sm')+1)->create();
         $view = $this->livewire(VerbForms::class, [
-            'model' => $this->language,
+            'model' => $language,
             'screenSize' => 'sm',
             'page' => 1
         ]);
+
         $view->call('prevPage');
 
         $view->assertSet('page', 0);
         $this->assertFormsSliceInView(
             $view,
-            $this->language->verbForms,
+            $language->verbForms,
             0,
             VerbForms::maxSizeFor('sm')
         );
@@ -146,38 +111,44 @@ class VerbFormsTest extends TestCase
     /** @test */
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
+        $language = Language::factory()->hasVerbForms(1)->create();
         $view = $this->livewire(VerbForms::class, [
-            'model' => $this->language,
-            'screenSize' => 'sm',
-            'page' => 5
-        ]);
-        $view->call('nextPage');
-
-        $view->assertSet('page', 5);
-    }
-
-    /** @test */
-    public function the_filter_is_taken_into_account_when_deciding_if_there_are_more_pages()
-    {
-        $view = $this->livewire(VerbForms::class, [
-            'model' => $this->language,
+            'model' => $language,
             'screenSize' => 'sm',
             'page' => 0
         ]);
 
-        $view->set('filter', 'V-foo');
         $view->call('nextPage');
 
         $view->assertSet('page', 0);
     }
 
     /** @test */
+    public function the_filter_is_taken_into_account_when_deciding_if_there_are_more_pages()
+    {
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('sm'))->create();
+        VerbForm::factory()->create(['shape' => 'V-mxyzptlk', 'language_code' => $language]);
+        $view = $this->livewire(VerbForms::class, [
+            'model' => $language,
+            'screenSize' => 'sm',
+        ]);
+        $view->assertSet('hasMorePages', true);
+        $view->assertSet('page', 0);
+
+        $view->set('filter', 'mxyzptlk');
+        $view->call('nextPage');
+
+        $view->assertSet('hasMorePages', false);
+        $view->assertSet('page', 0);
+    }
+
+    /** @test */
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
-        $view = $this->livewire(VerbForms::class, [
-            'model' => $this->language,
-            'page' => 0
-        ]);
+        $language = Language::factory()->hasVerbForms(1)->create();
+        $view = $this->livewire(VerbForms::class, ['model' => $language]);
+        $view->assertSet('page', 0);
+
         $view->call('prevPage');
 
         $view->assertSet('page', 0);
@@ -186,20 +157,22 @@ class VerbFormsTest extends TestCase
     /** @test */
     public function it_adjusts_form_count_by_screen_size()
     {
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('xl')+1)->create();
         foreach (['sm', 'md', 'lg', 'xl'] as $size) {
-            $view = $this->livewire(VerbForms::class, ['model' => $this->language, 'screenSize' => $size]);
-            $this->assertFormsSliceInView($view, $this->language->verbForms, 0, VerbForms::maxSizeFor($size));
+            $view = $this->livewire(VerbForms::class, ['model' => $language, 'screenSize' => $size]);
+            $this->assertFormsSliceInView($view, $language->verbForms, 0, VerbForms::maxSizeFor($size));
         }
     }
 
     /** @test */
     public function it_resizes()
     {
-        $view = $this->livewire(VerbForms::class, ['model' => $this->language, 'screenSize' => 'sm']);
-        $this->assertFormsSliceInView($view, $this->language->verbForms, 0, VerbForms::maxSizeFor('sm'));
+        $language = Language::factory()->hasVerbForms(VerbForms::maxSizeFor('md'))->create();
+        $view = $this->livewire(VerbForms::class, ['model' => $language, 'screenSize' => 'sm']);
+        $this->assertFormsSliceInView($view, $language->verbForms, 0, VerbForms::maxSizeFor('sm'));
 
         $view->emit('resize', 'md');
 
-        $this->assertFormsSliceInView($view, $this->language->verbForms, 0, VerbForms::maxSizeFor('md'));
+        $this->assertFormsSliceInView($view, $language->verbForms, 0, VerbForms::maxSizeFor('md'));
     }
 }
