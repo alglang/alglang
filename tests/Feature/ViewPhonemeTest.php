@@ -37,7 +37,7 @@ class ViewPhonemeTest extends TestCase
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertSeeInOrder(['Orthographic transcription', 'xyz']);
+        $response->assertSeeInOrder(['Orthographic transcription', '<i>xyz</i>'], false);
     }
 
     /** @test */
@@ -59,7 +59,7 @@ class ViewPhonemeTest extends TestCase
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertSeeInOrder(['IPA transcription', '/xyz/']);
+        $response->assertSeeInOrder(['IPA transcription', "/<i>xyz</i>/"], false);
     }
 
     /** @test */
