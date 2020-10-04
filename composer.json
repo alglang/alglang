@@ -21,7 +21,7 @@
         "laravel/framework": "^8.0",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0",
+        "laravel/ui": "^3.0",
         "league/oauth1-client": "^1.7",
         "livewire/livewire": "^2.0",
         "spatie/laravel-permission": "^3.13",
