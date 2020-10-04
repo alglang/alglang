@@ -117,9 +117,6 @@ jobs:
       - name: Run linter
         run: yarn lint
 
-      - name: Build production version of app
-        run: yarn prod
-
       - name: Run tests
         run: yarn test
 
