@@ -153,6 +153,32 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_shows_its_allophones()
+    {
+        $phoneme = Phoneme::factory()
+            ->hasAllophones(['shape' => 'y'])
+            ->create(['shape' => 'x']);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('Allophones');
+        $response->assertSee('/x/ → [y]');
+    }
+
+    /** @test */
+    public function it_does_not_show_allophones_if_it_has_none()
+    {
+        $phoneme = Phoneme::factory()->create();
+        $this->assertCount(0, $phoneme->allophones);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Allophones');
+    }
+
+    /** @test */
     public function it_shows_its_sources_if_it_has_any()
     {
         $phoneme = Phoneme::factory()->hasSources(2, ['author' => 'Doe'])->create();

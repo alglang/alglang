@@ -49,6 +49,11 @@ class Phoneme extends Model
         return $this->morphTo('features', 'featureable_type', 'featureable_id');
     }
 
+    public function allophones(): Relation
+    {
+        return $this->hasMany(Allophone::class);
+    }
+
     protected static function booted()
     {
         static::saving(function (self $phoneme) {

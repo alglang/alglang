@@ -57,6 +57,18 @@ $pages = [
             </x-detail-row>
             @endif
 
+            @if ($phoneme->allophones->count() > 0)
+            <x-detail-row label="Allophones">
+                <ul>
+                    @foreach ($phoneme->allophones as $allophone)
+                    <li>
+                        /{{ $phoneme->shape }}/ → [{{ $allophone->shape }}]
+                    </li>
+                    @endforeach
+                </ul>
+            </x-detail-row>
+            @endif
+
             @if ($phoneme->sources->count() > 0)
                 <x-detail-row label="Sources">
                     <x-source-list :sources="$phoneme->sources" />
