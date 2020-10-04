@@ -36,7 +36,8 @@
           "void": "always"
         }
       }
-    ]
+    ],
+    "vue/component-definition-name-casing": ["error", "kebab-case"]
   },
   "settings": {
     "import/resolver": {
