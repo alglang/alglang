@@ -8,6 +8,9 @@ use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
+/**
+ * @property bool $hasMorePages
+ */
 abstract class CollectionComponent extends Component
 {
     use HasSlug;

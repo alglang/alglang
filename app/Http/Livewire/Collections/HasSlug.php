@@ -7,7 +7,7 @@ trait HasSlug
     /** @var string */
     public $slug;
 
-    public function initializeHasSlug()
+    public function initializeHasSlug(): void
     {
         $this->slug = uniqid();
     }
