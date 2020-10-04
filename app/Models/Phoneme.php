@@ -33,10 +33,16 @@ class Phoneme extends Model
 
     public function getTypeAttribute(): string
     {
-        if ($this->featureable_type === VowelFeatureSet::class) {
-            return 'vowel';
-        }
-        return 'consonant';
+        switch ($this->featureable_type) {
+            case VowelFeatureSet::class:
+                return 'vowel';
+            case ConsonantFeatureSet::class:
+                return 'consonant';
+            case ClusterFeatureSet::class:
+                return 'cluster';
+            default:
+                return '';
+        };
     }
 
     public function language(): Relation

@@ -57,6 +57,20 @@ $pages = [
             </x-detail-row>
             @endif
 
+            @if ($phoneme->type === 'cluster')
+            <x-detail-row label="First segment">
+                <x-preview-link :model="$phoneme->features->firstSegment">
+                    {!! $phoneme->features->firstSegment->formattedShape !!}
+                </x-preview-link>
+            </x-detail-row>
+
+            <x-detail-row label="Second segment">
+                <x-preview-link :model="$phoneme->features->secondSegment">
+                    {!! $phoneme->features->secondSegment->formattedShape !!}
+                </x-preview-link>
+            </x-detail-row>
+            @endif
+
             @if ($phoneme->allophones->count() > 0)
             <x-detail-row label="Allophones">
                 <ul>

@@ -128,9 +128,38 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_shows_cluster_features_if_it_is_a_cluster()
+    {
+        $this->withoutExceptionHandling();
+        $phoneme = Phoneme::factory()->cluster([
+            'first_segment_id' => Phoneme::factory()->consonant()->create(['shape' => 'x']),
+            'second_segment_id' => Phoneme::factory()->consonant()->create(['shape' => 'y'])
+        ])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['First segment', 'x']);
+        $response->assertSeeInOrder(['Second segment', 'y']);
+    }
+
+    /** @test */
     public function it_does_not_show_vowel_features_if_it_is_a_consonant()
     {
         $phoneme = Phoneme::factory()->consonant()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Height');
+        $response->assertDontSee('Backness');
+        $response->assertDontSee('Length');
+    }
+
+    /** @test */
+    public function it_does_not_show_vowel_features_if_it_is_a_cluster()
+    {
+        $phoneme = Phoneme::factory()->cluster()->create();
 
         $response = $this->get($phoneme->url);
 
@@ -150,6 +179,42 @@ class ViewPhonemeTest extends TestCase
         $response->assertOk();
         $response->assertDontSee('Place');
         $response->assertDontSee('Manner');
+    }
+
+    /** @test */
+    public function it_does_not_show_consonant_feature_if_it_is_a_cluster()
+    {
+        $phoneme = Phoneme::factory()->cluster()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Place');
+        $response->assertDontSee('Manner');
+    }
+
+    /** @test */
+    public function it_does_not_show_cluster_features_if_it_is_a_vowel()
+    {
+        $phoneme = Phoneme::factory()->vowel()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('First segment');
+        $response->assertDontSee('Second segment');
+    }
+
+    /** @test */
+    public function it_does_not_show_cluster_features_if_it_is_a_consonant()
+    {
+        $phoneme = Phoneme::factory()->consonant()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertDontSee('First segment');
+        $response->assertDontSee('Second segment');
     }
 
     /** @test */

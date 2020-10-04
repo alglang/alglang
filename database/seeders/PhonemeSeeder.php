@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClusterFeatureSet;
 use App\Models\ConsonantFeatureSet;
 use App\Models\VowelFeatureSet;
 use Illuminate\Database\Seeder;
@@ -17,7 +18,8 @@ class PhonemeSeeder extends Seeder
     public function run()
     {
         DB::table('consonant_places')->insert([
-            ['name' => 'labial']
+            ['name' => 'labial'],
+            ['name' => 'glottal']
         ]);
 
         DB::table('consonant_manners')->insert([
@@ -41,6 +43,11 @@ class PhonemeSeeder extends Seeder
                 'id' => 1,
                 'place_name' => 'labial',
                 'manner_name' => 'stop'
+            ],
+            [
+                'id' => 2,
+                'place_name' => 'glottal',
+                'manner_name' => 'stop'
             ]
         ]);
 
@@ -50,6 +57,14 @@ class PhonemeSeeder extends Seeder
                 'height_name' => 'high',
                 'backness_name' => 'front',
                 'length_name' => 'short'
+            ]
+        ]);
+
+        DB::table('cluster_feature_sets')->insert([
+            [
+                'id' => 1,
+                'first_segment_id' => 2,
+                'second_segment_id' => 1
             ]
         ]);
 
@@ -65,12 +80,30 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'id' => 2,
+                'shape' => 'ʔ',
+                'ipa' => 'ʔ',
+                'slug' => 'ʔ',
+                'language_code' => 'PA',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 2  // Glottal stop
+            ],
+            [
+                'id' => 3,
                 'shape' => 'i',
                 'ipa' => 'i',
                 'slug' => 'i',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
                 'featureable_id' => 1  // Labial stop
+            ],
+            [
+                'id' => 4,
+                'shape' => 'xp',
+                'ipa' => 'ʔp',
+                'slug' => 'xp',
+                'language_code' => 'PA',
+                'featureable_type' => ClusterFeatureSet::class,
+                'featureable_id' => 1
             ]
         ]);
     }

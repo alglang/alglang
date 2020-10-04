@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Phoneme;
 use App\Models\VowelFeatureSet;
+use App\Models\ClusterFeatureSet;
 use App\Models\ConsonantFeatureSet;
 use PHPUnit\Framework\TestCase;
 
@@ -42,5 +43,19 @@ class PhonemeTest extends TestCase
     {
         $consonant = new Phoneme(['featureable_type' => ConsonantFeatureSet::class]);
         $this->assertEquals('consonant', $consonant->type);
+    }
+
+    /** @test */
+    public function its_type_is_cluster_if_it_has_a_cluster_feature_set()
+    {
+        $cluster = new Phoneme(['featureable_type' => ClusterFeatureSet::class]);
+        $this->assertEquals('cluster', $cluster->type);
+    }
+
+    /** @test */
+    public function its_type_is_an_empty_string_if_it_does_not_recognize_its_feature_set()
+    {
+        $cluster = new Phoneme();
+        $this->assertEquals('', $cluster->type);
     }
 }

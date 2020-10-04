@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Language;
 use App\Models\Phoneme;
 use App\Models\VowelFeatureSet;
+use App\Models\ClusterFeatureSet;
 use App\Models\ConsonantFeatureSet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -48,6 +49,14 @@ class PhonemeFactory extends Factory
         return $this->state([
             'featureable_type' => ConsonantFeatureSet::class,
             'featureable_id' => ConsonantFeatureSet::factory()->state($attributes)
+        ]);
+    }
+
+    public function cluster(array $attributes = []): self
+    {
+        return $this->state([
+            'featureable_type' => ClusterFeatureSet::class,
+            'featureable_id' => ClusterFeatureSet::factory()->state($attributes)
         ]);
     }
 }
