@@ -149,6 +149,11 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
 >>>>>>> Add phonemes
     }
 
+    public function reflexes(): Relation
+    {
+        return $this->morphedByMany(Reflex::class, 'sourceable');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Protected methods

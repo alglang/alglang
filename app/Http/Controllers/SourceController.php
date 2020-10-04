@@ -21,7 +21,9 @@ class SourceController extends Controller
             'morphemes',
             'phonemes',
             'nominalParadigms',
-            'rules'
+            'rules',
+            'reflexes',
+            'nominalParadigms'
         );
         return view('sources.show', ['source' => $source]);
     }

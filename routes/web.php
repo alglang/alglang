@@ -15,6 +15,7 @@ use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\RuleController;
 use App\Http\Controllers\PhonemeController;
+use App\Http\Controllers\ReflexController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
@@ -114,6 +115,8 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('phonemes')->group(function () {
+            Route::get('{phoneme:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
+
             Route::get(
                 '{phoneme:slug}',
                 [PhonemeController::class, 'show']

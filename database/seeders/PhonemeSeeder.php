@@ -104,6 +104,23 @@ class PhonemeSeeder extends Seeder
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
                 'featureable_id' => 1
+            ],
+            [
+                'id' => 5,
+                'shape' => 'p',
+                'ipa' => 'p',
+                'slug' => 'p',
+                'language_code' => 'C',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 1  // Labial stop
+            ]
+        ]);
+
+        DB::table('reflexes')->insert([
+            [
+                'id' => 1,
+                'phoneme_id' => 1,  // PA p
+                'reflex_id' => 5    // C p
             ]
         ]);
     }

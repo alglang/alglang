@@ -225,4 +225,16 @@ class ViewSourceTest extends TestCase
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->phonemes_count);
     }
+
+    /** @test */
+    public function the_source_comes_with_its_reflex_count()
+    {
+        $source = Source::factory()->hasReflexes(1)->create();
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->reflexes_count);
+    }
 }
