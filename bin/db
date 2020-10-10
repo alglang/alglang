@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it alglang-db bash -c "mariadb -u dbuser -psecret db"
