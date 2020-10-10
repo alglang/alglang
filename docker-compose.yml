@@ -36,6 +36,20 @@ services:
         aliases:
           - alglang-db
 
+  alglang-selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: alglang-selenium
+    depends_on:
+      - alglang-app
+    links:
+      - alglang-app:alglang.test
+    volumes:
+      - /dev/shm:/dev/shm
+    networks:
+      backend:
+        aliases:
+          - selenium
+
 networks:
   backend:
     name: backend-network

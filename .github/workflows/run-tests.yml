@@ -2,7 +2,7 @@ name: Run tests
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, docker ]
   pull_request:
     branches: [ master ]
 
@@ -18,6 +18,8 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: testing
+          MYSQL_USER: dbuser
+          MYSQL_PASSWORD: secret
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10
 
     steps:
@@ -67,13 +69,35 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
 
+      - name: Run static analysis with PHPStan
+        run: vendor/bin/phpstan analyze
+
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+
+      - name: Run Laravel Server
+        run: php artisan serve > /dev/null 2>&1 &
+
+      - name: Run Dusk Tests
+        run: |
+          php artisan migrate
+          php artisan laralens:diagnostic
+          php artisan dusk
+        env:
+          APP_URL: "http://127.0.0.1:8000"
+          DB_HOST: localhost
+          DB_DATABASE: testing
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+          DB_USERNAME: dbuser
+          DB_PASSWORD: secret
+
       - name: Execute tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
         env:
           DB_PORT: ${{ job.services.mariadb.ports[3306] }}
-
-      - name: Run static analysis with PHPStan
-        run: vendor/bin/phpstan analyze
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
@@ -81,6 +105,27 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           fail_ci_if_error: false
+
+      - name: Store Log Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
+
+      - name: Store Screenshot Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Screenshots
+          path: ./tests/Browser/screenshots
+
+      - name: Store Console Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Console
+          path: ./tests/Browser/console
 
   js-tests:
     runs-on: ubuntu-latest
@@ -116,6 +161,9 @@ jobs:
 
       - name: Run linter
         run: yarn lint
+
+      - name: Build app
+        run: yarn prod
 
       - name: Run tests
         run: yarn test
