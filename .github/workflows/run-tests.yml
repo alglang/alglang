@@ -2,7 +2,7 @@ name: Run tests
 
 on:
   push:
-    branches: [ dev, docker ]
+    branches: [ dev ]
   pull_request:
     branches: [ master ]
 
