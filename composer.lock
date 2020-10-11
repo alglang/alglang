@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e74be99f257303fc84cd2bfde265f75a",
+    "content-hash": "670b921edddf7c6d3b088acb4082f49d",
     "packages": [
         {
             "name": "adoxography/disambiguatable",
@@ -673,23 +673,23 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.1.1",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "7427d6f99df41cc01f33cd59832f721c150ffdf3"
+                "reference": "0aa74dfb41ae110835923ef10a9d803a22d50e79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7427d6f99df41cc01f33cd59832f721c150ffdf3",
-                "reference": "7427d6f99df41cc01f33cd59832f721c150ffdf3",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0aa74dfb41ae110835923ef10a9d803a22d50e79",
+                "reference": "0aa74dfb41ae110835923ef10a9d803a22d50e79",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.6.1",
-                "php": "^7.2.5",
+                "guzzlehttp/promises": "^1.4",
+                "guzzlehttp/psr7": "^1.7",
+                "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0"
             },
             "provide": {
@@ -697,8 +697,8 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "php-http/client-integration-tests": "dev-phpunit8",
-                "phpunit/phpunit": "^8.5.5",
+                "php-http/client-integration-tests": "^3.0",
+                "phpunit/phpunit": "^8.5.5 || ^9.3.5",
                 "psr/log": "^1.1"
             },
             "suggest": {
@@ -767,7 +767,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-30T08:51:17+00:00"
+            "time": "2020-10-10T11:47:56+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -890,69 +890,6 @@
                 "url"
             ],
             "time": "2020-09-30T07:37:11+00:00"
-        },
-        {
-            "name": "hi-folks/lara-lens",
-            "version": "v0.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Hi-Folks/lara-lens.git",
-                "reference": "5025580554c81d36709c82296a193154b5193d0c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Hi-Folks/lara-lens/zipball/5025580554c81d36709c82296a193154b5193d0c",
-                "reference": "5025580554c81d36709c82296a193154b5193d0c",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.0|^7.0",
-                "illuminate/support": "^6.0|^7.0|^8.0",
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "orchestra/testbench": "4.*|5.*|6.*",
-                "phpunit/phpunit": "^8.0|^9.3"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "HiFolks\\LaraLens\\LaraLensServiceProvider"
-                    ],
-                    "aliases": {
-                        "LaraLens": "HiFolks\\LaraLens\\LaraLensFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "HiFolks\\LaraLens\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roberto Butti",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel Diagnostic command for configuration, db connection, http request",
-            "homepage": "https://github.com/hi-folks/lara-lens",
-            "keywords": [
-                "cli",
-                "command-line",
-                "console",
-                "diagnostic",
-                "hi-folks",
-                "lara-lens",
-                "laravel",
-                "package"
-            ],
-            "time": "2020-09-22T19:23:50+00:00"
         },
         {
             "name": "laravel/framework",

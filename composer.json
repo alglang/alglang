@@ -18,7 +18,6 @@
         "adoxography/disambiguatable": "master",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
-        "hi-folks/lara-lens": "^0.2.1",
         "laravel/framework": "^8.0",
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.0",

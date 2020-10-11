@@ -19,7 +19,6 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->screenshot('foo')
                     ->assertSee('Database of Algonquian Language Structures');
         });
     }
