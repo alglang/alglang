@@ -23,12 +23,15 @@ if (process.env.NODE_ENV === 'testing') {
   mix.sourceMaps();
 }
 
-mix.js('resources/js/app.js', 'public/js')
-  .extract([
+mix.js('resources/js/app.js', 'public/js');
+
+if (process.env.NODE_ENV !== 'testing') {
+  mix.extract([
     'alpinejs',
     'leaflet',
     'vue'
   ]);
+}
 
 mix.postCss('resources/css/app.css', 'public/css', [
   autoprefixer(),

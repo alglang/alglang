@@ -104,10 +104,6 @@ jobs:
       - name: Run yarn linter
         run: yarn lint
 
-      # Compile app
-      - name: Build front end
-        run: yarn prod
-
       # Run tests
       - name: Execute mocha tests
         run: yarn test
@@ -123,6 +119,9 @@ jobs:
 
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+
+      - name: Build front end
+        run: yarn prod
 
       # Run browser tests
       - name: Run Dusk Tests
