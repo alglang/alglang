@@ -78,17 +78,16 @@ jobs:
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
 
-      - name: Run Laravel Server
-        run: php artisan serve > /dev/null 2>&1 &
-
       - name: Run Dusk Tests
         run: |
+          php artisan serve > /dev/null 2>&1 &
+          chmod -R 0755 vendor/laravel/dusk/bin/
           php artisan migrate
           php artisan laralens:diagnostic
           php artisan dusk
         env:
+          APP_ENV: local
           APP_URL: "http://127.0.0.1:8000"
-          DB_HOST: localhost
           DB_DATABASE: testing
           DB_PORT: ${{ job.services.mariadb.ports[3306] }}
           DB_USERNAME: dbuser
