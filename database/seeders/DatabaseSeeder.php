@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(SourceSeeder::class);
         $this->call(GroupSeeder::class);
+        $this->call(RuleSeeder::class);
         $this->call(LanguageSeeder::class);
         $this->call(MorphemeSeeder::class);
         $this->call(FeatureSeeder::class);

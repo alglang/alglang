@@ -8,6 +8,7 @@ $pages = [
     ['hash' => 'verb_forms', 'count' => $source->verb_forms_count],
     ['hash' => 'nominal_forms', 'count' => $source->nominal_forms_count],
     ['hash' => 'examples', 'count' => $source->examples_count],
+    ['hash' => 'rules', 'count' => $source->rules_count],
 ];
 @endphp
 
@@ -75,6 +76,18 @@ $pages = [
 
         @slot('examples')
             <livewire:collections.examples :model="$source"></livewire:collections.examples>
+        @endslot
+
+        @slot('rules')
+            <ul>
+                @foreach($source->rules as $rule)
+                <li>
+                    <x-preview-link :model="$rule">
+                        {{ $rule->name }}
+                    </x-preview-link>
+                </li>
+                @endforeach
+            </ul>
         @endslot
     </x-details>
 @endsection

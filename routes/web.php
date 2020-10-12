@@ -12,6 +12,7 @@ use App\Http\Controllers\MorphemeController;
 use App\Http\Controllers\NominalFormController;
 use App\Http\Controllers\NominalParadigmController;
 use App\Http\Controllers\NominalSearchController;
+use App\Http\Controllers\RuleController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
@@ -65,6 +66,10 @@ Route::prefix('languages')->group(function () {
 
     Route::prefix('{language:code}')->group(function () {
         Route::get('', [LanguageController::class, 'show'])->name('languages.show');
+
+        Route::prefix('rules')->group(function () {
+            Route::get('{rule:abv}', [RuleController::class, 'show']);
+        });
 
         Route::prefix('morphemes')->group(function () {
             Route::get(
