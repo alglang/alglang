@@ -12,12 +12,6 @@ class Rule extends Model
     use HasFactory;
     use Sourceable;
 
-    public $incrementing = false;
-
-    protected $primaryKey = 'abv';
-
-    protected $keyType = 'str';
-
     protected $guarded = [];
 
     public function getUrlAttribute(): string
