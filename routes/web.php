@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\FormGapController;
 use App\Http\Controllers\GlossController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
@@ -79,6 +80,8 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('nominal-forms')->group(function () {
+            Route::get('gaps/{gap:id}', [FormGapController::class, 'show']);
+
             Route::get(
                 '{nominalForm:slug}',
                 [NominalFormController::class, 'show']
@@ -97,6 +100,8 @@ Route::prefix('languages')->group(function () {
         });
 
         Route::prefix('verb-forms')->group(function () {
+            Route::get('gaps/{gap:id}', [FormGapController::class, 'show']);
+
             Route::get(
                 '{verbForm:slug}',
                 [VerbFormController::class, 'show']
