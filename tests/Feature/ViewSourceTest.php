@@ -6,6 +6,7 @@ use App\Models\Example;
 use App\Models\Morpheme;
 use App\Models\NominalForm;
 use App\Models\NominalParadigm;
+use App\Models\Rule;
 use App\Models\Source;
 use App\Models\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -195,5 +196,19 @@ class ViewSourceTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->examples_count);
+    }
+
+    /** @test */
+    public function the_source_comes_with_its_rule_count()
+    {
+        $source = Source::factory()->create();
+        $rule = Rule::factory()->create();
+        $rule->addSource($source);
+
+        $response = $this->get($source->url);
+
+        $response->assertOk();
+        $response->assertViewHas('source', $source);
+        $this->assertEquals(1, $response['source']->rules_count);
     }
 }

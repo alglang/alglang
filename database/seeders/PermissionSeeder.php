@@ -22,13 +22,15 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'create languages']);
         Permission::create(['name' => 'edit languages']);
         Permission::create(['name' => 'view private notes']);
+        Permission::create(['name' => 'view rule abbreviations']);
 
         Role::create(['name' => 'contributor'])
             ->givePermissionTo(
                 'create groups',
                 'create languages',
                 'edit languages',
-                'view private notes'
+                'view private notes',
+                'view rule abbreviations'
             );
     }
 }

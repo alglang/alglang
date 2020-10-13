@@ -124,6 +124,11 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(NominalParadigm::class);
     }
 
+    public function rules(): Relation
+    {
+        return $this->hasMany(Rule::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Protected methods

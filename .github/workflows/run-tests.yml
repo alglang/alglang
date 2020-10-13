@@ -7,9 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  php-tests:
+  ci:
     runs-on: ubuntu-latest
-    name: PHP v7.4
+    name: CI
     services:
       mariadb:
         image: mariadb:10.1
@@ -18,6 +18,8 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: testing
+          MYSQL_USER: dbuser
+          MYSQL_PASSWORD: secret
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=10s --health-retries=10
 
     steps:
@@ -32,6 +34,7 @@ jobs:
             sleep 1
           done
 
+      # Setup runtimes
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -39,12 +42,19 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: xdebug
 
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
 
+      # Restore caches
       - name: Get composer cache directory path
         id: composer-cache-path
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: Cache composer packages
         uses: actions/cache@v2
@@ -58,47 +68,6 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install dependencies
-        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
-
-      - name: Generate key
-        run: php artisan key:generate
-
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-
-      - name: Execute tests
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-        env:
-          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
-
-      - name: Run static analysis with PHPStan
-        run: vendor/bin/phpstan analyze
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          fail_ci_if_error: false
-
-  js-tests:
-    runs-on: ubuntu-latest
-    name: Node v14.x
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
       - name: Cache yarn modules
         uses: actions/cache@v2
         env:
@@ -111,21 +80,91 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install dependencies
+      # Install dependencies
+      - name: Install composer dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Install npm dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run linter
+      # Setup environment
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.ci', '.env');"
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      # Run linters
+      - name: Run static analysis with PHPStan
+        run: vendor/bin/phpstan analyze
+
+      - name: Run yarn linter
         run: yarn lint
 
-      - name: Build production version of app
+      # Run tests
+      - name: Execute mocha tests
+        run: |
+          mkdir coverage
+          yarn test
+
+      - name: Execute phpunit tests
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+        env:
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+
+      # Set up Dusk
+      - name: Upgrade Chrome Driver
+        run: php artisan dusk:chrome-driver `/opt/google/chrome/chrome --version | cut -d " " -f3 | cut -d "." -f1`
+
+      - name: Start Chrome Driver
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+
+      - name: Build front end
         run: yarn prod
 
-      - name: Run tests
-        run: yarn test
+      # Run browser tests
+      - name: Run Dusk Tests
+        run: |
+          php artisan serve > /dev/null 2>&1 &
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          php artisan migrate
+          php artisan dusk
+        env:
+          APP_ENV: local
+          APP_URL: "http://127.0.0.1:8000"
+          DB_DATABASE: testing
+          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+          DB_USERNAME: dbuser
+          DB_PASSWORD: secret
 
+      # Upload results
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: './coverage/cobertura-coverage.xml'
+          files: ./coverage.xml,./coverage/cobertura-coverage.xml
           fail_ci_if_error: false
+
+      - name: Store Log Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
+
+      - name: Store Screenshot Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Screenshots
+          path: ./tests/Browser/screenshots
+
+      - name: Store Console Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Console
+          path: ./tests/Browser/console

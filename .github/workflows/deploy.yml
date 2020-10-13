@@ -55,7 +55,7 @@ jobs:
 
             # Install composer dependencies, but don't try to run the script
             # afterword because it will segfault
-            composer install -o --no-dev --no-scripts
+            COMPOSER_DISCARD_CHANGES=true composer install -o --no-dev --no-scripts --no-interaction
 
             # Run the postinstall script manually
             php artisan package:discover

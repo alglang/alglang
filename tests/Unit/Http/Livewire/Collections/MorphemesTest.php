@@ -6,32 +6,14 @@ use App\Models\Language;
 use App\Models\Morpheme;
 use App\Models\Source;
 use App\Http\Livewire\Collections\Morphemes;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class MorphemesTest extends TestCase
 {
-    /** @var bool */
-    public static $seeded = false;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        if (!static::$seeded) {
-            // Ensure the database has been migrated
-            Artisan::call('migrate');
-
-            DB::table('morphemes')->delete();
-            DB::table('languages')->delete();
-            DB::table('sources')->delete();
-
-            $language = Language::factory()->create(['name' => 'Seed language']);
-            Morpheme::factory()->count(57)->create(['language_code' => $language]);
-            static::$seeded = true;
-        }
-    }
+    use RefreshDatabase;
 
     protected function assertMorphemesSliceInView($view, $morphemes, $start, $end): void
     {
@@ -85,21 +67,26 @@ class MorphemesTest extends TestCase
     /** @test */
     public function it_shows_the_next_page()
     {
-        $language = Language::where('name', 'Seed language')->first();
-
+        $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('sm') * 2)->create();
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
             'screenSize' => 'sm'
         ]);
+
         $view->call('nextPage');
 
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 10, 20);
+        $this->assertMorphemesSliceInView(
+            $view,
+            $language->morphemes,
+            Morphemes::maxSizeFor('sm'),
+            Morphemes::maxSizeFor('sm') * 2
+        );
     }
 
     /** @test */
     public function it_shows_the_previous_page()
     {
-        $language = Language::where('name', 'Seed language')->first();
+        $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('sm') + 1)->create();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -108,95 +95,58 @@ class MorphemesTest extends TestCase
         ]);
         $view->call('prevPage');
 
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 10);
+        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, Morphemes::maxSizeFor('sm'));
     }
 
     /** @test */
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
-        $language = Language::where('name', 'Seed language')->first();
-
+        $language = Language::factory()->hasMorphemes(1)->create();
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
             'screenSize' => 'sm',
-            'page' => 5
         ]);
+        $view->assertSet('page', 0);
+        
         $view->call('nextPage');
 
-        $view->assertSet('page', 5);
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 50, 59);
+        $view->assertSet('page', 0);
     }
 
     /** @test */
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
-        $language = Language::where('name', 'Seed language')->first();
+        $language = Language::factory()->hasMorphemes(1)->create();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
             'screenSize' => 'sm'
         ]);
+        $view->assertSet('page', 0);
+
         $view->call('prevPage');
 
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 10);
+        $view->assertSet('page', 0);
     }
 
-    /** @test */
-    public function it_shows_a_maximum_of_10_morphemes_on_a_small_screen()
+    /**
+     * @test
+     * @group slow
+     */
+    public function it_adjusts_morpheme_count_by_screen_size()
     {
-        $language = Language::where('name', 'Seed language')->first();
+        $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('xl') + 1)->create();
 
-        $view = $this->livewire(Morphemes::class, [
-            'model' => $language,
-            'screenSize' => 'sm'
-        ]);
-
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 10);
-    }
-
-    /** @test */
-    public function it_shows_a_maximum_of_14_morphemes_on_a_medium_screen()
-    {
-        $language = Language::where('name', 'Seed language')->first();
-
-        $view = $this->livewire(Morphemes::class, [
-            'model' => $language,
-            'screenSize' => 'md'
-        ]);
-
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 14);
-    }
-
-    /** @test */
-    public function it_shows_a_maximum_of_27_morphemes_on_a_large_screen()
-    {
-        $language = Language::where('name', 'Seed language')->first();
-
-        $view = $this->livewire(Morphemes::class, [
-            'model' => $language,
-            'screenSize' => 'lg'
-        ]);
-
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 27);
-    }
-
-    /** @test */
-    public function it_shows_a_maximum_of_56_morphemes_on_an_extra_large_screen()
-    {
-        $language = Language::where('name', 'Seed language')->first();
-
-        $view = $this->livewire(Morphemes::class, [
-            'model' => $language,
-            'screenSize' => 'xl'
-        ]);
-
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 56);
+        foreach (['sm', 'md', 'lg', 'xl'] as $size) {
+            $view = $this->livewire(Morphemes::class, ['model' => $language, 'screenSize' => $size]);
+            $this->assertMorphemesSliceInView($view, $language->morphemes, 0, Morphemes::maxSizeFor($size));
+        }
     }
 
     /** @test */
     public function it_resizes()
     {
-        $language = Language::where('name', 'Seed language')->first();
+        $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('md'))->create();
 
         $view = $this->livewire(Morphemes::class, [
             'model' => $language,
@@ -204,6 +154,6 @@ class MorphemesTest extends TestCase
         ]);
         $view->emit('resize', 'md');
 
-        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, 14);
+        $this->assertMorphemesSliceInView($view, $language->morphemes, 0, Morphemes::maxSizeFor('md'));
     }
 }

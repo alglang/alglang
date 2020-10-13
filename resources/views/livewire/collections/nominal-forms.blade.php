@@ -8,7 +8,7 @@
     </div>
 
     <ul class="flex justify-center md:justify-start flex-wrap">
-        @foreach ($this->forms as $form)
+        @foreach ($this->items as $form)
         <li class="mr-4">
             <x-nominal-form-card :form="$form"></x-nominal-form-card>
         </li>

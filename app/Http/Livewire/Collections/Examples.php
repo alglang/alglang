@@ -7,18 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Component;
 
-class Examples extends Component
+class Examples extends CollectionComponent
 {
+    use HasSlug;
+
     /** @var HasExamples */
     public $model;
-
-    /** @var int */
-    public $page = 0;
-
-    /** @var string */
-    public $screenSize = 'xl';
 
     /** @var string */
     public $filter = '';
@@ -35,40 +30,6 @@ class Examples extends Component
     /** @var array */
     protected $listeners = ['resize'];
 
-    public static function maxSizeFor(string $size): int
-    {
-        return static::$sizes[$size];
-    }
-
-    public function nextPage(): void
-    {
-        if ($this->hasMoreItems()) {
-            $this->page++;
-        }
-    }
-
-    public function prevPage(): void
-    {
-        if ($this->page > 0) {
-            $this->page--;
-        }
-    }
-
-    public function hasMoreItems(): bool
-    {
-        return $this->query()->count() > ($this->page + 1) * $this->perPage();
-    }
-
-    public function getExamplesProperty(): Collection
-    {
-        return $this->query()->skip($this->page * $this->perPage())->take($this->perPage())->get();
-    }
-
-    protected function perPage(): int
-    {
-        return static::maxSizeFor($this->screenSize);
-    }
-
     /**
      * @return Builder|Relation
      */
@@ -79,12 +40,7 @@ class Examples extends Component
 
     public function updatedFilter(): void
     {
-        $this->page = 0;
-    }
-
-    public function resize(string $size): void
-    {
-        $this->screenSize = $size;
+        $this->resetPage();
     }
 
     public function render(): View

@@ -16,11 +16,11 @@ $pages = [
              --><span class="text-base align-top">{{ $morpheme->disambiguator + 1 }}</span>
             </h1>
 
-            <p class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
+            <div class="mb-2 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
                 <x-preview-link :model="$morpheme->language">
                     {{ $morpheme->language->name }}
                 </x-preview-link>
-            </p>
+            </div>
         @endslot
 
         @slot('basic_details')

@@ -6,7 +6,7 @@
     </div>
 
     <ul class="flex justify-center md:justify-start flex-wrap">
-        @foreach ($this->morphemes as $morpheme)
+        @foreach ($this->items as $morpheme)
         <li class="mr-4">
             <x-morpheme-card :morpheme="$morpheme"></x-morpheme-card>
         </li>

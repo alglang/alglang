@@ -8,7 +8,7 @@
     </div>
 
     <ul class="flex justify-center md:justify-start flex-wrap">
-        @foreach ($this->examples as $example)
+        @foreach ($this->items as $example)
         <li class="mr-4">
             <x-example-card :example="$example"></x-example-card>
         </li>

@@ -8,7 +8,7 @@
     </div>
 
     <ul class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 ">
-        @foreach ($this->sources as $source)
+        @foreach ($this->items as $source)
         <li class="mr-4 leading-relaxed">
             <x-preview-link :model="$source">
                 {{ $source->short_citation }}
