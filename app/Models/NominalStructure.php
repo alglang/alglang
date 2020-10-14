@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Presenters\NominalStructurePresenter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class NominalStructure extends Model
 {
     use HasFactory;
+    use NominalStructurePresenter;
 
     /*
     |--------------------------------------------------------------------------
@@ -18,28 +20,6 @@ class NominalStructure extends Model
     */
 
     protected $guarded = [];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Attribute accessors
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    public function getFeatureStringAttribute(): string
-    {
-        $features = [];
-
-        if ($this->pronominal_feature_name) {
-            $features[] = $this->pronominal_feature_name;
-        }
-
-        if ($this->nominal_feature_name) {
-            $features[] = $this->nominal_feature_name;
-        }
-
-        return implode('→', $features);
-    }
 
     /*
     |--------------------------------------------------------------------------

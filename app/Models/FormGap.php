@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class FormGap extends Model
 {
@@ -16,5 +17,10 @@ class FormGap extends Model
         $type = $this->structure_type === VerbStructure::class ? 'verb-forms' : 'nominal-forms';
 
         return "/languages/{$this->language_code}/{$type}/gaps/{$this->id}";
+    }
+
+    public function structure(): Relation
+    {
+        return $this->morphTo('structure');
     }
 }

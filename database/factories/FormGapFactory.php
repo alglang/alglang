@@ -32,19 +32,19 @@ class FormGapFactory extends Factory
         ];
     }
 
-    public function verb(): self
+    public function verb(array $attrs = []): self
     {
         return $this->state([
             'structure_type' => VerbStructure::class,
-            'structure_id' => VerbStructure::factory()
+            'structure_id' => VerbStructure::factory()->state($attrs)
         ]);
     }
 
-    public function nominal(): self
+    public function nominal(array $attrs = []): self
     {
         return $this->state([
             'structure_type' => NominalStructure::class,
-            'structure_id' => NominalStructure::factory()
+            'structure_id' => NominalStructure::factory()->state($attrs)
         ]);
     }
 }

@@ -39,6 +39,10 @@ class VerbStructure extends Model
         'is_diminutive'
     ];
 
+    protected $casts = [
+        'is_absolute' => 'boolean'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | Methods
