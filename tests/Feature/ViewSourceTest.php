@@ -7,6 +7,7 @@ use App\Models\Morpheme;
 use App\Models\NominalForm;
 use App\Models\NominalGap;
 use App\Models\NominalParadigm;
+use App\Models\Phoneme;
 use App\Models\Rule;
 use App\Models\Source;
 use App\Models\VerbForm;
@@ -217,7 +218,6 @@ class ViewSourceTest extends TestCase
     public function the_source_comes_with_its_phoneme_count()
     {
         $source = Source::factory()->hasPhonemes(1)->create();
-        $phoneme = Phoneme::factory()->create()->addSource($source);
 
         $response = $this->get($source->url);
 
