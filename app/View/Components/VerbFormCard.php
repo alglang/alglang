@@ -2,20 +2,22 @@
 
 namespace App\View\Components;
 
+use App\Models\FormGap;
 use App\Models\VerbForm;
 use Illuminate\View\Component;
 
 class VerbFormCard extends Component
 {
-    /** @var VerbForm */
+    /** @var VerbForm|FormGap */
     public $form;
 
     /**
      * Create a new component instance.
      *
+     * @param VerbForm|FormGap $form
      * @return void
      */
-    public function __construct(VerbForm $form)
+    public function __construct($form)
     {
         $this->form = $form;
     }

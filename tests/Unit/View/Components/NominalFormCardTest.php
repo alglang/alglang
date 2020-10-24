@@ -3,6 +3,7 @@
 namespace Tests\Unit\View\Components;
 
 use App\Models\Feature;
+use App\Models\FormGap;
 use App\Models\NominalForm;
 use App\Models\NominalParadigm;
 use App\Models\NominalStructure;
@@ -49,5 +50,17 @@ class NominalFormCardTest extends TestCase
         $view = $this->blade('<x-nominal-form-card :form="$form" />', compact('form'));
 
         $view->assertSee('theparadigm');
+    }
+
+    /** @test */
+    public function it_accepts_gaps()
+    {
+        $gap = FormGap::factory()->nominal()->create();
+
+        $view = $this->blade('<x-nominal-form-card :form="$gap" />', compact('gap'));
+
+        $view->assertSee('No form');
+        $view->assertSee($gap->structure->feature_string);
+        $view->assertSee($gap->structure->paradigm->name);
     }
 }

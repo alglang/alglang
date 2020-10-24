@@ -4,7 +4,7 @@
     <a
         href="{{ $form->url }}"
         class="absolute left-0 right-0 top-0 bottom-0"
-        aria-label="{{ $form->shape }}"
+        aria-label="{{ $form->shape ?? 'No form' }}"
     ></a>
 
     <div
@@ -15,7 +15,7 @@
             {!! $form->structure->feature_string !!}
         </p>
         <p class="text-lg">
-            {!! $form->formatted_shape !!}
+            {!! $form->formatted_shape ?? 'No form' !!}
         </p>
         <p class="text-xs font-semibold tracking-wide text-gray-700">
             {{ $form->structure->class_abv }}

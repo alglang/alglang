@@ -30,12 +30,17 @@ class NominalForms extends CollectionComponent
     /** @var array */
     protected $listeners = ['resize'];
 
-    /**
-     * @return Builder|Relation
-     */
-    protected function query()
+    protected function query(): Collection
     {
-        return $this->model->nominalForms()->where('shape', 'LIKE', "%{$this->filter}%");
+        $forms = $this->model->nominalForms()->where('shape', 'LIKE', "%{$this->filter}%")->get();
+
+        if ($this->filter) {
+            $gaps = collect();
+        } else {
+            $gaps = $this->model->nominalGaps;
+        }
+
+        return $forms->merge($gaps);
     }
 
     public function updatedFilter(): void

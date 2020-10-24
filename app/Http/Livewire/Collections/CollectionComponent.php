@@ -25,7 +25,7 @@ abstract class CollectionComponent extends Component
     protected static $sizes;
 
     /**
-     * @return Builder|Relation
+     * @return Builder|Relation|Collection
      */
     abstract protected function query();
 
@@ -33,7 +33,12 @@ abstract class CollectionComponent extends Component
 
     public function getItemsProperty(): Collection
     {
-        return $this->query()->skip($this->page * $this->perPage())->take($this->perPage())->get();
+        $items = $this->query()->skip($this->page * $this->perPage())->take($this->perPage());
+
+        if ($items instanceof Collection) {
+            return $items;
+        }
+        return $items->get();
     }
 
     public static function maxSizeFor(string $size): int

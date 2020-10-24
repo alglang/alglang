@@ -3,6 +3,7 @@
 namespace Tests\Unit\View\Components;
 
 use App\Models\Feature;
+use App\Models\FormGap;
 use App\Models\VerbClass;
 use App\Models\VerbForm;
 use App\Models\VerbMode;
@@ -80,5 +81,19 @@ class VerbFormCardTest extends TestCase
         $view = $this->blade('<x-verb-form-card :form="$form" />', compact('form'));
 
         $view->assertSee('theclass');
+    }
+
+    /** @test */
+    public function it_accepts_gaps()
+    {
+        $gap = FormGap::factory()->verb()->create();
+
+        $view = $this->blade('<x-verb-form-card :form="$gap" />', compact('gap'));
+
+        $view->assertSee('No form');
+        $view->assertSee($gap->structure->feature_string);
+        $view->assertSee($gap->structure->mode_name);
+        $view->assertSee($gap->structure->class_abv);
+        $view->assertSee($gap->structure->order_name);
     }
 }

@@ -124,6 +124,16 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(FormGap::class);
     }
 
+    public function verbGaps(): Relation
+    {
+        return $this->hasMany(VerbGap::class);
+    }
+
+    public function nominalGaps(): Relation
+    {
+        return $this->hasMany(NominalGap::class);
+    }
+
     public function nominalParadigms(): Relation
     {
         return $this->hasMany(NominalParadigm::class);

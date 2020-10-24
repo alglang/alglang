@@ -103,9 +103,19 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
         return $this->morphedByMany(VerbForm::class, 'sourceable');
     }
 
+    public function verbGaps(): Relation
+    {
+        return $this->morphedByMany(VerbGap::class, 'sourceable');
+    }
+
     public function nominalForms(): Relation
     {
         return $this->morphedByMany(NominalForm::class, 'sourceable');
+    }
+
+    public function nominalGaps(): Relation
+    {
+        return $this->morphedByMany(NominalGap::class, 'sourceable');
     }
 
     public function nominalParadigms(): Relation
