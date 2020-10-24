@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class FormGap extends Model
 {
     use HasFactory;
+    use Sourceable;
 
     protected $guarded = [];
 

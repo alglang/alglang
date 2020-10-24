@@ -6,6 +6,7 @@ use App\Models\Feature;
 use App\Models\FormGap;
 use App\Models\NominalParadigm;
 use App\Models\User;
+use App\Models\Source;
 use App\Models\VerbClass;
 use App\Models\VerbMode;
 use App\Models\VerbOrder;
@@ -155,5 +156,30 @@ class ViewFormGapTest extends TestCase
 
         $response->assertOk();
         $response->assertDontSee('Private notes');
+    }
+
+    /** @test */
+    public function sources_appear_if_the_gap_has_sources()
+    {
+        $gap = FormGap::factory()->create();
+        $source = Source::factory()->create(['author' => 'Foo Bar']);
+        $gap->addSource($source);
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertSee('Sources');
+        $response->assertSee('Foo Bar');
+    }
+
+    /** @test */
+    public function sources_do_not_appear_if_the_gap_has_no_sources()
+    {
+        $gap = FormGap::factory()->create();
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Sources');
     }
 }

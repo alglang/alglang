@@ -40,6 +40,12 @@ $pages = [
             </x-detail-row>
             @endif
             @endcan
+
+            @if ($gap->sources->count() > 0)
+            <x-detail-row label="Sources">
+                <x-source-list :sources="$gap->sources" />
+            </x-detail-row>
+            @endif
         @endslot
     </x-details>
 @endsection

@@ -19,7 +19,6 @@ class SourceController extends Controller
         $source->loadCount(
             'examples',
             'morphemes',
-            'verbForms',
             'nominalForms',
             'nominalParadigms',
             'rules'
