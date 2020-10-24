@@ -19,6 +19,7 @@ class ViewPhonemeTest extends TestCase
     /** @test */
     public function it_shows_the_correct_view()
     {
+        $this->withoutExceptionHandling();
         $phoneme = Phoneme::factory()->create();
 
         $response = $this->get($phoneme->url);
