@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Feature;
 use App\Models\FormGap;
 use App\Models\NominalParadigm;
+use App\Models\User;
 use App\Models\VerbClass;
 use App\Models\VerbMode;
 use App\Models\VerbOrder;
@@ -71,5 +72,88 @@ class ViewFormGapTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('X→Y Test_paradigm');
+    }
+
+    /** @test */
+    public function it_shows_its_historical_notes()
+    {
+        $gap = FormGap::factory()->create(['historical_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Historical notes', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam']);
+    }
+
+    /** @test */
+    public function it_does_not_show_its_historical_notes_if_there_are_none()
+    {
+        $gap = FormGap::factory()->create(['historical_notes' => null]);
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Historical notes');
+    }
+
+    /** @test */
+    public function it_shows_its_usage_notes()
+    {
+        $gap = FormGap::factory()->create(['usage_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Usage notes', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam']);
+    }
+
+    /** @test */
+    public function it_does_not_show_its_usage_notes_if_there_are_none()
+    {
+        $gap = FormGap::factory()->create(['usage_notes' => null]);
+
+        $response = $this->get($gap->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Usage notes');
+    }
+
+    /** @test */
+    public function it_shows_its_private_notes_if_the_user_has_permission()
+    {
+        $this->withPermissions();
+        $user = User::factory()->create()->givePermissionTo('view private notes');
+        $gap = FormGap::factory()->create(['private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->actingAs($user)->get($gap->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Private notes', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam']);
+    }
+
+    /** @test */
+    public function it_does_not_show_its_private_notes_if_the_user_does_not_have_permission()
+    {
+        $this->withPermissions();
+        $user = User::factory()->create();
+        $gap = FormGap::factory()->create(['private_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>']);
+
+        $response = $this->actingAs($user)->get($gap->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Private notes');
+    }
+
+    /** @test */
+    public function it_does_not_show_its_private_notes_if_there_are_none()
+    {
+        $this->withPermissions();
+        $user = User::factory()->create()->givePermissionTo('view private notes');
+        $gap = FormGap::factory()->create(['private_notes' => null]);
+
+        $response = $this->actingAs($user)->get($gap->url);
+
+        $response->assertOk();
+        $response->assertDontSee('Private notes');
     }
 }

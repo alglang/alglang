@@ -23,4 +23,9 @@ class FormGap extends Model
     {
         return $this->morphTo('structure');
     }
+
+    public function language(): Relation
+    {
+        return $this->belongsTo(Language::class);
+    }
 }

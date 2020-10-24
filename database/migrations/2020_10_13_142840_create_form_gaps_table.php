@@ -17,6 +17,9 @@ class CreateFormGapsTable extends Migration
             $table->id();
             $table->string('language_code');
             $table->morphs('structure');
+            $table->text('historical_notes')->nullable();
+            $table->text('usage_notes')->nullable();
+            $table->text('private_notes')->nullable();
             $table->timestamps();
         });
     }
