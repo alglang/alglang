@@ -214,6 +214,16 @@ class VerbSeeder extends Seeder
             ]
         ]);
 
+        DB::table('form_gaps')->insert([
+            [
+                'id' => 1,
+                'language_code' => 'SwO',
+                'structure_type' => VerbStructure::class,
+                'structure_id' => 1,
+                'historical_notes' => '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>'
+            ]
+        ]);
+
         Form::find(1)->assignMorphemes([
             Morpheme::find(1),
             Morpheme::find(7),

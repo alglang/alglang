@@ -41,6 +41,16 @@ class VerbFormsTest extends TestCase
     }
 
     /** @test */
+    public function it_includes_gaps()
+    {
+        $language = Language::factory()->hasVerbGaps(1)->create();
+
+        $view = $this->livewire(VerbForms::class, ['model' => $language]);
+
+        $view->assertSeeHtml('No form');
+    }
+
+    /** @test */
     public function it_filters_by_shape()
     {
         $language = Language::factory()->create();
@@ -52,6 +62,18 @@ class VerbFormsTest extends TestCase
 
         $view->assertSeeHtml($form1->formatted_shape);
         $view->assertDontSeeHtml($form2->formatted_shape);
+    }
+
+    /** @test */
+    public function gaps_are_not_included_if_there_is_a_name_filter()
+    {
+        $language = Language::factory()->hasVerbGaps(1)->create();
+        $view = $this->livewire(VerbForms::class, ['model' => $language]);
+        $view->assertSeeHtml('No form');
+
+        $view->set('filter', 'N');
+
+        $view->assertDontSeeHtml('No form');
     }
 
     /** @test */

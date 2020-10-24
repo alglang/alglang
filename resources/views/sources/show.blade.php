@@ -5,8 +5,8 @@ $pages = [
     ['hash' => 'basic_details'],
     ['hash' => 'morphemes', 'count' => $source->morphemes_count],
     ['hash' => 'nominal_paradigms', 'count' => $source->nominal_paradigms_count],
-    ['hash' => 'verb_forms', 'count' => $source->verb_forms_count],
-    ['hash' => 'nominal_forms', 'count' => $source->nominal_forms_count],
+    ['hash' => 'verb_forms', 'count' => $source->verb_forms_and_gaps_count],
+    ['hash' => 'nominal_forms', 'count' => $source->nominal_forms_and_gaps_count],
     ['hash' => 'examples', 'count' => $source->examples_count],
     ['hash' => 'rules', 'count' => $source->rules_count],
 ];

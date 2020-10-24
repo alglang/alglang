@@ -9,6 +9,91 @@ use Tests\TestCase;
 class VerbStructurePresenterTest extends TestCase
 {
     /** @test */
+    public function its_name_is_its_features_class_order_mode()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => '3s',
+            'primary_object_name' => '1p',
+            'class_abv' => 'TA',
+            'order_name' => 'Conjunct',
+            'mode_name' => 'Indicative'
+        ]);
+
+        $this->assertEquals('3s→1p TA Conjunct Indicative', $structure->name);
+    }
+
+    /** @test */
+    public function its_name_includes_negative_if_it_is_negative()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => 'A',
+            'class_abv' => 'B',
+            'order_name' => 'C',
+            'mode_name' => 'D',
+            'is_negative' => true
+        ]);
+
+        $this->assertEquals('A B C D (negative)', $structure->name);
+    }
+
+    /** @test */
+    public function its_name_includes_diminutive_if_it_is_diminutive()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => 'A',
+            'class_abv' => 'B',
+            'order_name' => 'C',
+            'mode_name' => 'D',
+            'is_diminutive' => true
+        ]);
+
+        $this->assertEquals('A B C D (diminutive)', $structure->name);
+    }
+
+    /** @test */
+    public function its_name_includes_negative_and_diminutive_if_it_is_both()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => 'A',
+            'class_abv' => 'B',
+            'order_name' => 'C',
+            'mode_name' => 'D',
+            'is_negative' => true,
+            'is_diminutive' => true
+        ]);
+
+        $this->assertEquals('A B C D (negative, diminutive)', $structure->name);
+    }
+
+    /** @test */
+    public function its_name_includes_absolute_if_is_absolute_is_true()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => 'A',
+            'class_abv' => 'B',
+            'order_name' => 'C',
+            'mode_name' => 'D',
+            'is_absolute' => true,
+        ]);
+
+        $this->assertEquals('A B C D (absolute)', $structure->name);
+    }
+
+    /** @test */
+    public function its_name_includes_objective_if_is_absolute_is_false()
+    {
+        $structure = new VerbStructure([
+            'subject_name' => 'A',
+            'class_abv' => 'B',
+            'order_name' => 'C',
+            'mode_name' => 'D',
+            'is_absolute' => false,
+        ]);
+
+        $this->assertEquals('A B C D (objective)', $structure->name);
+    }
+
+    /** @test */
     public function it_renders_its_subject_as_its_feature_string_when_there_are_no_other_features()
     {
         $structure = new VerbStructure(['subject_name' => '21']);

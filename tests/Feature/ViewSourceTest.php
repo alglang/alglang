@@ -5,10 +5,12 @@ namespace Tests\Feature;
 use App\Models\Example;
 use App\Models\Morpheme;
 use App\Models\NominalForm;
+use App\Models\NominalGap;
 use App\Models\NominalParadigm;
 use App\Models\Rule;
 use App\Models\Source;
 use App\Models\VerbForm;
+use App\Models\VerbGap;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -147,28 +149,28 @@ class ViewSourceTest extends TestCase
     public function the_source_comes_with_its_verb_form_count()
     {
         $source = Source::factory()->create();
-        $verbForm = VerbForm::factory()->create();
-        $verbForm->addSource($source);
+        $verbForm = VerbForm::factory()->create()->addSource($source);
+        $verbGap = VerbGap::factory()->create()->addSource($source);
 
         $response = $this->get($source->url);
 
         $response->assertOk();
         $response->assertViewHas('source', $source);
-        $this->assertEquals(1, $response['source']->verb_forms_count);
+        $this->assertEquals(2, $response['source']->verb_forms_and_gaps_count);
     }
 
     /** @test */
     public function the_source_comes_with_its_nominal_form_count()
     {
         $source = Source::factory()->create();
-        $nominalForm = NominalForm::factory()->create();
-        $nominalForm->addSource($source);
+        $nominalForm = NominalForm::factory()->create()->addSource($source);
+        $nominalGap = NominalGap::factory()->create()->addSource($source);
 
         $response = $this->get($source->url);
 
         $response->assertOk();
         $response->assertViewHas('source', $source);
-        $this->assertEquals(1, $response['source']->nominal_forms_count);
+        $this->assertEquals(2, $response['source']->nominal_forms_and_gaps_count);
     }
 
     /** @test */

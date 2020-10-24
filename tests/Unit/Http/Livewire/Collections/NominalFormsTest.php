@@ -41,6 +41,28 @@ class NominalFormsTest extends TestCase
     }
 
     /** @test */
+    public function it_includes_gaps()
+    {
+        $language = Language::factory()->hasNominalGaps(1)->create();
+
+        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+
+        $view->assertSeeHtml('No form');
+    }
+
+    /** @test */
+    public function gaps_are_not_included_if_there_is_a_name_filter()
+    {
+        $language = Language::factory()->hasNominalGaps(1)->create();
+        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view->assertSeeHtml('No form');
+
+        $view->set('filter', 'N');
+
+        $view->assertDontSeeHtml('No form');
+    }
+
+    /** @test */
     public function it_filters_by_shape()
     {
         $language = Language::factory()->create();

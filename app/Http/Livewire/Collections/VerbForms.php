@@ -31,11 +31,19 @@ class VerbForms extends CollectionComponent
     protected $listeners = ['resize'];
 
     /**
-     * @return Builder|Relation
+     * @return Builder|Relation|Collection
      */
     protected function query()
     {
-        return $this->model->verbForms()->where('shape', 'LIKE', "%{$this->filter}%");
+        $forms = $this->model->verbForms()->where('shape', 'LIKE', "%{$this->filter}%")->get();
+
+        if ($this->filter) {
+            $gaps = collect();
+        } else {
+            $gaps = $this->model->verbGaps;
+        }
+
+        return $forms->merge($gaps);
     }
 
     public function updatedFilter(): void
