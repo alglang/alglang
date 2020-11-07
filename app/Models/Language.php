@@ -149,6 +149,16 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(Phoneme::class);
     }
 
+    public function vowels(): Relation
+    {
+        return $this->phonemes()->where('featureable_type', VowelFeatureSet::class);
+    }
+
+    public function consonants(): Relation
+    {
+        return $this->phonemes()->where('featureable_type', ConsonantFeatureSet::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Protected methods

@@ -27,11 +27,13 @@ class PhonemeSeeder extends Seeder
         ]);
 
         DB::table('vowel_heights')->insert([
-            ['name' => 'high']
+            ['name' => 'high'],
+            ['name' => 'low']
         ]);
 
         DB::table('vowel_backnesses')->insert([
-            ['name' => 'front']
+            ['name' => 'front'],
+            ['name' => 'back']
         ]);
 
         DB::table('vowel_lengths')->insert([
@@ -57,7 +59,25 @@ class PhonemeSeeder extends Seeder
                 'height_name' => 'high',
                 'backness_name' => 'front',
                 'length_name' => 'short'
-            ]
+            ],
+            [
+                'id' => 2,
+                'height_name' => 'low',
+                'backness_name' => 'front',
+                'length_name' => 'short'
+            ],
+            [
+                'id' => 3,
+                'height_name' => 'high',
+                'backness_name' => 'back',
+                'length_name' => 'short'
+            ],
+            [
+                'id' => 4,
+                'height_name' => 'low',
+                'backness_name' => 'back',
+                'length_name' => 'short'
+            ],
         ]);
 
         DB::table('cluster_feature_sets')->insert([
@@ -113,6 +133,33 @@ class PhonemeSeeder extends Seeder
                 'language_code' => 'C',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 1  // Labial stop
+            ],
+            [
+                'id' => 6,
+                'shape' => 'e',
+                'ipa' => 'e',
+                'slug' => 'e',
+                'language_code' => 'PA',
+                'featureable_type' => VowelFeatureSet::class,
+                'featureable_id' => 2
+            ],
+            [
+                'id' => 7,
+                'shape' => 'o',
+                'ipa' => 'o',
+                'slug' => 'o',
+                'language_code' => 'PA',
+                'featureable_type' => VowelFeatureSet::class,
+                'featureable_id' => 3
+            ],
+            [
+                'id' => 8,
+                'shape' => 'a',
+                'ipa' => 'a',
+                'slug' => 'a',
+                'language_code' => 'PA',
+                'featureable_type' => VowelFeatureSet::class,
+                'featureable_id' => 4
             ]
         ]);
 
