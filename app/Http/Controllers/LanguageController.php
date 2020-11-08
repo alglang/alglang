@@ -30,6 +30,7 @@ class LanguageController extends Controller
             'verbForms',
             'nominalForms',
             'nominalParadigms',
+            'clusters',
             'phonemes'
         ]);
         $language->loadSourcesCount();

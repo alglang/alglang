@@ -145,24 +145,29 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(Rule::class);
     }
 
-    public function phonemes(): Relation
+    public function phonoids(): Relation
     {
         return $this->hasMany(Phoneme::class);
     }
 
+    public function phonemes(): Relation
+    {
+        return $this->phonoids()->whereIn('featureable_type', [VowelFeatureSet::class, ConsonantFeatureSet::class]);
+    }
+
     public function vowels(): Relation
     {
-        return $this->phonemes()->where('featureable_type', VowelFeatureSet::class);
+        return $this->phonoids()->where('featureable_type', VowelFeatureSet::class);
     }
 
     public function consonants(): Relation
     {
-        return $this->phonemes()->where('featureable_type', ConsonantFeatureSet::class);
+        return $this->phonoids()->where('featureable_type', ConsonantFeatureSet::class);
     }
 
     public function clusters(): Relation
     {
-        return $this->phonemes()->where('featureable_type', ClusterFeatureSet::class);
+        return $this->phonoids()->where('featureable_type', ClusterFeatureSet::class);
     }
 
     /*
