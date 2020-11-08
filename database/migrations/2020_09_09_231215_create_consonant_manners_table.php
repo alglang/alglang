@@ -15,6 +15,7 @@ class CreateConsonantMannersTable extends Migration
     {
         Schema::create('consonant_manners', function (Blueprint $table) {
             $table->string('name');
+            $table->integer('order_key')->default(-1);
         });
     }
 

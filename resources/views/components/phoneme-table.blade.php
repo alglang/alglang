@@ -18,21 +18,29 @@
                 </th>
 
                 @foreach ($colHeaders as $colHeader)
-                    <td
-                        data-{{ $colName }}="{{ $colHeader->name }}"
-                        data-{{ $rowName }}="{{ $rowHeader->name }}"
-                        class="p-2"
-                    >
-                        <div class="flex justify-around">
-                            @foreach ($filterItems($rowHeader, $colHeader) as $item)
-                                <div>
-                                    <x-preview-link :model="$item">
-                                        {!! $item->formatted_shape !!}
-                                    </x-preview-link>
-                                </div>
-                            @endforeach
-                        </div>
-                    </td>
+                    @php
+                        $filteredItems = $filterItems($rowHeader, $colHeader);
+                    @endphp
+
+                    @if ($filteredItems->count() > 0)
+                        <td
+                            data-{{ $colName }}="{{ $colHeader->name }}"
+                            data-{{ $rowName }}="{{ $rowHeader->name }}"
+                            class="p-2"
+                        >
+                            <div class="flex justify-around">
+                                @foreach ($filteredItems as $item)
+                                    <div>
+                                        <x-preview-link :model="$item">
+                                            {!! $item->formatted_shape !!}
+                                        </x-preview-link>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </td>
+                    @else
+                        <td class="p-2"></td>
+                    @endif
                 @endforeach
             </tr>
         @endforeach

@@ -15,6 +15,7 @@ class CreateVowelHeightsTable extends Migration
     {
         Schema::create('vowel_heights', function (Blueprint $table) {
             $table->string('name');
+            $table->integer('order_key')->default(-1);
         });
     }
 

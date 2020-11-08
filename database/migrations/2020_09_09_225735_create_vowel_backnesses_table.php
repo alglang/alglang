@@ -15,6 +15,7 @@ class CreateVowelBacknessesTable extends Migration
     {
         Schema::create('vowel_backnesses', function (Blueprint $table) {
             $table->string('name');
+            $table->integer('order_key')->default(-1);
         });
     }
 

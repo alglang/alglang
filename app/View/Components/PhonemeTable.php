@@ -28,12 +28,12 @@ class PhonemeTable extends Component
 
     public function colHeaders(): Collection
     {
-        return $this->items->pluck($this->colKey)->unique();
+        return $this->items->pluck($this->colKey)->unique()->sortBy('order_key');
     }
 
     public function rowHeaders(): Collection
     {
-        return $this->items->pluck($this->rowKey)->unique();
+        return $this->items->pluck($this->rowKey)->unique()->sortBy('order_key');
     }
 
     public function filterItems(object $row, object $col): Collection

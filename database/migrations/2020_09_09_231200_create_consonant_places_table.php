@@ -15,6 +15,7 @@ class CreateConsonantPlacesTable extends Migration
     {
         Schema::create('consonant_places', function (Blueprint $table) {
             $table->string('name');
+            $table->integer('order_key')->default(-1);
         });
     }
 

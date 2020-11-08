@@ -35,6 +35,21 @@ class PhonemeTableTest extends TestCase
     }
 
     /** @test */
+    public function column_headers_are_ordered_by_key()
+    {
+        $items = collect([
+            $this->itemFactory(['col' => (object)['name' => 'Col1', 'order_key' => 2]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col2', 'order_key' => 1]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col3', 'order_key' => 4]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col4', 'order_key' => 3]]),
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="row" />', compact('items'));
+
+        $view->assertSeeInOrder(['Col2', 'Col1', 'Col4', 'Col3']);
+    }
+
+    /** @test */
     public function it_includes_column_labels_in_cell_data()
     {
         $items = collect([
@@ -64,6 +79,21 @@ class PhonemeTableTest extends TestCase
 
         $view->assertSee('Row1');
         $view->assertSee('Row2');
+    }
+
+    /** @test */
+    public function row_headers_are_ordered_by_key()
+    {
+        $items = collect([
+            $this->itemFactory(['row' => (object)['name' => 'Row1', 'order_key' => 2]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row2', 'order_key' => 1]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row3', 'order_key' => 4]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row4', 'order_key' => 3]]),
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="row" />', compact('items'));
+
+        $view->assertSeeInOrder(['Row2', 'Row1', 'Row4', 'Row3']);
     }
 
     /** @test */
