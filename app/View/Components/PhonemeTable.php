@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
+use Illuminate\View\View;
 
 class PhonemeTable extends Component
 {
@@ -48,12 +49,12 @@ class PhonemeTable extends Component
 
     public function colHeaders(): Collection
     {
-        return $this->items->pluck($this->colKey)->unique()->sortBy($this->colOrderKey);
+        return $this->headers($this->colKey, $this->colOrderKey);
     }
 
     public function rowHeaders(): Collection
     {
-        return $this->items->pluck($this->rowKey)->unique()->sortBy($this->rowOrderKey);
+        return $this->headers($this->rowKey, $this->rowOrderKey);
     }
 
     public function filterItems(object $row, object $col): Collection
@@ -63,20 +64,25 @@ class PhonemeTable extends Component
 
     public function colName(): string
     {
-        return Str::kebab(Arr::last(explode('.', $this->colKey)));
+        return $this->headerName($this->colKey);
+    }
+
+    protected function headers(string $key, string $orderKey): Collection
+    {
+        return $this->items->pluck($key)->unique()->sortBy($orderKey);
     }
 
     public function rowName(): string
     {
-        return Str::kebab(Arr::last(explode('.', $this->rowKey)));
+        return $this->headerName($this->rowKey);
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|string
-     */
-    public function render()
+    protected function headerName(string $key): string
+    {
+        return Str::kebab(Arr::last(explode('.', $key)));
+    }
+
+    public function render(): View
     {
         return view('components.phoneme-table');
     }
