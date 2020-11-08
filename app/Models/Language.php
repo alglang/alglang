@@ -160,6 +160,11 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->phonemes()->where('featureable_type', ConsonantFeatureSet::class);
     }
 
+    public function clusters(): Relation
+    {
+        return $this->phonemes()->where('featureable_type', ClusterFeatureSet::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Protected methods

@@ -4,7 +4,7 @@
             <td></td>
             @foreach ($colHeaders as $colHeader)
                 <th class="px-3 py-2 font-normal">
-                    {{ $colHeader->name }}
+                    {{ $colHeader->$colAccessor }}
                 </th>
             @endforeach
         </tr>
@@ -14,7 +14,7 @@
         @foreach ($rowHeaders as $rowHeader)
             <tr>
                 <th class="bg-gray-700 uppercase text-gray-100 text-sm tracking-wide px-3 py-2 font-normal">
-                    {{ $rowHeader->name }}
+                    {{ $rowHeader->$rowAccessor }}
                 </th>
 
                 @foreach ($colHeaders as $colHeader)
@@ -24,8 +24,8 @@
 
                     @if ($filteredItems->count() > 0)
                         <td
-                            data-{{ $colName }}="{{ $colHeader->name }}"
-                            data-{{ $rowName }}="{{ $rowHeader->name }}"
+                            data-{{ $colName }}="{{ $colHeader->$colAccessor }}"
+                            data-{{ $rowName }}="{{ $rowHeader->$rowAccessor }}"
                             class="p-2"
                         >
                             <div class="flex justify-around">

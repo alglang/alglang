@@ -35,6 +35,20 @@ class PhonemeTableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_use_an_alternate_column_accessor()
+    {
+        $items = collect([
+            $this->itemFactory(['col' => (object)['shape' => 'Col1']]),
+            $this->itemFactory(['col' => (object)['shape' => 'Col2']])
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" col-accessor="shape" row-key="row" />', compact('items'));
+
+        $view->assertSee('Col1');
+        $view->assertSee('Col2');
+    }
+
+    /** @test */
     public function column_headers_are_ordered_by_key()
     {
         $items = collect([
@@ -50,21 +64,36 @@ class PhonemeTableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_use_an_alternate_column_order_key()
+    {
+        $items = collect([
+            $this->itemFactory(['col' => (object)['name' => 'Col1', 'foo' => 2]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col2', 'foo' => 1]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col3', 'foo' => 4]]),
+            $this->itemFactory(['col' => (object)['name' => 'Col4', 'foo' => 3]]),
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" col-order-key="foo" row-key="row" />', compact('items'));
+
+        $view->assertSeeInOrder(['Col2', 'Col1', 'Col4', 'Col3']);
+    }
+
+    /** @test */
     public function it_includes_column_labels_in_cell_data()
     {
         $items = collect([
             $this->itemFactory(['features' => [
-                'col' => (object)['name' => 'Col1']],
+                'theCol' => (object)['name' => 'Col1']],
             ]),
             $this->itemFactory(['features' => [
-                'col' => (object)['name' => 'Col2']],
+                'theCol' => (object)['name' => 'Col2']],
             ]),
         ]);
 
-        $view = $this->blade('<x-phoneme-table :items="$items" col-key="features.col" row-key="row" />', compact('items'));
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="features.theCol" row-key="row" />', compact('items'));
 
-        $view->assertSee('data-col="Col1"', false);
-        $view->assertSee('data-col="Col2"', false);
+        $view->assertSee('data-the-col="Col1"', false);
+        $view->assertSee('data-the-col="Col2"', false);
     }
 
     /** @test */
@@ -76,6 +105,20 @@ class PhonemeTableTest extends TestCase
         ]);
 
         $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="row" />', compact('items'));
+
+        $view->assertSee('Row1');
+        $view->assertSee('Row2');
+    }
+
+    /** @test */
+    public function it_can_use_an_alternate_row_accessor()
+    {
+        $items = collect([
+            $this->itemFactory(['row' => (object)['shape' => 'Row1']]),
+            $this->itemFactory(['row' => (object)['shape' => 'Row2']])
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-accessor="shape" row-key="row" />', compact('items'));
 
         $view->assertSee('Row1');
         $view->assertSee('Row2');
@@ -97,21 +140,36 @@ class PhonemeTableTest extends TestCase
     }
 
     /** @test */
+    public function it_can_use_an_alternate_row_order_key()
+    {
+        $items = collect([
+            $this->itemFactory(['row' => (object)['name' => 'Row1', 'foo' => 2]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row2', 'foo' => 1]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row3', 'foo' => 4]]),
+            $this->itemFactory(['row' => (object)['name' => 'Row4', 'foo' => 3]]),
+        ]);
+
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="row" row-order-key="foo" />', compact('items'));
+
+        $view->assertSeeInOrder(['Row2', 'Row1', 'Row4', 'Row3']);
+    }
+
+    /** @test */
     public function it_includes_row_labels_in_cell_data()
     {
         $items = collect([
             $this->itemFactory(['features' => [
-                'row' => (object)['name' => 'Row1']]
+                'theRow' => (object)['name' => 'Row1']]
             ]),
             $this->itemFactory(['features' => [
-                'row' => (object)['name' => 'Row2']]
+                'theRow' => (object)['name' => 'Row2']]
             ])
         ]);
 
-        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="features.row" />', compact('items'));
+        $view = $this->blade('<x-phoneme-table :items="$items" col-key="col" row-key="features.theRow" />', compact('items'));
 
-        $view->assertSee('data-row="Row1"', false);
-        $view->assertSee('data-row="Row2"', false);
+        $view->assertSee('data-the-row="Row1"', false);
+        $view->assertSee('data-the-row="Row2"', false);
     }
 
     /** @test */

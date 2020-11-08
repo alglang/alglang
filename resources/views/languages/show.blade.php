@@ -5,6 +5,7 @@ $pages = [
     ['hash' => 'basic_details',],
     ['hash' => 'morphemes', 'count' => $language->morphemes_count],
     ['hash' => 'phonemes', 'count' => $language->phonemes_count],
+    ['hash' => 'clusters', 'count' => 0],
     ['hash' => 'nominal_paradigms', 'count' => $language->nominal_paradigms_count],
     ['hash' => 'verb_forms', 'count' => $language->verb_forms_count],
     ['hash' => 'nominal_forms', 'count' => $language->nominal_forms_count],
@@ -42,6 +43,18 @@ if ($language->sources_count) {
 
         @slot('phonemes')
             <livewire:collections.phonemes :model="$language" />
+        @endslot
+
+        @slot('clusters')
+            <x-phoneme-table
+                :items="$language->clusters"
+                col-key="features.secondSegment"
+                row-key="features.firstSegment"
+                col-accessor="shape"
+                row-accessor="shape"
+                col-order-key="shape"
+                row-order-key="shape"
+            />
         @endslot
 
         @slot('nominal_paradigms')
