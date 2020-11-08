@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\HasMorphemes;
+use App\Contracts\HasPhonemes;
 use App\Contracts\HasSources;
 use App\Contracts\HasVerbForms;
 use App\Contracts\HasNominalForms;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms
+class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms, HasPhonemes
 {
     use AggregatesSources;
     use HasFactory;

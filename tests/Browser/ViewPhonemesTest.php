@@ -14,6 +14,8 @@ use Tests\DuskTestCase;
 
 class ViewPhonemesTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
     /** @test */
     public function the_vowel_inventory_is_shown()
     {
