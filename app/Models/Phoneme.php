@@ -28,7 +28,7 @@ class Phoneme extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->language_code}/phonemes/{$this->slug}";
+        return "/languages/{$this->language_code}/{$this->type}s/{$this->slug}";
     }
 
     public function getTypeAttribute(): string

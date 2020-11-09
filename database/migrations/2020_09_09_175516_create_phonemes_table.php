@@ -20,6 +20,7 @@ class CreatePhonemesTable extends Migration
             $table->string('slug');
             $table->string('language_code');
             $table->morphs('featureable');
+            $table->boolean('is_marginal')->default(false);
             $table->timestamps();
         });
     }

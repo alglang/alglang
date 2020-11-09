@@ -8,6 +8,12 @@ trait PhonemePresenter
     {
         $mark = $this->isReconstructed() ? '*' : '';
         $shape = $this->shape ?? $this->ipa;
-        return "<i>{$mark}{$shape}</i>";
+        $markup = "<i>{$mark}{$shape}</i>";
+
+        if ($this->is_marginal) {
+            $markup = "({$markup})";
+        }
+
+        return $markup;
     }
 }

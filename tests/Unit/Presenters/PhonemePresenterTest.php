@@ -31,4 +31,16 @@ class PhonemePresenterTest extends TestCase
         $phoneme = new Phoneme(['shape' => null, 'ipa' => 'y']);
         $this->assertEquals('<i>y</i>', $phoneme->formatted_shape);
     }
+
+    /** @test */
+    public function it_puts_parentheses_around_marginal_phonemes()
+    {
+        $phoneme = new Phoneme([
+            'shape' => 'x',
+            'is_marginal' => true,
+            'language' => new Language(['reconstructed' => true])
+        ]);
+
+        $this->assertEquals('(<i>*x</i>)', $phoneme->formatted_shape);
+    }
 }

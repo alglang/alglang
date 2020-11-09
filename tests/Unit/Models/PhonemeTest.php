@@ -25,13 +25,6 @@ class PhonemeTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_url()
-    {
-        $phoneme = new Phoneme(['shape' => 'x', 'language_code' => 'TL']);
-        $this->assertEquals('/languages/TL/phonemes/x', $phoneme->url);
-    }
-
-    /** @test */
     public function its_type_is_vowel_if_it_has_a_vowel_feature_set()
     {
         $vowel = new Phoneme(['featureable_type' => VowelFeatureSet::class]);
@@ -57,5 +50,38 @@ class PhonemeTest extends TestCase
     {
         $cluster = new Phoneme();
         $this->assertEquals('', $cluster->type);
+    }
+
+    /** @test */
+    public function vowels_have_a_url()
+    {
+        $phoneme = new Phoneme([
+            'shape' => 'x',
+            'language_code' => 'TL',
+            'featureable_type' => VowelFeatureSet::class
+        ]);
+        $this->assertEquals('/languages/TL/vowels/x', $phoneme->url);
+    }
+
+    /** @test */
+    public function consonants_have_a_url()
+    {
+        $phoneme = new Phoneme([
+            'shape' => 'x',
+            'language_code' => 'TL',
+            'featureable_type' => ConsonantFeatureSet::class
+        ]);
+        $this->assertEquals('/languages/TL/consonants/x', $phoneme->url);
+    }
+
+    /** @test */
+    public function clusters_have_a_url()
+    {
+        $phoneme = new Phoneme([
+            'shape' => 'x',
+            'language_code' => 'TL',
+            'featureable_type' => ClusterFeatureSet::class
+        ]);
+        $this->assertEquals('/languages/TL/clusters/x', $phoneme->url);
     }
 }

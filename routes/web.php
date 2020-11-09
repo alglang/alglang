@@ -114,11 +114,29 @@ Route::prefix('languages')->group(function () {
             )->name('verbForms.examples.show');
         });
 
-        Route::prefix('phonemes')->group(function () {
+        Route::prefix('vowels')->group(function () {
             Route::get('{phoneme:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
 
             Route::get(
-                '{phoneme:slug}',
+                '{phonoid:slug}',
+                [PhonemeController::class, 'show']
+            );
+        });
+
+        Route::prefix('consonants')->group(function () {
+            Route::get('{phoneme:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
+
+            Route::get(
+                '{phonoid:slug}',
+                [PhonemeController::class, 'show']
+            );
+        });
+
+        Route::prefix('clusters')->group(function () {
+            Route::get('{cluster:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
+
+            Route::get(
+                '{phonoid:slug}',
                 [PhonemeController::class, 'show']
             );
         });

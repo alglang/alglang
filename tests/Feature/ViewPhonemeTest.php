@@ -19,7 +19,6 @@ class ViewPhonemeTest extends TestCase
     /** @test */
     public function it_shows_the_correct_view()
     {
-        $this->withoutExceptionHandling();
         $phoneme = Phoneme::factory()->create();
 
         $response = $this->get($phoneme->url);
@@ -28,6 +27,53 @@ class ViewPhonemeTest extends TestCase
         $response->assertViewIs('phonemes.show');
         $response->assertViewHas('phoneme', $phoneme);
         $response->assertSee($phoneme->formatted_shape, false);
+    }
+
+    /** @test */
+    public function it_displays_the_correct_type_for_a_vowel()
+    {
+        $phoneme = Phoneme::factory()->vowel()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('Vowel details');
+    }
+
+    /** @test */
+    public function it_displays_the_correct_type_for_a_consonant()
+    {
+        $phoneme = Phoneme::factory()->consonant()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('Consonant details');
+    }
+
+    /** @test */
+    public function it_displays_the_correct_type_for_a_cluster()
+    {
+        $phoneme = Phoneme::factory()->cluster()->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('Cluster details');
+    }
+
+    /** @test */
+    public function it_represents_marginality()
+    {
+        $phoneme = Phoneme::factory()->create([
+            'shape' => 'xyz',
+            'is_marginal' => true
+        ]);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('(<i>xyz</i>)', false);
     }
 
     /** @test */
@@ -82,18 +128,7 @@ class ViewPhonemeTest extends TestCase
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertSeeInOrder(['Phoneme details', 'Test Language']);
-    }
-
-    /** @test */
-    public function it_shows_its_type()
-    {
-        $phoneme = Phoneme::factory()->vowel()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertSee('vowel');
+        $response->assertSeeInOrder(['details', 'Test Language']);
     }
 
     /** @test */

@@ -4,10 +4,12 @@
 $pages = [
     ['hash' => 'basic_details']
 ];
+
+$title = Str::title($phoneme->type) . ' details';
 @endphp
 
 @section('content')
-    <x-details title="Phoneme details" :pages="$pages">
+    <x-details :title="$title" :pages="$pages">
         @slot('header')
             <h1 class="text-2xl text-gray-800">
                 {!! $phoneme->formatted_shape !!}
@@ -17,9 +19,6 @@ $pages = [
                 <x-preview-link :model="$phoneme->language">
                     {{ $phoneme->language->name }}
                 </x-preview-link>
-            </div>
-            <div class="mb-2 ml-1 px-2 py-1 inline text-sm uppercase leading-none bg-gray-300 rounded">
-                {{ $phoneme->type }}
             </div>
         @endslot
 

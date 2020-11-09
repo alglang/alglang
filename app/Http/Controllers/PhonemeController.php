@@ -9,10 +9,10 @@ use Illuminate\View\View;
 
 class PhonemeController extends Controller
 {
-    public function show(Language $language, Phoneme $phoneme): View
+    public function show(Language $language, Phoneme $phonoid): View
     {
-        $phoneme->load(['language', 'features', 'sources']);
+        $phonoid->load(['language', 'features', 'sources']);
 
-        return view('phonemes.show', compact('phoneme'));
+        return view('phonemes.show', ['phoneme' => $phonoid]);
     }
 }
