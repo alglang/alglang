@@ -30,6 +30,25 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_matches_views_case_sensitively()
+    {
+        $language = Language::factory()->create();
+        Phoneme::factory()->create([
+            'slug' => 'n',
+            'language_code' => $language
+        ]);
+        $phoneme = Phoneme::factory()->create([
+            'slug' => 'N',
+            'language_code' => $language
+        ]);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertViewHas('phoneme', $phoneme);
+    }
+
+    /** @test */
     public function it_displays_the_correct_type_for_a_vowel()
     {
         $phoneme = Phoneme::factory()->vowel()->create();
