@@ -169,4 +169,76 @@ class PhonemesTest extends TestCase
 
         $view->assertSeeInOrder(['PLACE3', 'PLACE1', 'PLACE4', 'PLACE2']);
     }
+
+    /** @test */
+    public function it_shows_archiphonemes_if_there_are_any()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->consonant()->create([
+            'shape' => 'ARCH1',
+            'language_code' => $language,
+            'is_archiphoneme' => true
+        ]);
+        Phoneme::factory()->vowel()->create([
+            'shape' => 'ARCH2',
+            'language_code' => $language,
+            'is_archiphoneme' => true
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Archiphonemes', 'ARCH1', 'ARCH2']);
+    }
+
+    /**
+     * @test
+     * @dataProvider archiphonemeFeaturesProvider
+     */
+    public function it_shows_archiphoneme_features($factory, string $target)
+    {
+        $language = Language::factory()->create();
+
+        $factory->create([
+            'shape' => 'ARCHY',
+            'language_code' => $language,
+            'is_archiphoneme' => true
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Archiphonemes', $target, 'ARCHY']);
+    }
+
+    public function archiphonemeFeaturesProvider(): array
+    {
+        return [
+            [
+                Phoneme::factory()->consonant(['manner_name' => null, 'place_name' => 'FOO_PLACE']),
+                'FOO_PLACE'
+            ],
+            [
+                Phoneme::factory()->consonant(['manner_name' => 'FOO_MANNER', 'place_name' => null]),
+                'FOO_MANNER'
+            ],
+            [
+                Phoneme::factory()->vowel(['backness_name' => null, 'height_name' => 'FOO_HEIGHT']),
+                'FOO_HEIGHT'
+            ],
+            [
+                Phoneme::factory()->vowel(['backness_name' => 'FOO_BACKNESS', 'height_name' => null]),
+                'FOO_BACKNESS'
+            ]
+        ];
+    }
+
+    /** @test */
+    public function it_doesnt_show_archiphonemes_if_there_arent_any()
+    {
+        $language = Language::factory()->create();
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Archiphonemes');
+    }
 }

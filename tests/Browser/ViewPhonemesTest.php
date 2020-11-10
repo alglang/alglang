@@ -32,9 +32,32 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
-                    ->assertPresent('[data-backness="front"][data-height="high"]');
+                    ->with('.vowel-inventory', function ($table) {
+                        $table->assertPresent('[data-backness="front"][data-height="high"]');
+                        $this->assertEquals('i', $table->text('[data-backness="front"][data-height="high"]'));
+                    });
+        });
+    }
 
-            $this->assertEquals('i', $browser->text('[data-backness="front"][data-height="high"]'));
+    /** @test */
+    public function archiphoneme_consonants_are_shown()
+    {
+        $language = Language::factory()->create();
+
+        $phoneme = Phoneme::factory()->vowel([
+            'backness_name' => null
+        ])->create([
+            'language_code' => $language,
+            'shape' => 'ARCHY',
+            'is_archiphoneme' => true
+        ]);
+
+        $this->browse(function (Browser $browser) use ($language) {
+            $browser->visit($language->url)
+                    ->clickLink('Phonemes')
+                    ->with('.vowel-inventory', function ($table) {
+                        $table->assertDontSee('ARCHY');
+                    });
         });
     }
 
@@ -54,9 +77,32 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
-                    ->assertPresent('[data-place="velar"][data-manner="fricative"]');
+                    ->with('.consonant-inventory', function ($table) {
+                        $table->assertPresent('[data-place="velar"][data-manner="fricative"]');
+                        $this->assertEquals('x', $table->text('[data-place="velar"][data-manner="fricative"]'));
+                    });
+        });
+    }
 
-            $this->assertEquals('x', $browser->text('[data-place="velar"][data-manner="fricative"]'));
+    /** @test */
+    public function archiphonemes_are_not_shown_in_the_consonant_inventory()
+    {
+        $language = Language::factory()->create();
+
+        $phoneme = Phoneme::factory()->consonant([
+            'place_name' => null
+        ])->create([
+            'language_code' => $language,
+            'shape' => 'ARCH',
+            'is_archiphoneme' => true
+        ]);
+
+        $this->browse(function (Browser $browser) use ($language) {
+            $browser->visit($language->url)
+                    ->clickLink('Phonemes')
+                    ->with('.consonant-inventory', function ($table) {
+                        $table->assertDontSee('ARCH');
+                    });
         });
     }
 }

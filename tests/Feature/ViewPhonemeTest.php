@@ -63,6 +63,17 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_adds_archiphoneme_to_the_title_if_it_is_an_archiphoneme()
+    {
+        $phoneme = Phoneme::factory()->consonant()->create(['is_archiphoneme' => true]);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSee('Archiphoneme Consonant details');
+    }
+
+    /** @test */
     public function it_represents_marginality()
     {
         $phoneme = Phoneme::factory()->create([
@@ -149,6 +160,39 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_handles_archiphoneme_vowels_that_have_height_assimilation()
+    {
+        $phoneme = Phoneme::factory()->vowel(['height_name' => null])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Height', 'varies']);
+    }
+
+    /** @test */
+    public function it_handles_archiphoneme_vowels_that_have_backness_assimilation()
+    {
+        $phoneme = Phoneme::factory()->vowel(['backness_name' => null])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Backness', 'varies']);
+    }
+
+    /** @test */
+    public function it_handles_archiphoneme_vowels_that_have_length_assimilation()
+    {
+        $phoneme = Phoneme::factory()->vowel(['length_name' => null])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Length', 'varies']);
+    }
+
+    /** @test */
     public function it_shows_consonant_features_if_it_is_a_vowel()
     {
         $phoneme = Phoneme::factory()->consonant([
@@ -161,6 +205,28 @@ class ViewPhonemeTest extends TestCase
         $response->assertOk();
         $response->assertSeeInOrder(['Place', 'labial']);
         $response->assertSeeInOrder(['Manner', 'stop']);
+    }
+
+    /** @test */
+    public function it_handles_archiphoneme_consonants_that_have_place_assimilation()
+    {
+        $phoneme = Phoneme::factory()->consonant(['place_name' => null])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Place', 'varies']);
+    }
+
+    /** @test */
+    public function it_handles_archiphoneme_consonants_that_have_manner_assimilation()
+    {
+        $phoneme = Phoneme::factory()->consonant(['manner_name' => null])->create();
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['Manner', 'varies']);
     }
 
     /** @test */

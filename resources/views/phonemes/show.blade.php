@@ -4,8 +4,6 @@
 $pages = [
     ['hash' => 'basic_details']
 ];
-
-$title = Str::title($phoneme->type) . ' details';
 @endphp
 
 @section('content')
@@ -37,22 +35,22 @@ $title = Str::title($phoneme->type) . ' details';
 
             @if ($phoneme->type === 'vowel')
             <x-detail-row label="Height">
-                {{ $phoneme->features->height_name }}
+                {{ $phoneme->features->height_name ?? 'varies' }}
             </x-detail-row>
             <x-detail-row label="Backness">
-                {{ $phoneme->features->backness_name }}
+                {{ $phoneme->features->backness_name ?? 'varies' }}
             </x-detail-row>
             <x-detail-row label="Length">
-                {{ $phoneme->features->length_name }}
+                {{ $phoneme->features->length_name ?? 'varies' }}
             </x-detail-row>
             @endif
 
             @if ($phoneme->type === 'consonant')
             <x-detail-row label="Place">
-                {{ $phoneme->features->place_name }}
+                {{ $phoneme->features->place_name ?? 'varies' }}
             </x-detail-row>
             <x-detail-row label="Manner">
-                {{ $phoneme->features->manner_name }}
+                {{ $phoneme->features->manner_name ?? 'varies' }}
             </x-detail-row>
             @endif
 

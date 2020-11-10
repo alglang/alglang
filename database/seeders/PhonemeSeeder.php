@@ -159,6 +159,11 @@ class PhonemeSeeder extends Seeder
                 'id' => 14,
                 'place_name' => 'dental/alveolar',
                 'manner_name' => 'liquid'
+            ],
+            [
+                'id' => 15,
+                'place_name' => null,
+                'manner_name' => 'nasal'
             ]
         ]);
 
@@ -461,6 +466,18 @@ class PhonemeSeeder extends Seeder
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 14,
                 'is_marginal' => false
+            ]
+        ]);
+
+        DB::table('phonemes')->insert([
+            [
+                'id' => 25,
+                'shape' => 'N',
+                'slug' => 'N',
+                'language_code' => 'PA',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 15,
+                'is_archiphoneme' => true
             ]
         ]);
 

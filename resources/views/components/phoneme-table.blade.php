@@ -1,4 +1,4 @@
-<table>
+<table {{ $attributes }}>
     <thead>
         <tr class="bg-gray-700 uppercase text-gray-100 text-sm tracking-wide">
             <td></td>
