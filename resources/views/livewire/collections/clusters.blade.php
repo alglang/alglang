@@ -1,0 +1,9 @@
+<div>
+    <x-phoneme-table
+        :items="$model->clusters"
+        col-key="features.secondSegment"
+        row-key="features.firstSegment"
+        col-accessor="shape"
+        row-accessor="shape"
+    />
+</div>

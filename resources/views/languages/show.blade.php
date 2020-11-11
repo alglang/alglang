@@ -46,15 +46,7 @@ if ($language->sources_count) {
         @endslot
 
         @slot('clusters')
-            <x-phoneme-table
-                :items="$language->clusters"
-                col-key="features.secondSegment"
-                row-key="features.firstSegment"
-                col-accessor="shape"
-                row-accessor="shape"
-                col-order-key="shape"
-                row-order-key="shape"
-            />
+            <livewire:collections.clusters :model="$language" />
         @endslot
 
         @slot('nominal_paradigms')

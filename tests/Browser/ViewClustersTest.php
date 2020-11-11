@@ -13,7 +13,7 @@ class ViewClustersTest extends DuskTestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function the_consonant_inventory_is_shown()
+    public function the_cluster_inventory_is_shown()
     {
         $language = Language::factory()->create();
 
