@@ -1,6 +1,10 @@
 <table {{ $attributes }}>
     <thead>
-        <tr class="bg-gray-700 uppercase text-gray-100 text-sm tracking-wide">
+        <tr
+            class="bg-gray-700 text-gray-100
+                   {{ $uppercase ? 'uppercase text-sm tracking-wide' : '' }}
+                   "
+        >
             <td></td>
             @foreach ($colHeaders as $colHeader)
                 <th class="px-3 py-2 font-normal">
@@ -13,7 +17,10 @@
     <tbody class="bg-gray-100">
         @foreach ($rowHeaders as $rowHeader)
             <tr>
-                <th class="bg-gray-700 uppercase text-gray-100 text-sm tracking-wide px-3 py-2 font-normal">
+                <th class="bg-gray-700 text-gray-100 px-3 py-2 font-normal
+                          {{ $uppercase ? 'uppercase text-sm tracking-wide' : '' }}
+                          "
+                >
                     {{ $rowHeader->$rowAccessor }}
                 </th>
 

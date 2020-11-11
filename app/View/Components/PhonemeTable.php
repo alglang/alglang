@@ -20,6 +20,8 @@ class PhonemeTable extends Component
 
     public string $rowAccessor;
 
+    public bool $uppercase;
+
     private string $colOrderKey;
 
     private string $rowOrderKey;
@@ -36,7 +38,8 @@ class PhonemeTable extends Component
         string $colAccessor = 'name',
         string $rowAccessor = 'name',
         string $colOrderKey = 'order_key',
-        string $rowOrderKey = 'order_key'
+        string $rowOrderKey = 'order_key',
+        bool $uppercase = true
     ) {
         $this->items = $items;
         $this->colKey = $colKey;
@@ -45,6 +48,7 @@ class PhonemeTable extends Component
         $this->rowAccessor = $rowAccessor;
         $this->colOrderKey = $colOrderKey;
         $this->rowOrderKey = $rowOrderKey;
+        $this->uppercase = $uppercase;
     }
 
     public function colHeaders(): Collection
