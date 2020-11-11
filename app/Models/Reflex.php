@@ -18,7 +18,7 @@ class Reflex extends Model
 
     public function getUrlAttribute(): string
     {
-        return "/languages/{$this->phoneme->language_code}/phonemes/{$this->phoneme->slug}/reflexes/{$this->reflex->slug}";
+        return "/languages/{$this->phoneme->language_code}/{$this->phoneme->type}s/{$this->phoneme->slug}/reflexes/{$this->reflex->slug}";
     }
 
     public function phoneme(): Relation
