@@ -29,7 +29,7 @@ $pages = [
 
             @if ($phoneme->ipa)
             <x-detail-row label="IPA transcription">
-                /<i>{{ $phoneme->ipa }}</i>/
+                /{{ $phoneme->ipa }}/
             </x-detail-row>
             @endif
 
