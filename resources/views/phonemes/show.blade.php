@@ -2,7 +2,8 @@
 
 @php
 $pages = [
-    ['hash' => 'basic_details']
+    ['hash' => 'basic_details'],
+    ['hash' => 'reflexes']
 ];
 @endphp
 
@@ -85,6 +86,10 @@ $pages = [
                     <x-source-list :sources="$phoneme->sources" />
                 </x-detail-row>
             @endif
+        @endslot
+
+        @slot('reflexes')
+            <x-reflex-graph :phoneme="$phoneme" />
         @endslot
     </x-details>
 @endsection

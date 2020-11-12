@@ -60,6 +60,16 @@ class Phoneme extends Model
         return $this->hasMany(Allophone::class);
     }
 
+    public function parents(): Relation
+    {
+        return $this->belongsToMany(Phoneme::class, 'reflexes', 'reflex_id', 'phoneme_id')->withPivot('environment');
+    }
+
+    public function children(): Relation
+    {
+        return $this->belongsToMany(Phoneme::class, 'reflexes', 'phoneme_id', 'reflex_id')->withPivot('environment');
+    }
+
     protected static function booted()
     {
         static::saving(function (self $phoneme) {
