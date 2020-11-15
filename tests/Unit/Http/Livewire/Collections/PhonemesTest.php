@@ -17,17 +17,49 @@ class PhonemesTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_shows_phonemes()
+    public function it_shows_vowels()
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->create(['language_code' => $language, 'shape' => 'phonx']);
-        Phoneme::factory()->create(['language_code' => $language, 'shape' => 'phony']);
+        Phoneme::factory()->vowel()->create(['language_code' => $language, 'shape' => 'phonx']);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
-        $view->assertSee('phonx');
-        $view->assertSee('phony');
+        $view->assertSeeInOrder(['Vowel inventory', 'phonx']);
+    }
+
+    /** @test */
+    public function it_does_not_show_the_vowel_section_when_there_are_no_vowels()
+    {
+        $language = Language::factory()->create();
+        $this->assertEquals(0, $language->vowels()->count());
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Vowel inventory');
+    }
+
+    /** @test */
+    public function it_shows_consonants()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->consonant()->create(['language_code' => $language, 'shape' => 'phonx']);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Consonant inventory', 'phonx']);
+    }
+
+    /** @test */
+    public function it_does_not_show_the_consonant_section_when_there_are_no_consonants()
+    {
+        $language = Language::factory()->create();
+        $this->assertEquals(0, $language->consonants()->count());
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Consonant inventory');
     }
 
     /** @test */
