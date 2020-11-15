@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ClusterFeatureSet;
 use App\Models\ConsonantFeatureSet;
+use App\Models\Phoneme;
 use App\Models\VowelFeatureSet;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -385,6 +386,28 @@ class PhonemeSeeder extends Seeder
 
         DB::table('phonemes')->insert([
             [
+                'id' => 26,
+                'shape' => 'k',
+                'ipa' => 'k',
+                'slug' => 'k',
+                'language_code' => 'PAGV',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 4
+            ],
+            [
+                'id' => 27,
+                'shape' => 'č',
+                'ipa' => 'tʃ',
+                'slug' => 'č',
+                'language_code' => 'Ar',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 9
+            ]
+        ]);
+
+
+        DB::table('phonemes')->insert([
+            [
                 'shape' => 'xk',
                 'ipa' => 'ʔk',
                 'slug' => 'xk',
@@ -633,9 +656,24 @@ class PhonemeSeeder extends Seeder
 
         DB::table('reflexes')->insert([
             [
-                'id' => 1,
                 'phoneme_id' => 1,  // PA p
                 'reflex_id' => 5    // C p
+            ],
+            [
+                'phoneme_id' => 1,  // PA p
+                'reflex_id' => 26   // PAGV k
+            ],
+            [
+                'phoneme_id' => 15,  // PA θ
+                'reflex_id' => 26   // PAGV k
+            ],
+            [
+                'phoneme_id' => Phoneme::where('shape', 'hp')->first()->id,
+                'reflex_id' => 26   // PAGV k
+            ],
+            [
+                'phoneme_id' => 26,  // PAGV k
+                'reflex_id' => 27    // Ar č
             ]
         ]);
     }

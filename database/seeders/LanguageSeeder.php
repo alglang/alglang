@@ -44,6 +44,26 @@ class LanguageSeeder extends Seeder
                 'reconstructed' => false,
                 'position' => '{"lat":46.271362,"lng":-93.392167}',
                 'group_name' => 'Algonquian'
+            ],
+            [
+                'name' => 'Proto-Arapaho-Gros Ventre',
+                'alternate_names' => null,
+                'parent_code' => 'PA',
+                'code' => 'PAGV',
+                'iso' => null,
+                'reconstructed' => true,
+                'position' => null,
+                'group_name' => 'Arapahoan'
+            ],
+            [
+                'name' => 'Arapaho',
+                'alternate_names' => null,
+                'parent_code' => 'PAGV',
+                'code' => 'Ar',
+                'iso' => 'arp',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Arapahoan'
             ]
         ]);
     }
