@@ -35,12 +35,13 @@
                             data-{{ $rowName }}="{{ $rowHeader->$rowAccessor }}"
                             class="p-2"
                         >
-                            <div class="flex justify-around">
+                            <div class="flex items-center flex-col">
                                 @foreach ($filteredItems as $item)
                                     <div>
-                                        <x-preview-link :model="$item">
-                                            {!! $item->formatted_shape !!}
-                                        </x-preview-link>
+                                        @component("components.$cellComponent", array_merge([
+                                            'phoneme' => $item
+                                        ], $cellComponentProps))
+                                        @endcomponent
                                     </div>
                                 @endforeach
                             </div>

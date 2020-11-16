@@ -48,4 +48,36 @@
             </tbody>
         </table>
     @endif
+
+    @if ($model->code !== 'PA')
+        @if ($model->vowels->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty()))
+            <h2 class="mt-4 py-2 text-lg">
+                Reflexes of Proto-Algonquian vowels
+            </h2>
+
+            <x-phoneme-table
+                class="vowel-reflexes"
+                :items="\App\Models\Language::find('PA')->vowels->where('is_archiphoneme', false)"
+                col-key="features.backness"
+                row-key="features.height"
+                cell-component="phoneme-cell-relation"
+                :cell-component-props="['language' => $model->code]"
+            />
+        @endif
+
+        @if ($model->consonants->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty()))
+            <h2 class="mt-4 py-2 text-lg">
+                Reflexes of Proto-Algonquian consonants
+            </h2>
+
+            <x-phoneme-table
+                class="consonant-reflexes"
+                :items="\App\Models\Language::find('PA')->consonants->where('is_archiphoneme', false)"
+                col-key="features.place"
+                row-key="features.manner"
+                cell-component="phoneme-cell-relation"
+                :cell-component-props="['language' => $model->code]"
+            />
+        @endif
+    @endif
 </div>

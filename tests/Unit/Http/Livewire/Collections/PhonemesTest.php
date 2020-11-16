@@ -7,6 +7,7 @@ use App\Models\ConsonantManner;
 use App\Models\ConsonantPlace;
 use App\Models\Language;
 use App\Models\Phoneme;
+use App\Models\Reflex;
 use App\Models\VowelBackness;
 use App\Models\VowelHeight;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,19 @@ use Tests\TestCase;
 class PhonemesTest extends TestCase
 {
     use RefreshDatabase;
+
+    public Language $pa;
+    public Phoneme $paConsonant;
+    public Phoneme $paVowel;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->pa = Language::factory()->create(['code' => 'PA']);
+        $this->paConsonant = Phoneme::factory()->consonant()->create(['language_code' => $this->pa, 'shape' => 'parentx']);
+        $this->paVowel = Phoneme::factory()->vowel()->create(['language_code' => $this->pa, 'shape' => 'parentu']);
+    }
 
     /** @test */
     public function it_shows_vowels()
@@ -272,5 +286,93 @@ class PhonemesTest extends TestCase
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
         $view->assertDontSee('Archiphonemes');
+    }
+
+    /** @test */
+    public function it_shows_proto_algonquian_vowel_reflexes()
+    {
+        $language = Language::factory()->create();
+        $phoneme = Phoneme::factory()->vowel()->create(['language_code' => $language, 'shape' => 'childu']);
+        Reflex::factory()->create([
+            'phoneme_id' => $this->paVowel,
+            'reflex_id' => $phoneme
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian vowels', 'parentu', '>', 'childu'], false);
+    }
+
+    /** @test */
+    public function it_shows_proto_algonquian_consonant_reflexes()
+    {
+        $language = Language::factory()->create();
+        $phoneme = Phoneme::factory()->consonant()->create(['language_code' => $language, 'shape' => 'childx']);
+        Reflex::factory()->create([
+            'phoneme_id' => $this->paConsonant,
+            'reflex_id' => $phoneme
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', 'childx'], false);
+    }
+
+    /** @test */
+    public function it_does_not_show_proto_algonquian_vowel_reflexes_if_it_has_none()
+    {
+        $language = Language::factory()->create();
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian vowels');
+    }
+
+    /** @test */
+    public function it_does_not_show_proto_algonquian_consonant_reflexes_if_it_has_none()
+    {
+        $language = Language::factory()->create();
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian consonants');
+    }
+
+    /** @test */
+    public function it_shows_missing_proto_algonquian_vowel_reflexes_if_it_has_at_least_one_reflex()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => Phoneme::factory()->vowel()->create(['language_code' => 'PA']),
+            'reflex_id' => Phoneme::factory()->vowel()->create(['language_code' => $language])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian vowels', 'parentu', '>', '?'], false);
+    }
+
+    /** @test */
+    public function it_shows_missing_proto_algonquian_consonant_reflexes_if_it_has_at_least_one_reflex()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => Phoneme::factory()->consonant()->create(['language_code' => 'PA']),
+            'reflex_id' => Phoneme::factory()->consonant()->create(['language_code' => $language])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', '?'], false);
+    }
+
+    /** @test */
+    public function proto_algonquian_reflexes_are_not_shown_on_the_proto_algonquian_page()
+    {
+        $view = $this->livewire(Phonemes::class, ['model' => $this->pa]);
+
+        $view->assertDontSee('Reflexes');
     }
 }

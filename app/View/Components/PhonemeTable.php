@@ -22,6 +22,10 @@ class PhonemeTable extends Component
 
     public bool $uppercase;
 
+    public string $cellComponent;
+
+    public array $cellComponentProps;
+
     private string $colOrderKey;
 
     private string $rowOrderKey;
@@ -39,6 +43,8 @@ class PhonemeTable extends Component
         string $rowAccessor = 'name',
         string $colOrderKey = 'order_key',
         string $rowOrderKey = 'order_key',
+        string $cellComponent = 'phoneme-cell-single',
+        array $cellComponentProps = [],
         bool $uppercase = true
     ) {
         $this->items = $items;
@@ -48,6 +54,8 @@ class PhonemeTable extends Component
         $this->rowAccessor = $rowAccessor;
         $this->colOrderKey = $colOrderKey;
         $this->rowOrderKey = $rowOrderKey;
+        $this->cellComponent = $cellComponent;
+        $this->cellComponentProps = $cellComponentProps;
         $this->uppercase = $uppercase;
     }
 

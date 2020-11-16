@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Presenters\PhonemePresenter;
+use App\Traits\HasReflexes;
 use App\Traits\Sourceable;
 use App\Traits\Reconstructable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class Phoneme extends Model
 {
     use HasFactory;
+    use HasReflexes;
     use PhonemePresenter;
     use Reconstructable;
     use Sourceable;
@@ -58,16 +60,6 @@ class Phoneme extends Model
     public function allophones(): Relation
     {
         return $this->hasMany(Allophone::class);
-    }
-
-    public function parents(): Relation
-    {
-        return $this->belongsToMany(Phoneme::class, 'reflexes', 'reflex_id', 'phoneme_id')->withPivot('environment');
-    }
-
-    public function children(): Relation
-    {
-        return $this->belongsToMany(Phoneme::class, 'reflexes', 'phoneme_id', 'reflex_id')->withPivot('environment');
     }
 
     protected static function booted()

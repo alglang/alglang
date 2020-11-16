@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Phoneme;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -13,11 +14,11 @@ class PhonemeTableTest extends TestCase
         $default = [
             'col' => (object)['name' => ''],
             'row' => (object)['name' => ''],
-            'formatted_shape' => '',
+            'shape' => '',
             'url' => ''
         ];
 
-        return (object)array_merge($default, $data);
+        return new Phoneme(array_merge($default, $data));
     }
 
     /** @test */
@@ -179,22 +180,22 @@ class PhonemeTableTest extends TestCase
             $this->itemFactory([
                 'col' => (object)['name' => 'Col1'],
                 'row' => (object)['name' => 'Row1'],
-                'formatted_shape' => 'Item1'
+                'shape' => 'Item1'
             ]),
             $this->itemFactory([
                 'col' => (object)['name' => 'Col1'],
                 'row' => (object)['name' => 'Row2'],
-                'formatted_shape' => 'Item2',
+                'shape' => 'Item2',
             ]),
             $this->itemFactory([
                 'col' => (object)['name' => 'Col1'],
                 'row' => (object)['name' => 'Row2'],
-                'formatted_shape' => 'Item3',
+                'shape' => 'Item3',
             ]),
             $this->itemFactory([
                 'col' => (object)['name' => 'Col3'],
                 'row' => (object)['name' => 'Row3'],
-                'formatted_shape' => 'Item4',
+                'shape' => 'Item4',
             ])
         ]);
 
