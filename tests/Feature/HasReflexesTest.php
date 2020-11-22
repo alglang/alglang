@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class HasReflexesTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function a_phoneme_has_parents_through_reflexes()
     {
