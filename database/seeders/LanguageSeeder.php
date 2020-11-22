@@ -64,6 +64,16 @@ class LanguageSeeder extends Seeder
                 'reconstructed' => false,
                 'position' => null,
                 'group_name' => 'Arapahoan'
+            ],
+            [
+                'name' => 'Cheyenne',
+                'alternate_names' => '["Tsėhésenėstsestȯtse"]',
+                'parent_code' => 'PA',
+                'code' => 'Ch',
+                'iso' => 'chy',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Plains'
             ]
         ]);
     }

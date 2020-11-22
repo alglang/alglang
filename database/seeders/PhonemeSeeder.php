@@ -112,6 +112,8 @@ class PhonemeSeeder extends Seeder
             ['id' => 29, 'first_segment_id' => 15, 'second_segment_id' => 14],  // thk
             ['id' => 30, 'first_segment_id' => 15, 'second_segment_id' => 1],  // thp
             ['id' => 31, 'first_segment_id' => 24, 'second_segment_id' => 14],  // rk
+
+            ['id' => 32, 'first_segment_id' => 28, 'second_segment_id' => 29],  // Ch hp
         ]);
 
         DB::table('phonemes')->insert([
@@ -402,6 +404,33 @@ class PhonemeSeeder extends Seeder
                 'language_code' => 'Ar',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 9
+            ],
+            [
+                'id' => 28,
+                'shape' => 'h',
+                'ipa' => 'h',
+                'slug' => 'h',
+                'language_code' => 'Ch',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 8,
+            ],
+            [
+                'id' => 29,
+                'shape' => 'p',
+                'ipa' => 'p',
+                'slug' => 'p',
+                'language_code' => 'Ch',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 1
+            ],
+            [
+                'id' => 30,
+                'shape' => 'hp',
+                'ipa' => 'hp',
+                'slug' => 'hp',
+                'language_code' => 'Ch',
+                'featureable_type' => ClusterFeatureSet::class,
+                'featureable_id' => 32
             ]
         ]);
 
@@ -674,6 +703,27 @@ class PhonemeSeeder extends Seeder
             [
                 'phoneme_id' => 26,  // PAGV k
                 'reflex_id' => 27    // Ar č
+            ],
+
+            [
+                'phoneme_id' => 1,  // PA p
+                'reflex_id' => 29    // Ch p
+            ],
+            [
+                'phoneme_id' => 18,  // PA h
+                'reflex_id' => 28    // Ch h
+            ],
+            [
+                'phoneme_id' => 19,  // PA mp
+                'reflex_id' => 32    // Ch hp
+            ],
+            [
+                'phoneme_id' => 9,  // PA hp
+                'reflex_id' => 32    // Ch hp
+            ],
+            [
+                'phoneme_id' => 1,  // PA p
+                'reflex_id' => 30    // Ch hp
             ]
         ]);
     }

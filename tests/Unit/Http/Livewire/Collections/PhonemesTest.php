@@ -319,6 +319,21 @@ class PhonemesTest extends TestCase
     }
 
     /** @test */
+    public function consonant_reflexes_can_be_clusters()
+    {
+        $language = Language::factory()->create();
+        $cluster = Phoneme::factory()->cluster()->create(['language_code' => $language, 'shape' => 'childx']);
+        Reflex::factory()->create([
+            'phoneme_id' => $this->paConsonant,
+            'reflex_id' => $cluster
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', 'childx'], false);
+    }
+
+    /** @test */
     public function it_does_not_show_proto_algonquian_vowel_reflexes_if_it_has_none()
     {
         $language = Language::factory()->create();
