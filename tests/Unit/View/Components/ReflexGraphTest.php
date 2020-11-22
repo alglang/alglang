@@ -11,7 +11,9 @@ class ReflexGraphTest extends TestCase
     /** @test */
     public function it_has_the_root_class_when_the_parent_and_child_flags_are_unspecified()
     {
-        $view = $this->blade('<x-reflex-graph />');
+        $phoneme = new Phoneme(['shape' => '']);
+
+        $view = $this->blade('<x-reflex-graph :phoneme="$phoneme" />', compact('phoneme'));
 
         $view->assertSee('root');
     }
@@ -34,6 +36,7 @@ class ReflexGraphTest extends TestCase
     public function it_shows_its_phonemes_environment_if_it_has_one()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'pivot' => new Reflex(['environment' => 'whenever'])
         ]);
 
@@ -46,6 +49,7 @@ class ReflexGraphTest extends TestCase
     public function it_shows_its_phonemes_parents_if_its_parents_flag_is_unspecified()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'parents' => collect([
                 new Phoneme([
                     'shape' => 'theparent',
@@ -66,6 +70,7 @@ class ReflexGraphTest extends TestCase
     public function it_does_not_show_its_phonemes_parents_if_its_parents_flag_is_false()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'parents' => collect([
                 new Phoneme(['shape' => 'theparent'])
             ])
@@ -81,8 +86,10 @@ class ReflexGraphTest extends TestCase
     public function it_does_not_show_its_childrens_parents_if_its_parents_flag_is_false()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'children' => collect([
                 new Phoneme([
+                    'shape' => '',
                     'parents' => collect([
                         new Phoneme(['shape' => 'theparent'])
                     ])
@@ -99,6 +106,7 @@ class ReflexGraphTest extends TestCase
     public function it_shows_its_phonemes_children_if_its_children_flag_is_unspecified()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'children' => collect([
                 new Phoneme([
                     'shape' => 'thechild',
@@ -119,6 +127,7 @@ class ReflexGraphTest extends TestCase
     public function it_does_not_show_its_phonemes_children_if_its_children_flag_is_false()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'children' => collect([
                 new Phoneme(['shape' => 'thechild'])
             ])
@@ -134,6 +143,7 @@ class ReflexGraphTest extends TestCase
     public function it_does_not_show_its_parents_children_if_its_children_flag_is_false()
     {
         $phoneme = new Phoneme([
+            'shape' => '',
             'parents' => collect([
                 new Phoneme([
                     'shape' => 'theparent',

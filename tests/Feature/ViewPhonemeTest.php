@@ -136,7 +136,7 @@ class ViewPhonemeTest extends TestCase
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertSeeInOrder(['IPA transcription', "/<i>xyz</i>/"], false);
+        $response->assertSeeInOrder(['IPA transcription', "/xyz/"], false);
     }
 
     /** @test */
