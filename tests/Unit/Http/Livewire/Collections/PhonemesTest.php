@@ -331,6 +331,21 @@ class PhonemesTest extends TestCase
     }
 
     /** @test */
+    public function it_links_to_reflex_pages()
+    {
+        $language = Language::factory()->create();
+        $phoneme = Phoneme::factory()->vowel()->create(['language_code' => $language]);
+        $reflex = Reflex::factory()->create([
+            'phoneme_id' => $this->paVowel,
+            'reflex_id' => $phoneme
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSee($reflex->url);
+    }
+
+    /** @test */
     public function it_shows_proto_algonquian_consonant_reflexes()
     {
         $language = Language::factory()->create();

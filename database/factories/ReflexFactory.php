@@ -23,6 +23,7 @@ class ReflexFactory extends Factory
     public function definition()
     {
         return [
+            'id' => $this->faker->unique()->randomDigit,
             'phoneme_id' => Phoneme::factory(),
             'reflex_id' => Phoneme::factory()
         ];

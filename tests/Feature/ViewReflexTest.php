@@ -22,7 +22,7 @@ class ViewReflexTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('reflexes.show');
-        $response->assertViewHas('reflex', $reflex);
+        $this->assertEquals($reflex->id, $response['reflex']->id);
     }
 
     /** @test */

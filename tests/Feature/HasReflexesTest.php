@@ -28,6 +28,7 @@ class HasReflexesTest extends TestCase
         $this->assertCount(1, $parents);
         $this->assertEquals($parent->id, $parents[0]->id);
         $this->assertEquals('wherever', $parents[0]->pivot->environment);
+        $this->assertEquals($reflex->url, $parents[0]->pivot->url);
     }
 
     /** @test */
@@ -46,6 +47,7 @@ class HasReflexesTest extends TestCase
         $this->assertCount(1, $children);
         $this->assertEquals($child->id, $children[0]->id);
         $this->assertEquals('wherever', $children[0]->pivot->environment);
+        $this->assertEquals($reflex->url, $children[0]->pivot->url);
     }
 
     /** @test */

@@ -5,15 +5,16 @@ namespace App\Models;
 use App\Presenters\ReflexPresenter;
 use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Reflex extends Model
+class Reflex extends Pivot
 {
     use HasFactory;
     use Sourceable;
     use ReflexPresenter;
 
+    public $table = 'reflexes';
     protected $guarded = [];
 
     public function getUrlAttribute(): string

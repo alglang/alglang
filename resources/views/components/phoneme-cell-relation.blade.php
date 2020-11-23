@@ -16,7 +16,11 @@
                 <x-preview-link :model="$phoneme">
                     {!! $phoneme->formatted_shape !!}
                 </x-preview-link>
-                &gt;
+
+                <x-preview-link :model="$child->pivot">
+                    &gt;
+                </x-preview-link>
+
                 <x-preview-link :model="$child">
                     {!! $child->formatted_shape !!}
                 </x-preview-link>

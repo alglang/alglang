@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Reflex;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 
@@ -10,12 +11,14 @@ trait HasReflexes
     public function parents(): Relation
     {
         return $this->belongsToMany(self::class, 'reflexes', 'reflex_id', 'phoneme_id')
+                    ->using(Reflex::class)
                     ->withPivot('environment');
     }
 
     public function children(): Relation
     {
         return $this->belongsToMany(self::class, 'reflexes', 'phoneme_id', 'reflex_id')
+                    ->using(Reflex::class)
                     ->withPivot('environment');
     }
 

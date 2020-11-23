@@ -150,7 +150,7 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
 
     public function reflexes(): Relation
     {
-        return $this->morphedByMany(Reflex::class, 'sourceable');
+        return $this->morphedByMany(Reflex::class, 'sourceable', 'sourceables');
     }
 
     /*
