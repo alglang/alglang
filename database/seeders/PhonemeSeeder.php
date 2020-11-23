@@ -52,191 +52,168 @@ class PhonemeSeeder extends Seeder
         ]);
 
         DB::table('consonant_feature_sets')->insert([
-            ['id' => 1,  'place_name' => 'labial',          'manner_name' => 'stop'],
-            ['id' => 2,  'place_name' => 'glottal',         'manner_name' => 'stop'],
-            ['id' => 3,  'place_name' => 'dental/alveolar', 'manner_name' => 'stop'],
-            ['id' => 4,  'place_name' => 'velar',           'manner_name' => 'stop'],
-            ['id' => 5,  'place_name' => 'interdental',     'manner_name' => 'fricative'],
-            ['id' => 6,  'place_name' => 'dental/alveolar', 'manner_name' => 'fricative'],
-            ['id' => 7,  'place_name' => 'alveopalatal',    'manner_name' => 'fricative'],
-            ['id' => 8,  'place_name' => 'glottal',         'manner_name' => 'fricative'],
-            ['id' => 9,  'place_name' => 'alveopalatal',    'manner_name' => 'affricate'],
-            ['id' => 10, 'place_name' => 'labial',          'manner_name' => 'nasal'],
-            ['id' => 11, 'place_name' => 'dental/alveolar', 'manner_name' => 'nasal'],
-            ['id' => 12, 'place_name' => 'labial',          'manner_name' => 'glide'],
-            ['id' => 13, 'place_name' => 'palatal',         'manner_name' => 'glide'],
-            ['id' => 14, 'place_name' => 'dental/alveolar', 'manner_name' => 'liquid'],
-            ['id' => 15, 'place_name' => null,              'manner_name' => 'nasal']
+            ['id' => 1,  'shape' => 'p',  'place_name' => 'labial',          'manner_name' => 'stop'],
+            ['id' => 2,  'shape' => 'ʔ',  'place_name' => 'glottal',         'manner_name' => 'stop'],
+            ['id' => 3,  'shape' => 't',  'place_name' => 'dental/alveolar', 'manner_name' => 'stop'],
+            ['id' => 4,  'shape' => 'k',  'place_name' => 'velar',           'manner_name' => 'stop'],
+            ['id' => 5,  'shape' => 'θ',  'place_name' => 'interdental',     'manner_name' => 'fricative'],
+            ['id' => 6,  'shape' => 's',  'place_name' => 'dental/alveolar', 'manner_name' => 'fricative'],
+            ['id' => 7,  'shape' => 'ʃ',  'place_name' => 'alveopalatal',    'manner_name' => 'fricative'],
+            ['id' => 8,  'shape' => 'h',  'place_name' => 'glottal',         'manner_name' => 'fricative'],
+            ['id' => 9,  'shape' => 'tʃ', 'place_name' => 'alveopalatal',    'manner_name' => 'affricate'],
+            ['id' => 10, 'shape' => 'm',  'place_name' => 'labial',          'manner_name' => 'nasal'],
+            ['id' => 11, 'shape' => 'n',  'place_name' => 'dental/alveolar', 'manner_name' => 'nasal'],
+            ['id' => 12, 'shape' => 'w',  'place_name' => 'labial',          'manner_name' => 'glide'],
+            ['id' => 13, 'shape' => 'y',  'place_name' => 'palatal',         'manner_name' => 'glide'],
+            ['id' => 14, 'shape' => 'r',  'place_name' => 'dental/alveolar', 'manner_name' => 'liquid'],
+            ['id' => 15, 'shape' => 'N',  'place_name' => null,              'manner_name' => 'nasal'],
+            ['id' => 16, 'shape' => 'x',  'place_name' => 'velar',           'manner_name' => 'fricative']
         ]);
 
         DB::table('vowel_feature_sets')->insert([
-            ['id' => 1, 'height_name' => 'high', 'backness_name' => 'front', 'length_name' => 'short'],
-            ['id' => 2, 'height_name' => 'low',  'backness_name' => 'front', 'length_name' => 'short'],
-            ['id' => 3, 'height_name' => 'high', 'backness_name' => 'back',  'length_name' => 'short'],
-            ['id' => 4, 'height_name' => 'low',  'backness_name' => 'back',  'length_name' => 'short'],
-            ['id' => 5, 'height_name' => 'high', 'backness_name' => 'front', 'length_name' => 'long'],
-            ['id' => 6, 'height_name' => 'low',  'backness_name' => 'front', 'length_name' => 'long'],
-            ['id' => 7, 'height_name' => 'high', 'backness_name' => 'back',  'length_name' => 'long'],
-            ['id' => 8, 'height_name' => 'low',  'backness_name' => 'back',  'length_name' => 'long'],
+            ['id' => 1, 'shape' => 'i',  'height_name' => 'high', 'backness_name' => 'front', 'length_name' => 'short'],
+            ['id' => 2, 'shape' => 'e',  'height_name' => 'low',  'backness_name' => 'front', 'length_name' => 'short'],
+            ['id' => 3, 'shape' => 'u',  'height_name' => 'high', 'backness_name' => 'back',  'length_name' => 'short'],
+            ['id' => 4, 'shape' => 'o',  'height_name' => 'low',  'backness_name' => 'back',  'length_name' => 'short'],
+            ['id' => 5, 'shape' => 'i:', 'height_name' => 'high', 'backness_name' => 'front', 'length_name' => 'long'],
+            ['id' => 6, 'shape' => 'e:', 'height_name' => 'low',  'backness_name' => 'front', 'length_name' => 'long'],
+            ['id' => 7, 'shape' => 'u:', 'height_name' => 'high', 'backness_name' => 'back',  'length_name' => 'long'],
+            ['id' => 8, 'shape' => 'o:', 'height_name' => 'low',  'backness_name' => 'back',  'length_name' => 'long'],
         ]);
 
         DB::table('cluster_feature_sets')->insert([
             ['id' => 1,  'first_segment_id' => 2,  'second_segment_id' => 1],  // ʔp
-            ['id' => 2,  'first_segment_id' => 2,  'second_segment_id' => 14],  // ʔk
-            ['id' => 3,  'first_segment_id' => 2,  'second_segment_id' => 13],  // ʔt
-            ['id' => 4,  'first_segment_id' => 2,  'second_segment_id' => 19],  // ʔc
-            ['id' => 5,  'first_segment_id' => 2,  'second_segment_id' => 16],  // ʔs
-            ['id' => 6,  'first_segment_id' => 2,  'second_segment_id' => 17],  // ʔsh
-            ['id' => 7,  'first_segment_id' => 2,  'second_segment_id' => 15],  // ʔth
-            ['id' => 8,  'first_segment_id' => 2,  'second_segment_id' => 24],  // ʔr
-            ['id' => 9,  'first_segment_id' => 18, 'second_segment_id' => 14],  // hk
-            ['id' => 10, 'first_segment_id' => 18, 'second_segment_id' => 1],  // hp
-            ['id' => 11, 'first_segment_id' => 18, 'second_segment_id' => 13],  // ht
-            ['id' => 12, 'first_segment_id' => 18, 'second_segment_id' => 19],  // hc
-            ['id' => 13, 'first_segment_id' => 18, 'second_segment_id' => 16],  // hs
-            ['id' => 14, 'first_segment_id' => 18, 'second_segment_id' => 17],  // hsh
-            ['id' => 15, 'first_segment_id' => 18, 'second_segment_id' => 15],  // hth
-            ['id' => 16, 'first_segment_id' => 18, 'second_segment_id' => 24],  // hr
-            ['id' => 17, 'first_segment_id' => 18, 'second_segment_id' => 20],  // Hm
-            ['id' => 18, 'first_segment_id' => 25, 'second_segment_id' => 14],  // Nk
-            ['id' => 19, 'first_segment_id' => 25, 'second_segment_id' => 1],  // Np
-            ['id' => 20, 'first_segment_id' => 25, 'second_segment_id' => 13],  // Nt
-            ['id' => 21, 'first_segment_id' => 25, 'second_segment_id' => 19],  // ʔc
-            ['id' => 22, 'first_segment_id' => 25, 'second_segment_id' => 16],  // ʔs
-            ['id' => 23, 'first_segment_id' => 25, 'second_segment_id' => 17],  // ʔsh
-            ['id' => 24, 'first_segment_id' => 25, 'second_segment_id' => 15],  // ʔth
-            ['id' => 25, 'first_segment_id' => 25, 'second_segment_id' => 24],  // ʔr
-            ['id' => 26, 'first_segment_id' => 17, 'second_segment_id' => 14],  // shk
-            ['id' => 27, 'first_segment_id' => 17, 'second_segment_id' => 1],  // shp
-            ['id' => 28, 'first_segment_id' => 17, 'second_segment_id' => 13],  // sht
-            ['id' => 29, 'first_segment_id' => 15, 'second_segment_id' => 14],  // thk
-            ['id' => 30, 'first_segment_id' => 15, 'second_segment_id' => 1],  // thp
-            ['id' => 31, 'first_segment_id' => 24, 'second_segment_id' => 14],  // rk
-
-            ['id' => 32, 'first_segment_id' => 28, 'second_segment_id' => 29],  // Ch hp
+            ['id' => 2,  'first_segment_id' => 2,  'second_segment_id' => 4],  // ʔk
+            ['id' => 3,  'first_segment_id' => 2,  'second_segment_id' => 3],  // ʔt
+            ['id' => 4,  'first_segment_id' => 2,  'second_segment_id' => 9],  // ʔc
+            ['id' => 5,  'first_segment_id' => 2,  'second_segment_id' => 6],  // ʔs
+            ['id' => 6,  'first_segment_id' => 2,  'second_segment_id' => 7],  // ʔsh
+            ['id' => 7,  'first_segment_id' => 2,  'second_segment_id' => 5],  // ʔth
+            ['id' => 8,  'first_segment_id' => 2,  'second_segment_id' => 14],  // ʔr
+            ['id' => 9,  'first_segment_id' => 8,  'second_segment_id' => 4],  // hk
+            ['id' => 10, 'first_segment_id' => 8,  'second_segment_id' => 1],  // hp
+            ['id' => 11, 'first_segment_id' => 8,  'second_segment_id' => 3],  // ht
+            ['id' => 12, 'first_segment_id' => 8,  'second_segment_id' => 9],  // hc
+            ['id' => 13, 'first_segment_id' => 8,  'second_segment_id' => 6],  // hs
+            ['id' => 14, 'first_segment_id' => 8,  'second_segment_id' => 7],  // hsh
+            ['id' => 15, 'first_segment_id' => 8,  'second_segment_id' => 5],  // hth
+            ['id' => 16, 'first_segment_id' => 8,  'second_segment_id' => 14],  // hr
+            ['id' => 17, 'first_segment_id' => 8,  'second_segment_id' => 10],  // Hm
+            ['id' => 18, 'first_segment_id' => 15, 'second_segment_id' => 4],  // Nk
+            ['id' => 19, 'first_segment_id' => 15, 'second_segment_id' => 1],  // Np
+            ['id' => 20, 'first_segment_id' => 15, 'second_segment_id' => 3],  // Nt
+            ['id' => 21, 'first_segment_id' => 15, 'second_segment_id' => 9],  // Nc
+            ['id' => 22, 'first_segment_id' => 15, 'second_segment_id' => 6],  // Ns
+            ['id' => 23, 'first_segment_id' => 15, 'second_segment_id' => 7],  // Nsh
+            ['id' => 24, 'first_segment_id' => 15, 'second_segment_id' => 5],  // Nth
+            ['id' => 25, 'first_segment_id' => 15, 'second_segment_id' => 14],  // Nr
+            ['id' => 26, 'first_segment_id' => 7,  'second_segment_id' => 4],  // shk
+            ['id' => 27, 'first_segment_id' => 7,  'second_segment_id' => 1],  // shp
+            ['id' => 28, 'first_segment_id' => 7,  'second_segment_id' => 3],  // sht
+            ['id' => 29, 'first_segment_id' => 5,  'second_segment_id' => 4],  // thk
+            ['id' => 30, 'first_segment_id' => 5,  'second_segment_id' => 1],  // thp
+            ['id' => 31, 'first_segment_id' => 14, 'second_segment_id' => 4],  // rk
         ]);
 
         DB::table('phonemes')->insert([
             [
                 'id' => 2,
                 'shape' => 'ʔ',
-                'ipa' => 'ʔ',
                 'slug' => 'ʔ',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 2,
-                'is_marginal' => true,
-                'order_key' => 1
+                'is_marginal' => true
             ],
             [
                 'id' => 18,
                 'shape' => 'h',
-                'ipa' => 'h',
                 'slug' => 'h',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 8,
-                'is_marginal' => false,
-                'order_key' => 2
+                'is_marginal' => false
             ],
             [
                 'id' => 14,
                 'shape' => 'k',
-                'ipa' => 'k',
                 'slug' => 'k',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 4,
-                'is_marginal' => false,
-                'order_key' => 4
+                'is_marginal' => false
             ],
             [
                 'id' => 1,
                 'shape' => 'p',
-                'ipa' => 'p',
                 'slug' => 'p',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 1,
-                'is_marginal' => false,
-                'order_key' => 5
+                'is_marginal' => false
             ],
             [
                 'id' => 13,
                 'shape' => 't',
-                'ipa' => 't',
                 'slug' => 't',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 3,
-                'is_marginal' => false,
-                'order_key' => 6
+                'is_marginal' => false
             ],
             [
                 'id' => 19,
                 'shape' => 'č',
-                'ipa' => 'tʃ',
                 'slug' => 'č',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 9,
-                'is_marginal' => false,
-                'order_key' => 7
+                'is_marginal' => false
             ],
             [
                 'id' => 16,
                 'shape' => 's',
-                'ipa' => 's',
                 'slug' => 's',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 6,
-                'is_marginal' => false,
-                'order_key' => 8
+                'is_marginal' => false
             ],
             [
                 'id' => 17,
                 'shape' => 'š',
-                'ipa' => 'ʃ',
                 'slug' => 'š',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 7,
-                'is_marginal' => false,
-                'order_key' => 9
+                'is_marginal' => false
             ],
             [
                 'id' => 15,
                 'shape' => 'θ',
-                'ipa' => 'θ',
                 'slug' => 'θ',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 5,
-                'is_marginal' => false,
-                'order_key' => 10
+                'is_marginal' => false
             ],
             [
                 'id' => 24,
                 'shape' => 'r',
-                'ipa' => 'r',
                 'slug' => 'r',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 14,
-                'is_marginal' => false,
-                'order_key' => 11
+                'is_marginal' => false
             ],
             [
                 'id' => 20,
                 'shape' => 'm',
-                'ipa' => 'm',
                 'slug' => 'm',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 10,
-                'is_marginal' => false,
-                'order_key' => 12
+                'is_marginal' => false
             ]
         ]);
 
@@ -244,7 +221,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 3,
                 'shape' => 'i',
-                'ipa' => 'i',
                 'slug' => 'i',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -254,7 +230,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 4,
                 'shape' => 'xp',
-                'ipa' => 'ʔp',
                 'slug' => 'xp',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -264,7 +239,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 5,
                 'shape' => 'p',
-                'ipa' => 'p',
                 'slug' => 'p',
                 'language_code' => 'C',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -274,7 +248,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 6,
                 'shape' => 'e',
-                'ipa' => 'e',
                 'slug' => 'e',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -284,7 +257,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 7,
                 'shape' => 'o',
-                'ipa' => 'o',
                 'slug' => 'o',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -294,7 +266,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 8,
                 'shape' => 'a',
-                'ipa' => 'a',
                 'slug' => 'a',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -304,7 +275,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 9,
                 'shape' => 'i·',
-                'ipa' => 'iː',
                 'slug' => 'i·',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -314,7 +284,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 10,
                 'shape' => 'e·',
-                'ipa' => 'eː',
                 'slug' => 'e·',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -324,7 +293,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 11,
                 'shape' => 'o·',
-                'ipa' => 'oː',
                 'slug' => 'o·',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -334,7 +302,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 12,
                 'shape' => 'a·',
-                'ipa' => 'aː',
                 'slug' => 'a·',
                 'language_code' => 'PA',
                 'featureable_type' => VowelFeatureSet::class,
@@ -344,7 +311,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 21,
                 'shape' => 'n',
-                'ipa' => 'n',
                 'slug' => 'n',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -354,7 +320,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 22,
                 'shape' => 'w',
-                'ipa' => 'w',
                 'slug' => 'w',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -364,7 +329,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 23,
                 'shape' => 'y',
-                'ipa' => 'j',
                 'slug' => 'y',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -381,8 +345,7 @@ class PhonemeSeeder extends Seeder
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
                 'featureable_id' => 15,
-                'is_archiphoneme' => true,
-                'order_key' => 3
+                'is_archiphoneme' => true
             ]
         ]);
 
@@ -390,7 +353,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 26,
                 'shape' => 'k',
-                'ipa' => 'k',
                 'slug' => 'k',
                 'language_code' => 'PAGV',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -399,7 +361,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 27,
                 'shape' => 'č',
-                'ipa' => 'tʃ',
                 'slug' => 'č',
                 'language_code' => 'Ar',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -408,7 +369,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 28,
                 'shape' => 'h',
-                'ipa' => 'h',
                 'slug' => 'h',
                 'language_code' => 'Ch',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -417,7 +377,6 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 29,
                 'shape' => 'p',
-                'ipa' => 'p',
                 'slug' => 'p',
                 'language_code' => 'Ch',
                 'featureable_type' => ConsonantFeatureSet::class,
@@ -426,11 +385,10 @@ class PhonemeSeeder extends Seeder
             [
                 'id' => 30,
                 'shape' => 'hp',
-                'ipa' => 'hp',
                 'slug' => 'hp',
                 'language_code' => 'Ch',
                 'featureable_type' => ClusterFeatureSet::class,
-                'featureable_id' => 32
+                'featureable_id' => 10
             ]
         ]);
 
@@ -438,7 +396,6 @@ class PhonemeSeeder extends Seeder
         DB::table('phonemes')->insert([
             [
                 'shape' => 'xk',
-                'ipa' => 'ʔk',
                 'slug' => 'xk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -446,7 +403,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔt',
-                'ipa' => 'ʔt',
                 'slug' => 'ʔt',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -454,7 +410,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔč',
-                'ipa' => 'ʔtʃ',
                 'slug' => 'ʔč',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -462,7 +417,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔs',
-                'ipa' => 'ʔs',
                 'slug' => 'ʔs',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -470,7 +424,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔš',
-                'ipa' => 'ʔʃ',
                 'slug' => 'ʔš',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -478,7 +431,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔθ',
-                'ipa' => 'ʔθ',
                 'slug' => 'ʔθ',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -486,7 +438,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ʔr',
-                'ipa' => 'ʔr',
                 'slug' => 'ʔr',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -494,7 +445,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hp',
-                'ipa' => 'hp',
                 'slug' => 'hp',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -502,7 +452,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hk',
-                'ipa' => 'hk',
                 'slug' => 'hk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -510,7 +459,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ht',
-                'ipa' => 'ht',
                 'slug' => 'ht',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -518,7 +466,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hč',
-                'ipa' => 'htʃ',
                 'slug' => 'hč',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -526,7 +473,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hs',
-                'ipa' => 'hs',
                 'slug' => 'hs',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -534,7 +480,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hš',
-                'ipa' => 'hʃ',
                 'slug' => 'hš',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -542,7 +487,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'hθ',
-                'ipa' => 'hθ',
                 'slug' => 'hθ',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -550,7 +494,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'Hm',
-                'ipa' => 'hm',
                 'slug' => 'Hm',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -558,7 +501,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nk',
-                'ipa' => 'nk',
                 'slug' => 'nk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -566,7 +508,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'mp',
-                'ipa' => 'mp',
                 'slug' => 'mp',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -574,7 +515,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nt',
-                'ipa' => 'nt',
                 'slug' => 'nt',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -582,7 +522,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nč',
-                'ipa' => 'ntʃ',
                 'slug' => 'nč',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -590,7 +529,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'ns',
-                'ipa' => 'ns',
                 'slug' => 'ns',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -598,7 +536,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nš',
-                'ipa' => 'nʃ',
                 'slug' => 'nš',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -606,7 +543,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nθ',
-                'ipa' => 'nθ',
                 'slug' => 'nθ',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -614,7 +550,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'nr',
-                'ipa' => 'nr',
                 'slug' => 'nr',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -622,7 +557,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'šk',
-                'ipa' => 'ʃk',
                 'slug' => 'šk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -630,7 +564,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'šp',
-                'ipa' => 'ʃp',
                 'slug' => 'šp',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -638,7 +571,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'θk',
-                'ipa' => 'θk',
                 'slug' => 'θk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -646,7 +578,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'θp',
-                'ipa' => 'θp',
                 'slug' => 'θp',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -654,7 +585,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'rk',
-                'ipa' => 'rk',
                 'slug' => 'rk',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -665,7 +595,6 @@ class PhonemeSeeder extends Seeder
         DB::table('phonemes')->insert([
             [
                 'shape' => 'hr',
-                'ipa' => 'hr',
                 'slug' => 'hr',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,
@@ -674,7 +603,6 @@ class PhonemeSeeder extends Seeder
             ],
             [
                 'shape' => 'št',
-                'ipa' => 'ʃt',
                 'slug' => 'št',
                 'language_code' => 'PA',
                 'featureable_type' => ClusterFeatureSet::class,

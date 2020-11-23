@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\ConsonantFeatureSet;
 use App\Models\ConsonantManner;
 use App\Models\ConsonantPlace;
 use App\Models\Language;
@@ -120,7 +121,7 @@ class ViewPhonemeTest extends TestCase
     /** @test */
     public function it_does_not_show_an_orthographic_transcription_if_it_has_no_shape()
     {
-        $phoneme = Phoneme::factory()->create(['shape' => null, 'ipa' => 'xyz']);
+        $phoneme = Phoneme::factory()->create(['shape' => null]);
 
         $response = $this->get($phoneme->url);
 
@@ -129,25 +130,14 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_its_ipa_shape_if_it_has_one()
+    public function it_shows_its_ipa_shape()
     {
-        $phoneme = Phoneme::factory()->create(['ipa' => 'xyz']);
+        $phoneme = Phoneme::factory()->consonant(['shape' => 'xyz'])->create();
 
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
         $response->assertSeeInOrder(['IPA transcription', "/xyz/"], false);
-    }
-
-    /** @test */
-    public function it_does_not_show_an_ipa_transcription_if_it_does_not_have_one()
-    {
-        $phoneme = Phoneme::factory()->create(['shape' => 'xyz', 'ipa' => null]);
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('IPA transcription');
     }
 
     /** @test */
@@ -253,8 +243,8 @@ class ViewPhonemeTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $phoneme = Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory()->consonant()->create(['shape' => 'x']),
-            'second_segment_id' => Phoneme::factory()->consonant()->create(['shape' => 'y'])
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'x']),
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'y'])
         ])->create();
 
         $response = $this->get($phoneme->url);

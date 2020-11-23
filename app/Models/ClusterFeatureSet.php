@@ -10,15 +10,22 @@ class ClusterFeatureSet extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     protected $with = ['firstSegment', 'secondSegment'];
+
+    public function getShapeAttribute(): string
+    {
+        return $this->firstSegment->shape . $this->secondSegment->shape;
+    }
 
     public function firstSegment(): Relation
     {
-        return $this->belongsTo(Phoneme::class);
+        return $this->belongsTo(ConsonantFeatureSet::class);
     }
 
     public function secondSegment(): Relation
     {
-        return $this->belongsTo(Phoneme::class);
+        return $this->belongsTo(ConsonantFeatureSet::class);
     }
 }

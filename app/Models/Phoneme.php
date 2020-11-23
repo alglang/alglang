@@ -20,6 +20,19 @@ class Phoneme extends Model
 
     protected $guarded = [];
 
+    public function getIpaAttribute(): string
+    {
+        $featureSet = $this->features;
+
+        if ($featureSet instanceof ConsonantFeatureSet
+                || $featureSet instanceof VowelFeatureSet
+                || $featureSet instanceof ClusterFeatureSet) {
+            return $featureSet->shape;
+        }
+
+        return '';
+    }
+
     public function getSlugAttribute(?string $slug): string
     {
         if ($slug) {

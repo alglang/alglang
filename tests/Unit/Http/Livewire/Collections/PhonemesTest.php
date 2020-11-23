@@ -237,45 +237,72 @@ class PhonemesTest extends TestCase
         $view->assertSeeInOrder(['Archiphonemes', 'ARCH1', 'ARCH2']);
     }
 
-    /**
-     * @test
-     * @dataProvider archiphonemeFeaturesProvider
-     */
-    public function it_shows_archiphoneme_features($factory, string $target)
+    /** @test */
+    public function it_shows_consonant_place_archiphoneme_features()
     {
         $language = Language::factory()->create();
 
-        $factory->create([
-            'shape' => 'ARCHY',
-            'language_code' => $language,
-            'is_archiphoneme' => true
-        ]);
+        Phoneme::factory()->consonant(['manner_name' => null, 'place_name' => 'FOO_PLACE'])
+                          ->create([
+                              'shape' => 'ARCHY',
+                              'language_code' => $language,
+                              'is_archiphoneme' => true
+                          ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
-        $view->assertSeeInOrder(['Archiphonemes', $target, 'ARCHY']);
+        $view->assertSeeInOrder(['Archiphonemes', 'FOO_PLACE', 'ARCHY']);
     }
 
-    public function archiphonemeFeaturesProvider(): array
+    /** @test */
+    public function it_shows_consonant_manner_archiphoneme_features()
     {
-        return [
-            [
-                Phoneme::factory()->consonant(['manner_name' => null, 'place_name' => 'FOO_PLACE']),
-                'FOO_PLACE'
-            ],
-            [
-                Phoneme::factory()->consonant(['manner_name' => 'FOO_MANNER', 'place_name' => null]),
-                'FOO_MANNER'
-            ],
-            [
-                Phoneme::factory()->vowel(['backness_name' => null, 'height_name' => 'FOO_HEIGHT']),
-                'FOO_HEIGHT'
-            ],
-            [
-                Phoneme::factory()->vowel(['backness_name' => 'FOO_BACKNESS', 'height_name' => null]),
-                'FOO_BACKNESS'
-            ]
-        ];
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->consonant(['manner_name' => 'FOO_MANNER', 'place_name' => null])
+                          ->create([
+                              'shape' => 'ARCHY',
+                              'language_code' => $language,
+                              'is_archiphoneme' => true
+                          ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Archiphonemes', 'FOO_MANNER', 'ARCHY']);
+    }
+
+    /** @test */
+    public function it_shows_vowel_height_archiphoneme_features()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->vowel(['backness_name' => null, 'height_name' => 'FOO_HEIGHT'])
+                          ->create([
+                              'shape' => 'ARCHY',
+                              'language_code' => $language,
+                              'is_archiphoneme' => true
+                          ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Archiphonemes', 'FOO_HEIGHT', 'ARCHY']);
+    }
+
+    /** @test */
+    public function it_shows_vowel_backness_archiphoneme_features()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->vowel(['backness_name' => 'FOO_BACKNESS', 'height_name' => null])
+                          ->create([
+                              'shape' => 'ARCHY',
+                              'language_code' => $language,
+                              'is_archiphoneme' => true
+                          ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Archiphonemes', 'FOO_BACKNESS', 'ARCHY']);
     }
 
     /** @test */

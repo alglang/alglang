@@ -26,6 +26,7 @@ class VowelFeatureSetFactory extends Factory
     public function definition()
     {
         return [
+            'shape' => $this->faker->unique()->lexify('?????'),
             'height_name' => VowelHeight::factory(),
             'backness_name' => VowelBackness::factory(),
             'length_name' => VowelLength::factory()

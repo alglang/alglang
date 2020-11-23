@@ -15,6 +15,7 @@ class CreateVowelFeatureSetsTable extends Migration
     {
         Schema::create('vowel_feature_sets', function (Blueprint $table) {
             $table->id();
+            $table->string('shape');
             $table->string('height_name')->nullable();
             $table->string('backness_name')->nullable();
             $table->string('length_name')->nullable();

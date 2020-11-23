@@ -15,8 +15,10 @@ class CreateConsonantFeatureSetsTable extends Migration
     {
         Schema::create('consonant_feature_sets', function (Blueprint $table) {
             $table->id();
+            $table->string('shape');
             $table->string('place_name')->nullable();
             $table->string('manner_name')->nullable();
+            $table->integer('order_key')->default(-1);
             $table->timestamps();
         });
     }

@@ -25,6 +25,7 @@ class ConsonantFeatureSetFactory extends Factory
     public function definition()
     {
         return [
+            'shape' => $this->faker->unique()->lexify('?????'),
             'place_name' => ConsonantPlace::factory(),
             'manner_name' => ConsonantManner::factory()
         ];

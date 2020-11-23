@@ -10,6 +10,8 @@ class ConsonantFeatureSet extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function place(): Relation
     {
         return $this->belongsTo(ConsonantPlace::class);

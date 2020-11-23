@@ -125,12 +125,9 @@ class ViewLanguageTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $consonant = Phoneme::factory()->consonant()->create(['language_code' => $language]);
-        $vowel = Phoneme::factory()->vowel()->create(['language_code' => $language]);
-        $cluster = Phoneme::factory()->cluster([
-            'first_segment_id' => $consonant,
-            'second_segment_id' => $consonant
-        ])->create(['language_code' => $language]);
+        Phoneme::factory()->consonant()->create(['language_code' => $language]);
+        Phoneme::factory()->vowel()->create(['language_code' => $language]);
+        Phoneme::factory()->cluster()->create(['language_code' => $language]);
 
         $response = $this->get($language->url);
 
@@ -144,12 +141,7 @@ class ViewLanguageTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $consonant = Phoneme::factory()->consonant()->create(['language_code' => $language]);
-        $vowel = Phoneme::factory()->vowel()->create(['language_code' => $language]);
-        $cluster = Phoneme::factory()->cluster([
-            'first_segment_id' => $consonant,
-            'second_segment_id' => $consonant
-        ])->create(['language_code' => $language]);
+        Phoneme::factory()->cluster()->create(['language_code' => $language]);
 
         $response = $this->get($language->url);
 

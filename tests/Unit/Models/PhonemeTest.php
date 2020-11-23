@@ -11,16 +11,52 @@ use PHPUnit\Framework\TestCase;
 class PhonemeTest extends TestCase
 {
     /** @test */
+    public function its_ipa_is_its_features_shape()
+    {
+        $phoneme = new Phoneme([
+            'features' => new ConsonantFeatureSet([
+                'shape' => 'y'
+            ])
+        ]);
+
+        $this->assertEquals('y', $phoneme->ipa);
+    }
+
+    /** @test */
+    public function its_ipa_is_an_empty_string_if_its_featureable_type_is_unknown()
+    {
+        $phoneme = new Phoneme([
+            'features' => []
+        ]);
+
+        $this->assertEquals('', $phoneme->ipa);
+    }
+
+    /** @test */
     public function its_slug_is_its_shape_if_it_has_no_slug()
     {
-        $phoneme = new Phoneme(['slug' => null, 'shape' => 'x', 'ipa' => 'y']);
+        $phoneme = new Phoneme([
+            'slug' => null,
+            'shape' => 'x',
+            'features' => new ConsonantFeatureSet([
+                'shape' => 'y'
+            ])
+        ]);
+
         $this->assertEquals('x', $phoneme->slug);
     }
 
     /** @test */
     public function its_slug_is_its_ipa_if_it_has_no_shape()
     {
-        $phoneme = new Phoneme(['slug' => null, 'shape' => null, 'ipa' => 'y']);
+        $phoneme = new Phoneme([
+            'slug' => null,
+            'shape' => null,
+            'features' => new ConsonantFeatureSet([
+                'shape' => 'y'
+            ])
+        ]);
+
         $this->assertEquals('y', $phoneme->slug);
     }
 

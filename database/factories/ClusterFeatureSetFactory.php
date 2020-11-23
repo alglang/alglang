@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\ClusterFeatureSet;
-use App\Models\Phoneme;
+use App\Models\ConsonantFeatureSet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClusterFeatureSetFactory extends Factory
@@ -23,8 +23,8 @@ class ClusterFeatureSetFactory extends Factory
     public function definition()
     {
         return [
-            'first_segment_id' => Phoneme::factory()->consonant(),
-            'second_segment_id' => Phoneme::factory()->consonant()
+            'first_segment_id' => ConsonantFeatureSet::factory(),
+            'second_segment_id' => ConsonantFeatureSet::factory()
         ];
     }
 }

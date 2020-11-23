@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Presenters;
 
+use App\Models\ConsonantFeatureSet;
 use App\Models\Language;
 use App\Models\Phoneme;
 use Tests\TestCase;
@@ -28,7 +29,11 @@ class PhonemePresenterTest extends TestCase
     /** @test */
     public function it_uses_its_ipa_if_it_has_no_shape()
     {
-        $phoneme = new Phoneme(['shape' => null, 'ipa' => 'y']);
+        $phoneme = new Phoneme([
+            'shape' => null,
+            'features' => new ConsonantFeatureSet(['shape' => 'y'])
+        ]);
+
         $this->assertEquals('<i>y</i>', $phoneme->formatted_shape);
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Http\Livewire\Collections;
 
 use App\Http\Livewire\Collections\Clusters;
+use App\Models\ConsonantFeatureSet;
 use App\Models\Language;
 use App\Models\Phoneme;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,28 +30,16 @@ class ClustersTest extends TestCase
         $language = Language::factory()->create();
 
         Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonA',
-                'order_key' => 2
-            ]),
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 2, 'shape' => 'phonA'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonB',
-                'order_key' => 4
-            ])
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 4, 'shape' => 'phonB'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonC',
-                'order_key' => 1
-            ])
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 1, 'shape' => 'phonC'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonD',
-                'order_key' => 3
-            ])
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 3, 'shape' => 'phonD'])
         ])->create(['language_code' => $language]);
 
         $view = $this->livewire(Clusters::class, ['model' => $language]);
@@ -64,28 +53,16 @@ class ClustersTest extends TestCase
         $language = Language::factory()->create();
 
         Phoneme::factory()->cluster([
-            'second_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonA',
-                'order_key' => 2
-            ]),
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 2, 'shape' => 'phonA'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'second_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonB',
-                'order_key' => 4
-            ])
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 4, 'shape' => 'phonB'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'second_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonC',
-                'order_key' => 1
-            ])
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 1, 'shape' => 'phonC'])
         ])->create(['language_code' => $language]);
         Phoneme::factory()->cluster([
-            'second_segment_id' => Phoneme::factory()->create([
-                'shape' => 'phonD',
-                'order_key' => 3
-            ])
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 3, 'shape' => 'phonD'])
         ])->create(['language_code' => $language]);
 
         $view = $this->livewire(Clusters::class, ['model' => $language]);

@@ -16,13 +16,11 @@ class CreatePhonemesTable extends Migration
         Schema::create('phonemes', function (Blueprint $table) {
             $table->id();
             $table->string('shape')->nullable();
-            $table->string('ipa')->nullable();
             $table->string('slug');
             $table->string('language_code');
             $table->morphs('featureable');
             $table->boolean('is_marginal')->default(false);
             $table->boolean('is_archiphoneme')->default(false);
-            $table->integer('order_key')->default(-1);
             $table->timestamps();
         });
     }
