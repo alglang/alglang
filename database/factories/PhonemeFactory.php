@@ -59,4 +59,13 @@ class PhonemeFactory extends Factory
             'featureable_id' => ClusterFeatureSet::factory()->state($attributes)
         ]);
     }
+
+    public function null(): self
+    {
+        return $this->state([
+            'shape' => '∅',
+            'featureable_type' => null,
+            'featureable_id' => null
+        ]);
+    }
 }

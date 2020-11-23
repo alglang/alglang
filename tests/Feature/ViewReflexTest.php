@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Language;
+use App\Models\Phoneme;
 use App\Models\Reflex;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,6 +23,18 @@ class ViewReflexTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('reflexes.show');
         $response->assertViewHas('reflex', $reflex);
+    }
+
+    /** @test */
+    public function its_reflex_can_be_null()
+    {
+        $nullPhoneme = Phoneme::factory()->null()->create();
+        $reflex = Reflex::factory()->forPhoneme(['shape' => 'x'])->create(['reflex_id' => $nullPhoneme]);
+
+        $response = $this->get($reflex->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['x', '>', '∅']);
     }
 
     /** @test */

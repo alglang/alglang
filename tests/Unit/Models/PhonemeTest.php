@@ -120,4 +120,11 @@ class PhonemeTest extends TestCase
         ]);
         $this->assertEquals('/languages/TL/clusters/x', $phoneme->url);
     }
+
+    /** @test */
+    public function null_phonemes_do_not_have_a_url()
+    {
+        $phoneme = new Phoneme(['shape' => '∅']);
+        $this->assertEquals('', $phoneme->url);
+    }
 }

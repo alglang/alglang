@@ -43,6 +43,10 @@ class Phoneme extends Model
 
     public function getUrlAttribute(): string
     {
+        if (!$this->featureable_type) {
+            return '';
+        }
+
         return "/languages/{$this->language_code}/{$this->type}s/{$this->slug}";
     }
 

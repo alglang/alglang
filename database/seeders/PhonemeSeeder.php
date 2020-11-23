@@ -389,6 +389,14 @@ class PhonemeSeeder extends Seeder
                 'language_code' => 'Ch',
                 'featureable_type' => ClusterFeatureSet::class,
                 'featureable_id' => 10
+            ],
+            [
+                'id' => 31,
+                'shape' => '∅',
+                'slug' => '∅',
+                'language_code' => 'Ch',
+                'featureable_type' => null,
+                'featureable_id' => null
             ]
         ]);
 
@@ -656,7 +664,11 @@ class PhonemeSeeder extends Seeder
             [
                 'phoneme_id' => Phoneme::where('shape', 'hs')->where('language_code', 'PA')->first()->id,
                 'reflex_id' => 28    // Ch h
-            ]
+            ],
+            [
+                'phoneme_id' => 1,  // PA p
+                'reflex_id' => 31    // Ch ∅
+            ],
         ]);
     }
 }

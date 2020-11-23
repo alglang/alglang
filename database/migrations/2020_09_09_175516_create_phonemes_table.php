@@ -18,7 +18,8 @@ class CreatePhonemesTable extends Migration
             $table->string('shape')->nullable();
             $table->string('slug');
             $table->string('language_code');
-            $table->morphs('featureable');
+            $table->string('featureable_type')->nullable();
+            $table->unsignedInteger('featureable_id')->nullable();
             $table->boolean('is_marginal')->default(false);
             $table->boolean('is_archiphoneme')->default(false);
             $table->timestamps();
