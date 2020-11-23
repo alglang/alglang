@@ -65,9 +65,10 @@
             />
         @endif
 
-        @if ($model->consonants->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty()) ||
-             $model->clusters->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty())
-            )
+        @if (
+            $model->consonants->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty()) ||
+            $model->clusters->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty())
+        )
             <h2 class="mt-4 py-2 text-lg">
                 Reflexes of Proto-Algonquian consonants
             </h2>

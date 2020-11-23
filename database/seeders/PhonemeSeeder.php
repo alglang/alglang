@@ -625,7 +625,7 @@ class PhonemeSeeder extends Seeder
                 'reflex_id' => 26   // PAGV k
             ],
             [
-                'phoneme_id' => Phoneme::where('shape', 'hp')->first()->id,
+                'phoneme_id' => Phoneme::where('shape', 'hp')->where('language_code', 'PA')->first()->id,
                 'reflex_id' => 26   // PAGV k
             ],
             [
@@ -642,16 +642,20 @@ class PhonemeSeeder extends Seeder
                 'reflex_id' => 28    // Ch h
             ],
             [
-                'phoneme_id' => 19,  // PA mp
-                'reflex_id' => 32    // Ch hp
+                'phoneme_id' => Phoneme::where('shape', 'mp')->first()->id,
+                'reflex_id' => 30    // Ch hp
             ],
             [
-                'phoneme_id' => 9,  // PA hp
-                'reflex_id' => 32    // Ch hp
+                'phoneme_id' => Phoneme::where('shape', 'hp')->where('language_code', 'PA')->first()->id,
+                'reflex_id' => 30    // Ch hp
             ],
             [
                 'phoneme_id' => 1,  // PA p
                 'reflex_id' => 30    // Ch hp
+            ],
+            [
+                'phoneme_id' => Phoneme::where('shape', 'hs')->where('language_code', 'PA')->first()->id,
+                'reflex_id' => 28    // Ch h
             ]
         ]);
     }
