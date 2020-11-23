@@ -4,7 +4,7 @@
 
 <div>
     @if ($children->count() === 0)
-        <div class="px-2 py-1">
+        <div class="px-2 py-1 opacity-50">
             <x-preview-link :model="$phoneme">
                 {!! $phoneme->formatted_shape !!}
             </x-preview-link>
