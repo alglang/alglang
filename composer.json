@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.3",
         "adoxography/disambiguatable": "master",
-        "doctrine/dbal": "^2.11",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "laravel/framework": "^8.0",
