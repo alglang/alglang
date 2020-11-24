@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Models\ConsonantFeatureSet;
 use App\Models\Language;
 use App\Models\Phoneme;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -18,8 +19,8 @@ class ViewClustersTest extends DuskTestCase
         $language = Language::factory()->create();
 
         $cluster = Phoneme::factory()->cluster([
-            'first_segment_id' => Phoneme::factory(['shape' => 'h']),
-            'second_segment_id' => Phoneme::factory(['shape' => 'k'])
+            'first_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'h']),
+            'second_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'k'])
         ])->create([
             'language_code' => $language,
             'shape' => 'foo'

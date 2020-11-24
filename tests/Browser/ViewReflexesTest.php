@@ -10,6 +10,8 @@ use Tests\DuskTestCase;
 
 class ViewReflexesTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
     /** @test */
     public function the_root_phoneme_is_in_the_root_reflex_graph()
     {
