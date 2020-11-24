@@ -400,6 +400,17 @@ class PhonemeSeeder extends Seeder
             ]
         ]);
 
+        DB::table('phonemes')->insert([
+            [
+                'id' => 32,
+                'shape' => 'N',
+                'slug' => 'N',
+                'language_code' => 'Mun',
+                'featureable_type' => ConsonantFeatureSet::class,
+                'featureable_id' => 15,
+                'is_archiphoneme' => true
+            ]
+        ]);
 
         DB::table('phonemes')->insert([
             [
@@ -668,6 +679,10 @@ class PhonemeSeeder extends Seeder
             [
                 'phoneme_id' => 1,  // PA p
                 'reflex_id' => 31    // Ch ∅
+            ],
+            [
+                'phoneme_id' => 25,  // PA N
+                'reflex_id' => 32 // Mun N
             ],
         ]);
     }

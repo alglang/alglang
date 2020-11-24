@@ -74,6 +74,36 @@ class LanguageSeeder extends Seeder
                 'reconstructed' => false,
                 'position' => null,
                 'group_name' => 'Plains'
+            ],
+            [
+                'name' => 'Proto-Easter Algonquian',
+                'alternate_names' => null,
+                'parent_code' => 'PA',
+                'code' => 'PEA',
+                'iso' => null,
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Eastern'
+            ],
+            [
+                'name' => 'Common Delaware',
+                'alternate_names' => null,
+                'parent_code' => 'PEA',
+                'code' => 'Del',
+                'iso' => null,
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Delaware'
+            ],
+            [
+                'name' => 'Munsee',
+                'alternate_names' => '["Munsee Delaware", "Lenape"]',
+                'parent_code' => 'Del',
+                'code' => 'Mun',
+                'iso' => 'umu',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Delaware'
             ]
         ]);
     }

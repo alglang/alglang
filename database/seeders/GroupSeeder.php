@@ -38,6 +38,18 @@ class GroupSeeder extends Seeder
                 'parent_name' => 'Plains',
                 'slug' => 'arapahoan',
                 'description' => null
+            ],
+            [
+                'name' => 'Eastern',
+                'parent_name' => 'Algonquian',
+                'slug' => 'eastern',
+                'description' => null
+            ],
+            [
+                'name' => 'Delaware',
+                'parent_name' => 'Eastern',
+                'slug' => 'delaware',
+                'description' => null
             ]
         ]);
     }

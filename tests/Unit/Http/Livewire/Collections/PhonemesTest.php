@@ -28,6 +28,7 @@ class PhonemesTest extends TestCase
         $this->pa = Language::factory()->create(['code' => 'PA']);
         $this->paConsonant = Phoneme::factory()->consonant()->create(['language_code' => $this->pa, 'shape' => 'parentx']);
         $this->paVowel = Phoneme::factory()->vowel()->create(['language_code' => $this->pa, 'shape' => 'parentu']);
+        $this->paArchiphoneme = Phoneme::factory()->consonant(['place_name' => null])->create(['language_code' => $this->pa, 'shape' => 'parentX', 'is_archiphoneme' => true]);
     }
 
     /** @test */
@@ -54,6 +55,17 @@ class PhonemesTest extends TestCase
     }
 
     /** @test */
+    public function archiphonemes_do_not_count_as_vowels()
+    {
+        $language = Language::factory()->create();
+        Phoneme::factory()->vowel()->create(['language_code' => $language, 'is_archiphoneme' => true]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Vowel inventory');
+    }
+
+    /** @test */
     public function it_shows_consonants()
     {
         $language = Language::factory()->create();
@@ -70,6 +82,17 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
         $this->assertEquals(0, $language->consonants()->count());
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Consonant inventory');
+    }
+
+    /** @test */
+    public function archiphonemes_do_not_count_as_consonants()
+    {
+        $language = Language::factory()->create();
+        Phoneme::factory()->consonant()->create(['language_code' => $language, 'is_archiphoneme' => true]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
@@ -441,10 +464,70 @@ class PhonemesTest extends TestCase
     }
 
     /** @test */
+    public function archiphoneme_reflexes_do_not_count_as_vowel_reflexes()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => Phoneme::factory()->vowel()->create(['language_code' => 'PA', 'is_archiphoneme' => true]),
+            'reflex_id' => Phoneme::factory()->vowel()->create(['language_code' => $language, 'is_archiphoneme' => true])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian vowels');
+    }
+
+    /** @test */
+    public function archiphoneme_reflexes_do_not_count_as_consonant_reflexes()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => Phoneme::factory()->consonant()->create(['language_code' => 'PA', 'is_archiphoneme' => true]),
+            'reflex_id' => Phoneme::factory()->consonant()->create(['language_code' => $language, 'is_archiphoneme' => true])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian consonants');
+    }
+
+    /** @test */
     public function proto_algonquian_reflexes_are_not_shown_on_the_proto_algonquian_page()
     {
         $view = $this->livewire(Phonemes::class, ['model' => $this->pa]);
 
         $view->assertDontSee('Reflexes');
+    }
+
+    /** @test */
+    public function archiphoneme_reflexes_are_shown()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => $this->paArchiphoneme,
+            'reflex_id' => Phoneme::factory()->create(['language_code' => $language, 'shape' => 'childX'])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertSeeInOrder(['Reflexes of Proto-Algonquian archiphonemes', 'parentX', '>', 'childX']);
+    }
+
+    /** @test */
+    public function archiphoneme_reflexes_are_not_shown_if_there_are_none()
+    {
+        $language = Language::factory()->create();
+
+        Reflex::factory()->create([
+            'phoneme_id' => $this->paConsonant,
+            'reflex_id' => Phoneme::factory()->create(['language_code' => $language, 'shape' => 'childX'])
+        ]);
+
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian archiphonemes');
     }
 }
