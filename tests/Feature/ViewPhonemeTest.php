@@ -130,7 +130,7 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_its_ipa_shape()
+    public function it_shows_its_default_ipa_shape_if_it_does_not_have_an_override()
     {
         $phoneme = Phoneme::factory()->consonant(['shape' => 'xyz'])->create();
 
@@ -138,6 +138,17 @@ class ViewPhonemeTest extends TestCase
 
         $response->assertOk();
         $response->assertSeeInOrder(['IPA transcription', "/xyz/"], false);
+    }
+
+    /** @test */
+    public function it_can_override_its_default_ipa_shape()
+    {
+        $phoneme = Phoneme::factory()->consonant(['shape' => 'x'])->create(['ipa' => 'y']);
+
+        $response = $this->get($phoneme->url);
+
+        $response->assertOk();
+        $response->assertSeeInOrder(['IPA transcription', "/y/"], false);
     }
 
     /** @test */

@@ -11,15 +11,29 @@ use PHPUnit\Framework\TestCase;
 class PhonemeTest extends TestCase
 {
     /** @test */
-    public function its_ipa_is_its_features_shape()
+    public function its_ipa_is_its_features_shape_if_it_has_no_override()
     {
         $phoneme = new Phoneme([
+            'ipa' => null,
             'features' => new ConsonantFeatureSet([
                 'shape' => 'y'
             ])
         ]);
 
         $this->assertEquals('y', $phoneme->ipa);
+    }
+
+    /** @test */
+    public function it_can_override_its_default_ipa()
+    {
+        $phoneme = new Phoneme([
+            'ipa' => 'x',
+            'features' => new ConsonantFeatureSet([
+                'shape' => 'y'
+            ])
+        ]);
+
+        $this->assertEquals('x', $phoneme->ipa);
     }
 
     /** @test */

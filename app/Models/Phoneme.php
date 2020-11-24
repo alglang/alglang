@@ -20,8 +20,12 @@ class Phoneme extends Model
 
     protected $guarded = [];
 
-    public function getIpaAttribute(): string
+    public function getIpaAttribute(?string $ipa): string
     {
+        if ($ipa) {
+            return $ipa;
+        }
+
         $featureSet = $this->features;
 
         if ($featureSet instanceof ConsonantFeatureSet

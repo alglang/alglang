@@ -16,6 +16,7 @@ class CreatePhonemesTable extends Migration
         Schema::create('phonemes', function (Blueprint $table) {
             $table->id();
             $table->string('shape')->nullable();
+            $table->string('ipa')->nullable();
             $table->string('slug');
             $table->string('language_code');
             $table->string('featureable_type')->nullable();
