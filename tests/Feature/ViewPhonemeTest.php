@@ -49,37 +49,26 @@ class ViewPhonemeTest extends TestCase
         $response->assertViewHas('phoneme', $phoneme);
     }
 
-    /** @test */
-    public function it_displays_the_correct_type_for_a_vowel()
+    public function phonoidTypeProvider(): array
     {
-        $phoneme = Phoneme::factory()->vowel()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertSee('Vowel details');
+        return [
+            'vowel' => [fn () => [Phoneme::factory()->vowel()->create(), 'Vowel']],
+            'consonant' => [fn () => [Phoneme::factory()->consonant()->create(), 'Consonant']],
+            'cluster' => [fn () => [Phoneme::factory()->cluster()->create(), 'Cluster']],
+        ];
     }
 
-    /** @test */
-    public function it_displays_the_correct_type_for_a_consonant()
+    /**
+     * @test
+     * @dataProvider phonoidTypeProvider
+     */
+    public function it_displays_the_correct_type($getData): void
     {
-        $phoneme = Phoneme::factory()->consonant()->create();
-
+        [$phoneme, $type] = $getData();
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertSee('Consonant details');
-    }
-
-    /** @test */
-    public function it_displays_the_correct_type_for_a_cluster()
-    {
-        $phoneme = Phoneme::factory()->cluster()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertSee('Cluster details');
+        $response->assertSee("$type details");
     }
 
     /** @test */
@@ -213,7 +202,7 @@ class ViewPhonemeTest extends TestCase
     }
 
     /** @test */
-    public function it_shows_consonant_features_if_it_is_a_vowel()
+    public function it_shows_consonant_features_if_it_is_a_consonant()
     {
         $phoneme = Phoneme::factory()->consonant([
             'place_name' => ConsonantPlace::factory()->create(['name' => 'labial']),
@@ -252,7 +241,6 @@ class ViewPhonemeTest extends TestCase
     /** @test */
     public function it_shows_cluster_features_if_it_is_a_cluster()
     {
-        $this->withoutExceptionHandling();
         $phoneme = Phoneme::factory()->cluster([
             'first_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'x']),
             'second_segment_id' => ConsonantFeatureSet::factory()->create(['shape' => 'y'])
@@ -265,78 +253,38 @@ class ViewPhonemeTest extends TestCase
         $response->assertSeeInOrder(['Second segment', 'y']);
     }
 
-    /** @test */
-    public function it_does_not_show_vowel_features_if_it_is_a_consonant()
+    public function correctFeaturesProvider(): array
     {
-        $phoneme = Phoneme::factory()->consonant()->create();
+        $vowelFeatures = ['Height', 'Backness', 'Length'];
+        $consonantFeatures = ['Place', 'Manner'];
+        $clusterFeatures = ['First segment', 'Second segment'];
 
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('Height');
-        $response->assertDontSee('Backness');
-        $response->assertDontSee('Length');
+        return [
+            'vowel' => [fn () => [Phoneme::factory()->vowel()->create(), $vowelFeatures, array_merge($consonantFeatures, $clusterFeatures)]],
+            'consonat' => [fn () => [Phoneme::factory()->consonant()->create(), $consonantFeatures, array_merge($vowelFeatures, $clusterFeatures)]],
+            'cluster' => [fn () => [Phoneme::factory()->cluster()->create(), $clusterFeatures, array_merge($vowelFeatures, $consonantFeatures)]]
+        ];
     }
 
-    /** @test */
-    public function it_does_not_show_vowel_features_if_it_is_a_cluster()
+    /**
+     * @test
+     * @dataProvider correctFeaturesProvider
+     */
+    public function it_shows_the_correct_features($getData): void
     {
-        $phoneme = Phoneme::factory()->cluster()->create();
+        [$phoneme, $see, $dontSee] = $getData();
 
         $response = $this->get($phoneme->url);
 
         $response->assertOk();
-        $response->assertDontSee('Height');
-        $response->assertDontSee('Backness');
-        $response->assertDontSee('Length');
-    }
 
-    /** @test */
-    public function it_does_not_show_consonant_features_if_it_is_a_vowel()
-    {
-        $phoneme = Phoneme::factory()->vowel()->create();
+        foreach ($see as $feature) {
+            $response->assertSee($feature);
+        }
 
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('Place');
-        $response->assertDontSee('Manner');
-    }
-
-    /** @test */
-    public function it_does_not_show_consonant_feature_if_it_is_a_cluster()
-    {
-        $phoneme = Phoneme::factory()->cluster()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('Place');
-        $response->assertDontSee('Manner');
-    }
-
-    /** @test */
-    public function it_does_not_show_cluster_features_if_it_is_a_vowel()
-    {
-        $phoneme = Phoneme::factory()->vowel()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('First segment');
-        $response->assertDontSee('Second segment');
-    }
-
-    /** @test */
-    public function it_does_not_show_cluster_features_if_it_is_a_consonant()
-    {
-        $phoneme = Phoneme::factory()->consonant()->create();
-
-        $response = $this->get($phoneme->url);
-
-        $response->assertOk();
-        $response->assertDontSee('First segment');
-        $response->assertDontSee('Second segment');
+        foreach ($dontSee as $feature) {
+            $response->assertDontSee($feature);
+        }
     }
 
     /** @test */
