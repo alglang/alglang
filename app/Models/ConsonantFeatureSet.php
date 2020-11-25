@@ -12,6 +12,10 @@ class ConsonantFeatureSet extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'is_archiphoneme' => 'bool'
+    ];
+
     public function place(): Relation
     {
         return $this->belongsTo(ConsonantPlace::class);

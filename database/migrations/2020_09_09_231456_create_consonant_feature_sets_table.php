@@ -19,6 +19,7 @@ class CreateConsonantFeatureSetsTable extends Migration
             $table->string('place_name')->nullable();
             $table->string('manner_name')->nullable();
             $table->integer('order_key')->default(-1);
+            $table->boolean('is_archiphoneme')->default(false);
             $table->timestamps();
         });
     }

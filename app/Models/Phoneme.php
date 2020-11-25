@@ -54,6 +54,15 @@ class Phoneme extends Model
         return "/languages/{$this->language_code}/{$this->type}s/{$this->slug}";
     }
 
+    public function getIsArchiphonemeAttribute(): bool
+    {
+        if (!$this->featureable_type || !$this->features) {
+            return false;
+        }
+
+        return isset($this->features->is_archiphoneme) && $this->features->is_archiphoneme === true;
+    }
+
     public function getTypeAttribute(): string
     {
         switch ($this->featureable_type) {

@@ -66,8 +66,11 @@ class PhonemeSeeder extends Seeder
             ['id' => 12, 'shape' => 'w',  'place_name' => 'labial',          'manner_name' => 'glide'],
             ['id' => 13, 'shape' => 'y',  'place_name' => 'palatal',         'manner_name' => 'glide'],
             ['id' => 14, 'shape' => 'r',  'place_name' => 'dental/alveolar', 'manner_name' => 'liquid'],
-            ['id' => 15, 'shape' => 'N',  'place_name' => null,              'manner_name' => 'nasal'],
             ['id' => 16, 'shape' => 'x',  'place_name' => 'velar',           'manner_name' => 'fricative']
+        ]);
+
+        DB::table('consonant_feature_sets')->insert([
+            ['id' => 15, 'shape' => 'N',  'place_name' => null, 'manner_name' => 'nasal', 'is_archiphoneme' => true],
         ]);
 
         DB::table('vowel_feature_sets')->insert([
@@ -344,8 +347,7 @@ class PhonemeSeeder extends Seeder
                 'slug' => 'N',
                 'language_code' => 'PA',
                 'featureable_type' => ConsonantFeatureSet::class,
-                'featureable_id' => 15,
-                'is_archiphoneme' => true
+                'featureable_id' => 15
             ]
         ]);
 
@@ -407,8 +409,7 @@ class PhonemeSeeder extends Seeder
                 'slug' => 'N',
                 'language_code' => 'Mun',
                 'featureable_type' => ConsonantFeatureSet::class,
-                'featureable_id' => 15,
-                'is_archiphoneme' => true
+                'featureable_id' => 15
             ]
         ]);
 

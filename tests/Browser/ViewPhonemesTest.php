@@ -46,11 +46,11 @@ class ViewPhonemesTest extends DuskTestCase
         $language = Language::factory()->create();
 
         $phoneme = Phoneme::factory()->vowel([
-            'backness_name' => null
+            'backness_name' => null,
+            'is_archiphoneme' => true
         ])->create([
             'language_code' => $language,
-            'shape' => 'ARCHY',
-            'is_archiphoneme' => true
+            'shape' => 'ARCHY'
         ]);
 
         $this->browse(function (Browser $browser) use ($language) {
@@ -91,11 +91,11 @@ class ViewPhonemesTest extends DuskTestCase
         $language = Language::factory()->create();
 
         $phoneme = Phoneme::factory()->consonant([
-            'place_name' => null
+            'place_name' => null,
+            'is_archiphoneme' => true
         ])->create([
             'language_code' => $language,
-            'shape' => 'ARCH',
-            'is_archiphoneme' => true
+            'shape' => 'ARCH'
         ]);
 
         $this->browse(function (Browser $browser) use ($language) {

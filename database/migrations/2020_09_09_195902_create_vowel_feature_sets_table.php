@@ -19,6 +19,7 @@ class CreateVowelFeatureSetsTable extends Migration
             $table->string('height_name')->nullable();
             $table->string('backness_name')->nullable();
             $table->string('length_name')->nullable();
+            $table->boolean('is_archiphoneme')->default(false);
             $table->timestamps();
         });
     }

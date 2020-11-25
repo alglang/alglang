@@ -22,7 +22,6 @@ class CreatePhonemesTable extends Migration
             $table->string('featureable_type')->nullable();
             $table->unsignedInteger('featureable_id')->nullable();
             $table->boolean('is_marginal')->default(false);
-            $table->boolean('is_archiphoneme')->default(false);
             $table->timestamps();
         });
     }

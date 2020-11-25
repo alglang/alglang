@@ -10,6 +10,10 @@ class VowelFeatureSet extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'is_archiphoneme' => 'bool'
+    ];
+
     public function backness(): Relation
     {
         return $this->belongsTo(VowelBackness::class);

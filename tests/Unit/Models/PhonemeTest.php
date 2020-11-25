@@ -141,4 +141,44 @@ class PhonemeTest extends TestCase
         $phoneme = new Phoneme(['shape' => '∅']);
         $this->assertEquals('', $phoneme->url);
     }
+
+    /** @test */
+    public function it_is_an_archiphoneme_if_its_features_are_marked_as_being_an_archiphoneme(): void
+    {
+        $phoneme = new Phoneme([
+            'featureable_type' => ConsonantFeatureSet::class,
+            'features' => new ConsonantFeatureSet(['is_archiphoneme' => 1])
+        ]);
+        $this->assertTrue($phoneme->is_archiphoneme);
+    }
+
+    /** @test */
+    public function it_is_not_an_archiphoneme_if_its_features_are_marked_as_not_being_an_archiphoneme(): void
+    {
+        $phoneme = new Phoneme([
+            'featureable_type' => ConsonantFeatureSet::class,
+            'features' => new ConsonantFeatureSet(['is_archiphoneme' => false])
+        ]);
+        $this->assertFalse($phoneme->is_archiphoneme);
+    }
+
+    /** @test */
+    public function it_is_not_an_archiphoneme_if_its_features_do_not_have_an_archiphoneme_field(): void
+    {
+        $phoneme = new Phoneme([
+            'featureable_type' => ClusterFeatureSet::class,
+            'features' => new ClusterFeatureSet()
+        ]);
+        $this->assertFalse($phoneme->is_archiphoneme);
+    }
+
+    /** @test */
+    public function it_is_not_an_archiphoneme_if_it_has_no_features(): void
+    {
+        $phoneme = new Phoneme([
+            'featureable_type' => null,
+            'features' => null
+        ]);
+        $this->assertFalse($phoneme->is_archiphoneme);
+    }
 }

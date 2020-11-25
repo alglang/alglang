@@ -26,9 +26,18 @@ class PhonemesTest extends TestCase
         parent::setUp();
 
         $this->pa = Language::factory()->create(['code' => 'PA']);
-        $this->paConsonant = Phoneme::factory()->consonant()->create(['language_code' => $this->pa, 'shape' => 'parentx']);
-        $this->paVowel = Phoneme::factory()->vowel()->create(['language_code' => $this->pa, 'shape' => 'parentu']);
-        $this->paArchiphoneme = Phoneme::factory()->consonant(['place_name' => null])->create(['language_code' => $this->pa, 'shape' => 'parentX', 'is_archiphoneme' => true]);
+
+        $this->paConsonant = Phoneme::factory()
+             ->consonant()
+             ->create(['language_code' => $this->pa, 'shape' => 'parentx']);
+
+        $this->paVowel = Phoneme::factory()
+             ->vowel()
+             ->create(['language_code' => $this->pa, 'shape' => 'parentu']);
+
+        $this->paArchiphoneme = Phoneme::factory()
+             ->consonant(['place_name' => null, 'is_archiphoneme' => true])
+             ->create(['language_code' => $this->pa, 'shape' => 'parentX']);
     }
 
     /** @test */
@@ -58,7 +67,7 @@ class PhonemesTest extends TestCase
     public function archiphonemes_do_not_count_as_vowels()
     {
         $language = Language::factory()->create();
-        Phoneme::factory()->vowel()->create(['language_code' => $language, 'is_archiphoneme' => true]);
+        Phoneme::factory()->vowel(['is_archiphoneme' => true])->create(['language_code' => $language]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
@@ -92,7 +101,7 @@ class PhonemesTest extends TestCase
     public function archiphonemes_do_not_count_as_consonants()
     {
         $language = Language::factory()->create();
-        Phoneme::factory()->consonant()->create(['language_code' => $language, 'is_archiphoneme' => true]);
+        Phoneme::factory()->consonant(['is_archiphoneme' => true])->create(['language_code' => $language]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
 
@@ -244,15 +253,13 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->consonant()->create([
+        Phoneme::factory()->consonant(['is_archiphoneme' => true])->create([
             'shape' => 'ARCH1',
             'language_code' => $language,
-            'is_archiphoneme' => true
         ]);
-        Phoneme::factory()->vowel()->create([
+        Phoneme::factory()->vowel(['is_archiphoneme' => true])->create([
             'shape' => 'ARCH2',
             'language_code' => $language,
-            'is_archiphoneme' => true
         ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -265,11 +272,14 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->consonant(['manner_name' => null, 'place_name' => 'FOO_PLACE'])
+        Phoneme::factory()->consonant([
+                              'manner_name' => null,
+                              'place_name' => 'FOO_PLACE',
+                              'is_archiphoneme' => true
+                          ])
                           ->create([
                               'shape' => 'ARCHY',
                               'language_code' => $language,
-                              'is_archiphoneme' => true
                           ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -282,11 +292,14 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->consonant(['manner_name' => 'FOO_MANNER', 'place_name' => null])
+        Phoneme::factory()->consonant([
+                              'manner_name' => 'FOO_MANNER',
+                              'place_name' => null,
+                              'is_archiphoneme' => true
+                          ])
                           ->create([
                               'shape' => 'ARCHY',
                               'language_code' => $language,
-                              'is_archiphoneme' => true
                           ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -299,11 +312,14 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->vowel(['backness_name' => null, 'height_name' => 'FOO_HEIGHT'])
+        Phoneme::factory()->vowel([
+                              'backness_name' => null,
+                              'height_name' => 'FOO_HEIGHT',
+                              'is_archiphoneme' => true
+                          ])
                           ->create([
                               'shape' => 'ARCHY',
                               'language_code' => $language,
-                              'is_archiphoneme' => true
                           ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -316,11 +332,14 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        Phoneme::factory()->vowel(['backness_name' => 'FOO_BACKNESS', 'height_name' => null])
+        Phoneme::factory()->vowel([
+                              'backness_name' => 'FOO_BACKNESS',
+                              'height_name' => null,
+                              'is_archiphoneme' => true
+                          ])
                           ->create([
                               'shape' => 'ARCHY',
                               'language_code' => $language,
-                              'is_archiphoneme' => true
                           ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -469,8 +488,8 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
 
         Reflex::factory()->create([
-            'phoneme_id' => Phoneme::factory()->vowel()->create(['language_code' => 'PA', 'is_archiphoneme' => true]),
-            'reflex_id' => Phoneme::factory()->vowel()->create(['language_code' => $language, 'is_archiphoneme' => true])
+            'phoneme_id' => Phoneme::factory()->vowel(['is_archiphoneme' => true])->create(['language_code' => 'PA']),
+            'reflex_id' => Phoneme::factory()->vowel(['is_archiphoneme' => true])->create(['language_code' => $language])
         ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);
@@ -484,8 +503,8 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
 
         Reflex::factory()->create([
-            'phoneme_id' => Phoneme::factory()->consonant()->create(['language_code' => 'PA', 'is_archiphoneme' => true]),
-            'reflex_id' => Phoneme::factory()->consonant()->create(['language_code' => $language, 'is_archiphoneme' => true])
+            'phoneme_id' => Phoneme::factory()->consonant(['is_archiphoneme' => true])->create(['language_code' => 'PA']),
+            'reflex_id' => Phoneme::factory()->consonant(['is_archiphoneme' => true])->create(['language_code' => $language])
         ]);
 
         $view = $this->livewire(Phonemes::class, ['model' => $language]);

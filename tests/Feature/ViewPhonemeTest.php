@@ -85,7 +85,7 @@ class ViewPhonemeTest extends TestCase
     /** @test */
     public function it_adds_archiphoneme_to_the_title_if_it_is_an_archiphoneme()
     {
-        $phoneme = Phoneme::factory()->consonant()->create(['is_archiphoneme' => true]);
+        $phoneme = Phoneme::factory()->consonant(['is_archiphoneme' => true])->create();
 
         $response = $this->get($phoneme->url);
 
