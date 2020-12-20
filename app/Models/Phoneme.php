@@ -77,6 +77,21 @@ class Phoneme extends Model
         };
     }
 
+    public function getIsVowelAttribute(): bool
+    {
+        return $this->featureable_type === VowelFeatureSet::class;
+    }
+
+    public function getIsConsonantAttribute(): bool
+    {
+        return $this->featureable_type === ConsonantFeatureSet::class;
+    }
+
+    public function getIsClusterAttribute(): bool
+    {
+        return $this->featureable_type === ClusterFeatureSet::class;
+    }
+
     public function language(): Relation
     {
         return $this->belongsTo(Language::class, 'language_code');

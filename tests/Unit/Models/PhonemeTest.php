@@ -143,6 +143,27 @@ class PhonemeTest extends TestCase
     }
 
     /** @test */
+    public function it_is_a_vowel_if_it_has_vowel_features(): void
+    {
+        $phoneme = new Phoneme(['featureable_type' => VowelFeatureSet::class]);
+        $this->assertTrue($phoneme->is_vowel);
+    }
+
+    /** @test */
+    public function it_is_a_consonant_if_it_has_consonant_features(): void
+    {
+        $phoneme = new Phoneme(['featureable_type' => ConsonantFeatureSet::class]);
+        $this->assertTrue($phoneme->is_consonant);
+    }
+
+    /** @test */
+    public function it_is_a_cluster_if_it_has_cluster_features(): void
+    {
+        $phoneme = new Phoneme(['featureable_type' => ClusterFeatureSet::class]);
+        $this->assertTrue($phoneme->is_cluster);
+    }
+
+    /** @test */
     public function it_is_an_archiphoneme_if_its_features_are_marked_as_being_an_archiphoneme(): void
     {
         $phoneme = new Phoneme([
