@@ -16,9 +16,6 @@ class Clusters extends Component
     public $clusters;
 
     /** @var Collection */
-    public $consonants;
-
-    /** @var Collection */
     public $paClusters;
 
     public bool $loaded = false;
@@ -31,15 +28,23 @@ class Clusters extends Component
     public function mount(): void
     {
         $this->clusters = collect();
-        $this->consonants = collect();
     }
 
     public function tabChanged(string $tab): void
     {
         if ($tab === 'clusters' && !$this->loaded) {
-            $this->clusters = $this->model->clusters;
-            $this->consonants = $this->model->consonants;
-            $this->paClusters = Language::find('PA')->clusters->where('is_archiphoneme', false);
+            $paFound = false;
+
+            foreach ($this->model->phonoids as $phonoid) {
+                if ($phonoid->is_cluster) {
+                    $this->clusters->push($phonoid);
+                }
+
+                if (!$paFound && ($phonoid->is_cluster || $phonoid->is_consonant) && $phonoid->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_cluster)) {
+                    $this->paClusters = Language::find('PA')->clusters->where('is_archiphoneme', false);
+                    $paFound = true;
+                }
+            }
 
             $this->loaded = true;
         }

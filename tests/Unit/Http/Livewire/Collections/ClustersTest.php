@@ -131,6 +131,21 @@ class ClustersTest extends TestCase
     }
 
     /** @test */
+    public function cluster_parents_must_be_clusters()
+    {
+        $language = Language::factory()->create();
+        $cluster = Phoneme::factory()->cluster()->create(['language_code' => $language, 'shape' => 'childx']);
+        Reflex::factory()->create([
+            'phoneme_id' => Phoneme::factory()->consonant()->create(['language_code' => 'PA']),
+            'reflex_id' => $cluster
+        ]);
+
+        $view = $this->navigateToClustersComponent($language);
+
+        $view->assertDontSee('Reflexes of Proto-Algonquian clusters');
+    }
+
+    /** @test */
     public function it_does_not_show_proto_algonquian_cluster_reflexes_if_it_has_none()
     {
         $language = Language::factory()->create();

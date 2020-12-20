@@ -13,12 +13,7 @@
     />
 </div>
 
-@if ($model->code !== 'PA' &&
-    (
-        $consonants->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty()) ||
-        $clusters->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty())
-    )
-)
+@if (isset($paClusters))
     <h2 class="mt-4 py-2 text-lg">
         Reflexes of Proto-Algonquian clusters
     </h2>
