@@ -11,6 +11,8 @@ class VowelBackness extends Model
 
     public $incrementing = false;
 
+    protected $guarded = [];
+
     protected $primaryKey = 'name';
 
     protected $keyType = 'str';
