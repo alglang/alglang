@@ -1,36 +1,36 @@
 <div>
-    @if ($model->vowels->where('is_archiphoneme', false)->count() > 0)
+    @if ($vowels->where('is_archiphoneme', false)->count() > 0)
         <h2 class="py-2 text-lg">
             Vowel inventory
         </h2>
         <x-phoneme-table
             class="vowel-inventory"
-            :items="$model->vowels->where('is_archiphoneme', false)"
+            :items="$vowels->where('is_archiphoneme', false)"
             col-key="features.backness"
             row-key="features.height"
         />
     @endif
 
-    @if ($model->consonants->where('is_archiphoneme', false)->count() > 0)
+    @if ($consonants->where('is_archiphoneme', false)->count() > 0)
         <h2 class="mt-4 py-2 text-lg">
             Consonant inventory
         </h2>
         <x-phoneme-table
             class="consonant-inventory"
-            :items="$model->consonants->where('is_archiphoneme', false)"
+            :items="$consonants->where('is_archiphoneme', false)"
             col-key="features.place"
             row-key="features.manner"
         />
     @endif
 
-    @if ($model->phonemes->contains('is_archiphoneme', true))
+    @if ($phonemes->contains('is_archiphoneme', true))
         <h2 class="mt-4 py-2 text-lg">
             Archiphonemes
         </h2>
 
         <table>
             <tbody class="bg-gray-100">
-                @foreach ($model->phonemes->where('is_archiphoneme', true) as $archiphoneme)
+                @foreach ($phonemes->where('is_archiphoneme', true) as $archiphoneme)
                     <tr>
                         <td class="bg-gray-700 uppercase text-gray-100 text-sm tracking-wide px-3 py-2 font-normal">
                             {{ $archiphoneme->features->place_name }}
@@ -49,7 +49,7 @@
     @endif
 
     @if ($model->code !== 'PA')
-        @if ($model->vowels->some(fn ($phoneme) => !$phoneme->is_archiphoneme && !$phoneme->parentsFromLanguage('PA')->isEmpty()))
+        @if ($vowels->some(fn ($phoneme) => !$phoneme->is_archiphoneme && !$phoneme->parentsFromLanguage('PA')->isEmpty()))
             <h2 class="mt-4 py-2 text-lg">
                 Reflexes of Proto-Algonquian vowels
             </h2>
@@ -64,7 +64,7 @@
             />
         @endif
 
-        @if ($model->phonoids->some(fn ($phoneme) => !$phoneme->is_archiphoneme && !$phoneme->parentsFromLanguage('PA')->isEmpty()))
+        @if ($phonoids->some(fn ($phoneme) => !$phoneme->is_archiphoneme && !$phoneme->parentsFromLanguage('PA')->isEmpty()))
             <h2 class="mt-4 py-2 text-lg">
                 Reflexes of Proto-Algonquian consonants
             </h2>
@@ -79,7 +79,7 @@
             />
         @endif
 
-        @if ($model->phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_archiphoneme)))
+        @if ($phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_archiphoneme)))
             <h2 class="mt-4 py-2 text-lg">
                 Reflexes of Proto-Algonquian archiphonemes
             </h2>

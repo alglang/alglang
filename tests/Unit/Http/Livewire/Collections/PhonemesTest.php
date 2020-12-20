@@ -11,6 +11,7 @@ use App\Models\Reflex;
 use App\Models\VowelBackness;
 use App\Models\VowelHeight;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class PhonemesTest extends TestCase
@@ -40,6 +41,26 @@ class PhonemesTest extends TestCase
              ->create(['language_code' => $this->pa, 'shape' => 'parentX']);
     }
 
+    public function navigateToPhonemesComponent(Language $language): TestableLivewire
+    {
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view->emit('tabChanged', 'phonemes');
+        return $view;
+    }
+
+    /** @test */
+    public function it_loads_when_the_tab_changes_to_phonemes(): void
+    {
+        $language = Language::factory()->create();
+        Phoneme::factory()->vowel()->create(['language_code' => $language, 'shape' => 'phonx']);
+        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view->assertDontSee('phonx');
+
+        $view->emit('tabChanged', 'phonemes');
+
+        $view->assertSee('phonx');
+    }
+
     /** @test */
     public function it_shows_vowels()
     {
@@ -47,7 +68,7 @@ class PhonemesTest extends TestCase
 
         Phoneme::factory()->vowel()->create(['language_code' => $language, 'shape' => 'phonx']);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Vowel inventory', 'phonx']);
     }
@@ -58,7 +79,7 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
         $this->assertEquals(0, $language->vowels()->count());
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Vowel inventory');
     }
@@ -69,7 +90,7 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
         Phoneme::factory()->vowel(['is_archiphoneme' => true])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Vowel inventory');
     }
@@ -81,7 +102,7 @@ class PhonemesTest extends TestCase
 
         Phoneme::factory()->consonant()->create(['language_code' => $language, 'shape' => 'phonx']);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Consonant inventory', 'phonx']);
     }
@@ -92,7 +113,7 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
         $this->assertEquals(0, $language->consonants()->count());
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Consonant inventory');
     }
@@ -103,7 +124,7 @@ class PhonemesTest extends TestCase
         $language = Language::factory()->create();
         Phoneme::factory()->consonant(['is_archiphoneme' => true])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Consonant inventory');
     }
@@ -138,7 +159,7 @@ class PhonemesTest extends TestCase
             ])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['frontest', 'midfront', 'midback', 'backest']);
     }
@@ -173,7 +194,7 @@ class PhonemesTest extends TestCase
             ])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['highest', 'midhigh', 'midlow', 'lowest']);
     }
@@ -208,7 +229,7 @@ class PhonemesTest extends TestCase
             ])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['MANNER3', 'MANNER1', 'MANNER4', 'MANNER2']);
     }
@@ -243,7 +264,7 @@ class PhonemesTest extends TestCase
             ])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['PLACE3', 'PLACE1', 'PLACE4', 'PLACE2']);
     }
@@ -262,7 +283,7 @@ class PhonemesTest extends TestCase
             'language_code' => $language,
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Archiphonemes', 'ARCH1', 'ARCH2']);
     }
@@ -282,7 +303,7 @@ class PhonemesTest extends TestCase
                               'language_code' => $language,
                           ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Archiphonemes', 'FOO_PLACE', 'ARCHY']);
     }
@@ -302,7 +323,7 @@ class PhonemesTest extends TestCase
                               'language_code' => $language,
                           ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Archiphonemes', 'FOO_MANNER', 'ARCHY']);
     }
@@ -322,7 +343,7 @@ class PhonemesTest extends TestCase
                               'language_code' => $language,
                           ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Archiphonemes', 'FOO_HEIGHT', 'ARCHY']);
     }
@@ -342,7 +363,7 @@ class PhonemesTest extends TestCase
                               'language_code' => $language,
                           ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Archiphonemes', 'FOO_BACKNESS', 'ARCHY']);
     }
@@ -352,7 +373,7 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Archiphonemes');
     }
@@ -367,7 +388,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => $phoneme
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian vowels', 'parentu', '>', 'childu'], false);
     }
@@ -382,7 +403,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => $phoneme
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSee($reflex->url);
     }
@@ -397,7 +418,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => $phoneme
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', 'childx'], false);
     }
@@ -412,7 +433,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => $cluster
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', 'childx'], false);
     }
@@ -427,7 +448,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => $nullPhoneme
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', '∅'], false);
     }
@@ -437,7 +458,7 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian vowels');
     }
@@ -447,7 +468,7 @@ class PhonemesTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian consonants');
     }
@@ -462,7 +483,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->vowel()->create(['language_code' => $language])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian vowels', 'parentu', '>', '?'], false);
     }
@@ -477,7 +498,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->consonant()->create(['language_code' => $language])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian consonants', 'parentx', '>', '?'], false);
     }
@@ -492,7 +513,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->vowel(['is_archiphoneme' => true])->create(['language_code' => $language])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian vowels');
     }
@@ -507,7 +528,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->consonant(['is_archiphoneme' => true])->create(['language_code' => $language])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian consonants');
     }
@@ -515,7 +536,7 @@ class PhonemesTest extends TestCase
     /** @test */
     public function proto_algonquian_reflexes_are_not_shown_on_the_proto_algonquian_page()
     {
-        $view = $this->livewire(Phonemes::class, ['model' => $this->pa]);
+        $view = $this->navigateToPhonemesComponent($this->pa);
 
         $view->assertDontSee('Reflexes');
     }
@@ -530,7 +551,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->create(['language_code' => $language, 'shape' => 'childX'])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian archiphonemes', 'parentX', '>', 'childX']);
     }
@@ -545,7 +566,7 @@ class PhonemesTest extends TestCase
             'reflex_id' => Phoneme::factory()->create(['language_code' => $language, 'shape' => 'childX'])
         ]);
 
-        $view = $this->livewire(Phonemes::class, ['model' => $language]);
+        $view = $this->navigateToPhonemesComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian archiphonemes');
     }
