@@ -8,6 +8,7 @@ use App\Models\Language;
 use App\Models\Phoneme;
 use App\Models\Reflex;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class ClustersTest extends TestCase
@@ -22,13 +23,33 @@ class ClustersTest extends TestCase
         $this->paCluster = Phoneme::factory()->cluster()->create(['language_code' => $this->pa, 'shape' => 'parentxy']);
     }
 
+    public function navigateToClustersComponent(Language $language): TestableLivewire
+    {
+        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view->emit('tabChanged', 'clusters');
+        return $view;
+    }
+
+    /** @test */
+    public function it_loads_data_when_the_tab_changes_to_clusters(): void
+    {
+        $language = Language::factory()->create();
+        Phoneme::factory()->cluster()->create(['language_code' => $language, 'shape' => 'clusterx']);
+        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view->assertDontSee('clusterx');
+
+        $view->emit('tabChanged', 'clusters');
+
+        $view->assertSee('clusterx');
+    }
+
     /** @test */
     public function it_shows_clusters()
     {
         $language = Language::factory()->create();
         Phoneme::factory()->cluster()->create(['language_code' => $language, 'shape' => 'clusterx']);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSee('clusterx');
     }
@@ -51,7 +72,7 @@ class ClustersTest extends TestCase
             'first_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 3, 'shape' => 'phonD'])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSeeInOrder(['phonC', 'phonA', 'phonD', 'phonB']);
     }
@@ -74,7 +95,7 @@ class ClustersTest extends TestCase
             'second_segment_id' => ConsonantFeatureSet::factory()->create(['order_key' => 3, 'shape' => 'phonD'])
         ])->create(['language_code' => $language]);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSeeInOrder(['phonC', 'phonA', 'phonD', 'phonB']);
     }
@@ -89,7 +110,7 @@ class ClustersTest extends TestCase
             'reflex_id' => $cluster
         ]);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian clusters', 'parentxy', '>', 'childxy'], false);
     }
@@ -104,7 +125,7 @@ class ClustersTest extends TestCase
             'reflex_id' => $consonant
         ]);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian clusters', 'parentxy', '>', 'childx'], false);
     }
@@ -114,7 +135,7 @@ class ClustersTest extends TestCase
     {
         $language = Language::factory()->create();
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertDontSee('Reflexes of Proto-Algonquian clusters');
     }
@@ -129,7 +150,7 @@ class ClustersTest extends TestCase
             'reflex_id' => Phoneme::factory()->cluster()->create(['language_code' => $language])
         ]);
 
-        $view = $this->livewire(Clusters::class, ['model' => $language]);
+        $view = $this->navigateToClustersComponent($language);
 
         $view->assertSeeInOrder(['Reflexes of Proto-Algonquian clusters', 'parentxy', '>', '?'], false);
     }
@@ -137,7 +158,7 @@ class ClustersTest extends TestCase
     /** @test */
     public function proto_algonquian_reflexes_are_not_shown_on_the_proto_algonquian_page()
     {
-        $view = $this->livewire(Clusters::class, ['model' => $this->pa]);
+        $view = $this->navigateToClustersComponent($this->pa);
 
         $view->assertDontSee('Reflexes');
     }
