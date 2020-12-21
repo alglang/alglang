@@ -64,7 +64,7 @@ class Phonemes extends TabComponent
         }
     }
 
-    public function render(): View
+    public function renderTab(): View
     {
         return view('livewire.collections.phonemes');
     }

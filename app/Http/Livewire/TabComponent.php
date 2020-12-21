@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\View\View;
 
 abstract class TabComponent extends Component
 {
@@ -23,14 +24,34 @@ abstract class TabComponent extends Component
         }
     }
 
-    protected function getTabName(): string
+    /**
+     * @return string|View
+     */
+    public function render()
+    {
+        if (!$this->tabLoaded) {
+            return <<<'blade'
+<div>
+    @include('components.loading-spinner')
+</div>
+blade;
+        }
+
+        return $this->renderTab();
+    }
+
+    public function getTabName(): string
     {
         if (!isset($this->tabName)) {
-            throw new \Exception("\$tabName must be defined in children of TabComponent.");
+            throw new \Exception('$tabName must be defined in children of TabComponent.');
         }
 
         return $this->tabName;
     }
 
+    /**
+     * @return string|View
+     */
+    abstract public function renderTab();
     abstract public function loadData(): void;
 }
