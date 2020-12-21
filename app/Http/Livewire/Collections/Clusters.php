@@ -3,11 +3,11 @@
 namespace App\Http\Livewire\Collections;
 
 use App\Models\Language;
+use App\Http\Livewire\TabComponent;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Component;
 
-class Clusters extends Component
+class Clusters extends TabComponent
 {
     public Language $model;
 
@@ -17,34 +17,27 @@ class Clusters extends Component
     /** @var Collection */
     public $paClusters;
 
-    public bool $loaded = false;
-
     /** @var array */
     protected $listeners = [
         'tabChanged'
     ];
+
+    protected string $tabName = 'clusters';
 
     public function mount(): void
     {
         $this->clusters = collect();
     }
 
-    public function tabChanged(string $tab): void
+    public function loadData(): void
     {
-        if ($tab === 'clusters' && !$this->loaded) {
-            $this->clusters = $this->model->clusters;
+        $this->clusters = $this->model->clusters;
 
-            $paFound = false;
-
-            foreach ($this->model->phonoids as $phonoid) {
-                if (!$paFound && ($phonoid->is_cluster || $phonoid->is_consonant) && $phonoid->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_cluster)) {
-                    $this->paClusters = Language::find('PA')->clusters;
-                    $paFound = true;
-                }
+        foreach ($this->model->phonoids as $phonoid) {
+            if (($phonoid->is_cluster || $phonoid->is_consonant) && $phonoid->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_cluster)) {
+                $this->paClusters = Language::find('PA')->clusters;
+                break;
             }
-
-            $this->loaded = true;
-
         }
     }
 

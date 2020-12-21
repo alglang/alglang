@@ -2,12 +2,12 @@
 
 namespace App\Http\Livewire\Collections;
 
+use App\Http\Livewire\TabComponent;
 use App\Models\Language;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Component;
 
-class Phonemes extends Component
+class Phonemes extends TabComponent
 {
     /** @var Language */
     public $model;
@@ -30,12 +30,7 @@ class Phonemes extends Component
     /** @var Collection */
     public $paArchiphonemes;
 
-    public bool $loaded = false;
-
-    /** @var array */
-    protected $listeners = [
-        'tabChanged'
-    ];
+    protected string $tabName = 'phonemes';
 
     public function mount(): void
     {
@@ -44,32 +39,28 @@ class Phonemes extends Component
         $this->archiphonemes = collect();
     }
 
-    public function tabChanged(string $tab): void
+    public function loadData(): void
     {
-        if ($tab === 'phonemes' && !$this->loaded) {
-            $phonoids = $this->model->phonoids;
+        $phonoids = $this->model->phonoids;
 
-            $this->archiphonemes = $phonoids->where('is_archiphoneme', true);
-            $this->consonants = $this->model->consonants->where('is_archiphoneme', false);
-            $this->vowels = $this->model->vowels->where('is_archiphoneme', false);
+        $this->archiphonemes = $phonoids->where('is_archiphoneme', true);
+        $this->consonants = $this->model->consonants->where('is_archiphoneme', false);
+        $this->vowels = $this->model->vowels->where('is_archiphoneme', false);
 
-            if ($this->model->code !== 'PA') {
-                $pa = Language::find('PA');
+        if ($this->model->code !== 'PA') {
+            $pa = Language::find('PA');
 
-                if ($this->vowels->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty())) {
-                    $this->paVowels = $pa->vowels->where('is_archiphoneme', false);
-                }
-
-                if ($phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_consonant && !$parent->is_archiphoneme))) {
-                    $this->paConsonants = $pa->consonants->where('is_archiphoneme', false);
-                }
-
-                if ($phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_archiphoneme))) {
-                    $this->paArchiphonemes = $pa->phonemes->where('is_archiphoneme', true);
-                }
+            if ($this->vowels->some(fn ($phoneme) => !$phoneme->parentsFromLanguage('PA')->isEmpty())) {
+                $this->paVowels = $pa->vowels->where('is_archiphoneme', false);
             }
 
-            $this->loaded = true;
+            if ($phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_consonant && !$parent->is_archiphoneme))) {
+                $this->paConsonants = $pa->consonants->where('is_archiphoneme', false);
+            }
+
+            if ($phonoids->some(fn ($phoneme) => $phoneme->parentsFromLanguage('PA')->some(fn ($parent) => $parent->is_archiphoneme))) {
+                $this->paArchiphonemes = $pa->phonemes->where('is_archiphoneme', true);
+            }
         }
     }
 
