@@ -28,7 +28,9 @@ class Examples extends CollectionComponent
     ];
 
     /** @var array */
-    protected $listeners = ['resize'];
+    protected $listeners = ['tabChanged', 'resize'];
+
+    protected string $tabName = 'examples';
 
     /**
      * @return Builder|Relation
@@ -43,7 +45,7 @@ class Examples extends CollectionComponent
         $this->resetPage();
     }
 
-    public function render(): View
+    public function renderTab(): View
     {
         return view('livewire.collections.examples');
     }

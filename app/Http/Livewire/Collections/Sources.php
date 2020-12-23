@@ -20,7 +20,9 @@ class Sources extends CollectionComponent
     public $model;
 
     /** @var array */
-    protected $listeners = ['resize'];
+    protected $listeners = ['tabChanged', 'resize'];
+
+    protected string $tabName = 'sources';
 
     protected static $sizes = [
         'xs' => 20,
@@ -39,7 +41,7 @@ class Sources extends CollectionComponent
         return $query->where(DB::raw('CONCAT(author, " ", year)'), 'LIKE', "%{$this->filter}%");
     }
 
-    public function render(): \Illuminate\View\View
+    public function renderTab(): \Illuminate\View\View
     {
         return view('livewire.collections.sources');
     }

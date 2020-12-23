@@ -14,7 +14,9 @@ class Morphemes extends CollectionComponent
     public $model;
 
     /** @var array */
-    protected $listeners = ['resize'];
+    protected $listeners = ['tabChanged', 'resize'];
+
+    protected string $tabName = 'morphemes';
 
     protected static $sizes = [
         'xs' => 10,
@@ -29,7 +31,7 @@ class Morphemes extends CollectionComponent
         return $this->model->morphemes();
     }
 
-    public function render(): View
+    public function renderTab(): View
     {
         return view('livewire.collections.morphemes');
     }

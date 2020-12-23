@@ -27,8 +27,10 @@ class NominalForms extends CollectionComponent
         'xl' => 48
     ];
 
+    protected string $tabName = 'nominal_forms';
+
     /** @var array */
-    protected $listeners = ['resize'];
+    protected $listeners = ['tabChanged', 'resize'];
 
     protected function query(): Collection
     {
@@ -48,7 +50,7 @@ class NominalForms extends CollectionComponent
         $this->page = 0;
     }
 
-    public function render(): View
+    public function renderTab(): View
     {
         return view('livewire.collections.nominal-forms');
     }
