@@ -62,6 +62,7 @@ class VerbForm extends Form
     |
     */
 
+    /** @param Builder<VerbForm> $query */
     public function scopeOrderByFeatures(Builder $query): Builder
     {
         if (!queryHasJoin($query, 'verb_structures')) {
