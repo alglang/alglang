@@ -4,6 +4,7 @@
     </h2>
 
     <x-phoneme-table
+        class="cluster-inventory"
         :items="$clusters"
         col-key="features.secondSegment"
         row-key="features.firstSegment"
