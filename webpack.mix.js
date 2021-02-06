@@ -5,8 +5,6 @@ const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
 const fontDisplay = require('postcss-font-display');
 
-require('laravel-mix-merge-manifest');
-
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -18,20 +16,13 @@ require('laravel-mix-merge-manifest');
  |
  */
 
-if (process.env.NODE_ENV === 'testing') {
-  Mix.manifest.name = 'mix-manifest.testing.json';
-  mix.sourceMaps();
-}
+mix.js('resources/js/app.js', 'public/js').vue();
 
-mix.js('resources/js/app.js', 'public/js');
-
-if (process.env.NODE_ENV !== 'testing') {
-  mix.extract([
-    'alpinejs',
-    'leaflet',
-    'vue'
-  ]);
-}
+mix.extract([
+  'alpinejs',
+  'leaflet',
+  'vue'
+]);
 
 mix.postCss('resources/css/app.css', 'public/css', [
   autoprefixer(),

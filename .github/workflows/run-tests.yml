@@ -106,10 +106,10 @@ jobs:
         run: yarn lint
 
       # Run tests
-      - name: Execute mocha tests
+      - name: Execute JavaScript tests
         run: |
           mkdir coverage
-          yarn test
+          yarn test --coverage
 
       - name: Execute phpunit tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
@@ -146,7 +146,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml,./coverage/cobertura-coverage.xml
+          files: ./coverage.xml,./coverage/clover.xml
           fail_ci_if_error: false
 
       - name: Store Log Artifacts
