@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/vue';
+import { render } from '@testing-library/vue';
 import userEvent from '@testing-library/user-event';
 
 import {
@@ -200,7 +200,7 @@ describe('StructureStructure.vue', function () {
           })
         ]
       };
-      const { getByText, getByLabelText, queryByTestId } = renderStructure(props);
+      const { getByLabelText, queryByTestId } = renderStructure(props);
 
       await userEvent.selectOptions(getByLabelText('Secondary object'), '1s"');
       await userEvent.selectOptions(getByLabelText('Secondary object'), 'None');

@@ -12,6 +12,7 @@
     "sourceType": "module"
   },
   "plugins": [
+    "jest",
     "vue"
   ],
   "rules": {
