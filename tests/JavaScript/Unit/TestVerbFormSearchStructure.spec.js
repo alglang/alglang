@@ -1,4 +1,5 @@
 import { fireEvent, render } from '@testing-library/vue';
+import userEvent from '@testing-library/user-event';
 
 import {
   featureFactory,
@@ -122,11 +123,7 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Subject'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Subject'), '1s"');
 
       expect(getByTestId('subject-person')).toHaveValue('1');
       expect(getByTestId('subject-number')).toHaveValue('1');
@@ -146,11 +143,7 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Primary object'), '1s"');
 
       expect(getByTestId('primary-object-person')).toHaveValue('1');
       expect(getByTestId('primary-object-number')).toHaveValue('1');
@@ -170,16 +163,8 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, queryByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: ''
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Primary object'), '1s"');
+      await userEvent.selectOptions(getByLabelText('Primary object'), 'None');
 
       expect(queryByTestId('primary-object-disabled')).toBeInTheDocument();
     });
@@ -197,11 +182,7 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Secondary object'), '1s"');
 
       expect(getByTestId('secondary-object-person')).toHaveValue('1');
       expect(getByTestId('secondary-object-number')).toHaveValue('1');
@@ -219,18 +200,10 @@ describe('StructureStructure.vue', function () {
           })
         ]
       };
-      const { getByLabelText, queryByTestId } = renderStructure(props);
+      const { getByText, getByLabelText, queryByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: ''
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Secondary object'), '1s"');
+      await userEvent.selectOptions(getByLabelText('Secondary object'), 'None');
 
       expect(queryByTestId('secondary-object-disabled')).toBeInTheDocument();
     });
