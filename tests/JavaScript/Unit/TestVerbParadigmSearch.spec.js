@@ -1,6 +1,4 @@
-import '../setup';
 import { render } from '@testing-library/vue';
-import { expect } from 'chai';
 
 import {
   verbClassFactory,
@@ -29,9 +27,9 @@ describe('VerbParadigmSearch.vue', function () {
       };
       const { getByLabelText } = renderVerbParadigmSearch(props);
 
-      expect(getByLabelText('Language')).to.have.length(2);
-      expect(getByLabelText('Language')).to.contain.text('Foo');
-      expect(getByLabelText('Language')).to.contain.text('Bar');
+      expect(getByLabelText('Language').children).toHaveLength(2);
+      expect(getByLabelText('Language')).toHaveTextContent('Foo');
+      expect(getByLabelText('Language')).toHaveTextContent('Bar');
     });
 
     it('shows its classes', function () {
@@ -43,9 +41,9 @@ describe('VerbParadigmSearch.vue', function () {
       };
       const { getByLabelText } = renderVerbParadigmSearch(props);
 
-      expect(getByLabelText('Class')).to.have.length(2);
-      expect(getByLabelText('Class')).to.contain.text('Foo');
-      expect(getByLabelText('Class')).to.contain.text('Bar');
+      expect(getByLabelText('Class').children).toHaveLength(2);
+      expect(getByLabelText('Class')).toHaveTextContent('Foo');
+      expect(getByLabelText('Class')).toHaveTextContent('Bar');
     });
 
     it('shows its orders', function () {
@@ -57,9 +55,9 @@ describe('VerbParadigmSearch.vue', function () {
       };
       const { getByLabelText } = renderVerbParadigmSearch(props);
 
-      expect(getByLabelText('Order')).to.have.length(2);
-      expect(getByLabelText('Order')).to.contain.text('Foo');
-      expect(getByLabelText('Order')).to.contain.text('Bar');
+      expect(getByLabelText('Order').children).toHaveLength(2);
+      expect(getByLabelText('Order')).toHaveTextContent('Foo');
+      expect(getByLabelText('Order')).toHaveTextContent('Bar');
     });
   });
 });
