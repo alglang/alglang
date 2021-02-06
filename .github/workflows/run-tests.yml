@@ -99,8 +99,8 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
       # Run linters
-      - name: Run static analysis with PHPStan
-        run: vendor/bin/phpstan analyze
+      - name: Lint PHP
+        run: composer lint
 
       - name: Run yarn linter
         run: yarn lint
