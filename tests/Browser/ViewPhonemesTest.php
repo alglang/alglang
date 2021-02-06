@@ -32,6 +32,7 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
+                    ->waitUntilMissing('[aria-label="loading"]')
                     ->assertPresent('.vowel-inventory')
                     ->with('.vowel-inventory', function ($table) {
                         $table->assertPresent('[data-backness="front"][data-height="high"]');
@@ -56,6 +57,7 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
+                    ->waitUntilMissing('[aria-label="loading"]')
                     ->assertSee('ARCHY')
                     ->assertMissing('.vowel-inventory');
         });
@@ -77,6 +79,7 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
+                    ->waitUntilMissing('[aria-label="loading"]')
                     ->assertPresent('.consonant-inventory')
                     ->with('.consonant-inventory', function ($table) {
                         $table->assertPresent('[data-place="velar"][data-manner="fricative"]');
@@ -101,6 +104,7 @@ class ViewPhonemesTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Phonemes')
+                    ->waitUntilMissing('[aria-label="loading"]')
                     ->assertSee('ARCH')
                     ->assertMissing('consonant-inventory');
         });
