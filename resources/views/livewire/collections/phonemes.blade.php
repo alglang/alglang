@@ -28,7 +28,7 @@
             Archiphonemes
         </h2>
 
-        <table>
+        <table class="archiphoneme-inventory">
             <tbody class="bg-gray-100">
                 @foreach ($archiphonemes as $archiphoneme)
                     <tr>

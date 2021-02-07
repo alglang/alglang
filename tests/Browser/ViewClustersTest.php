@@ -29,8 +29,7 @@ class ViewClustersTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($language) {
             $browser->visit($language->url)
                     ->clickLink('Clusters')
-                    ->waitUntilMissing('[aria-label="loading"]')
-                    ->assertPresent('.cluster-inventory')
+                    ->waitFor('.cluster-inventory')
                     ->with('.cluster-inventory', function ($table) {
                         $table->assertPresent('[data-first-segment="h"][data-second-segment="k"]');
                         $this->assertEquals('foo', $table->text('[data-first-segment="h"][data-second-segment="k"]'));
