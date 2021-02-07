@@ -163,6 +163,13 @@ jobs:
           name: Screenshots
           path: ./tests/Browser/screenshots
 
+      - name: Store Source Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Source
+          path: ./tests/Browser/source
+
       - name: Store Console Artifacts
         uses: actions/upload-artifact@v1
         if: failure()
