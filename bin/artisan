@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 args="$@"
-command="php artisan $args"
+command="php artisan $@"
 echo "$command"
-docker exec -it alglang bash -c "sudo -u devuser /bin/bash -c \"$command\""
+docker exec -it alglang bash -c "$command"

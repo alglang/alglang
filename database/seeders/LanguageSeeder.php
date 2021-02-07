@@ -44,6 +44,66 @@ class LanguageSeeder extends Seeder
                 'reconstructed' => false,
                 'position' => '{"lat":46.271362,"lng":-93.392167}',
                 'group_name' => 'Algonquian'
+            ],
+            [
+                'name' => 'Proto-Arapaho-Gros Ventre',
+                'alternate_names' => null,
+                'parent_code' => 'PA',
+                'code' => 'PAGV',
+                'iso' => null,
+                'reconstructed' => true,
+                'position' => null,
+                'group_name' => 'Arapahoan'
+            ],
+            [
+                'name' => 'Arapaho',
+                'alternate_names' => null,
+                'parent_code' => 'PAGV',
+                'code' => 'Ar',
+                'iso' => 'arp',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Arapahoan'
+            ],
+            [
+                'name' => 'Cheyenne',
+                'alternate_names' => '["Tsėhésenėstsestȯtse"]',
+                'parent_code' => 'PA',
+                'code' => 'Ch',
+                'iso' => 'chy',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Plains'
+            ],
+            [
+                'name' => 'Proto-Easter Algonquian',
+                'alternate_names' => null,
+                'parent_code' => 'PA',
+                'code' => 'PEA',
+                'iso' => null,
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Eastern'
+            ],
+            [
+                'name' => 'Common Delaware',
+                'alternate_names' => null,
+                'parent_code' => 'PEA',
+                'code' => 'Del',
+                'iso' => null,
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Delaware'
+            ],
+            [
+                'name' => 'Munsee',
+                'alternate_names' => '["Munsee Delaware", "Lenape"]',
+                'parent_code' => 'Del',
+                'code' => 'Mun',
+                'iso' => 'umu',
+                'reconstructed' => false,
+                'position' => null,
+                'group_name' => 'Delaware'
             ]
         ]);
     }

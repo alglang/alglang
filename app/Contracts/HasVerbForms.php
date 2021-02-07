@@ -3,7 +3,8 @@
 namespace App\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * @property Collection $verbForms
@@ -11,6 +12,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 interface HasVerbForms
 {
-    public function verbForms(): Relation;
-    public function verbGaps(): Relation;
+    /** @return HasMany|MorphToMany */
+    public function verbForms();
+
+    /** @return HasMany|MorphToMany */
+    public function verbGaps();
 }

@@ -28,7 +28,9 @@ class VerbForms extends CollectionComponent
     ];
 
     /** @var array */
-    protected $listeners = ['resize'];
+    protected $listeners = ['tabChanged', 'resize'];
+
+    protected string $tabName = 'verb_forms';
 
     /**
      * @return Builder|Relation|Collection
@@ -51,7 +53,7 @@ class VerbForms extends CollectionComponent
         $this->page = 0;
     }
 
-    public function render(): View
+    public function renderTab(): View
     {
         return view('livewire.collections.verb-forms');
     }

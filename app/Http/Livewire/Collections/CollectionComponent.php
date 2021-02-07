@@ -2,16 +2,18 @@
 
 namespace App\Http\Livewire\Collections;
 
+use App\Http\Livewire\TabComponent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Livewire\Component;
 
 /**
  * @property bool $hasMorePages
  */
-abstract class CollectionComponent extends Component
+abstract class CollectionComponent extends TabComponent
 {
     use HasSlug;
 
@@ -25,14 +27,16 @@ abstract class CollectionComponent extends Component
     protected static $sizes;
 
     /**
-     * @return Builder|Relation|Collection
+     * @return Builder|BelongsToMany|HasMany|MorphToMany|Collection
      */
     abstract protected function query();
 
-    abstract public function render(): View;
-
     public function getItemsProperty(): Collection
     {
+        if (!$this->tabLoaded) {
+            return collect();
+        }
+
         $items = $this->query()->skip($this->page * $this->perPage())->take($this->perPage());
 
         if ($items instanceof Collection) {
@@ -79,4 +83,6 @@ abstract class CollectionComponent extends Component
     {
         $this->page = 0;
     }
+
+    public function loadData(): void {}
 }

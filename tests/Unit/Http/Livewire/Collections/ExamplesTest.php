@@ -8,6 +8,7 @@ use App\Models\Form;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class ExamplesTest extends TestCase
@@ -28,12 +29,31 @@ class ExamplesTest extends TestCase
         }
     }
 
+    protected function navigateToExamplesComponent(array $attrs): TestableLivewire
+    {
+        $view = $this->livewire(Examples::class, $attrs);
+        $view->emit('tabChanged', 'examples');
+        return $view;
+    }
+
+    /** @test */
+    public function it_loads_when_the_tab_changes_to_examples(): void
+    {
+        $form = Form::factory()->hasExamples(['shape' => 'foobar'])->create();
+        $view = $this->livewire(Examples::class, ['model' => $form]);
+        $view->assertDontSee('foobar');
+
+        $view->emit('tabChanged', 'examples');
+
+        $view->assertSee('foobar');
+    }
+
     /** @test */
     public function it_shows_examples_of_a_form()
     {
         $form = Form::factory()->hasExamples(2)->create();
 
-        $view = $this->livewire(Examples::class, ['model' => $form]);
+        $view = $this->navigateToExamplesComponent(['model' => $form]);
 
         foreach ($form->examples as $example) {
             $view->assertSeeHtml($example->formatted_shape);
@@ -46,7 +66,7 @@ class ExamplesTest extends TestCase
         $form = Form::factory()->create();
         $example1 = Example::factory()->create(['shape' => 'fooexample', 'form_id' => $form]);
         $example2 = Example::factory()->create(['shape' => 'barexample', 'form_id' => $form]);
-        $view = $this->livewire(Examples::class, ['model' => $form]);
+        $view = $this->navigateToExamplesComponent(['model' => $form]);
 
         $view->set('filter', 'fooexam');
 
@@ -58,7 +78,7 @@ class ExamplesTest extends TestCase
     public function it_resets_the_page_when_a_filter_is_applied()
     {
         $form = Form::factory()->create();
-        $view = $this->livewire(Examples::class, ['model' => $form, 'page' => 2]);
+        $view = $this->navigateToExamplesComponent(['model' => $form, 'page' => 2]);
 
         $view->set('filter', 'fooexample');
 
@@ -69,7 +89,7 @@ class ExamplesTest extends TestCase
     public function it_shows_the_next_page()
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('sm') * 2)->create();
-        $view = $this->livewire(Examples::class, [
+        $view = $this->navigateToExamplesComponent([
             'model' => $form,
             'screenSize' => 'sm',
             'page' => 0
@@ -90,7 +110,7 @@ class ExamplesTest extends TestCase
     public function it_shows_the_previous_page()
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('sm') + 1)->create();
-        $view = $this->livewire(Examples::class, [
+        $view = $this->navigateToExamplesComponent([
             'model' => $form,
             'screenSize' => 'sm',
             'page' => 1
@@ -111,7 +131,7 @@ class ExamplesTest extends TestCase
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('sm'))->create();
-        $view = $this->livewire(Examples::class, [
+        $view = $this->navigateToExamplesComponent([
             'model' => $form,
             'screenSize' => 'sm'
         ]);
@@ -127,7 +147,7 @@ class ExamplesTest extends TestCase
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('sm'))->create();
         Example::factory()->create(['shape' => 'mxyzptlk', 'form_id' => $form]);
-        $view = $this->livewire(Examples::class, [
+        $view = $this->navigateToExamplesComponent([
             'model' => $form,
             'screenSize' => 'sm',
         ]);
@@ -146,7 +166,7 @@ class ExamplesTest extends TestCase
     {
         $form = Form::factory()->hasExamples(1)->create();
 
-        $view = $this->livewire(Examples::class, [
+        $view = $this->navigateToExamplesComponent([
             'model' => $form,
             'page' => 0
         ]);
@@ -164,7 +184,7 @@ class ExamplesTest extends TestCase
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('xl') + 1)->create();
 
         foreach (['sm', 'md', 'lg', 'xl'] as $size) {
-            $view = $this->livewire(Examples::class, ['model' => $form, 'screenSize' => $size]);
+            $view = $this->navigateToExamplesComponent(['model' => $form, 'screenSize' => $size]);
             $this->assertExamplesSliceInView($view, $form->examples, 0, Examples::maxSizeFor($size));
         }
     }
@@ -173,7 +193,7 @@ class ExamplesTest extends TestCase
     public function it_resizes()
     {
         $form = Form::factory()->hasExamples(Examples::maxSizeFor('md'))->create();
-        $view = $this->livewire(Examples::class, ['model' => $form, 'screenSize' => 'sm']);
+        $view = $this->navigateToExamplesComponent(['model' => $form, 'screenSize' => 'sm']);
         $this->assertExamplesSliceInView($view, $form->examples, 0, Examples::maxSizeFor('sm'));
 
         $view->emit('resize', 'md');

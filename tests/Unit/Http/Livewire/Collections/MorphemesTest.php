@@ -9,11 +9,19 @@ use App\Http\Livewire\Collections\Morphemes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class MorphemesTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function navigateToMorphemesComponent($attrs): TestableLivewire
+    {
+        $view = $this->livewire(Morphemes::class, $attrs);
+        $view->emit('tabChanged', 'morphemes');
+        return $view;
+    }
 
     protected function assertMorphemesSliceInView($view, $morphemes, $start, $end): void
     {
@@ -30,6 +38,18 @@ class MorphemesTest extends TestCase
     }
 
     /** @test */
+    public function it_loads_when_the_tab_changes_to_morphemes(): void
+    {
+        $language = Language::factory()->hasMorphemes(['shape' => 'foo-'])->create();
+        $view = $this->livewire(Morphemes::class, ['model' => $language]);
+        $view->assertDontSee('foo-');
+
+        $view->emit('tabChanged', 'morphemes');
+
+        $view->assertSee('foo-');
+    }
+
+    /** @test */
     public function it_shows_morphemes_from_a_language()
     {
         $language = Language::factory()->create();
@@ -42,7 +62,7 @@ class MorphemesTest extends TestCase
             'language_code' => $language
         ]);
 
-        $view = $this->livewire(Morphemes::class, ['model' => $language]);
+        $view = $this->navigateToMorphemesComponent(['model' => $language]);
 
         $view->assertSee('foo-');
         $view->assertSee('bar-');
@@ -58,7 +78,7 @@ class MorphemesTest extends TestCase
         $morpheme1->addSource($source);
         $morpheme2->addSource($source);
 
-        $view = $this->livewire(Morphemes::class, ['model' => $source]);
+        $view = $this->navigateToMorphemesComponent(['model' => $source]);
 
         $view->assertSee('foo-');
         $view->assertSee('bar-');
@@ -68,7 +88,7 @@ class MorphemesTest extends TestCase
     public function it_shows_the_next_page()
     {
         $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('sm') * 2)->create();
-        $view = $this->livewire(Morphemes::class, [
+        $view = $this->navigateToMorphemesComponent([
             'model' => $language,
             'screenSize' => 'sm'
         ]);
@@ -88,7 +108,7 @@ class MorphemesTest extends TestCase
     {
         $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('sm') + 1)->create();
 
-        $view = $this->livewire(Morphemes::class, [
+        $view = $this->navigateToMorphemesComponent([
             'model' => $language,
             'screenSize' => 'sm',
             'page' => 1
@@ -102,7 +122,7 @@ class MorphemesTest extends TestCase
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
         $language = Language::factory()->hasMorphemes(1)->create();
-        $view = $this->livewire(Morphemes::class, [
+        $view = $this->navigateToMorphemesComponent([
             'model' => $language,
             'screenSize' => 'sm',
         ]);
@@ -118,7 +138,7 @@ class MorphemesTest extends TestCase
     {
         $language = Language::factory()->hasMorphemes(1)->create();
 
-        $view = $this->livewire(Morphemes::class, [
+        $view = $this->navigateToMorphemesComponent([
             'model' => $language,
             'screenSize' => 'sm'
         ]);
@@ -138,7 +158,7 @@ class MorphemesTest extends TestCase
         $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('xl') + 1)->create();
 
         foreach (['sm', 'md', 'lg', 'xl'] as $size) {
-            $view = $this->livewire(Morphemes::class, ['model' => $language, 'screenSize' => $size]);
+            $view = $this->navigateToMorphemesComponent(['model' => $language, 'screenSize' => $size]);
             $this->assertMorphemesSliceInView($view, $language->morphemes, 0, Morphemes::maxSizeFor($size));
         }
     }
@@ -148,7 +168,7 @@ class MorphemesTest extends TestCase
     {
         $language = Language::factory()->hasMorphemes(Morphemes::maxSizeFor('md'))->create();
 
-        $view = $this->livewire(Morphemes::class, [
+        $view = $this->navigateToMorphemesComponent([
             'model' => $language,
             'screenSize' => 'sm'
         ]);

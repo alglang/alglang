@@ -11,7 +11,8 @@ use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Morpheme extends Model
 {
@@ -107,17 +108,17 @@ class Morpheme extends Model
     |
     */
 
-    public function language(): Relation
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class, 'language_code');
     }
 
-    public function slot(): Relation
+    public function slot(): BelongsTo
     {
         return $this->belongsTo(Slot::class, 'slot_abv', 'abv');
     }
 
-    public function forms(): Relation
+    public function forms(): HasManyThrough
     {
         return $this->hasManyThrough(
             Form::class,
@@ -129,12 +130,12 @@ class Morpheme extends Model
         )->where('language_code', $this->language_code)->distinct();
     }
 
-    public function verbForms(): Relation
+    public function verbForms(): HasManyThrough
     {
         return $this->forms()->where('structure_type', VerbStructure::class);
     }
 
-    public function nominalForms(): Relation
+    public function nominalForms(): HasManyThrough
     {
         return $this->forms()->where('structure_type', NominalStructure::class);
     }

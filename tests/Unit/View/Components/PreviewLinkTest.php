@@ -8,7 +8,7 @@ use Tests\TestCase;
 class PreviewLinkTest extends TestCase
 {
     /** @test */
-    public function it_renders_a_link()
+    public function it_renders_a_link_if_the_model_has_a_url()
     {
         $mockModel = (object)[
             'url' => '/foo'
@@ -20,6 +20,16 @@ class PreviewLinkTest extends TestCase
 
         $view->assertSee('href="/foo"', false);
         $view->assertSee('Bar');
+    }
+
+    /** @test */
+    public function it_does_not_render_a_link_if_the_model_does_not_have_a_url()
+    {
+        $mockModel = (object)['url' => ''];
+
+        $view = $this->blade('<x-preview-link :model="$mockModel">Bar</x-preview-link>', compact('mockModel'));
+
+        $view->assertDontSee('<a', false);
     }
 
     /** @test */

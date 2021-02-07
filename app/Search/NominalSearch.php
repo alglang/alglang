@@ -3,6 +3,7 @@
 namespace App\Search;
 
 use App\Models\NominalForm;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class NominalSearch extends ModelSearch
@@ -31,19 +32,22 @@ class NominalSearch extends ModelSearch
      */
     public function order(): self
     {
+        /** @var Builder<NominalForm> $query */
+        $query = $this->query;
+
         if (!queryHasJoin($this->query, 'nominal_structures')) {
-            $this->query->join('nominal_structures', 'nominal_structures.id', '=', 'forms.structure_id');
+            $query->join('nominal_structures', 'nominal_structures.id', '=', 'forms.structure_id');
         }
 
         if (!queryHasJoin($this->query, 'nominal_paradigms')) {
-            $this->query->join('nominal_paradigms', 'nominal_paradigms.id', '=', 'nominal_structures.paradigm_id');
+            $query->join('nominal_paradigms', 'nominal_paradigms.id', '=', 'nominal_structures.paradigm_id');
         }
 
         if (!queryHasJoin($this->query, 'nominal_paradigm_types')) {
-            $this->query->join('nominal_paradigm_types', 'nominal_paradigm_types.name', '=', 'nominal_paradigms.paradigm_type_name');
+            $query->join('nominal_paradigm_types', 'nominal_paradigm_types.name', '=', 'nominal_paradigms.paradigm_type_name');
         }
 
-        $this->query->orderByRaw(<<<SQL
+        $query->orderByRaw(<<<SQL
             CASE
                 WHEN nominal_paradigm_types.has_pronominal_feature = 1 AND nominal_paradigm_types.has_nominal_feature = 0 THEN 1
                 WHEN nominal_paradigm_types.has_pronominal_feature = 0 AND nominal_paradigm_types.has_nominal_feature = 1 THEN 2
@@ -52,8 +56,8 @@ class NominalSearch extends ModelSearch
             END,
             nominal_paradigms.name
         SQL);
-        $this->query->orderByFeatures();
-        $this->query->select('forms.*');
+        $query->orderByFeatures();
+        $query->select('forms.*');
         return $this;
     }
 }

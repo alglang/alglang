@@ -7,6 +7,8 @@ $pages = [
     ['hash' => 'nominal_paradigms', 'count' => $source->nominal_paradigms_count],
     ['hash' => 'verb_forms', 'count' => $source->verb_forms_and_gaps_count],
     ['hash' => 'nominal_forms', 'count' => $source->nominal_forms_and_gaps_count],
+    ['hash' => 'phonemes', 'count' => $source->phonemes_count],
+    ['hash' => 'reflexes', 'count' => $source->reflexes_count],
     ['hash' => 'examples', 'count' => $source->examples_count],
     ['hash' => 'rules', 'count' => $source->rules_count],
 ];
@@ -52,6 +54,30 @@ $pages = [
 
         @slot('morphemes')
             <livewire:collections.morphemes :model="$source" />
+        @endslot
+
+        @slot('phonemes')
+            <ul>
+                @foreach ($source->phonemes as $phoneme)
+                <li>
+                    <x-preview-link :model="$phoneme">
+                        {!! $phoneme->formatted_name !!} ({{ $phoneme->language->name }})
+                    </x-preview-link>
+                </li>
+                @endforeach
+            </ul>
+        @endslot
+
+        @slot('reflexes')
+            <ul>
+                @foreach ($source->reflexes as $reflex)
+                <li>
+                    <x-preview-link :model="$reflex">
+                        {!! $reflex->formatted_name !!}
+                    </x-preview-link>
+                </li>
+                @endforeach
+            </ul>
         @endslot
 
         @slot('nominal_paradigms')

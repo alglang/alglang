@@ -1,6 +1,4 @@
-import '../setup';
 import { render } from '@testing-library/vue';
-import { expect } from 'chai';
 
 import { languageFactory, nominalParadigmTypeFactory } from '../factory';
 import NominalParadigmSearch from '../../../resources/js/components/NominalParadigmSearch';
@@ -24,9 +22,9 @@ describe('NominalParadigmSearch.vue', function () {
       };
       const { getByLabelText } = renderNominalParadigmSearch(props);
 
-      expect(getByLabelText('Languages')).to.have.length(2);
-      expect(getByLabelText('Languages')).to.contain.text('Foo');
-      expect(getByLabelText('Languages')).to.contain.text('Bar');
+      expect(getByLabelText('Languages').children).toHaveLength(2);
+      expect(getByLabelText('Languages')).toHaveTextContent('Foo');
+      expect(getByLabelText('Languages')).toHaveTextContent('Bar');
     });
 
     it('shows its paradigm types', function () {
@@ -38,9 +36,9 @@ describe('NominalParadigmSearch.vue', function () {
       };
       const { getByLabelText } = renderNominalParadigmSearch(props);
 
-      expect(getByLabelText('Paradigms')).to.have.length(2);
-      expect(getByLabelText('Paradigms')).to.contain.text('Foo');
-      expect(getByLabelText('Paradigms')).to.contain.text('Bar');
+      expect(getByLabelText('Paradigms').children).toHaveLength(2);
+      expect(getByLabelText('Paradigms')).toHaveTextContent('Foo');
+      expect(getByLabelText('Paradigms')).toHaveTextContent('Bar');
     });
   });
 });

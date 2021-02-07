@@ -5,6 +5,7 @@ namespace Tests;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Support\Collection;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -51,5 +52,22 @@ abstract class DuskTestCase extends BaseTestCase
                 $options
             )
         );
+    }
+
+    /**
+     * @param Collection $browsers
+     */
+    protected function captureFailuresFor($browsers)
+    {
+        $browsers->each(function ($browser, $key) {
+            if (property_exists($browser, 'fitOnFailure') && $browser->fitOnFailure) {
+                $browser->fitContent();
+            }
+
+            $name = $this->getCallerName();
+
+            $browser->screenshot('failure-'.$name.'-'.$key);
+            $browser->storeSource('failure-'.$name.'-'.$key);
+        });
     }
 }

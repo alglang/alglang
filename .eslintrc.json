@@ -1,11 +1,10 @@
 {
   "env": {
     "es2020": true,
-    "mocha": true
+    "jest/globals": true
   },
   "extends": [
     "plugin:vue/recommended",
-    "plugin:mocha/recommended",
     "airbnb-base"
   ],
   "parserOptions": {
@@ -13,8 +12,7 @@
     "sourceType": "module"
   },
   "plugins": [
-    "chai-friendly",
-    "mocha",
+    "jest",
     "vue"
   ],
   "rules": {
@@ -27,7 +25,6 @@
     "no-unused-vars": ["error", {
       "argsIgnorePattern": "^_"
     }],
-    "chai-friendly/no-unused-expressions": 2,
     "vue/no-v-html": "off",
     "vue/html-self-closing": [
       "warn", {

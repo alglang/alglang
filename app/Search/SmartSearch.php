@@ -29,9 +29,9 @@ class SmartSearch
 
     protected function searchForLanguage(string $query): ?string
     {
-        $language = Language::where('code', 'LIKE', $query)
-            ->orWhere('name', 'LIKE', $query)
-            ->orWhere('alternate_names', 'LIKE', "%\"{$query}\"%")
+        $language = Language::whereRaw("code COLLATE utf8mb4_unicode_ci = ?", [$query])
+            ->orWhereRaw("name COLLATE utf8mb4_unicode_ci = ?", [$query])
+            ->orWhereRaw("alternate_names COLLATE utf8mb4_unicode_ci LIKE ?", ["%\"$query\"%"])
             ->first();
 
         return $language ? $language->url : null;
@@ -39,7 +39,7 @@ class SmartSearch
 
     protected function searchForGroup(string $query): ?string
     {
-        $group = Group::where('name', 'LIKE', $query)->first();
+        $group = Group::whereRaw("name COLLATE utf8mb4_unicode_ci = ?", [$query])->first();
 
         return $group ? $group->url : null;
     }

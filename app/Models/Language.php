@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\HasMorphemes;
+use App\Contracts\HasPhonemes;
 use App\Contracts\HasSources;
 use App\Contracts\HasVerbForms;
 use App\Contracts\HasNominalForms;
@@ -11,10 +12,10 @@ use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
-class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms
+class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms, HasPhonemes
 {
     use AggregatesSources;
     use HasFactory;
@@ -94,7 +95,7 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
     |
     */
 
-    public function group(): Relation
+    public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);
     }
@@ -104,44 +105,69 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(Morpheme::class);
     }
 
-    public function forms(): Relation
+    public function forms(): HasMany
     {
         return $this->hasMany(Form::class);
     }
 
-    public function verbForms(): Relation
+    public function verbForms(): HasMany
     {
         return $this->hasMany(VerbForm::class);
     }
 
-    public function nominalForms(): Relation
+    public function nominalForms(): HasMany
     {
         return $this->hasMany(NominalForm::class);
     }
 
-    public function gaps(): Relation
+    public function gaps(): HasMany
     {
         return $this->hasMany(FormGap::class);
     }
 
-    public function verbGaps(): Relation
+    public function verbGaps(): HasMany
     {
         return $this->hasMany(VerbGap::class);
     }
 
-    public function nominalGaps(): Relation
+    public function nominalGaps(): HasMany
     {
         return $this->hasMany(NominalGap::class);
     }
 
-    public function nominalParadigms(): Relation
+    public function nominalParadigms(): HasMany
     {
         return $this->hasMany(NominalParadigm::class);
     }
 
-    public function rules(): Relation
+    public function rules(): HasMany
     {
         return $this->hasMany(Rule::class);
+    }
+
+    public function phonoids(): HasMany
+    {
+        return $this->hasMany(Phoneme::class);
+    }
+
+    public function phonemes(): HasMany
+    {
+        return $this->phonoids()->whereIn('featureable_type', [VowelFeatureSet::class, ConsonantFeatureSet::class]);
+    }
+
+    public function vowels(): HasMany
+    {
+        return $this->phonoids()->where('featureable_type', VowelFeatureSet::class);
+    }
+
+    public function consonants(): HasMany
+    {
+        return $this->phonoids()->where('featureable_type', ConsonantFeatureSet::class);
+    }
+
+    public function clusters(): HasMany
+    {
+        return $this->phonoids()->where('featureable_type', ClusterFeatureSet::class);
     }
 
     /*

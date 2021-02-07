@@ -8,6 +8,7 @@ use App\Models\Language;
 use App\Models\Morpheme;
 use App\Models\NominalForm;
 use App\Models\NominalParadigm;
+use App\Models\Phoneme;
 use App\Models\Source;
 use App\Models\User;
 use App\Models\VerbForm;
@@ -117,6 +118,36 @@ class ViewLanguageTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('language', $language);
         $this->assertEquals(1, $response['language']->sources_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_phoneme_count()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->consonant()->create(['language_code' => $language]);
+        Phoneme::factory()->vowel()->create(['language_code' => $language]);
+        Phoneme::factory()->cluster()->create(['language_code' => $language]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(2, $response['language']->phonemes_count);
+    }
+
+    /** @test */
+    public function the_language_comes_with_its_cluster_count()
+    {
+        $language = Language::factory()->create();
+
+        Phoneme::factory()->cluster()->create(['language_code' => $language]);
+
+        $response = $this->get($language->url);
+
+        $response->assertOk();
+        $response->assertViewHas('language', $language);
+        $this->assertEquals(1, $response['language']->clusters_count);
     }
 
     /** @test */

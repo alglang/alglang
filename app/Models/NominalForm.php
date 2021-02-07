@@ -57,6 +57,7 @@ class NominalForm extends Form
     |
     */
 
+    /** @param Builder<NominalForm> $query */
     public function scopeOrderByFeatures(Builder $query): Builder
     {
         if (!queryHasJoin($query, 'nominal_structures')) {

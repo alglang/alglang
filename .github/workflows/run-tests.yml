@@ -39,6 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
+          tools: composer:v2
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: xdebug
 
@@ -98,17 +99,17 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
       # Run linters
-      - name: Run static analysis with PHPStan
-        run: vendor/bin/phpstan analyze
+      - name: Lint PHP
+        run: composer lint
 
       - name: Run yarn linter
         run: yarn lint
 
       # Run tests
-      - name: Execute mocha tests
+      - name: Execute JavaScript tests
         run: |
           mkdir coverage
-          yarn test
+          yarn test --coverage
 
       - name: Execute phpunit tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
@@ -145,7 +146,7 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml,./coverage/cobertura-coverage.xml
+          files: ./coverage.xml,./coverage/clover.xml
           fail_ci_if_error: false
 
       - name: Store Log Artifacts
@@ -161,6 +162,13 @@ jobs:
         with:
           name: Screenshots
           path: ./tests/Browser/screenshots
+
+      - name: Store Source Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Source
+          path: ./tests/Browser/source
 
       - name: Store Console Artifacts
         uses: actions/upload-artifact@v1

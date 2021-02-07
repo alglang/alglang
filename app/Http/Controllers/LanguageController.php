@@ -24,12 +24,12 @@ class LanguageController extends Controller
     {
         $language->load('group', 'children', 'parent');
         $language->loadCount([
-            'morphemes' => function (Builder $query) {
-                $query->withoutPlaceholders();
-            },
+            'morphemes' => fn ($query) => $query->withoutPlaceholders(),
             'verbForms',
             'nominalForms',
-            'nominalParadigms'
+            'nominalParadigms',
+            'clusters',
+            'phonemes'
         ]);
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);

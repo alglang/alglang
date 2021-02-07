@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class SourcesTest extends TestCase
@@ -30,13 +31,32 @@ class SourcesTest extends TestCase
         }
     }
 
+    protected function navigateToSourcesComponent(array $attrs = []): TestableLivewire
+    {
+        $view = $this->livewire(Sources::class, $attrs);
+        $view->emit('tabChanged', 'sources');
+        return $view;
+    }
+
+    /** @test */
+    public function it_loads_when_the_tab_changes_to_sources(): void
+    {
+        $source = Source::factory()->create(['author' => 'Doe']);
+        $view = $this->livewire(Sources::class);
+        $view->assertDontSee('Doe');
+
+        $view->emit('tabChanged', 'sources');
+
+        $view->assertSee('Doe');
+    }
+
     /** @test */
     public function it_shows_all_sources()
     {
         $source1 = Source::factory()->create(['author' => 'Doe', 'year' => 1]);
         $source2 = Source::factory()->create(['author' => 'Doe', 'year' => 1]);
 
-        $view = $this->livewire(Sources::class);
+        $view = $this->navigateToSourcesComponent();
 
         $view->assertSee('Doe 1a');
         $view->assertSee('Doe 1b');
@@ -55,7 +75,7 @@ class SourcesTest extends TestCase
         $sourced = $sourcedClass->create();
         $sourced->addSource($source);
 
-        $view = $this->livewire(Sources::class, ['model' => $sourced]);
+        $view = $this->navigateToSourcesComponent(['model' => $sourced]);
 
         $view->assertSee('Foo');
         $view->assertDontSee('Bar');
@@ -65,7 +85,7 @@ class SourcesTest extends TestCase
     public function it_shows_the_next_page()
     {
         Source::factory()->count(Sources::maxSizeFor('sm')+1)->create();
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
+        $view = $this->navigateToSourcesComponent(['screenSize' => 'sm']);
 
         $view->call('nextPage');
 
@@ -81,7 +101,7 @@ class SourcesTest extends TestCase
     public function it_shows_the_previous_page()
     {
         Source::factory()->count(Sources::maxSizeFor('sm')+1)->create();
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm', 'page' => 1]);
+        $view = $this->navigateToSourcesComponent(['screenSize' => 'sm', 'page' => 1]);
 
         $view->call('prevPage');
 
@@ -93,7 +113,7 @@ class SourcesTest extends TestCase
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
         Source::factory()->count(1)->create();
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
+        $view = $this->navigateToSourcesComponent(['screenSize' => 'sm']);
         $view->assertSet('page', 0);
 
         $view->call('nextPage');
@@ -106,7 +126,7 @@ class SourcesTest extends TestCase
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
         Source::factory()->count(1)->create();
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
+        $view = $this->navigateToSourcesComponent(['screenSize' => 'sm']);
         $view->assertSet('page', 0);
 
         $view->call('prevPage');
@@ -121,7 +141,7 @@ class SourcesTest extends TestCase
         Source::factory()->create(['author' => 'Foo', 'year' => 2000]);
         Source::factory()->create(['author' => 'Bar', 'year' => 1999]);
 
-        $view = $this->livewire(Sources::class);
+        $view = $this->navigateToSourcesComponent();
         $view->set('filter', 'F');
 
         $view->assertSee('Foo 2000');
@@ -133,7 +153,7 @@ class SourcesTest extends TestCase
         Source::factory()->create(['author' => 'Foo', 'year' => 2000]);
         Source::factory()->create(['author' => 'Bar', 'year' => 1999]);
 
-        $view = $this->livewire(Sources::class);
+        $view = $this->navigateToSourcesComponent();
         $view->set('filter', 'o 2');
 
         $view->assertSee('Foo 2000');
@@ -150,7 +170,7 @@ class SourcesTest extends TestCase
         $sources = Source::all();
 
         foreach (['sm', 'md', 'lg', 'xl'] as $size) {
-            $view = $this->livewire(Sources::class, ['screenSize' => $size]);
+            $view = $this->navigateToSourcesComponent(['screenSize' => $size]);
             $this->assertSourcesSliceInView($view, $sources, 0, Sources::maxSizeFor($size));
         }
     }
@@ -160,7 +180,7 @@ class SourcesTest extends TestCase
     {
         Source::factory()->count(Sources::maxSizeFor('md'))->create();
         $sources = Source::all();
-        $view = $this->livewire(Sources::class, ['screenSize' => 'sm']);
+        $view = $this->navigateToSourcesComponent(['screenSize' => 'sm']);
         $this->assertSourcesSliceInView($view, $sources, 0, Sources::maxSizeFor('sm'));
 
         $view->emit('resize', 'md');

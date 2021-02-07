@@ -10,7 +10,8 @@ use App\Traits\Sourceable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -147,17 +148,17 @@ class Form extends Model implements HasExamples
     |
     */
 
-    public function language(): Relation
+    public function language(): BelongsTo
     {
         return $this->belongsTo(Language::class);
     }
 
-    public function examples(): Relation
+    public function examples(): HasMany
     {
         return $this->hasMany(Example::class, 'form_id');
     }
 
-    public function morphemeConnections(): Relation
+    public function morphemeConnections(): HasMany
     {
         return $this->hasMany(MorphemeConnection::class, 'form_id');
     }

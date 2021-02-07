@@ -2,17 +2,19 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 trait HasParent
 {
-    public function parent(): Relation
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class);
     }
 
-    public function children(): Relation
+    public function children(): HasMany
     {
         return $this->hasMany(self::class, isset($this->parentColumn) ? $this->parentColumn : 'parent_id');
     }

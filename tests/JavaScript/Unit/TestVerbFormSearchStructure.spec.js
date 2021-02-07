@@ -1,6 +1,5 @@
-import '../setup';
-import { fireEvent, render } from '@testing-library/vue';
-import { expect } from 'chai';
+import { render } from '@testing-library/vue';
+import userEvent from '@testing-library/user-event';
 
 import {
   featureFactory,
@@ -31,9 +30,9 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Class')).to.have.length(2);
-      expect(getByLabelText('Class')).to.contain.text('Foo');
-      expect(getByLabelText('Class')).to.contain.text('Bar');
+      expect(getByLabelText('Class').children).toHaveLength(2);
+      expect(getByLabelText('Class')).toHaveTextContent('Foo');
+      expect(getByLabelText('Class')).toHaveTextContent('Bar');
     });
 
     it('shows its orders', function () {
@@ -45,9 +44,9 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Order')).to.have.length(2);
-      expect(getByLabelText('Order')).to.contain.text('Foo');
-      expect(getByLabelText('Order')).to.contain.text('Bar');
+      expect(getByLabelText('Order').children).toHaveLength(2);
+      expect(getByLabelText('Order')).toHaveTextContent('Foo');
+      expect(getByLabelText('Order')).toHaveTextContent('Bar');
     });
 
     it('shows its modes', function () {
@@ -59,9 +58,9 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Mode')).to.have.length(2);
-      expect(getByLabelText('Mode')).to.contain.text('Foo');
-      expect(getByLabelText('Mode')).to.contain.text('Bar');
+      expect(getByLabelText('Mode').children).toHaveLength(2);
+      expect(getByLabelText('Mode')).toHaveTextContent('Foo');
+      expect(getByLabelText('Mode')).toHaveTextContent('Bar');
     });
 
     it('shows its subjects', function () {
@@ -73,9 +72,9 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Subject')).to.have.length(2);
-      expect(getByLabelText('Subject')).to.contain.text('Foo');
-      expect(getByLabelText('Subject')).to.contain.text('Bar');
+      expect(getByLabelText('Subject').children).toHaveLength(2);
+      expect(getByLabelText('Subject')).toHaveTextContent('Foo');
+      expect(getByLabelText('Subject')).toHaveTextContent('Bar');
     });
 
     it('shows its primary objects', function () {
@@ -87,10 +86,10 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Primary object')).to.have.length(3);
-      expect(getByLabelText('Primary object')).to.contain.text('None');
-      expect(getByLabelText('Primary object')).to.contain.text('Foo');
-      expect(getByLabelText('Primary object')).to.contain.text('Bar');
+      expect(getByLabelText('Primary object').children).toHaveLength(3);
+      expect(getByLabelText('Primary object')).toHaveTextContent('None');
+      expect(getByLabelText('Primary object')).toHaveTextContent('Foo');
+      expect(getByLabelText('Primary object')).toHaveTextContent('Bar');
     });
 
     it('shows its secondary objects', function () {
@@ -102,10 +101,10 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText } = renderStructure(props);
 
-      expect(getByLabelText('Secondary object')).to.have.length(3);
-      expect(getByLabelText('Secondary object')).to.contain.text('None');
-      expect(getByLabelText('Secondary object')).to.contain.text('Foo');
-      expect(getByLabelText('Secondary object')).to.contain.text('Bar');
+      expect(getByLabelText('Secondary object').children).toHaveLength(3);
+      expect(getByLabelText('Secondary object')).toHaveTextContent('None');
+      expect(getByLabelText('Secondary object')).toHaveTextContent('Foo');
+      expect(getByLabelText('Secondary object')).toHaveTextContent('Bar');
     });
   });
 
@@ -124,15 +123,11 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Subject'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Subject'), '1s"');
 
-      expect(getByTestId('subject-person')).to.have.value('1');
-      expect(getByTestId('subject-number')).to.have.value('1');
-      expect(getByTestId('subject-obviative-code')).to.have.value('2');
+      expect(getByTestId('subject-person')).toHaveValue('1');
+      expect(getByTestId('subject-number')).toHaveValue('1');
+      expect(getByTestId('subject-obviative-code')).toHaveValue('2');
     });
 
     it('updates its primary object parameters', async function () {
@@ -148,15 +143,11 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Primary object'), '1s"');
 
-      expect(getByTestId('primary-object-person')).to.have.value('1');
-      expect(getByTestId('primary-object-number')).to.have.value('1');
-      expect(getByTestId('primary-object-obviative-code')).to.have.value('2');
+      expect(getByTestId('primary-object-person')).toHaveValue('1');
+      expect(getByTestId('primary-object-number')).toHaveValue('1');
+      expect(getByTestId('primary-object-obviative-code')).toHaveValue('2');
     });
 
     it('disables its primary object parameters', async function () {
@@ -172,18 +163,10 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, queryByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
-      await fireEvent.change(getByLabelText('Primary object'), {
-        target: {
-          value: ''
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Primary object'), '1s"');
+      await userEvent.selectOptions(getByLabelText('Primary object'), 'None');
 
-      expect(queryByTestId('primary-object-disabled')).to.exist;
+      expect(queryByTestId('primary-object-disabled')).toBeInTheDocument();
     });
 
     it('updates its secondary object parameters', async function () {
@@ -199,15 +182,11 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, getByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Secondary object'), '1s"');
 
-      expect(getByTestId('secondary-object-person')).to.have.value('1');
-      expect(getByTestId('secondary-object-number')).to.have.value('1');
-      expect(getByTestId('secondary-object-obviative-code')).to.have.value('2');
+      expect(getByTestId('secondary-object-person')).toHaveValue('1');
+      expect(getByTestId('secondary-object-number')).toHaveValue('1');
+      expect(getByTestId('secondary-object-obviative-code')).toHaveValue('2');
     });
 
     it('disables its secondary object parameters', async function () {
@@ -223,18 +202,10 @@ describe('StructureStructure.vue', function () {
       };
       const { getByLabelText, queryByTestId } = renderStructure(props);
 
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: '1s"'
-        }
-      });
-      await fireEvent.change(getByLabelText('Secondary object'), {
-        target: {
-          value: ''
-        }
-      });
+      await userEvent.selectOptions(getByLabelText('Secondary object'), '1s"');
+      await userEvent.selectOptions(getByLabelText('Secondary object'), 'None');
 
-      expect(queryByTestId('secondary-object-disabled')).to.exist;
+      expect(queryByTestId('secondary-object-disabled')).toBeInTheDocument();
     });
   });
 });

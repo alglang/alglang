@@ -16,7 +16,8 @@
     "require": {
         "php": "^7.3",
         "adoxography/disambiguatable": "master",
-        "doctrine/dbal": "^2.11",
+        "brianium/paratest": "^6.2",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "laravel/framework": "^8.0",
@@ -35,9 +36,9 @@
         "laravel/telescope": "^4.0",
         "mockery/mockery": "^1.3.1",
         "nunomaduro/collision": "^5.0",
-        "nunomaduro/larastan": "^0.6.1",
+        "nunomaduro/larastan": "^0.7",
         "phpunit/php-code-coverage": "^9.1",
-        "phpunit/phpunit": "^9.3"
+        "phpunit/phpunit": "^9.5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -78,6 +79,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "lint": [
+            "phpstan analyse"
         ]
     }
 }

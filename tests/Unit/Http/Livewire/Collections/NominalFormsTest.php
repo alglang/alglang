@@ -9,6 +9,7 @@ use App\Models\NominalStructure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Livewire\Testing\TestableLivewire;
 use Tests\TestCase;
 
 class NominalFormsTest extends TestCase
@@ -29,11 +30,30 @@ class NominalFormsTest extends TestCase
         }
     }
 
+    protected function navigateToNominalFormsComponent(array $attrs): TestableLivewire
+    {
+        $view = $this->livewire(NominalForms::class, $attrs);
+        $view->emit('tabChanged', 'nominal_forms');
+        return $view;
+    }
+
+    /** @test */
+    public function it_loads_when_the_tab_changes_to_nominal_forms(): void
+    {
+        $language = Language::factory()->hasNominalForms(['shape' => 'N-foo'])->create();
+        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view->assertDontSee('N-foo');
+
+        $view->emit('tabChanged', 'nominal_forms');
+
+        $view->assertSee('N-foo');
+    }
+
     /** @test */
     public function it_shows_nominal_forms_from_a_language()
     {
         $language = Language::factory()->hasNominalForms(2)->create();
-        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language]);
 
         foreach ($language->forms as $form) {
             $view->assertSeeHtml($form->formatted_shape);
@@ -45,7 +65,7 @@ class NominalFormsTest extends TestCase
     {
         $language = Language::factory()->hasNominalGaps(1)->create();
 
-        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language]);
 
         $view->assertSeeHtml('No form');
     }
@@ -54,7 +74,7 @@ class NominalFormsTest extends TestCase
     public function gaps_are_not_included_if_there_is_a_name_filter()
     {
         $language = Language::factory()->hasNominalGaps(1)->create();
-        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language]);
         $view->assertSeeHtml('No form');
 
         $view->set('filter', 'N');
@@ -68,7 +88,7 @@ class NominalFormsTest extends TestCase
         $language = Language::factory()->create();
         $form1 = NominalForm::factory()->create(['language_code' => $language, 'shape' => 'N-foo']);
         $form2 = NominalForm::factory()->create(['language_code' => $language, 'shape' => 'N-bar']);
-        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language]);
 
         $view->set('filter', 'N-f');
 
@@ -81,7 +101,7 @@ class NominalFormsTest extends TestCase
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('sm'))->create();
         NominalForm::factory()->create(['language_code' => $language, 'shape' => 'N-mxyzptlk']);
-        $view = $this->livewire(NominalForms::class, ['model' => $language, 'page' => 1]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language, 'page' => 1]);
 
         $view->set('filter', 'N-mxyzpt');
 
@@ -92,7 +112,7 @@ class NominalFormsTest extends TestCase
     public function it_shows_the_next_page()
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('sm')+1)->create();
-        $view = $this->livewire(NominalForms::class, [
+        $view = $this->navigateToNominalFormsComponent([
             'model' => $language,
             'screenSize' => 'sm'
         ]);
@@ -113,7 +133,7 @@ class NominalFormsTest extends TestCase
     public function it_shows_the_previous_page()
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('sm')+1)->create();
-        $view = $this->livewire(NominalForms::class, [
+        $view = $this->navigateToNominalFormsComponent([
             'model' => $language,
             'screenSize' => 'sm',
             'page' => 1
@@ -134,7 +154,7 @@ class NominalFormsTest extends TestCase
     public function it_does_not_show_the_next_page_if_there_are_no_more_pages()
     {
         $language = Language::factory()->hasNominalForms(1)->create();
-        $view = $this->livewire(NominalForms::class, [
+        $view = $this->navigateToNominalFormsComponent([
             'model' => $language,
             'screenSize' => 'sm',
             'page' => 0
@@ -150,7 +170,7 @@ class NominalFormsTest extends TestCase
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('sm'))->create();
         NominalForm::factory()->create(['shape' => 'N-mxyzptlk', 'language_code' => $language]);
-        $view = $this->livewire(NominalForms::class, [
+        $view = $this->navigateToNominalFormsComponent([
             'model' => $language,
             'screenSize' => 'sm',
         ]);
@@ -168,7 +188,7 @@ class NominalFormsTest extends TestCase
     public function it_does_not_show_the_previous_page_if_there_are_no_more_pages()
     {
         $language = Language::factory()->hasNominalForms(1)->create();
-        $view = $this->livewire(NominalForms::class, ['model' => $language]);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language]);
         $view->assertSet('page', 0);
 
         $view->call('prevPage');
@@ -184,7 +204,7 @@ class NominalFormsTest extends TestCase
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('xl')+1)->create();
         foreach (['sm', 'md', 'lg', 'xl'] as $size) {
-            $view = $this->livewire(NominalForms::class, ['model' => $language, 'screenSize' => $size]);
+            $view = $this->navigateToNominalFormsComponent(['model' => $language, 'screenSize' => $size]);
             $this->assertFormsSliceInView($view, $language->nominalForms, 0, NominalForms::maxSizeFor($size));
         }
     }
@@ -193,7 +213,7 @@ class NominalFormsTest extends TestCase
     public function it_resizes()
     {
         $language = Language::factory()->hasNominalForms(NominalForms::maxSizeFor('md'))->create();
-        $view = $this->livewire(NominalForms::class, ['model' => $language, 'screenSize' => 'sm']);
+        $view = $this->navigateToNominalFormsComponent(['model' => $language, 'screenSize' => 'sm']);
         $this->assertFormsSliceInView($view, $language->nominalForms, 0, NominalForms::maxSizeFor('sm'));
 
         $view->emit('resize', 'md');

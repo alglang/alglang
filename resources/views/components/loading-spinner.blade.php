@@ -3,7 +3,7 @@
     wire:loading.class="translate-y-24 opacity-100"
     style="pointer-events: none; filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.25));"
 >
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-12" viewBox="0 0 200 200" >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-12" viewBox="0 0 200 200" aria-label="loading">
         <animateTransform
             attributeType="xml"
             attributeName="transform"

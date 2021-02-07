@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FeatureSeeder::class);
         $this->call(VerbSeeder::class);
         $this->call(NominalSeeder::class);
+        $this->call(PhonemeSeeder::class);
     }
 }

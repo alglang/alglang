@@ -12,8 +12,9 @@
 
     <div
         x-data="{ tab: window.location.hash ? window.location.hash.substring(1) : 'basic_details' }"
+        x-init="Livewire.emit('tabChanged', tab)"
         class="flex flex-wrap md:flex-no-wrap"
-        @hashchange.window="tab = window.location.hash.substring(1)"
+        @hashchange.window="tab = window.location.hash.substring(1); Livewire.emit('tabChanged', tab);"
     >
         <ul
             role="tablist"
