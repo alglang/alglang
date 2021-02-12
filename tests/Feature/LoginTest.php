@@ -115,6 +115,7 @@ class LoginTest extends TestCase
         $this->assertEquals('John Doe', auth()->user()->name);
     }
 
+    /** @test */
     public function can_authenticate_using_a_provider(): void
     {
         $provider = 'fake_provider';
