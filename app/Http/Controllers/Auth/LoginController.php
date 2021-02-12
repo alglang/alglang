@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class LoginController extends Controller
 {
@@ -41,6 +42,8 @@ class LoginController extends Controller
     {
         try {
             $social = Socialite::driver($provider)->user();
+        } catch (InvalidStateException $error) {
+            abort(401);
         } catch (\InvalidArgumentException $error) {
             abort(404);
         }

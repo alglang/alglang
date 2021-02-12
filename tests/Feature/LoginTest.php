@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\SocialAccount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\RedirectResponse;
@@ -82,8 +83,42 @@ class LoginTest extends TestCase
      * @test
      * @dataProvider socialProviders
      */
-    public function can_authenticate_using_a_provider($provider): void
+    public function it_recognizes_registered_provider_callbacks($provider): void
     {
+        $response = $this->get("/auth/$provider/callback");
+
+        $response->assertUnauthorized();
+    }
+
+    /** @test */
+    public function can_authenticate_using_an_existing_social_account(): void
+    {
+        $provider = 'fake_provider';
+
+        $socialAccount = SocialAccount::factory(['provider_name' => $provider])
+            ->forUser(['name' => 'John Doe'])
+            ->create();
+
+        $user = Mockery::mock(\Laravel\Socialite\Two\User::class);
+        $user->shouldReceive('getId')
+             ->andReturn($socialAccount->provider_id);
+
+        $providerMock = Mockery::mock(\Laravel\Socialite\Contracts\Provider::class);
+        $providerMock->shouldReceive('user')->andReturn($user);
+
+        Socialite::shouldReceive('driver')->andReturn($providerMock);
+
+        $response = $this->get("/auth/$provider/callback");
+
+        $response->assertRedirect('/');
+        $this->assertAuthenticated();
+        $this->assertEquals('John Doe', auth()->user()->name);
+    }
+
+    public function can_authenticate_using_a_provider(): void
+    {
+        $provider = 'fake_provider';
+
         $providerId = rand();
         $user = Mockery::mock(\Laravel\Socialite\Two\User::class);
         $user->shouldReceive('getId')
