@@ -98,8 +98,8 @@ class LoginTest extends TestCase
     {
         $provider = 'fake_provider';
 
-        $socialAccount = SocialAccount::factory(['provider_name' => $provider])
-            ->forUser(['name' => 'John Doe'])
+        $user = User::factory()->create();
+        $socialAccount = SocialAccount::factory(['provider_name' => $provider, 'user_id' => $user])
             ->create();
 
         $this->mockSocial(['getId' => $socialAccount->provider_id]);
@@ -108,7 +108,7 @@ class LoginTest extends TestCase
 
         $response->assertRedirect('/');
         $this->assertAuthenticated();
-        $this->assertEquals('John Doe', auth()->user()->name);
+        $this->assertEquals($user->id, auth()->user()->id);
     }
 
     /** @test */
@@ -128,7 +128,9 @@ class LoginTest extends TestCase
         $response->assertRedirect('/');
         $this->assertAuthenticated();
 
-        $socialAccount = Auth::user()->accounts()->where('provider_name', $provider)->first();
+        $socialAccount = auth()->user()->accounts()->where('provider_name', $provider)->first();
+        $this->assertEquals('John Doe', auth()->user()->name);
+        $this->assertEquals('john.doe@acme.com', auth()->user()->email);
         $this->assertEquals($providerId, $socialAccount->provider_id);
     }
 
