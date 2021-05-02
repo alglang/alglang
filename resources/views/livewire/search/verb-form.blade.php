@@ -2,8 +2,9 @@
     class="flex flex-wrap"
     method="GET"
     action="/search/verbs/forms/results"
+    target="_blank"
 >
-    <div class="m4-8 mb-4">
+    <div class="md:mr-8 mb-4 w-full md:w-auto">
         <legend
             id="language-select-label"
             class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2 w-full"
@@ -32,7 +33,7 @@
         </fieldset>
     </div>
 
-    <div>
+    <div class="w-full md:w-auto">
         <ul aria-label="Structure queries">
             @foreach ($structureQueries as $index => $structureQuery)
                 <li wire:key="structure-queries-{{ $index }}">

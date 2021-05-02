@@ -9,8 +9,8 @@
         Structure
     </p>
 
-    <div class="lg:flex">
-        <div class="lg:flex lg:border-r border-gray-400">
+    <div class="grid lg:flex" style="grid-template-columns: min-content 1fr;">
+        <div class="contents lg:flex lg:border-r border-gray-400">
             @component('components.search.field', ['label' => 'Class', 'for' => "class-select-$uuid"])
                 <select
                     id="class-select-{{ $uuid }}"
@@ -35,8 +35,8 @@
             }
         @endphp
 
-        <div class="lg:flex lg:border-r border-gray-400">
-            <div>
+        <div class="contents lg:flex lg:border-r border-gray-400">
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Subject', 'for' => "subject-select-$uuid"])
                     @if ($model->subject->person)
                         <input
@@ -69,7 +69,7 @@
                 @endcomponent
             </div>
 
-            <div>
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Primary Object', 'for' => "primary-object-select-$uuid"])
                     @if ($model->primaryObject)
                         @if ($model->primaryObject->person)
@@ -112,7 +112,7 @@
                 @endcomponent
             </div>
 
-            <div>
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Secondary Object', 'for' => "secondary-object-select-$uuid"])
                     @if ($model->secondaryObject)
                         @if ($model->secondaryObject->person)
@@ -156,8 +156,8 @@
             </div>
         </div>
 
-        <div class="lg:flex lg:border-r border-gray-400">
-            <div>
+        <div class="contents lg:flex lg:border-r border-gray-400">
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Order', 'for' => "order-select-$uuid"])
                     <select
                         id="order-select-{{ $uuid }}"
@@ -174,7 +174,7 @@
                 @endcomponent
             </div>
 
-            <div>
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Mode', 'for' => "mode-select-$uuid"])
                     <select
                         id="mode-select-{{ $uuid }}"
@@ -192,8 +192,8 @@
             </div>
         </div>
 
-        <div class="lg:flex lg:border-r border-gray-400">
-            <div>
+        <div class="contents lg:flex lg:border-r border-gray-400">
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Negative', 'for' => "negative-checkbox-$uuid"])
                     <div class="flex justify-center">
                         <input
@@ -206,7 +206,7 @@
                 @endcomponent
             </div>
 
-            <div>
+            <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Diminutive', 'for' => "diminutive-checkbox-$uuid"])
                     <div class="flex justify-center">
                         <input
