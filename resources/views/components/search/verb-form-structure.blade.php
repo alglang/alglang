@@ -27,14 +27,6 @@
             @endcomponent
         </div>
 
-        @php
-            try {
-                $model->subject->person;
-            } catch (\Exception $e) {
-                dd($model);
-            }
-        @endphp
-
         <div class="contents lg:flex lg:border-r border-gray-400">
             <div class="contents lg:block">
                 @component('components.search.field', ['label' => 'Subject', 'for' => "subject-select-$uuid"])
