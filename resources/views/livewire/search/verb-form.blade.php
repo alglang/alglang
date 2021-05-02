@@ -5,32 +5,15 @@
     target="_blank"
 >
     <div class="md:mr-8 mb-4 w-full md:w-auto">
-        <legend
-            id="language-select-label"
-            class="uppercase text-xs font-semibold bg-gray-700 text-gray-200 p-2 w-full"
-        >
-            Languages
-        </legend>
-        <fieldset
-            aria-labelledby="language-select-label"
-            class="overflow-auto p-2 border-l border-r border-b border-gray-300 h-56 scrollbar scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500"
-            style="overflow: auto"
-        >
-            @foreach ($languages as $language)
-                <label class="flex items-center mb-2 last:mb-0">
-                    <input
-                        type="checkbox"
-                        wire:model="languageQueries.{{ $language->code }}"
-                        name="languages[]"
-                        value="{{ $language->code }}"
-                        class="form-checkbox rounded-none text-blue-400"
-                    />
-                    <span class="ml-1">
-                        {{ $language->name }}
-                    </span>
-                </label>
-            @endforeach
-        </fieldset>
+        @component('components.search.multi-select', [
+            'label' => 'Languages',
+            'modelKey' => 'languageQueries',
+            'name' => 'languages[]',
+            'options' => $languages,
+            'optionLabelKey' => 'name',
+            'optionValueKey' => 'code'
+        ])
+        @endcomponent
     </div>
 
     <div class="w-full md:w-auto">
