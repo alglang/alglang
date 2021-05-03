@@ -12,7 +12,13 @@ class NominalSearchController extends Controller
 {
     public function paradigms(): View
     {
-        return view('search.nominals.paradigms');
+        $languages = Language::orderBy('name')->get();
+        $paradigmTypes = NominalParadigmType::orderBy('name')->get();
+
+        return view('search.nominals.paradigms', [
+            'languages' => $languages,
+            'paradigmTypes' => $paradigmTypes
+        ]);
     }
 
     public function paradigmResults(SearchNominalParadigm $request): View

@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\SocialAccountService;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\InvalidStateException;
 
 class LoginController extends Controller
 {
@@ -29,7 +26,7 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function redirectToProvider(string $provider): RedirectResponse
+    public function redirectToProvider(string $provider): \Illuminate\Http\RedirectResponse
     {
         try {
             return Socialite::driver($provider)->redirect();
@@ -38,19 +35,20 @@ class LoginController extends Controller
         }
     }
 
-    public function handleProviderCallback(SocialAccountService $accountService, string $provider): RedirectResponse
+    public function handleProviderCallback(string $provider): \Illuminate\Http\RedirectResponse
     {
         try {
-            $social = Socialite::driver($provider)->user();
-        } catch (InvalidStateException $error) {
-            abort(401);
+            $user = Socialite::driver($provider)->user();
         } catch (\InvalidArgumentException $error) {
             abort(404);
+        } catch (\Exception $error) {
+            return redirect()->route('auth', ['provider' => $provider]);
         }
 
-        $user = $accountService->findOrCreate($social, $provider);
+        $authUser = $this->findOrCreateUser($user);
 
-        auth()->login($user, true);
+        auth()->login($authUser, true);
+
         return redirect()->route('home');
     }
 

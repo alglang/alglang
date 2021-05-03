@@ -15,6 +15,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
+            'github_id' => rand(),
             'remember_token' => Str::random(10),
         ];
     }

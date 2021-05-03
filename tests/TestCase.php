@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
@@ -29,16 +28,5 @@ abstract class TestCase extends BaseTestCase
     protected function livewire(string $class, array $data = [])
     {
         return Livewire::test($class, $data);
-    }
-
-    protected function assertNoQueries(callable $func): void
-    {
-        DB::connection()->enableQueryLog();
-        $queryCount = count(DB::getQueryLog());
-
-        $func();
-
-        $this->assertCount($queryCount, DB::getQueryLog());
-        DB::connection()->disableQueryLog();
     }
 }
