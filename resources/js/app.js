@@ -4,7 +4,6 @@ import 'livewire-vue';
 require('./bootstrap');
 require('lato-font/css/lato-font.css');
 
-Vue.component('alglang-nominal-paradigm-search', require('./components/NominalParadigmSearch.vue').default);
 Vue.component('alglang-verb-paradigm-search', require('./components/VerbParadigmSearch.vue').default);
 
 window.Vue = Vue;
