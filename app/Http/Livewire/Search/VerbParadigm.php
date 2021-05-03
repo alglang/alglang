@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Search;
 use App\Models\Language;
 use App\Models\VerbClass;
 use App\Models\VerbOrder;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class VerbParadigm extends Component
@@ -34,7 +36,7 @@ class VerbParadigm extends Component
         $this->languages = Language::all();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.search.verb-paradigm');
     }

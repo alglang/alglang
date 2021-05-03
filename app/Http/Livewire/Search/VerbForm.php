@@ -50,19 +50,23 @@ class VerbForm extends Component
     public function hydrateStructureQueries(Collection $value): void
     {
         $this->structureQueries = $value->map(function (array $params) {
-            $q = new VerbStructure($params);
-            if (array_key_exists('subject', $params)) {
-                $q->subject = new Feature(is_array($params['subject']) ? $params['subject'] : $params['subject']->toArray());
+            $subject = null;
+            $primaryObject = null;
+            $secondaryObject = null;
+
+            if (array_key_exists('subject', $params) && is_array($params['subject'])) {
+                $subject = new Feature(is_array($params['subject']) ? $params['subject'] : $params['subject']->toArray());
             }
 
-            if (array_key_exists('primaryObject', $params)) {
-                $q->primaryObject = new Feature($params['primaryObject']);
+            if (array_key_exists('primaryObject', $params) && is_array($params['primaryObject'])) {
+                $primaryObject = new Feature($params['primaryObject']);
             }
 
-            if (array_key_exists('secondaryObject', $params)) {
-                $q->secondaryObject = new Feature($params['secondaryObject']);
+            if (array_key_exists('secondaryObject', $params) && is_array($params['secondaryObject'])) {
+                $secondaryObject = new Feature($params['secondaryObject']);
             }
-            return $q;
+
+            return new VerbStructure(array_merge($params, compact('subject', 'primaryObject', 'secondaryObject')));
         });
     }
 
