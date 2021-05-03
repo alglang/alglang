@@ -109,7 +109,7 @@ jobs:
       - name: Execute JavaScript tests
         run: |
           mkdir coverage
-          yarn test --coverage
+          yarn test --coverage --passWithNoTests
 
       - name: Execute phpunit tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
