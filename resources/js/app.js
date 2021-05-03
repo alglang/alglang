@@ -1,10 +1,5 @@
-import Vue from 'vue';
-import 'livewire-vue';
-
 require('./bootstrap');
 require('lato-font/css/lato-font.css');
-
-window.Vue = Vue;
 
 function dispatchMediaSize(mqls) {
   const size = Object.entries(mqls).find(([_, mql]) => mql.matches)[0];
