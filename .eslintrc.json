@@ -1,10 +1,10 @@
 {
   "env": {
+    "browser": true,
     "es2020": true,
     "jest/globals": true
   },
   "extends": [
-    "plugin:vue/recommended",
     "airbnb-base"
   ],
   "parserOptions": {
@@ -12,8 +12,7 @@
     "sourceType": "module"
   },
   "plugins": [
-    "jest",
-    "vue"
+    "jest"
   ],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
@@ -24,17 +23,7 @@
     "no-unused-expressions": "off",
     "no-unused-vars": ["error", {
       "argsIgnorePattern": "^_"
-    }],
-    "vue/no-v-html": "off",
-    "vue/html-self-closing": [
-      "warn", {
-        "html": {
-          "normal": "always",
-          "void": "always"
-        }
-      }
-    ],
-    "vue/component-definition-name-casing": ["error", "kebab-case"]
+    }]
   },
   "settings": {
     "import/resolver": {

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* global Mix */
 const mix = require('laravel-mix');
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
@@ -16,12 +15,11 @@ const fontDisplay = require('postcss-font-display');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue();
+mix.js('resources/js/app.js', 'public/js');
 
 mix.extract([
   'alpinejs',
-  'leaflet',
-  'vue'
+  'leaflet'
 ]);
 
 mix.postCss('resources/css/app.css', 'public/css', [
