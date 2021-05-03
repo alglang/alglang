@@ -4,8 +4,6 @@ import 'livewire-vue';
 require('./bootstrap');
 require('lato-font/css/lato-font.css');
 
-Vue.component('alglang-verb-paradigm-search', require('./components/VerbParadigmSearch.vue').default);
-
 window.Vue = Vue;
 
 function dispatchMediaSize(mqls) {

@@ -10,7 +10,7 @@
         class="form-select rounded-none border-none w-full focus:z-10"
     >
         @foreach ($options as $option)
-            <option>
+            <option value="{{ isset($optionValueKey) ? $option->$optionValueKey : $option->$optionKey }}">
                 {{ $option->$optionKey }}
             </option>
         @endforeach
