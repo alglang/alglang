@@ -1,4 +1,4 @@
-import 'alpinejs';
+import Alpine from 'alpinejs';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -23,6 +23,9 @@ require('leaflet/dist/leaflet.css');
 require('leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css');
 window.leaflet = require('leaflet');
 require('leaflet-defaulticon-compatibility'); // eslint-disable-line import/no-unresolved
+
+window.Alpine = Alpine;
+Alpine.start();
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
