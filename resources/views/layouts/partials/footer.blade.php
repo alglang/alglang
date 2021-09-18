@@ -1,7 +1,7 @@
 <footer class="flex flex-wrap justify-between p-6 bg-gray-900 text-yellow-400">
     <div>
         <h1 class="uppercase mb-3 text-xs md:text-md">
-            &copy; Database of Algonquian Language Structures
+            &copy; alglang.net: A database of Algonquian language structures
         </h1>
 
         <ul class="flex-text-gray-100">
