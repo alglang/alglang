@@ -73,7 +73,9 @@ class VerbSearchController extends Controller
             'languages' => 'array',
             'orders' => 'array',
             'classes' => 'array',
-            'modes' => 'array'
+            'modes' => 'array',
+            'negative' => 'nullable',
+            'diminutive' => 'nullable'
         ]);
 
         $results = VerbSearch::search($validated);
