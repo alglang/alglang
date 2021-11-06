@@ -1,5 +1,14 @@
 @php
     $id = Str::uuid();
+
+    if (isset($optionKey)) {
+        if (!isset($optionValueKey)) {
+            $optionValueKey = $optionKey;
+        }
+        if (!isset($optionLabelKey)) {
+            $optionLabelKey = $optionKey;
+        }
+    }
 @endphp
 
 <legend
@@ -10,7 +19,7 @@
 </legend>
 <fieldset
     aria-labelledby="{{ $id }}"
-    class="overflow-auto p-2 border-l border-r border-b border-gray-300 h-56 scrollbar-thin scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500"
+    class="overflow-auto p-2 max-h-56 lg:h-56 scrollbar-thin scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500"
     style="overflow: auto"
 >
     @foreach ($options as $option)

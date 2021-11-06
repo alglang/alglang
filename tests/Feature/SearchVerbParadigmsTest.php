@@ -168,4 +168,156 @@ class SearchVerbParadigmsTest extends TestCase
         $response->assertSee('V-foo');
         $response->assertDontSee('V-bar');
     }
+
+    /** @test */
+    public function it_filters_search_results_by_negativity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results', [
+            'negative' => true
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-foo');
+        $response->assertDontSee('V-bar');
+    }
+
+    /** @test */
+    public function it_filters_search_results_by_affirmativity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results', [
+            'negative' => false
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-bar');
+        $response->assertDontSee('V-foo');
+    }
+
+    /** @test */
+    public function it_can_search_without_specifying_polarity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_negative' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results'));
+
+        $response->assertOk();
+        $response->assertSee('V-bar');
+        $response->assertSee('V-foo');
+    }
+
+    /** @test */
+    public function it_filters_search_results_by_diminutivity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results', [
+            'diminutive' => true
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-foo');
+        $response->assertDontSee('V-bar');
+    }
+
+    /** @test */
+    public function it_filters_search_results_by_non_diminutivity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results', [
+            'diminutive' => false
+        ]));
+
+        $response->assertOk();
+        $response->assertSee('V-bar');
+        $response->assertDontSee('V-foo');
+    }
+
+    /** @test */
+    public function it_can_search_without_specifying_diminutivity(): void
+    {
+        VerbForm::factory()->create([
+            'shape' => 'V-foo',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => true
+            ])
+        ]);
+
+        VerbForm::factory()->create([
+            'shape' => 'V-bar',
+            'structure_id' => $this->generateStructure([
+                'is_diminutive' => false
+            ])
+        ]);
+
+        $response = $this->get(route('search.verbs.paradigm-results'));
+
+        $response->assertOk();
+        $response->assertSee('V-bar');
+        $response->assertSee('V-foo');
+    }
 }
