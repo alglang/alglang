@@ -15,7 +15,7 @@ class HomeTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertSee('Database of Algonquian Language Structures');
+                    ->assertSee('alglang.net');
         });
     }
 
