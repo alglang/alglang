@@ -14,12 +14,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms, HasPhonemes
 {
     use AggregatesSources;
     use HasFactory;
     use HasParent;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
