@@ -1,8 +1,8 @@
 <div>
     <div class="mb-4">
-        @include('components.loading-spinner')
+        {{-- @include('components.loading-spinner') --}}
 
-        @include('components.collection-navigation-buttons')
+        {{-- @include('components.collection-navigation-buttons') --}}
     </div>
 
     <ul class="flex justify-center md:justify-start flex-wrap">

@@ -69,14 +69,15 @@
 
         {{-- Search dropdown --}}
         <div class="relative group h-full">
-            <p
+            <a
                 class="flex items-center px-3 h-full uppercase tracking-wide
                        text-gray-100 hover:bg-red-700 hover:text-gray-900 cursor-pointer"
                 aria-haspopup="true"
+                href="{{ route('search') }}"
                 id="search-menu"
             >
                 <span>Search</span>
-            </p>
+            </a>
 
             @component('layouts.partials.dropdown-list', [
                 'links' => [

@@ -28,7 +28,8 @@ module.exports = {
         fit: 'fit-content'
       },
       maxHeight: {
-        md: '28rem'
+        md: '28rem',
+        56: '14rem'
       },
       zIndex: {
         '-10': '-10'

@@ -1,6 +1,6 @@
 module.exports = {
   collectCoverageFrom: [
-    '<rootDir>/resources/js/components/**/*.{js,vue}',
+    '<rootDir>/resources/js/components/**/*.{js,vue}'
   ],
   moduleFileExtensions: [
     'js',
@@ -11,7 +11,6 @@ module.exports = {
     '<rootDir>/tests/JavaScript/setup.js'
   ],
   transform: {
-    '\\.js$': 'babel-jest',
-    '\\.vue$': 'vue-jest'
+    '\\.js$': 'babel-jest'
   }
 };

@@ -175,7 +175,7 @@ class Morpheme extends Model
                 $pieces->pop();
             }
 
-            $pieces->push($disambiguator);
+            $pieces->push(strval($disambiguator));
             $this->slug = $pieces->join('-');
             $this->save();
         }

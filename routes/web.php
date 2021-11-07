@@ -170,6 +170,8 @@ Route::prefix('sources')->group(function () {
 */
 
 Route::prefix('search')->group(function () {
+    Route::get('', [HomeController::class, 'search'])->name('search');
+
     Route::prefix('nominals')->group(function () {
         Route::get(
             'paradigms',
