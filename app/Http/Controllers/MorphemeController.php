@@ -13,7 +13,6 @@ class MorphemeController extends Controller
     {
         $morpheme->load('slot', 'sources');
         $morpheme->loadVerbFormsCount();
-        $morpheme->loadNominalFormsCount();
         $morpheme->append('glosses', 'disambiguator');
         return view('morphemes.show', ['morpheme' => $morpheme]);
     }

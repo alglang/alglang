@@ -29,11 +29,6 @@ class Morpheme extends Model
      */
     public $verb_forms_count;
 
-    /**
-     * @var int
-     */
-    public $nominal_forms_count;
-
     /*
     |--------------------------------------------------------------------------
     | Configuration
@@ -79,11 +74,6 @@ class Morpheme extends Model
     public function loadVerbFormsCount(): void
     {
         $this->verb_forms_count = $this->verbForms()->count();
-    }
-
-    public function loadNominalFormsCount(): void
-    {
-        $this->nominal_forms_count = $this->nominalForms()->count();
     }
 
     public function isStem(): bool
@@ -133,11 +123,6 @@ class Morpheme extends Model
     public function verbForms(): HasManyThrough
     {
         return $this->forms()->where('structure_type', VerbStructure::class);
-    }
-
-    public function nominalForms(): HasManyThrough
-    {
-        return $this->forms()->where('structure_type', NominalStructure::class);
     }
 
     /*

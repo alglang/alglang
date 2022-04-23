@@ -73,8 +73,6 @@ class Form extends Model implements HasExamples
         switch ($this->structure_type) {
             case VerbStructure::class:
                 return (new VerbForm($this->attributes))->url;
-            case NominalStructure::class:
-                return (new NominalForm($this->attributes))->url;
             default:
                 throw new \UnexpectedValueException("Unknown verb form type '{$this->structure_type}'");
         }
