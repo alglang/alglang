@@ -36,32 +36,6 @@ class HomeTest extends DuskTestCase
      * @test
      * @group navigation
      */
-    public function it_can_navigate_to_the_nominal_form_information_page()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->clickLink('Nominal forms')
-                    ->assertPathIs('/nominal-forms');
-        });
-    }
-
-    /**
-     * @test
-     * @group navigation
-     */
-    public function it_can_navigate_to_the_phonology_information_page()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->clickLink('Phonology')
-                    ->assertPathIs('/phonology');
-        });
-    }
-
-    /**
-     * @test
-     * @group navigation
-     */
     public function it_can_navigate_to_the_bibliography()
     {
         $this->browse(function (Browser $browser) {
