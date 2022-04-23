@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-white p-6 leading-normal">
+    <section class="bg-white p-6 leading-normal max-w-5xl mx-auto">
         <p class="mb-6 text-lg">
             Welcome to <strong>alglang.net</strong>, a source for information about the sounds and grammar of the <a href="{{ route('groups.show', ['group' => 'algonquian']) }}">Algonquian languages</a>. Our goal is to make the findings of the academic literature on these topics more accessible to all interested audiences. Information is available in the following areas:
         </p>

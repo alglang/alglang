@@ -1,4 +1,4 @@
-<section class="bg-white p-6">
+<section class="bg-white p-6 max-w-5xl mx-auto">
     <header class="flex justify-between mb-6">
         <div class="leading-normal w-full md:w-auto text-center md:text-left">
             <h2 class="block text-base uppercase text-gray-700">
