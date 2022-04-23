@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Feature;
 use App\Models\FormGap;
-use App\Models\NominalParadigm;
 use App\Models\User;
 use App\Models\Source;
 use App\Models\VerbClass;
@@ -30,18 +29,6 @@ class ViewFormGapTest extends TestCase
     }
 
     /** @test */
-    public function it_loads_the_correct_view_for_a_nominal_gap()
-    {
-        $gap = FormGap::factory()->nominal()->create();
-
-        $response = $this->get($gap->url);
-
-        $response->assertOk();
-        $response->assertViewIs('gaps.show');
-        $response->assertViewHas('gap', $gap);
-    }
-
-    /** @test */
     public function it_shows_a_verb_structure_name()
     {
         $gap = FormGap::factory()->verb([
@@ -58,21 +45,6 @@ class ViewFormGapTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('3s TC Test_order Test_mode (negative, diminutive, objective)');
-    }
-
-    /** @test */
-    public function it_shows_a_nominal_structure_name()
-    {
-        $gap = FormGap::factory()->nominal([
-            'pronominal_feature_name' => Feature::factory()->create(['name' => 'X']),
-            'nominal_feature_name' => Feature::factory()->create(['name' => 'Y']),
-            'paradigm_id' => NominalParadigm::factory()->create(['name' => 'Test_paradigm'])
-        ])->create();
-
-        $response = $this->get($gap->url);
-
-        $response->assertOk();
-        $response->assertSee('X→Y Test_paradigm');
     }
 
     /** @test */

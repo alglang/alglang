@@ -69,9 +69,7 @@ class Example extends Model
 
     public function getUrlAttribute(): string
     {
-        $routeName = $this->form->structure_type === VerbStructure::class
-            ? 'verbForms.examples.show'
-            : 'nominalForms.examples.show';
+        $routeName = 'verbForms.examples.show';
 
         return route($routeName, [
             'language' => $this->form->language_code,

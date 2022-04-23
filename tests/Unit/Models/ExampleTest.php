@@ -6,7 +6,6 @@ use App\Models\Example;
 use App\Models\Form;
 use App\Models\Language;
 use App\Models\Morpheme;
-use App\Models\NominalForm;
 use App\Models\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,23 +28,6 @@ class ExampleTest extends TestCase
         ]);
 
         $expected = "/languages/$language->slug/verb-forms/$form->slug/examples/foo";
-        $this->assertEquals($expected, $example->url);
-    }
-
-    /** @test */
-    public function it_has_a_url_attribute_when_it_has_a_nominal_form()
-    {
-        $language = Language::factory()->create(['code' => 'TL']);
-        $form = NominalForm::factory()->create([
-            'language_code' => $language->code,
-            'shape' => 'V-bar'
-        ]);
-        $example = Example::factory()->create([
-            'form_id' => $form->id,
-            'shape' => 'foo'
-        ]);
-
-        $expected = "/languages/$language->slug/nominal-forms/$form->slug/examples/foo";
         $this->assertEquals($expected, $example->url);
     }
 

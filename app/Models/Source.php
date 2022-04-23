@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Contracts\HasExamples;
 use App\Contracts\HasMorphemes;
-use App\Contracts\HasNominalForms;
 use App\Contracts\HasVerbForms;
 use Adoxography\Disambiguatable\Disambiguatable;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 
-class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, HasNominalForms
+class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms
 {
     use Disambiguatable;
     use HasFactory;
@@ -73,11 +72,6 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
         return $this->verbForms()->count() + $this->verbGaps()->count();
     }
 
-    public function getNominalFormsAndGapsCountAttribute(): int
-    {
-        return $this->nominalForms()->count() + $this->nominalGaps()->count();
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Methods
@@ -118,21 +112,6 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
         return $this->morphedByMany(VerbGap::class, 'sourceable');
     }
 
-    public function nominalForms(): MorphToMany
-    {
-        return $this->morphedByMany(NominalForm::class, 'sourceable');
-    }
-
-    public function nominalGaps(): MorphToMany
-    {
-        return $this->morphedByMany(NominalGap::class, 'sourceable');
-    }
-
-    public function nominalParadigms(): MorphToMany
-    {
-        return $this->morphedByMany(NominalParadigm::class, 'sourceable');
-    }
-
     public function examples(): MorphToMany
     {
         return $this->morphedByMany(Example::class, 'sourceable');
@@ -141,16 +120,6 @@ class Source extends Model implements HasExamples, HasMorphemes, HasVerbForms, H
     public function rules(): MorphToMany
     {
         return $this->morphedByMany(Rule::class, 'sourceable');
-    }
-
-    public function phonemes(): MorphToMany
-    {
-        return $this->morphedByMany(Phoneme::class, 'sourceable');
-    }
-
-    public function reflexes(): MorphToMany
-    {
-        return $this->morphedByMany(Reflex::class, 'sourceable', 'sourceables');
     }
 
     /*

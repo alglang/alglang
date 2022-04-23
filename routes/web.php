@@ -10,12 +10,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MorphemeController;
-use App\Http\Controllers\NominalFormController;
-use App\Http\Controllers\NominalParadigmController;
-use App\Http\Controllers\NominalSearchController;
 use App\Http\Controllers\RuleController;
-use App\Http\Controllers\PhonemeController;
-use App\Http\Controllers\ReflexController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\SmartSearchController;
 use App\Http\Controllers\SourceController;
@@ -81,26 +76,6 @@ Route::prefix('languages')->group(function () {
             )->name('morphemes.show');
         });
 
-        Route::prefix('nominal-forms')->group(function () {
-            Route::get('gaps/{gap:id}', [FormGapController::class, 'show']);
-
-            Route::get(
-                '{nominalForm:slug}',
-                [NominalFormController::class, 'show']
-            )->name('nominalForms.show');
-            Route::get(
-                '{form:slug}/examples/{example:slug}',
-                [ExampleController::class, 'show']
-            )->name('nominalForms.examples.show');
-        });
-
-        Route::prefix('nominal-paradigms')->group(function () {
-            Route::get(
-                '{nominalParadigm:slug}',
-                [NominalParadigmController::class, 'show']
-            )->name('nominalParadigms.show');
-        });
-
         Route::prefix('verb-forms')->group(function () {
             Route::get('gaps/{gap:id}', [FormGapController::class, 'show']);
 
@@ -112,33 +87,6 @@ Route::prefix('languages')->group(function () {
                 '{form:slug}/examples/{example:slug}',
                 [ExampleController::class, 'show']
             )->name('verbForms.examples.show');
-        });
-
-        Route::prefix('vowels')->group(function () {
-            Route::get('{phoneme:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
-
-            Route::get(
-                '{phonoid:slug}',
-                [PhonemeController::class, 'show']
-            );
-        });
-
-        Route::prefix('consonants')->group(function () {
-            Route::get('{phoneme:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
-
-            Route::get(
-                '{phonoid:slug}',
-                [PhonemeController::class, 'show']
-            );
-        });
-
-        Route::prefix('clusters')->group(function () {
-            Route::get('{cluster:slug}/reflexes/{reflex:slug}', [ReflexController::class, 'show']);
-
-            Route::get(
-                '{phonoid:slug}',
-                [PhonemeController::class, 'show']
-            );
         });
 
         Route::get(
@@ -171,17 +119,6 @@ Route::prefix('sources')->group(function () {
 
 Route::prefix('search')->group(function () {
     Route::get('', [HomeController::class, 'search'])->name('search');
-
-    Route::prefix('nominals')->group(function () {
-        Route::get(
-            'paradigms',
-            [NominalSearchController::class, 'paradigms']
-        )->name('search.nominals.paradigms');
-        Route::get(
-            'paradigms/results',
-            [NominalSearchController::class, 'paradigmResults']
-        )->name('search.nominals.paradigm-results');
-    });
 
     Route::prefix('verbs')->group(function () {
         Route::get(

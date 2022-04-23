@@ -26,10 +26,6 @@ class LanguageController extends Controller
         $language->loadCount([
             'morphemes' => fn ($query) => $query->withoutPlaceholders(),
             'verbForms',
-            'nominalForms',
-            'nominalParadigms',
-            'clusters',
-            'phonemes'
         ]);
         $language->loadSourcesCount();
         return view('languages.show', ['language' => $language]);

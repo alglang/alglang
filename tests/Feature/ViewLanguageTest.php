@@ -6,9 +6,6 @@ use App\Models\Form;
 use App\Models\Group;
 use App\Models\Language;
 use App\Models\Morpheme;
-use App\Models\NominalForm;
-use App\Models\NominalParadigm;
-use App\Models\Phoneme;
 use App\Models\Source;
 use App\Models\User;
 use App\Models\VerbForm;
@@ -67,41 +64,12 @@ class ViewLanguageTest extends TestCase
         $language = Language::factory()->create();
         VerbForm::factory()->create(['language_code' => $language->code]);
         VerbForm::factory()->create(['language_code' => $language->code]);
-        NominalForm::factory()->create(['language_code' => $language->code]);
 
         $response = $this->get($language->url);
 
         $response->assertOk();
         $response->assertViewHas('language', $language);
         $this->assertEquals(2, $response['language']->verb_forms_count);
-    }
-
-    /** @test */
-    public function the_language_comes_with_its_nominal_form_count()
-    {
-        $language = Language::factory()->create();
-        NominalForm::factory()->create(['language_code' => $language->code]);
-        NominalForm::factory()->create(['language_code' => $language->code]);
-        VerbForm::factory()->create(['language_code' => $language->code]);
-
-        $response = $this->get($language->url);
-
-        $response->assertOk();
-        $response->assertViewHas('language', $language);
-        $this->assertEquals(2, $response['language']->nominal_forms_count);
-    }
-
-    /** @test */
-    public function the_language_comes_with_its_nominal_paradigm_count()
-    {
-        $language = Language::factory()->create();
-        NominalParadigm::factory()->create(['language_code' => $language->code]);
-
-        $response = $this->get($language->url);
-
-        $response->assertOk();
-        $response->assertViewHas('language', $language);
-        $this->assertEquals(1, $response['language']->nominal_paradigms_count);
     }
 
     /** @test */
@@ -121,36 +89,6 @@ class ViewLanguageTest extends TestCase
     }
 
     /** @test */
-    public function the_language_comes_with_its_phoneme_count()
-    {
-        $language = Language::factory()->create();
-
-        Phoneme::factory()->consonant()->create(['language_code' => $language]);
-        Phoneme::factory()->vowel()->create(['language_code' => $language]);
-        Phoneme::factory()->cluster()->create(['language_code' => $language]);
-
-        $response = $this->get($language->url);
-
-        $response->assertOk();
-        $response->assertViewHas('language', $language);
-        $this->assertEquals(2, $response['language']->phonemes_count);
-    }
-
-    /** @test */
-    public function the_language_comes_with_its_cluster_count()
-    {
-        $language = Language::factory()->create();
-
-        Phoneme::factory()->cluster()->create(['language_code' => $language]);
-
-        $response = $this->get($language->url);
-
-        $response->assertOk();
-        $response->assertViewHas('language', $language);
-        $this->assertEquals(1, $response['language']->clusters_count);
-    }
-
-    /** @test */
     public function a_language_parent_comes_with_the_language()
     {
         $language = Language::factory()->create([
@@ -162,27 +100,6 @@ class ViewLanguageTest extends TestCase
         $this->assertTrue($response['language']->relationLoaded('parent'));
         $this->assertEquals('Parent Language', $response['language']->parent->name);
     }
-
-    /* public function a_contributor_can_see_edit_mode() */
-    /* { */
-    /*     $language = Language::factory()->create(); */
-    /*     $contributor = User::factory()->create(); */
-    /*     $contributor->assignRole('contributor'); */
-
-    /*     $response = $this->actingAs($contributor)->get($language->url); */
-
-    /*     $response->assertSee(':can-edit="true"', false); */
-    /* } */
-
-    /* public function a_user_cannot_see_edit_mode_without_permission() */
-    /* { */
-    /*     $language = Language::factory()->create(); */
-    /*     $user = User::factory()->create(); */
-
-    /*     $response = $this->actingAs($user)->get($language->url); */
-
-    /*     $response->assertSee(':can-edit="false"', false); */
-    /* } */
 
     /** @test */
     public function a_language_shows_its_children_if_it_has_children()

@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Gloss;
 use App\Models\Language;
-use App\Models\NominalForm;
 use App\Models\Morpheme;
 use App\Models\Slot;
 use App\Models\Source;
@@ -245,9 +244,7 @@ class ViewMorphemeTest extends TestCase
     {
         $language = Language::factory()->create();
         $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
-        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
         $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
-        $nominalForm->assignMorphemes([$morpheme]);
         $verbForm->assignMorphemes([$morpheme]);
 
         $response = $this->get($morpheme->url);
@@ -255,22 +252,5 @@ class ViewMorphemeTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('morpheme', $morpheme);
         $this->assertEquals(1, $response['morpheme']->verb_forms_count);
-    }
-
-    /** @test */
-    public function the_morpheme_comes_with_its_nominal_form_count()
-    {
-        $language = Language::factory()->create();
-        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
-        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
-        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
-        $nominalForm->assignMorphemes([$morpheme]);
-        $verbForm->assignMorphemes([$morpheme]);
-
-        $response = $this->get($morpheme->url);
-
-        $response->assertOk();
-        $response->assertViewHas('morpheme', $morpheme);
-        $this->assertEquals(1, $response['morpheme']->nominal_forms_count);
     }
 }

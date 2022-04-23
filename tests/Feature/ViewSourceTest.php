@@ -4,10 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Example;
 use App\Models\Morpheme;
-use App\Models\NominalForm;
-use App\Models\NominalGap;
-use App\Models\NominalParadigm;
-use App\Models\Phoneme;
 use App\Models\Rule;
 use App\Models\Source;
 use App\Models\VerbForm;
@@ -161,33 +157,6 @@ class ViewSourceTest extends TestCase
     }
 
     /** @test */
-    public function the_source_comes_with_its_nominal_form_count()
-    {
-        $source = Source::factory()->create();
-        $nominalForm = NominalForm::factory()->create()->addSource($source);
-        $nominalGap = NominalGap::factory()->create()->addSource($source);
-
-        $response = $this->get($source->url);
-
-        $response->assertOk();
-        $response->assertViewHas('source', $source);
-        $this->assertEquals(2, $response['source']->nominal_forms_and_gaps_count);
-    }
-
-    /** @test */
-    public function the_source_comes_with_its_nominal_paradigm_count()
-    {
-        $source = Source::factory()->create();
-        $paradigm = NominalParadigm::factory()->create()->addSource($source);
-
-        $response = $this->get($source->url);
-
-        $response->assertOk();
-        $response->assertViewHas('source', $source);
-        $this->assertEquals(1, $response['source']->nominal_paradigms_count);
-    }
-
-    /** @test */
     public function the_source_comes_with_its_example_count()
     {
         $source = Source::factory()->create();
@@ -212,29 +181,5 @@ class ViewSourceTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('source', $source);
         $this->assertEquals(1, $response['source']->rules_count);
-    }
-
-    /** @test */
-    public function the_source_comes_with_its_phoneme_count()
-    {
-        $source = Source::factory()->hasPhonemes(1)->create();
-
-        $response = $this->get($source->url);
-
-        $response->assertOk();
-        $response->assertViewHas('source', $source);
-        $this->assertEquals(1, $response['source']->phonemes_count);
-    }
-
-    /** @test */
-    public function the_source_comes_with_its_reflex_count()
-    {
-        $source = Source::factory()->hasReflexes(1)->create();
-
-        $response = $this->get($source->url);
-
-        $response->assertOk();
-        $response->assertViewHas('source', $source);
-        $this->assertEquals(1, $response['source']->reflexes_count);
     }
 }

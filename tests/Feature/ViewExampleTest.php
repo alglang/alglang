@@ -26,16 +26,6 @@ class ViewExampleTest extends TestCase
     }
 
     /** @test */
-    public function it_loads_the_correct_view()
-    {
-        $this->withoutExceptionHandling();
-        $example = Example::factory()->nominal()->create();
-        $response = $this->get($example->url);
-        $response->assertOk();
-        $response->assertViewIs('examples.show');
-    }
-
-    /** @test */
     public function an_example_can_be_viewed()
     {
         $example = Example::factory()->create([

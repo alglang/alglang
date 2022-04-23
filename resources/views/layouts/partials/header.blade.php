@@ -36,8 +36,6 @@
             @include('layouts.partials.dropdown-list', [
                 'links' => [
                     'Verb forms' => route('verb-forms'),
-                    'Nominal forms' => route('nominal-forms'),
-                    'Phonology' => route('phonology'),
                     'Bibliography' => route('bibliography')
                 ],
                 'class' => 'right-0 md:left-0',
@@ -81,7 +79,6 @@
 
             @component('layouts.partials.dropdown-list', [
                 'links' => [
-                    'Nominal paradigms' => route('search.nominals.paradigms'),
                     'Verb paradigms' => route('search.verbs.paradigms'),
                     'Verb forms' => route('search.verbs.forms'),
                 ],

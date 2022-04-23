@@ -4,9 +4,6 @@ namespace Tests\Unit\Models;
 
 use App\Models\Language;
 use App\Models\Morpheme;
-use App\Models\NominalForm;
-use App\Models\NominalParadigm;
-use App\Models\NominalStructure;
 use App\Models\Source;
 use App\Models\VerbForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,21 +43,9 @@ class LanguageTest extends TestCase
             'language_code' => $language->code
         ])->addSource($verbFormSource);
 
-        $nominalParadigmSource = Source::factory()->create(['author' => 'NominalParadigm Source']);
-        $nominalParadigm = NominalParadigm::factory()->create([
-            'language_code' => $language->code
-        ])->addSource($nominalParadigmSource);
-
-        $nominalFormSource = Source::factory()->create(['author' => 'Nominalform Source']);
-        NominalForm::factory()->create([
-            'language_code' => $language->code,
-        ])->addSource($nominalFormSource);
-
-        $this->assertCount(4, $language->sources);
+        $this->assertCount(2, $language->sources);
         $this->assertTrue($language->sources->contains($morphemeSource));
         $this->assertTrue($language->sources->contains($verbFormSource));
-        $this->assertTrue($language->sources->contains($nominalParadigmSource));
-        $this->assertTrue($language->sources->contains($nominalFormSource));
     }
 
     /** @test */
@@ -102,14 +87,13 @@ class LanguageTest extends TestCase
     }
 
     /** @test */
-    public function its_forms_are_its_nominal_and_verb_forms_combined()
+    public function it_has_forms()
     {
         $language = Language::factory()->create();
         $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
-        $nominalForm = NominalForm::factory()->create(['language_code' => $language->code]);
 
-        $this->assertCount(2, $language->forms);
-        $this->assertEquals([$verbForm->id, $nominalForm->id], $language->forms->pluck('id')->toArray());
+        $this->assertCount(1, $language->forms);
+        $this->assertEquals([$verbForm->id], $language->forms->pluck('id')->toArray());
     }
 
     /** @test */

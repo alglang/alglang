@@ -10,7 +10,7 @@ use Tests\TestCase;
 class MigrationTest extends TestCase
 {
     /** @test */
-    public function it_migrates_and_seeds_without_errors()
+    public function it_migrates_and_seeds_without_errors(): void
     {
         $exceptionWasThrown = false;
         DB::beginTransaction();

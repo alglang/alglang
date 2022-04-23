@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use App\Contracts\HasMorphemes;
-use App\Contracts\HasPhonemes;
 use App\Contracts\HasSources;
 use App\Contracts\HasVerbForms;
-use App\Contracts\HasNominalForms;
 use App\Traits\AggregatesSources;
 use App\Traits\HasParent;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, HasNominalForms, HasPhonemes
+class Language extends Model implements HasMorphemes, HasSources, HasVerbForms
 {
     use AggregatesSources;
     use HasFactory;
@@ -49,8 +47,7 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
     /** @var array */
     protected $sourcedRelations = [
         'morphemes',
-        'forms',
-        'nominalParadigms'
+        'forms'
     ];
 
     /** @var string */
@@ -117,11 +114,6 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(VerbForm::class);
     }
 
-    public function nominalForms(): HasMany
-    {
-        return $this->hasMany(NominalForm::class);
-    }
-
     public function gaps(): HasMany
     {
         return $this->hasMany(FormGap::class);
@@ -132,44 +124,9 @@ class Language extends Model implements HasMorphemes, HasSources, HasVerbForms, 
         return $this->hasMany(VerbGap::class);
     }
 
-    public function nominalGaps(): HasMany
-    {
-        return $this->hasMany(NominalGap::class);
-    }
-
-    public function nominalParadigms(): HasMany
-    {
-        return $this->hasMany(NominalParadigm::class);
-    }
-
     public function rules(): HasMany
     {
         return $this->hasMany(Rule::class);
-    }
-
-    public function phonoids(): HasMany
-    {
-        return $this->hasMany(Phoneme::class);
-    }
-
-    public function phonemes(): HasMany
-    {
-        return $this->phonoids()->whereIn('featureable_type', [VowelFeatureSet::class, ConsonantFeatureSet::class]);
-    }
-
-    public function vowels(): HasMany
-    {
-        return $this->phonoids()->where('featureable_type', VowelFeatureSet::class);
-    }
-
-    public function consonants(): HasMany
-    {
-        return $this->phonoids()->where('featureable_type', ConsonantFeatureSet::class);
-    }
-
-    public function clusters(): HasMany
-    {
-        return $this->phonoids()->where('featureable_type', ClusterFeatureSet::class);
     }
 
     /*

@@ -6,9 +6,6 @@ use App\Models\Form;
 use App\Models\Gloss;
 use App\Models\Language;
 use App\Models\Morpheme;
-use App\Models\NominalForm;
-use App\Models\NominalParadigm;
-use App\Models\NominalStructure;
 use App\Models\VerbForm;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -219,34 +216,12 @@ class MorphemeTest extends TestCase
         $language = Language::factory()->create();
         $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
         $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
-        $nominalForm = NominalForm::factory()->create([
-            'language_code' => $language->code,
-        ]);
         $verbForm->assignMorphemes([$morpheme]);
-        $nominalForm->assignMorphemes([$morpheme]);
 
         $verbForms = $morpheme->verbForms;
 
         $this->assertCount(1, $verbForms);
         $this->assertEquals($verbForm->id, $verbForms[0]->id);
-    }
-
-    /** @test */
-    public function it_retrieves_nominal_forms_that_contain_it()
-    {
-        $language = Language::factory()->create();
-        $morpheme = Morpheme::factory()->create(['language_code' => $language->code]);
-        $verbForm = VerbForm::factory()->create(['language_code' => $language->code]);
-        $nominalForm = NominalForm::factory()->create([
-            'language_code' => $language->code,
-        ]);
-        $verbForm->assignMorphemes([$morpheme]);
-        $nominalForm->assignMorphemes([$morpheme]);
-
-        $nominalForms = $morpheme->nominalForms;
-
-        $this->assertCount(1, $nominalForms);
-        $this->assertEquals($nominalForm->id, $nominalForms[0]->id);
     }
 
     /** @test */
